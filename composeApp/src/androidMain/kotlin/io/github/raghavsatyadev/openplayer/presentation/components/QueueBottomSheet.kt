@@ -105,7 +105,6 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -117,7 +116,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import androidx.core.view.HapticFeedbackConstantsCompat
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -133,8 +131,10 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewMode
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.sharedPlayerViewModel
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticType
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
-import io.github.raghavsatyadev.openplayer.presentation.utils.performAppCompatHapticFeedback
+import io.github.raghavsatyadev.openplayer.presentation.utils.performApp
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppHapticPerformer
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.ui.theme.LocalShowScrollbar
 import io.github.raghavsatyadev.openplayer.utils.PlaybackSpeedUtils
@@ -493,7 +493,7 @@ fun QueueBottomSheet(
     val updatedCanDragSheet by rememberUpdatedState(canDragSheetFromList)
     var draggingSheetFromList by remember { mutableStateOf(false) }
     var listDragAccumulated by remember { mutableStateOf(0f) }
-    val view = LocalView.current
+    val haptics = rememberAppHapticPerformer()
     val appHapticsConfig = LocalAppHapticsConfig.current
 
     val updatedOnQueueDragStart by rememberUpdatedState(onQueueDragStart)
@@ -850,18 +850,16 @@ fun QueueBottomSheet(
                                                         onDragStarted = {
                                                             draggingSheetFromList = false
                                                             reorderHandleInUse = true
-                                                            performAppCompatHapticFeedback(
-                                                                view,
+                                                            haptics.performApp(
                                                                 appHapticsConfig,
-                                                                HapticFeedbackConstantsCompat.GESTURE_START
+                                                                AppHapticType.GestureStart
                                                             )
                                                         },
                                                         onDragStopped = {
                                                             reorderHandleInUse = false
-                                                            performAppCompatHapticFeedback(
-                                                                view,
+                                                            haptics.performApp(
                                                                 appHapticsConfig,
-                                                                HapticFeedbackConstantsCompat.GESTURE_END
+                                                                AppHapticType.GestureEnd
                                                             )
                                                         }
                                                     )
@@ -1319,7 +1317,7 @@ private fun QueueHeader(
     modifier: Modifier = Modifier,
     onLocateCurrentSong: () -> Unit = {}
 ) {
-    val view = LocalView.current
+    val haptics = rememberAppHapticPerformer()
     val appHapticsConfig = LocalAppHapticsConfig.current
 
     Row(
@@ -1336,10 +1334,9 @@ private fun QueueHeader(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }
                 ) {
-                    performAppCompatHapticFeedback(
-                        view,
+                    haptics.performApp(
                         appHapticsConfig,
-                        HapticFeedbackConstantsCompat.GESTURE_START
+                        AppHapticType.GestureStart
                     )
                     onLocateCurrentSong()
                 },
@@ -1942,7 +1939,7 @@ fun QueuePlaylistSongItem(
     val backgroundColor = colors.surfaceContainerLowest
     val mvContainerColor = if (isCurrentSong) colors.tertiaryContainer else colors.surfaceContainerHigh
     val mvContentColor = if (isCurrentSong) colors.onTertiaryContainer else colors.onSurface
-    val hapticView = LocalView.current
+    val haptics = rememberAppHapticPerformer()
     val appHapticsConfig = LocalAppHapticsConfig.current
     val dismissScope = rememberCoroutineScope()
     val dismissEnabled = enableSwipeToDismiss && !isDragging
@@ -1956,7 +1953,7 @@ fun QueuePlaylistSongItem(
             QueueItemDismissGestureHandler(
                 scope = dismissScope,
                 density = density,
-                hapticView = hapticView,
+                haptics = haptics,
                 appHapticsConfig = appHapticsConfig,
                 offsetAnimatable = dismissOffsetAnimatable,
                 itemWidthPx = itemWidthPx,

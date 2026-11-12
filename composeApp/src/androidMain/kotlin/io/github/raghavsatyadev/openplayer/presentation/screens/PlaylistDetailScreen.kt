@@ -87,14 +87,12 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.HapticFeedbackConstantsCompat
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
@@ -120,9 +118,11 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewMo
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.CloudDownloadsViewModel
 import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewModel.Companion.FOLDER_PLAYLIST_PREFIX
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticType
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
 import io.github.raghavsatyadev.openplayer.presentation.utils.getSegmentedItemShape
-import io.github.raghavsatyadev.openplayer.presentation.utils.performAppCompatHapticFeedback
+import io.github.raghavsatyadev.openplayer.presentation.utils.performApp
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppHapticPerformer
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistSongsOrderMode
 import io.github.raghavsatyadev.openplayer.utils.formatSongCount
@@ -250,7 +250,7 @@ fun PlaylistDetailScreen(
 
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
-    val view = LocalView.current
+    val haptics = rememberAppHapticPerformer()
     val appHapticsConfig = LocalAppHapticsConfig.current
     var lastMovedFrom by remember { mutableStateOf<Int?>(null) }
     var lastMovedTo by remember { mutableStateOf<Int?>(null) }
@@ -822,17 +822,15 @@ fun PlaylistDetailScreen(
                                                 modifier = Modifier
                                                     .draggableHandle(
                                                         onDragStarted = {
-                                                            performAppCompatHapticFeedback(
-                                                                view,
+                                                            haptics.performApp(
                                                                 appHapticsConfig,
-                                                                HapticFeedbackConstantsCompat.GESTURE_START
+                                                                AppHapticType.GestureStart
                                                             )
                                                         },
                                                         onDragStopped = {
-                                                            performAppCompatHapticFeedback(
-                                                                view,
+                                                            haptics.performApp(
                                                                 appHapticsConfig,
-                                                                HapticFeedbackConstantsCompat.GESTURE_END
+                                                                AppHapticType.GestureEnd
                                                             )
                                                         }
                                                     )

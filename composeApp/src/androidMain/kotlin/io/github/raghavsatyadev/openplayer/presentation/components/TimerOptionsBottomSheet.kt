@@ -44,11 +44,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
-import androidx.core.view.HapticFeedbackConstantsCompat
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticType
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
-import io.github.raghavsatyadev.openplayer.presentation.utils.performAppCompatHapticFeedback
+import io.github.raghavsatyadev.openplayer.presentation.utils.performApp
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppHapticPerformer
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlin.math.roundToInt
@@ -76,7 +76,7 @@ fun TimerOptionsBottomSheet(
     onCancelTimer: () -> Unit
 ) {
     var showCustomTimePicker by rememberSaveable { mutableStateOf(false) }
-    val view = LocalView.current
+    val haptics = rememberAppHapticPerformer()
     val appHapticsConfig = LocalAppHapticsConfig.current
     var timerSliderPosition by remember { mutableStateOf(0f) }
     var prevTimerIndex by rememberSaveable { mutableIntStateOf(0) }
@@ -186,10 +186,9 @@ fun TimerOptionsBottomSheet(
                             val roundedIndex = newValue.roundToInt().coerceIn(0, predefinedTimes.size - 1)
                             if (roundedIndex != prevTimerIndex) {
                                 prevTimerIndex = roundedIndex
-                                performAppCompatHapticFeedback(
-                                    view,
+                                haptics.performApp(
                                     appHapticsConfig,
-                                    HapticFeedbackConstantsCompat.CLOCK_TICK
+                                    AppHapticType.ClockTick
                                 )
                             }
                         },
@@ -277,10 +276,9 @@ fun TimerOptionsBottomSheet(
                             val roundedValue = newValue.roundToInt().coerceIn(1, 10)
                             if (roundedValue != prevCounterValue) {
                                 prevCounterValue = roundedValue
-                                performAppCompatHapticFeedback(
-                                    view,
+                                haptics.performApp(
                                     appHapticsConfig,
-                                    HapticFeedbackConstantsCompat.CLOCK_TICK
+                                    AppHapticType.ClockTick
                                 )
                             }
                         },
@@ -326,10 +324,9 @@ fun TimerOptionsBottomSheet(
                     .clickable(
                         enabled = isTimerMode || counterSliderPosition == 1f,
                         onClick = {
-                            performAppCompatHapticFeedback(
-                                view,
+                            haptics.performApp(
                                 appHapticsConfig,
-                                HapticFeedbackConstantsCompat.GESTURE_START
+                                AppHapticType.GestureStart
                             )
                             onSetEndOfTrackTimer(!isSwitchEnabled)
                         }
@@ -352,10 +349,9 @@ fun TimerOptionsBottomSheet(
                         checked = isSwitchEnabled,
                         enabled = isTimerMode || counterSliderPosition == 1f,
                         onCheckedChange = { newValue ->
-                            performAppCompatHapticFeedback(
-                                view,
+                            haptics.performApp(
                                 appHapticsConfig,
-                                HapticFeedbackConstantsCompat.GESTURE_START
+                                AppHapticType.GestureStart
                             )
                             onSetEndOfTrackTimer(newValue)
                         },

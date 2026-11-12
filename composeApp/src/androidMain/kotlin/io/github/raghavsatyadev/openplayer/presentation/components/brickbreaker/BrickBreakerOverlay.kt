@@ -65,8 +65,10 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticType
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
-import io.github.raghavsatyadev.openplayer.presentation.utils.performAppHapticFeedback
+import io.github.raghavsatyadev.openplayer.presentation.utils.performApp
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppHapticPerformer
 import kotlinx.coroutines.isActive
 import kotlin.math.abs
 import kotlin.math.ceil
@@ -117,7 +119,7 @@ fun BrickBreakerOverlay(
     val colorScheme = MaterialTheme.colorScheme
     val context = LocalContext.current
     val density = LocalDensity.current
-    val view = androidx.compose.ui.platform.LocalView.current
+    val haptics = rememberAppHapticPerformer()
     val appHapticsConfig = LocalAppHapticsConfig.current
     val preferences = remember(context) {
         context.getSharedPreferences(EasterEggPrefsName, Context.MODE_PRIVATE)
@@ -395,9 +397,9 @@ fun BrickBreakerOverlay(
                         nextVelocity = Offset(newVx, -newVyMagnitude)
                         candidatePos = candidatePos.copy(y = paddleRect.top - ballRadius - 1f)
 
-                        view.performAppHapticFeedback(
+                        haptics.performApp(
                             appHapticsConfig,
-                            android.view.HapticFeedbackConstants.KEYBOARD_TAP
+                            AppHapticType.KeyboardTap
                         )
                     }
 
@@ -422,9 +424,9 @@ fun BrickBreakerOverlay(
                         nextVelocity = enforceMinimumVerticalSpeed(reflectVelocity(nextVelocity, normal))
                         candidatePos = resolveCircleFromRect(candidatePos, ballRadius, brick.rect, normal)
 
-                        view.performAppHapticFeedback(
+                        haptics.performApp(
                             appHapticsConfig,
-                            android.view.HapticFeedbackConstants.CLOCK_TICK
+                            AppHapticType.ClockTick
                         )
 
                         if (brick.type != BrickType.Solid) {
@@ -438,9 +440,9 @@ fun BrickBreakerOverlay(
                                 bricks[hitIndex] = brick.copy(hitsRemaining = newHits)
                                 score += if (brick.type == BrickType.Hard) 100 else 50
                                 updateHighScoreIfNeeded(score)
-                                view.performAppHapticFeedback(
+                                haptics.performApp(
                                     appHapticsConfig,
-                                    android.view.HapticFeedbackConstants.LONG_PRESS
+                                    AppHapticType.LongPress
                                 )
                             }
 

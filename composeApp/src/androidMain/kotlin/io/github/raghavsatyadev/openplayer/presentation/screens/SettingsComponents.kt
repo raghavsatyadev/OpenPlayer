@@ -52,7 +52,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
@@ -65,9 +64,10 @@ import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.worker.SyncProgress
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.LyricsRefreshProgress
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
-import androidx.core.view.HapticFeedbackConstantsCompat
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticType
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
-import io.github.raghavsatyadev.openplayer.presentation.utils.performAppCompatHapticFeedback
+import io.github.raghavsatyadev.openplayer.presentation.utils.performApp
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppHapticPerformer
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberSyncedSliderState
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
@@ -151,7 +151,7 @@ fun SwitchSettingItem(
         enabled: Boolean = true,
         modifier: Modifier = Modifier
 ) {
-    val view = LocalView.current
+    val haptics = rememberAppHapticPerformer()
     val appHapticsConfig = LocalAppHapticsConfig.current
 
     Surface(
@@ -194,10 +194,9 @@ fun SwitchSettingItem(
                 checked = checked,
                 onCheckedChange = { newValue ->
                     if (enabled) {
-                        performAppCompatHapticFeedback(
-                            view,
+                        haptics.performApp(
                             appHapticsConfig,
-                            HapticFeedbackConstantsCompat.GESTURE_START
+                            AppHapticType.GestureStart
                         )
                         onCheckedChange(newValue)
                     }

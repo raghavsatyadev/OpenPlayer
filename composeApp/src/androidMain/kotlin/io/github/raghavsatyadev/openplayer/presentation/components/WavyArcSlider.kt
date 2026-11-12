@@ -23,9 +23,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.core.view.HapticFeedbackConstantsCompat
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticType
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
-import io.github.raghavsatyadev.openplayer.presentation.utils.performAppCompatHapticFeedback
+import io.github.raghavsatyadev.openplayer.presentation.utils.performApp
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppHapticPerformer
 import kotlin.math.*
 
 /** Haptic resolution of [WavyArcSlider]: one tick per 1% of the value range. */
@@ -60,6 +61,7 @@ fun WavyArcSlider(
 ) {
     val density = LocalDensity.current
     val view = LocalView.current
+    val haptics = rememberAppHapticPerformer()
     // pointerInput below is not keyed on the config, so read the latest value inside the gesture.
     val appHapticsConfig by rememberUpdatedState(LocalAppHapticsConfig.current)
     
@@ -127,10 +129,9 @@ fun WavyArcSlider(
                             onValueChange(newValue)
                             val newStep = wavyArcHapticStep(newValue, valueRange)
                             if (forceHaptic || newStep != lastHapticStep) {
-                                performAppCompatHapticFeedback(
-                                    view,
+                                haptics.performApp(
                                     appHapticsConfig,
-                                    HapticFeedbackConstantsCompat.CLOCK_TICK
+                                    AppHapticType.ClockTick
                                 )
                                 lastHapticStep = newStep
                             }

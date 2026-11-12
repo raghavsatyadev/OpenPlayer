@@ -45,15 +45,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import android.view.HapticFeedbackConstants
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.library.LibraryTabId
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticType
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
-import io.github.raghavsatyadev.openplayer.presentation.utils.performAppCompatHapticFeedback
+import io.github.raghavsatyadev.openplayer.presentation.utils.performApp
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppHapticPerformer
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -133,7 +133,7 @@ fun ReorderTabsSheet(
     val sheetState = rememberModalSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-    val view = LocalView.current
+    val haptics = rememberAppHapticPerformer()
     val appHapticsConfig = LocalAppHapticsConfig.current
 
     val reorderableState = rememberReorderableLazyListState(
@@ -141,11 +141,7 @@ fun ReorderTabsSheet(
             val moved = moveTabByKey(localTabs, from.key, to.key)
                 ?: return@rememberReorderableLazyListState
             localTabs = moved.toImmutableList()
-            performAppCompatHapticFeedback(
-                view,
-                appHapticsConfig,
-                HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
-            )
+            haptics.performApp(appHapticsConfig, AppHapticType.ClockTick)
         },
         lazyListState = listState
     )
@@ -233,17 +229,15 @@ fun ReorderTabsSheet(
                                             modifier = Modifier
                                                 .draggableHandle(
                                                     onDragStarted = {
-                                                        performAppCompatHapticFeedback(
-                                                            view,
+                                                        haptics.performApp(
                                                             appHapticsConfig,
-                                                            HapticFeedbackConstants.GESTURE_START
+                                                            AppHapticType.GestureStart
                                                         )
                                                     },
                                                     onDragStopped = {
-                                                        performAppCompatHapticFeedback(
-                                                            view,
+                                                        haptics.performApp(
                                                             appHapticsConfig,
-                                                            HapticFeedbackConstants.GESTURE_END
+                                                            AppHapticType.GestureEnd
                                                         )
                                                     }
                                                 )

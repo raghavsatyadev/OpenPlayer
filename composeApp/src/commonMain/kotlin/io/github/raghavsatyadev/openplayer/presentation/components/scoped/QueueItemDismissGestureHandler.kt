@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.scoped
 
-import android.view.View
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -13,9 +12,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.Density
-import androidx.core.view.HapticFeedbackConstantsCompat
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticPerformer
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticType
 import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticsConfig
-import io.github.raghavsatyadev.openplayer.presentation.utils.performAppCompatHapticFeedback
+import io.github.raghavsatyadev.openplayer.presentation.utils.performApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -41,7 +41,7 @@ private enum class QueueDismissDragPhase { IDLE, TENSION, SNAPPING, FREE_DRAG }
 internal class QueueItemDismissGestureHandler(
     private val scope: CoroutineScope,
     private val density: Density,
-    private val hapticView: View,
+    private val haptics: AppHapticPerformer,
     private val appHapticsConfig: AppHapticsConfig,
     private val offsetAnimatable: Animatable<Float, AnimationVector1D>,
     private val itemWidthPx: Float,
@@ -91,10 +91,9 @@ internal class QueueItemDismissGestureHandler(
             }
 
             QueueDismissDragPhase.SNAPPING -> {
-                performAppCompatHapticFeedback(
-                    hapticView,
+                haptics.performApp(
                     appHapticsConfig,
-                    HapticFeedbackConstantsCompat.GESTURE_THRESHOLD_ACTIVATE
+                    AppHapticType.GestureThresholdActivate
                 )
                 scope.launch {
                     offsetAnimatable.animateTo(
@@ -113,11 +112,10 @@ internal class QueueItemDismissGestureHandler(
                 val nowInZone = abs(accumulatedDragX) > dismissThreshold
                 if (nowInZone != isInDismissZone) {
                     isInDismissZone = nowInZone
-                    performAppCompatHapticFeedback(
-                        hapticView,
+                    haptics.performApp(
                         appHapticsConfig,
-                        if (nowInZone) HapticFeedbackConstantsCompat.GESTURE_THRESHOLD_ACTIVATE
-                        else HapticFeedbackConstantsCompat.GESTURE_THRESHOLD_DEACTIVATE
+                        if (nowInZone) AppHapticType.GestureThresholdActivate
+                        else AppHapticType.GestureThresholdDeactivate
                     )
                 }
                 scope.launch {
@@ -142,10 +140,9 @@ internal class QueueItemDismissGestureHandler(
 
         if (abs(accumulatedDragX) > dismissThreshold) {
             isDismissing = true
-            performAppCompatHapticFeedback(
-                hapticView,
+            haptics.performApp(
                 appHapticsConfig,
-                HapticFeedbackConstantsCompat.GESTURE_END
+                AppHapticType.GestureEnd
             )
             scope.launch {
                 offsetAnimatable.animateTo(
@@ -203,17 +200,17 @@ internal class QueueItemDismissGestureHandler(
 internal fun rememberQueueItemDismissGestureHandler(
     scope: CoroutineScope,
     density: Density,
-    hapticView: View,
+    haptics: AppHapticPerformer,
     appHapticsConfig: AppHapticsConfig,
     offsetAnimatable: Animatable<Float, AnimationVector1D>,
     itemWidthPx: Float,
     onDismiss: () -> Unit
 ): QueueItemDismissGestureHandler {
-    return remember(scope, density, hapticView, appHapticsConfig, offsetAnimatable, itemWidthPx, onDismiss) {
+    return remember(scope, density, haptics, appHapticsConfig, offsetAnimatable, itemWidthPx, onDismiss) {
         QueueItemDismissGestureHandler(
             scope = scope,
             density = density,
-            hapticView = hapticView,
+            haptics = haptics,
             appHapticsConfig = appHapticsConfig,
             offsetAnimatable = offsetAnimatable,
             itemWidthPx = itemWidthPx,
