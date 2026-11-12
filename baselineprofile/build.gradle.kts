@@ -3,9 +3,18 @@ plugins {
     alias(libs.plugins.baselineprofile)
 }
 
+kotlin {
+    jvmToolchain(21)
+}
+
 android {
     namespace = "io.github.raghavsatyadev.openplayer.baselineprofile"
-    compileSdk = 37
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 1
+        }
+    }
+    buildToolsVersion = "36.1.0"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21

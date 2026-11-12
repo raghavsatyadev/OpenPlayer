@@ -40,7 +40,12 @@ val enableComposeCompilerReports = providers.gradleProperty("openplayer.enableCo
 @Suppress("DEPRECATION")
 android {
     namespace = "io.github.raghavsatyadev.openplayer"
-    compileSdk = 37
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 1
+        }
+    }
+    buildToolsVersion = "36.1.0"
 
     sourceSets {
         getByName("androidTest") {
@@ -176,6 +181,7 @@ ksp {
 }
 
 kotlin {
+    jvmToolchain(21)
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
         freeCompilerArgs.add("-Xannotation-default-target=param-property")
@@ -200,6 +206,7 @@ dependencies {
     "baselineProfile"(project(":baselineprofile"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.documentfile)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.lifecycleprocess)
@@ -220,6 +227,8 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    ksp(libs.kotlin.metadata.jvm)
+    annotationProcessor(libs.kotlin.metadata.jvm)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
     implementation(libs.androidx.hilt.work)
@@ -323,6 +332,14 @@ dependencies {
         implementation(libs.jdom2)
         implementation(libs.jose4j)
         implementation(libs.apache.httpclient)
+    }
+}
+
+configurations.configureEach {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin" && requested.name == "kotlin-metadata-jvm") {
+            useVersion(libs.versions.kotlin.get())
+        }
     }
 }
 
