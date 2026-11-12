@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about_contributions_format">%1$d katkı</string>
-    <string name="about_link_fdroid_subtitle">F-Droid kataloğunda mevcut</string>
     <string name="about_licenses_title">Lisanslar ve atıflar</string>
     <string name="about_licenses_subtitle">Açık kaynak kütüphaneler, yazı tipleri ve paketlenmiş veriler</string>
     <string name="about_licenses_sheet_subtitle">Bu uygulamayla birlikte gelen üçüncü taraf yazılımlar, yazı tipleri ve veriler.</string>
@@ -22,7 +21,6 @@
     <string name="licenses_toast_copied">Lisans metni panoya kopyalandı</string>
     <string name="licenses_cd_close">Kapat</string>
     <string name="licenses_cd_copy">Lisans metnini kopyala</string>
-    <string name="about_link_fdroid_title">F-Droid</string>
     <string name="about_link_source_title">Kaynak kodu</string>
     <string name="about_maintainer_subtitle">FOSS ve orijinal/FOSS olmayan sürümlerin bakımı.</string>
     <string name="about_maintainer_title">Bakımcılar</string>

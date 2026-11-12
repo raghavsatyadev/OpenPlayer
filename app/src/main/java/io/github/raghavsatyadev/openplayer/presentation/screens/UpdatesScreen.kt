@@ -174,9 +174,7 @@ fun UpdatesScreen(
                 onOpenBackup()
             },
             onDownload = {
-                context.openUrl(
-                    if (pendingSwitch.channel == UpdateChannel.STABLE) pendingSwitch.pageUrl else pendingSwitch.apkUrl
-                )
+                context.openUrl(pendingSwitch.apkUrl)
             },
             onUninstall = {
                 context.startActivitySafely(Intent(Intent.ACTION_DELETE, "package:${context.packageName}".toUri()))
@@ -333,16 +331,9 @@ private fun ChannelSwitchDialog(
                 FilledTonalButton(onClick = onBackup, modifier = Modifier.fillMaxWidth()) {
                     Text(stringResource(R.string.updates_switch_action_backup))
                 }
-                if (release.channel == UpdateChannel.STABLE) {
-                    Text(stringResource(R.string.updates_switch_step_download_stable))
-                    FilledTonalButton(onClick = onDownload, modifier = Modifier.fillMaxWidth()) {
-                        Text(stringResource(R.string.updates_switch_action_open_fdroid))
-                    }
-                } else {
-                    Text(stringResource(R.string.updates_switch_step_download_alpha, release.versionName))
-                    FilledTonalButton(onClick = onDownload, modifier = Modifier.fillMaxWidth()) {
-                        Text(stringResource(R.string.updates_switch_action_download))
-                    }
+                Text(stringResource(R.string.updates_switch_step_download_alpha, release.versionName))
+                FilledTonalButton(onClick = onDownload, modifier = Modifier.fillMaxWidth()) {
+                    Text(stringResource(R.string.updates_switch_action_download))
                 }
                 Text(stringResource(R.string.updates_switch_step_uninstall))
                 OutlinedButton(onClick = onUninstall, modifier = Modifier.fillMaxWidth()) {

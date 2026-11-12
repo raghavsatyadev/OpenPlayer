@@ -100,7 +100,7 @@ constructor(
         PreferencesKeys.METADATA_CHARSET_REPAIR_VERSION.name,
         "listenbrainz_token",
         "lastfm_session_key",
-        // Update settings describe this install (F-Droid vs. GitHub signed), not user taste;
+        // Update settings describe this install (stable vs. alpha), not user taste;
         // restoring them onto the other channel's install would offer a cross-signed update.
         PreferencesKeys.UPDATE_CHANNEL.name,
         PreferencesKeys.UPDATE_AUTO_CHECK.name,

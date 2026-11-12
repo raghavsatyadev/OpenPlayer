@@ -476,7 +476,7 @@ Mit einem Backslash (\) lassen sich Zeichen-Trennzeichen maskieren.</string>
     <string-array name="presentation_batch_g_changelog_070_fixes">
         <item>F-Droid-Metadaten, Fastlane-Store-Metadaten, Datenschutzhinweise, Sicherheitshinweise, Dokumentation zu Abhängigkeiten/Lizenzen und Leitfäden für Mitwirkende hinzugefügt.</item>
         <item>Release-Builds bleiben unsigniert, wenn keine lokalen Signaturschlüssel vorhanden sind.</item>
-        <item>pixelplayer.disableReleaseSigning=true für deterministische, unsignierte Verifizierungs-Builds hinzugefügt.</item>
+        <item>openplayer.disableReleaseSigning=true für deterministische, unsignierte Verifizierungs-Builds hinzugefügt.</item>
         <item>Lizenznachweise für Assets und Abhängigkeiten dokumentiert, einschließlich nativer/binärer Maven-Artefakte und JitPack-Abhängigkeiten.</item>
     </string-array>
     <string-array name="presentation_batch_g_changelog_070_added">

@@ -1,9 +1,8 @@
 package io.github.raghavsatyadev.openplayer.data.update
 
 /**
- * Where builds of a channel are published. Stable builds are built and signed by F-Droid;
- * alpha builds are signed with the project CI key and published as GitHub prereleases, so an
- * install from one channel can never be updated in place by the other.
+ * Where builds of a channel are published. Both stable releases and alpha prereleases are
+ * published on GitHub and signed with the same key, so moving between channels installs in place.
  */
 enum class UpdateChannel(val storageKey: String) {
     STABLE("stable"),
@@ -13,36 +12,43 @@ enum class UpdateChannel(val storageKey: String) {
         fun fromStorageKey(key: String?): UpdateChannel? = entries.firstOrNull { it.storageKey == key }
 
         /**
-         * The channel the running build was distributed through. CI-built alphas (and PR builds,
-         * which share the CI key) carry a pre-release suffix; F-Droid builds the plain tag.
+         * The channel the running build was distributed through. Alphas (and PR builds) carry
+         * a pre-release suffix; stable releases use the plain version tag.
          */
         fun ofVersionName(versionName: String): UpdateChannel =
             if ('-' in versionName) ALPHA else STABLE
     }
 }
 
-/** `0.3.0-alpha.16` as published by the alpha-release workflow. */
-data class AlphaVersion(
+/** `1.2.3` or `1.2.3-alpha.4` as published on GitHub releases. */
+data class AppVersion(
     val major: Int,
     val minor: Int,
     val patch: Int,
-    val build: Int,
-) : Comparable<AlphaVersion> {
+    val alphaBuild: Int? = null,
+) : Comparable<AppVersion> {
 
-    override fun compareTo(other: AlphaVersion): Int = compareValuesBy(
-        this, other, AlphaVersion::major, AlphaVersion::minor, AlphaVersion::patch, AlphaVersion::build
-    )
+    override fun compareTo(other: AppVersion): Int {
+        val base = compareValuesBy(this, other, AppVersion::major, AppVersion::minor, AppVersion::patch)
+        if (base != 0) return base
+        return when {
+            this.alphaBuild == null && other.alphaBuild == null -> 0
+            this.alphaBuild == null -> 1
+            other.alphaBuild == null -> -1
+            else -> this.alphaBuild.compareTo(other.alphaBuild)
+        }
+    }
 
     companion object {
-        private val PATTERN = Regex("""^v?(\d+)\.(\d+)\.(\d+)-alpha\.(\d+)$""")
+        private val PATTERN = Regex("""^v?(\d+)\.(\d+)\.(\d+)(?:-alpha\.(\d+))?$""")
 
-        fun parse(value: String): AlphaVersion? {
+        fun parse(value: String): AppVersion? {
             val groups = PATTERN.matchEntire(value.trim())?.groupValues ?: return null
-            return AlphaVersion(
+            return AppVersion(
                 major = groups[1].toIntOrNull() ?: return null,
                 minor = groups[2].toIntOrNull() ?: return null,
                 patch = groups[3].toIntOrNull() ?: return null,
-                build = groups[4].toIntOrNull() ?: return null,
+                alphaBuild = groups[4].takeIf { it.isNotEmpty() }?.toIntOrNull(),
             )
         }
     }
@@ -52,22 +58,17 @@ data class AlphaVersion(
 data class AppRelease(
     val channel: UpdateChannel,
     val versionName: String,
-    /** Known for F-Droid builds; alpha releases only expose their version name. */
+    /** Always null for GitHub releases. */
     val versionCode: Long?,
     val apkUrl: String,
     val apkSizeBytes: Long?,
     val pageUrl: String,
 )
 
-/** Whether [release] is newer than the running build, assuming both are on the same channel. */
-internal fun AppRelease.isNewerThan(installedVersionName: String, installedVersionCode: Long): Boolean =
-    when (channel) {
-        UpdateChannel.STABLE -> (versionCode ?: 0L) > installedVersionCode
-        UpdateChannel.ALPHA -> {
-            val candidate = AlphaVersion.parse(versionName) ?: return false
-            // PR and other CI builds share the alpha signing key but have no alpha number;
-            // any published alpha is the way back onto the channel.
-            val installed = AlphaVersion.parse(installedVersionName) ?: return true
-            candidate > installed
-        }
-    }
+/** Whether [this] is newer than the running build. */
+@Suppress("UNUSED_PARAMETER")
+internal fun AppRelease.isNewerThan(installedVersionName: String, installedVersionCode: Long): Boolean {
+    val candidate = AppVersion.parse(versionName) ?: return false
+    val installed = AppVersion.parse(installedVersionName) ?: return true
+    return candidate > installed
+}

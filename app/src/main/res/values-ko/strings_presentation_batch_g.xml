@@ -476,7 +476,7 @@
     <string-array name="presentation_batch_g_changelog_070_fixes">
         <item>F-Droid 메타데이터, Fastlane 스토어 메타데이터, 개인정보 보호 안내, 보안 안내, 의존성/라이선스 문서, 기여자 가이드를 추가했습니다.</item>
         <item>로컬 서명 키가 없으면 릴리스 빌드는 서명되지 않은 상태로 유지됩니다.</item>
-        <item>결정적인 미서명 검증 빌드를 위해 pixelplayer.disableReleaseSigning=true를 추가했습니다.</item>
+        <item>결정적인 미서명 검증 빌드를 위해 openplayer.disableReleaseSigning=true를 추가했습니다.</item>
         <item>네이티브/바이너리 Maven 아티팩트와 JitPack 의존성을 포함하여 에셋 및 의존성 라이선스 내역을 문서화했습니다.</item>
     </string-array>
     <string-array name="presentation_batch_g_changelog_070_added">

@@ -287,10 +287,10 @@
     <string name="updates_installed_version">Installiert: %1$s</string>
     <string name="updates_channel_stable">Stabil</string>
     <string name="updates_channel_alpha">Alpha</string>
-    <string name="updates_channel_stable_source">Stabil · F-Droid</string>
+    <string name="updates_channel_stable_source">Stabil · GitHub</string>
     <string name="updates_channel_alpha_source">Alpha · GitHub</string>
     <string name="updates_channel_title">Release-Kanal</string>
-    <string name="updates_channel_stable_description">Getestete Releases, die von F-Droid gebaut und signiert werden.</string>
+    <string name="updates_channel_stable_description">Getestete Releases, die auf GitHub veröffentlicht werden.</string>
     <string name="updates_channel_alpha_description">Ein Build für jede gemergte Änderung, veröffentlicht auf GitHub. Rechne mit Ecken und Kanten.</string>
     <string name="updates_auto_check_title">Automatisch prüfen</string>
     <string name="updates_auto_check_subtitle">Einmal täglich nach Updates suchen und dich benachrichtigen, wenn eines verfügbar ist.</string>
@@ -321,13 +321,11 @@
     <string name="updates_action_switch">So wechselst du</string>
     <string name="updates_action_dismiss">Schließen</string>
     <string name="updates_switch_dialog_title">Neuinstallation erforderlich</string>
-    <string name="updates_switch_dialog_body">Stabile Builds stammen von F-Droid, Alpha-Builds von GitHub. Sie sind mit unterschiedlichen Schlüsseln signiert, daher kann Android das eine nicht durch das andere aktualisieren. Beim Deinstallieren werden die Daten der App gelöscht, also erstelle vorher ein Backup.</string>
+    <string name="updates_switch_dialog_body">Dieser Build lässt sich nicht direkt aktualisieren, weil er ein Debug-Build ist oder mit einem anderen Schlüssel signiert wurde. Sichere deine Daten, installiere das Release und deinstalliere dann diesen Build.</string>
     <string name="updates_switch_step_backup">1. Erstelle ein Backup und speichere die Datei außerhalb der App.</string>
-    <string name="updates_switch_step_download_stable">2. Installiere F-Droid, falls du es noch nicht hast, und öffne dort OpenPlayer.</string>
     <string name="updates_switch_step_download_alpha">2. Lade die %1$s-APK herunter.</string>
     <string name="updates_switch_step_uninstall">3. Deinstalliere diese App, installiere den neuen Build und stelle dein Backup wieder her.</string>
     <string name="updates_switch_action_backup">Backup erstellen</string>
-    <string name="updates_switch_action_open_fdroid">F-Droid-Seite öffnen</string>
     <string name="updates_switch_action_download">APK herunterladen</string>
     <string name="updates_switch_action_uninstall">Deinstallieren</string>
     <string name="updates_switch_action_close">Schließen</string>

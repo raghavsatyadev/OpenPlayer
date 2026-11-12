@@ -19,7 +19,7 @@ class M3uManagerTest {
         )
         val content = """
             #EXTM3U
-            #PIXELPLAYER-PLAYLIST-ID:playlist-42
+            #OPENPLAYER-PLAYLIST-ID:playlist-42
             /Music/Album/one.flac
             shared.flac
             missing.flac
@@ -47,7 +47,7 @@ class M3uManagerTest {
 
         val content = M3uManager.generateContent(playlist, songs)
 
-        assertThat(content).contains("#PIXELPLAYER-PLAYLIST-ID:playlist-42")
+        assertThat(content).contains("#OPENPLAYER-PLAYLIST-ID:playlist-42")
         assertThat(content).contains("/Music/one.flac")
         assertThat(content).contains("navidrome://song-cloud")
     }

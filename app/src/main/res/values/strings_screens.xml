@@ -217,9 +217,7 @@
     <string name="about_project_title">Project</string>
     <string name="about_project_subtitle">Source, releases, and community entry points.</string>
     <string name="about_link_source_title">Source code</string>
-    <string name="about_link_source_subtitle" translatable="false">github.com/lostf1sh/PixelPlayerOSS</string>
-    <string name="about_link_fdroid_title">F-Droid</string>
-    <string name="about_link_fdroid_subtitle">Available on the F-Droid catalog</string>
+    <string name="about_link_source_subtitle" translatable="false">github.com/raghavsatyadev/OpenPlayer</string>
     <string name="about_licenses_title">Licenses &amp; attribution</string>
     <string name="about_licenses_subtitle">Open-source libraries, fonts and bundled data</string>
     <string name="about_licenses_sheet_subtitle">Third-party software, fonts and data bundled with this app.</string>

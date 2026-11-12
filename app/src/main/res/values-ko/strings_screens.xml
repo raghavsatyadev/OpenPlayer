@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about_contributions_format">기여 %1$d회</string>
-    <string name="about_link_fdroid_subtitle">F-Droid 카탈로그에서 이용 가능</string>
     <string name="about_licenses_title">라이선스 및 저작자 표시</string>
     <string name="about_licenses_subtitle">오픈 소스 라이브러리, 글꼴 및 포함된 데이터</string>
     <string name="about_licenses_sheet_subtitle">이 앱에 포함된 서드파티 소프트웨어, 글꼴 및 데이터입니다.</string>
@@ -22,7 +21,6 @@
     <string name="licenses_toast_copied">라이선스 텍스트가 클립보드에 복사되었습니다</string>
     <string name="licenses_cd_close">닫기</string>
     <string name="licenses_cd_copy">라이선스 텍스트 복사</string>
-    <string name="about_link_fdroid_title">F-Droid</string>
     <string name="about_link_source_title">소스 코드</string>
     <string name="about_maintainer_subtitle">FOSS 버전과 원본/비FOSS 버전의 메인테이너입니다.</string>
     <string name="about_maintainer_title">메인테이너</string>

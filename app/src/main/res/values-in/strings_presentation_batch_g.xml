@@ -476,7 +476,7 @@ Garis miring terbalik (\) dapat digunakan untuk meloloskan pemisah karakter.</st
     <string-array name="presentation_batch_g_changelog_070_fixes">
         <item>Menambahkan metadata F-Droid, metadata toko Fastlane, catatan privasi, catatan keamanan, dokumentasi dependensi/lisensi, dan panduan kontributor.</item>
         <item>Build rilis tetap tidak ditandatangani saat kunci penandatanganan lokal tidak ada.</item>
-        <item>Menambahkan pixelplayer.disableReleaseSigning=true untuk build verifikasi tanpa tanda tangan yang deterministik.</item>
+        <item>Menambahkan openplayer.disableReleaseSigning=true untuk build verifikasi tanpa tanda tangan yang deterministik.</item>
         <item>Mendokumentasikan jejak lisensi aset dan dependensi, termasuk artefak Maven native/biner dan dependensi JitPack.</item>
     </string-array>
     <string-array name="presentation_batch_g_changelog_070_added">

@@ -476,7 +476,7 @@ La barre oblique inverse (\) permet d\'échapper les délimiteurs de caractères
     <string-array name="presentation_batch_g_changelog_070_fixes">
         <item>Ajout des métadonnées F-Droid, des métadonnées de boutique Fastlane, des notes de confidentialité, des notes de sécurité, de la documentation des dépendances/licences et d\'un guide pour les contributeurs.</item>
         <item>Les versions de production restent non signées en l\'absence de clés de signature locales.</item>
-        <item>Ajout de pixelplayer.disableReleaseSigning=true pour des compilations de vérification non signées et déterministes.</item>
+        <item>Ajout de openplayer.disableReleaseSigning=true pour des compilations de vérification non signées et déterministes.</item>
         <item>Documentation de la traçabilité des licences des ressources et des dépendances, y compris les artefacts Maven natifs/binaires et les dépendances JitPack.</item>
     </string-array>
     <string-array name="presentation_batch_g_changelog_070_added">

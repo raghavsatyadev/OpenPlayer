@@ -2,28 +2,9 @@ package io.github.raghavsatyadev.openplayer.data.update
 
 import com.google.common.truth.Truth.assertThat
 import org.json.JSONArray
-import org.json.JSONObject
 import org.junit.jupiter.api.Test
 
 class AppReleaseSourceTest {
-
-    private val packageName = "io.github.raghavsatyadev.openplayer"
-
-    @Test
-    fun `fdroid release uses the suggested version rather than the newest listed`() {
-        val json = JSONObject(
-            """
-            {"packageName":"$packageName","suggestedVersionCode":3,
-             "packages":[{"versionName":"0.4.0","versionCode":4},{"versionName":"0.3.0","versionCode":3}]}
-            """
-        )
-
-        val release = AppReleaseSource.parseFdroidPackage(json, packageName)!!
-
-        assertThat(release.versionName).isEqualTo("0.3.0")
-        assertThat(release.versionCode).isEqualTo(3L)
-        assertThat(release.apkUrl).isEqualTo("https://f-droid.org/repo/${packageName}_3.apk")
-    }
 
     @Test
     fun `newest alpha is picked by version even when the API lists it later`() {
@@ -35,7 +16,7 @@ class AppReleaseSourceTest {
             ).joinToString(prefix = "[", postfix = "]")
         )
 
-        val latest = AppReleaseSource.parseLatestAlpha(releases, listOf("arm64-v8a"))!!
+        val latest = AppReleaseSource.parseLatest(releases, UpdateChannel.ALPHA, listOf("arm64-v8a"))!!
 
         assertThat(latest.versionName).isEqualTo("0.3.0-alpha.16")
         assertThat(latest.apkUrl).endsWith("/OpenPlayer-0.3.0-alpha.16-arm64-v8a.apk")
@@ -45,7 +26,7 @@ class AppReleaseSourceTest {
     fun `alpha asset follows the device ABI preference order`() {
         val releases = JSONArray("[${release("v0.3.0-alpha.16")}]")
 
-        val latest = AppReleaseSource.parseLatestAlpha(releases, listOf("armeabi-v7a", "arm64-v8a"))!!
+        val latest = AppReleaseSource.parseLatest(releases, UpdateChannel.ALPHA, listOf("armeabi-v7a", "arm64-v8a"))!!
 
         assertThat(latest.apkUrl).endsWith("-armeabi-v7a.apk")
     }
@@ -61,9 +42,38 @@ class AppReleaseSourceTest {
             ).joinToString(prefix = "[", postfix = "]")
         )
 
-        assertThat(AppReleaseSource.parseLatestAlpha(releases, listOf("arm64-v8a"))!!.versionName)
+        assertThat(AppReleaseSource.parseLatest(releases, UpdateChannel.ALPHA, listOf("arm64-v8a"))!!.versionName)
             .isEqualTo("0.3.0-alpha.18")
-        assertThat(AppReleaseSource.parseLatestAlpha(releases, listOf("x86"))).isNull()
+        assertThat(AppReleaseSource.parseLatest(releases, UpdateChannel.ALPHA, listOf("x86"))).isNull()
+    }
+
+    @Test
+    fun `stable channel picks the newest non-prerelease and ignores prereleases`() {
+        val releases = JSONArray(
+            listOf(
+                release("v0.5.0-alpha.1"),
+                release("v0.4.0", prerelease = false),
+                release("v0.4.1", prerelease = false, abis = listOf("x86_64")),
+                release("v0.3.2", prerelease = false),
+                release("v0.9.0", prerelease = false, draft = true),
+            ).joinToString(prefix = "[", postfix = "]")
+        )
+
+        val latest = AppReleaseSource.parseLatest(releases, UpdateChannel.STABLE, listOf("arm64-v8a"))!!
+
+        assertThat(latest.versionName).isEqualTo("0.4.0")
+        assertThat(latest.channel).isEqualTo(UpdateChannel.STABLE)
+        assertThat(latest.apkUrl).endsWith("/OpenPlayer-0.4.0-arm64-v8a.apk")
+    }
+
+    @Test
+    fun `app versions rank stable above alpha of the same base`() {
+        assertThat(stableRelease("1.2.0").isNewerThan("1.2.0-alpha.9", 0)).isTrue()
+        assertThat(alphaRelease("1.2.0-alpha.2").isNewerThan("1.1.9", 0)).isTrue()
+        assertThat(alphaRelease("1.2.0-alpha.3").isNewerThan("1.2.0-alpha.2", 0)).isTrue()
+        assertThat(stableRelease("1.2.0").isNewerThan("1.2.0", 0)).isFalse()
+        assertThat(alphaRelease("1.2.0-alpha.2").isNewerThan("1.2.0", 0)).isFalse()
+        assertThat(stableRelease("1.2.0").isNewerThan("garbage", 0)).isTrue()
     }
 
     @Test
@@ -88,6 +98,8 @@ class AppReleaseSourceTest {
         assertThat(UpdateChannel.ofVersionName("0.3.0-pr.137.ba94188")).isEqualTo(UpdateChannel.ALPHA)
     }
 
+    private fun stableRelease(versionName: String) = alphaRelease(versionName).copy(channel = UpdateChannel.STABLE)
+
     private fun alphaRelease(versionName: String) = AppRelease(
         channel = UpdateChannel.ALPHA,
         versionName = versionName,
@@ -106,9 +118,9 @@ class AppReleaseSourceTest {
         val name = tag.removePrefix("v")
         val assets = abis.joinToString(prefix = "[", postfix = "]") { abi ->
             """{"name":"OpenPlayer-$name-$abi.apk","size":37082259,
-               "browser_download_url":"https://github.com/PixelPlayerHQ/PixelPlayerOSS/releases/download/$tag/PixelPlayerOSS-$name-$abi.apk"}"""
+               "browser_download_url":"https://github.com/raghavsatyadev/OpenPlayer/releases/download/$tag/OpenPlayer-$name-$abi.apk"}"""
         }
         return """{"tag_name":"$tag","prerelease":$prerelease,"draft":$draft,
-                   "html_url":"https://github.com/PixelPlayerHQ/PixelPlayerOSS/releases/tag/$tag","assets":$assets}"""
+                   "html_url":"https://github.com/raghavsatyadev/OpenPlayer/releases/tag/$tag","assets":$assets}"""
     }
 }

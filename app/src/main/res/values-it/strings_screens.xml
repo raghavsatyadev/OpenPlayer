@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about_contributions_format">%1$d contrib.</string>
-    <string name="about_link_fdroid_subtitle">Disponibile nel catalogo F-Droid</string>
     <string name="about_licenses_title">Licenze e attribuzioni</string>
     <string name="about_licenses_subtitle">Librerie open source, font e dati inclusi</string>
     <string name="about_licenses_sheet_subtitle">Software di terze parti, font e dati inclusi in questa app.</string>
@@ -22,7 +21,6 @@
     <string name="licenses_toast_copied">Testo della licenza copiato negli appunti</string>
     <string name="licenses_cd_close">Chiudi</string>
     <string name="licenses_cd_copy">Copia testo della licenza</string>
-    <string name="about_link_fdroid_title">F-Droid</string>
     <string name="about_link_source_title">Codice sorgente</string>
     <string name="about_maintainer_subtitle">Manutenzione della versione FOSS e di quella originale/non FOSS.</string>
     <string name="about_maintainer_title">Manutentori</string>

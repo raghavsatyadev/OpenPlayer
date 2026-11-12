@@ -476,7 +476,7 @@ La barra rovesciata (\) può essere usata per l\'escape dei delimitatori di cara
     <string-array name="presentation_batch_g_changelog_070_fixes">
         <item>Aggiunti metadati F-Droid, metadati dello store Fastlane, note sulla privacy, note sulla sicurezza, documentazione di dipendenze e licenze e linee guida per i contributori.</item>
         <item>Le build di release restano non firmate quando mancano le chiavi di firma locali.</item>
-        <item>Aggiunto pixelplayer.disableReleaseSigning=true per build di verifica non firmate e deterministiche.</item>
+        <item>Aggiunto openplayer.disableReleaseSigning=true per build di verifica non firmate e deterministiche.</item>
         <item>Documentato il percorso delle licenze di risorse e dipendenze, inclusi gli artefatti Maven nativi/binari e le dipendenze JitPack.</item>
     </string-array>
     <string-array name="presentation_batch_g_changelog_070_added">

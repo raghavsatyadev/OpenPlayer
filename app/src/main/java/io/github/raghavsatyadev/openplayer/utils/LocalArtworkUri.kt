@@ -3,7 +3,7 @@ package io.github.raghavsatyadev.openplayer.utils
 import android.net.Uri
 
 object LocalArtworkUri {
-    const val SCHEME = "pixelplayer_local_art"
+    const val SCHEME = "openplayer_local_art"
     private val LEGACY_SCHEME = charArrayOf(
         'p', 'i', 'x', 'e', 'l', 'p', 'l', 'a', 'y', '_',
         'l', 'o', 'c', 'a', 'l', '_', 'a', 'r', 't'

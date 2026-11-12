@@ -147,8 +147,7 @@ private val AboutMaintainers = listOf(
     NonFossMaintainer,
 )
 
-private const val SourceRepoUrl = "https://github.com/lostf1sh/PixelPlayerOSS"
-private const val FDroidUrl = "https://f-droid.org/packages/io.github.raghavsatyadev.openplayer/"
+private const val SourceRepoUrl = "https://github.com/raghavsatyadev/OpenPlayer"
 private const val SponsorUrl = "https://github.com/sponsors/lostf1sh"
 
 private data class ProjectLink(
@@ -182,13 +181,6 @@ fun AboutScreen(
             subtitle = stringResource(R.string.about_link_source_subtitle),
             icon = painterResource(R.drawable.github),
             onClick = { openUrl(context, SourceRepoUrl) },
-        ),
-        ProjectLink(
-            id = "fdroid",
-            title = stringResource(R.string.about_link_fdroid_title),
-            subtitle = stringResource(R.string.about_link_fdroid_subtitle),
-            icon = painterResource(R.drawable.fdroid),
-            onClick = { openUrl(context, FDroidUrl) },
         ),
         ProjectLink(
             id = "licenses",

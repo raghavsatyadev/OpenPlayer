@@ -300,10 +300,10 @@
     <string name="updates_installed_version">Yüklü: %1$s</string>
     <string name="updates_channel_stable">Kararlı</string>
     <string name="updates_channel_alpha">Alfa</string>
-    <string name="updates_channel_stable_source">Kararlı · F-Droid</string>
+    <string name="updates_channel_stable_source">Kararlı · GitHub</string>
     <string name="updates_channel_alpha_source">Alfa · GitHub</string>
     <string name="updates_channel_title">Yayın kanalı</string>
-    <string name="updates_channel_stable_description">F-Droid tarafından derlenip imzalanan, test edilmiş sürümler.</string>
+    <string name="updates_channel_stable_description">GitHub\'da yayınlanan, test edilmiş sürümler.</string>
     <string name="updates_channel_alpha_description">Birleştirilen her değişiklik için GitHub\'da yayınlanan derleme. Pürüzler olabilir.</string>
     <string name="updates_auto_check_title">Otomatik denetle</string>
     <string name="updates_auto_check_subtitle">Günde bir kez güncelleme ara ve bulunduğunda bildir.</string>
@@ -334,13 +334,11 @@
     <string name="updates_action_switch">Nasıl geçilir</string>
     <string name="updates_action_dismiss">Kapat</string>
     <string name="updates_switch_dialog_title">Yeniden yükleme gerekli</string>
-    <string name="updates_switch_dialog_body">Kararlı derlemeler F-Droid\'den, alfa derlemeler GitHub\'dan gelir. Farklı anahtarlarla imzalandıkları için Android biri diğerinin üzerine güncelleme yapamaz. Uygulamayı kaldırmak verilerini siler; önce yedek al.</string>
+    <string name="updates_switch_dialog_body">Bu derleme yerinde güncellenemez, çünkü bir hata ayıklama derlemesi ya da farklı bir anahtarla imzalanmış. Verilerini yedekle, sürümü yükle, ardından bu derlemeyi kaldır.</string>
     <string name="updates_switch_step_backup">1. Bir yedek oluştur ve dosyayı uygulamanın dışına kaydet.</string>
-    <string name="updates_switch_step_download_stable">2. F-Droid yüklü değilse yükle ve OpenPlayer\'i orada aç.</string>
     <string name="updates_switch_step_download_alpha">2. %1$s APK dosyasını indir.</string>
     <string name="updates_switch_step_uninstall">3. Bu uygulamayı kaldır, yeni derlemeyi yükle ve yedeğini geri yükle.</string>
     <string name="updates_switch_action_backup">Yedekle</string>
-    <string name="updates_switch_action_open_fdroid">F-Droid sayfasını aç</string>
     <string name="updates_switch_action_download">APK\'yı indir</string>
     <string name="updates_switch_action_uninstall">Kaldır</string>
     <string name="updates_switch_action_close">Kapat</string>

@@ -476,7 +476,7 @@
     <string-array name="presentation_batch_g_changelog_070_fixes">
         <item>Добавлены метаданные F-Droid, метаданные магазина Fastlane, заметки о конфиденциальности и безопасности, документация по зависимостям и лицензиям, а также руководство для участников проекта.</item>
         <item>Релизные сборки остаются неподписанными, если локальные ключи подписи отсутствуют.</item>
-        <item>Добавлен параметр pixelplayer.disableReleaseSigning=true для воспроизводимых неподписанных проверочных сборок.</item>
+        <item>Добавлен параметр openplayer.disableReleaseSigning=true для воспроизводимых неподписанных проверочных сборок.</item>
         <item>Задокументированы цепочки лицензий ресурсов и зависимостей, включая нативные/бинарные артефакты Maven и зависимости JitPack.</item>
     </string-array>
     <string-array name="presentation_batch_g_changelog_070_added">

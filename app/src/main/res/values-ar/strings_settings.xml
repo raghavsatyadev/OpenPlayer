@@ -287,10 +287,10 @@
     <string name="updates_installed_version">المثبّت: %1$s</string>
     <string name="updates_channel_stable">مستقر</string>
     <string name="updates_channel_alpha">ألفا</string>
-    <string name="updates_channel_stable_source">مستقر · F-Droid</string>
+    <string name="updates_channel_stable_source">مستقر · GitHub</string>
     <string name="updates_channel_alpha_source">ألفا · GitHub</string>
     <string name="updates_channel_title">قناة الإصدار</string>
-    <string name="updates_channel_stable_description">إصدارات مختبرة تُبنى وتُوقَّع بواسطة F-Droid.</string>
+    <string name="updates_channel_stable_description">إصدارات مختبرة تُنشر على GitHub.</string>
     <string name="updates_channel_alpha_description">نسخة لكل تغيير يتم دمجه، تُنشر على GitHub. توقّع بعض العيوب.</string>
     <string name="updates_auto_check_title">التحقق تلقائياً</string>
     <string name="updates_auto_check_subtitle">البحث عن تحديثات مرة يومياً وإشعارك عند توفر تحديث.</string>
@@ -321,13 +321,11 @@
     <string name="updates_action_switch">كيفية التبديل</string>
     <string name="updates_action_dismiss">تجاهل</string>
     <string name="updates_switch_dialog_title">إعادة التثبيت مطلوبة</string>
-    <string name="updates_switch_dialog_body">تأتي النسخ المستقرة من F-Droid ونسخ ألفا من GitHub. وهي موقّعة بمفاتيح مختلفة، لذا لا يستطيع أندرويد تحديث إحداهما بالأخرى. إلغاء التثبيت يحذف بيانات التطبيق، فأنشئ نسخة احتياطية أولاً.</string>
+    <string name="updates_switch_dialog_body">لا يمكن تحديث هذه النسخة مباشرة لأنها نسخة تصحيح أو موقّعة بمفتاح مختلف. انسخ بياناتك احتياطيًا، ثم ثبّت الإصدار، ثم ألغِ تثبيت هذه النسخة.</string>
     <string name="updates_switch_step_backup">1. أنشئ نسخة احتياطية واحفظ الملف خارج التطبيق.</string>
-    <string name="updates_switch_step_download_stable">2. ثبّت F-Droid إن لم يكن لديك، وافتح OpenPlayer من هناك.</string>
     <string name="updates_switch_step_download_alpha">2. نزّل ملف APK الخاص بالإصدار %1$s.</string>
     <string name="updates_switch_step_uninstall">3. ألغِ تثبيت هذا التطبيق، وثبّت النسخة الجديدة، ثم استعد نسختك الاحتياطية.</string>
     <string name="updates_switch_action_backup">نسخ احتياطي</string>
-    <string name="updates_switch_action_open_fdroid">فتح صفحة F-Droid</string>
     <string name="updates_switch_action_download">تنزيل APK</string>
     <string name="updates_switch_action_uninstall">إلغاء التثبيت</string>
     <string name="updates_switch_action_close">إغلاق</string>

@@ -20,7 +20,7 @@ interface AlbumArtThemeDao {
 
     @Query("""
         DELETE FROM album_art_themes
-        WHERE albumArtUriString GLOB 'pixelplayer_local_art://*'
+        WHERE albumArtUriString GLOB 'openplayer_local_art://*'
            OR albumArtUriString GLOB 'pixelplay_local_art://*'
     """)
     suspend fun deleteLocalArtworkThemes()

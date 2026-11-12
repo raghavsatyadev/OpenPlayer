@@ -137,7 +137,7 @@ object AppModule {
         val builder = Room.databaseBuilder(
             context.applicationContext,
             OpenPlayerDatabase::class.java,
-            "pixelplayer_database"
+            "openplayer_database"
         )
             .addCallback(OpenPlayerDatabase.createRuntimeArtifactsCallback())
             .addMigrations(

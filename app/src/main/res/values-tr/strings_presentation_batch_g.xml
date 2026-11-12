@@ -476,7 +476,7 @@ Karakter sınırlayıcıları etkisiz hale getirmek için ters eğik çizgi (\) 
     <string-array name="presentation_batch_g_changelog_070_fixes">
         <item>F-Droid meta verileri, Fastlane mağaza meta verileri, gizlilik notları, güvenlik notları, bağımlılık/lisans belgeleri ve katkıda bulunanlar için rehber eklendi.</item>
         <item>Yerel imzalama anahtarları yoksa sürüm derlemeleri imzasız kalır.</item>
-        <item>Tekrarlanabilir imzasız doğrulama derlemeleri için pixelplayer.disableReleaseSigning=true eklendi.</item>
+        <item>Tekrarlanabilir imzasız doğrulama derlemeleri için openplayer.disableReleaseSigning=true eklendi.</item>
         <item>Yerel/ikili Maven yapıtları ve JitPack bağımlılıkları dahil olmak üzere varlık ve bağımlılık lisans izleri belgelendi.</item>
     </string-array>
     <string-array name="presentation_batch_g_changelog_070_added">

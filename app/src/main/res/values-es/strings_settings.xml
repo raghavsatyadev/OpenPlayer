@@ -287,10 +287,10 @@
     <string name="updates_installed_version">Instalada: %1$s</string>
     <string name="updates_channel_stable">Estable</string>
     <string name="updates_channel_alpha">Alpha</string>
-    <string name="updates_channel_stable_source">Estable · F-Droid</string>
+    <string name="updates_channel_stable_source">Estable · GitHub</string>
     <string name="updates_channel_alpha_source">Alpha · GitHub</string>
     <string name="updates_channel_title">Canal de lanzamiento</string>
-    <string name="updates_channel_stable_description">Versiones probadas, compiladas y firmadas por F-Droid.</string>
+    <string name="updates_channel_stable_description">Versiones probadas, publicadas en GitHub.</string>
     <string name="updates_channel_alpha_description">Una compilación por cada cambio integrado, publicada en GitHub. Espera algunos fallos.</string>
     <string name="updates_auto_check_title">Comprobar automáticamente</string>
     <string name="updates_auto_check_subtitle">Busca actualizaciones una vez al día y te avisa cuando haya una disponible.</string>
@@ -321,13 +321,11 @@
     <string name="updates_action_switch">Cómo cambiar</string>
     <string name="updates_action_dismiss">Descartar</string>
     <string name="updates_switch_dialog_title">Se requiere reinstalar</string>
-    <string name="updates_switch_dialog_body">Las compilaciones estables vienen de F-Droid y las alpha de GitHub. Están firmadas con claves distintas, por lo que Android no puede actualizar una con la otra. Al desinstalar se borran los datos de la app, así que haz antes una copia de seguridad.</string>
+    <string name="updates_switch_dialog_body">Esta compilación no se puede actualizar directamente, porque es una compilación de depuración o está firmada con otra clave. Haz una copia de seguridad de tus datos, instala la versión publicada y luego desinstala esta compilación.</string>
     <string name="updates_switch_step_backup">1. Crea una copia de seguridad y guarda el archivo fuera de la app.</string>
-    <string name="updates_switch_step_download_stable">2. Instala F-Droid si no lo tienes y abre OpenPlayer desde allí.</string>
     <string name="updates_switch_step_download_alpha">2. Descarga el APK %1$s.</string>
     <string name="updates_switch_step_uninstall">3. Desinstala esta app, instala la nueva compilación y restaura tu copia de seguridad.</string>
     <string name="updates_switch_action_backup">Crear copia</string>
-    <string name="updates_switch_action_open_fdroid">Abrir página de F-Droid</string>
     <string name="updates_switch_action_download">Descargar APK</string>
     <string name="updates_switch_action_uninstall">Desinstalar</string>
     <string name="updates_switch_action_close">Cerrar</string>

@@ -474,7 +474,7 @@
     <string-array name="presentation_batch_g_changelog_070_fixes">
         <item>补充F‑Droid元数据、Fastlane商店信息、隐私说明、安全提示、依赖许可文档、贡献者指引。</item>
         <item>本地不存在签名密钥时，发布构建保持未签名状态。</item>
-        <item>新增pixelplayer.disableReleaseSigning=true参数，用于可复现的无签名校验构建。</item>
+        <item>新增openplayer.disableReleaseSigning=true参数，用于可复现的无签名校验构建。</item>
         <item>整理资源与依赖许可溯源，包含Maven原生二进制包、JitPack依赖。</item>
     </string-array>
     <string-array name="presentation_batch_g_changelog_070_added">

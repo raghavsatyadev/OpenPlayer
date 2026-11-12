@@ -63,9 +63,10 @@ enum class UpdateError {
 }
 
 /**
- * Checks the selected channel for a newer build and installs same-channel updates through
- * [PackageInstaller]. Cross-channel releases are only reported: F-Droid and GitHub builds are
- * signed with different keys, so moving between them needs an uninstall the user drives.
+ * Checks the selected channel for a newer build and installs it through [PackageInstaller].
+ * Stable and alpha releases are both published on GitHub and signed with the same key, so
+ * moving between channels installs in place. Builds that can't be updated in place (debug
+ * builds) are only reported.
  */
 @Singleton
 class AppUpdateManager @Inject constructor(
@@ -81,9 +82,9 @@ class AppUpdateManager @Inject constructor(
     val selectedChannel: Flow<UpdateChannel> =
         preferences.updateChannelFlow.map { it ?: installedChannel }
 
-    /** F-Droid already notifies its users, so background checks are opt-in there. */
+    /** Background checks are on unless the user turns them off. */
     val autoCheckEnabled: Flow<Boolean> =
-        preferences.updateAutoCheckFlow.map { it ?: (installedChannel == UpdateChannel.ALPHA) }
+        preferences.updateAutoCheckFlow.map { it ?: true }
 
     private val _status = MutableStateFlow<UpdateStatus>(UpdateStatus.Idle)
     val status: StateFlow<UpdateStatus> = _status.asStateFlow()
@@ -151,7 +152,6 @@ class AppUpdateManager @Inject constructor(
         val release = releaseSource.latest(channel)
             ?: return UpdateStatus.Failed(UpdateError.NOTHING_PUBLISHED, release = null)
         return when {
-            channel != installedChannel -> UpdateStatus.Available(release, requiresReinstall = true)
             release.isNewerThan(installedVersionName, installedVersionCode()) -> UpdateStatus.Available(
                 release,
                 // Debug builds carry an applicationId suffix; the published APK installs beside them.

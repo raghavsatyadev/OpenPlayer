@@ -110,8 +110,8 @@ internal fun m3uReplacementNames(
         .take(48)
         .ifBlank { "write" }
     return M3uReplacementNames(
-        temporary = "$stem.pixelplayer-$safeTransactionId.tmp",
-        backup = "$stem.pixelplayer-backup-$safeTransactionId.$extension",
+        temporary = "$stem.openplayer-$safeTransactionId.tmp",
+        backup = "$stem.openplayer-backup-$safeTransactionId.$extension",
     )
 }
 
@@ -755,14 +755,14 @@ class M3uSyncRepository @Inject constructor(
 
         fun playlistNameFromFile(fileName: String): String = fileName
             .substringBeforeLast('.', fileName)
-            .substringBefore(".pixelplayer-backup-")
+            .substringBefore(".openplayer-backup-")
             .trim()
             .ifBlank { "Imported Playlist" }
 
         fun String.isM3uFileName(): Boolean =
             endsWith(".m3u", ignoreCase = true) || endsWith(".m3u8", ignoreCase = true)
 
-        fun String.isM3uBackupFileName(): Boolean = contains(".pixelplayer-backup-")
+        fun String.isM3uBackupFileName(): Boolean = contains(".openplayer-backup-")
     }
 }
 

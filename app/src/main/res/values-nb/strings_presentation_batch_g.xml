@@ -476,7 +476,7 @@ Skråstrek bakover (\) kan brukes til å escape tegndelimitere.</string>
     <string-array name="presentation_batch_g_changelog_070_fixes">
         <item>La til F-Droid-metadata, Fastlane-butikkmetadata, personvernnotater, sikkerhetsnotater, dokumentasjon av avhengigheter/lisenser og veiledning for bidragsytere.</item>
         <item>Utgivelsesbygg forblir usignerte når lokale signeringsnøkler mangler.</item>
-        <item>La til pixelplayer.disableReleaseSigning=true for deterministiske, usignerte verifiseringsbygg.</item>
+        <item>La til openplayer.disableReleaseSigning=true for deterministiske, usignerte verifiseringsbygg.</item>
         <item>Dokumenterte lisensspor for ressurser og avhengigheter, inkludert native/binære Maven-artefakter og JitPack-avhengigheter.</item>
     </string-array>
     <string-array name="presentation_batch_g_changelog_070_added">

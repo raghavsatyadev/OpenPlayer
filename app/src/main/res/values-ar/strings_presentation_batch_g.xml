@@ -476,7 +476,7 @@
     <string-array name="presentation_batch_g_changelog_070_fixes">
         <item>إضافة بيانات F-Droid الوصفية وبيانات متجر Fastlane وملاحظات الخصوصية والأمان وتوثيق التبعيات والتراخيص وإرشادات المساهمين.</item>
         <item>تبقى نسخ الإصدار غير موقّعة عند غياب مفاتيح التوقيع المحلية.</item>
-        <item>إضافة pixelplayer.disableReleaseSigning=true لنسخ تحقق غير موقّعة قابلة لإعادة الإنتاج.</item>
+        <item>إضافة openplayer.disableReleaseSigning=true لنسخ تحقق غير موقّعة قابلة لإعادة الإنتاج.</item>
         <item>توثيق مسارات تراخيص الأصول والتبعيات، بما في ذلك مكونات Maven الأصلية/الثنائية وتبعيات JitPack.</item>
     </string-array>
     <string-array name="presentation_batch_g_changelog_070_added">

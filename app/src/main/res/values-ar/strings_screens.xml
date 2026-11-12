@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about_contributions_format">%1$d مساهمة</string>
-    <string name="about_link_fdroid_subtitle">متوفر في كتالوج F-Droid</string>
     <string name="about_licenses_title">التراخيص والإسناد</string>
     <string name="about_licenses_subtitle">المكتبات مفتوحة المصدر والخطوط والبيانات المضمّنة</string>
     <string name="about_licenses_sheet_subtitle">برامج الجهات الخارجية والخطوط والبيانات المضمّنة في هذا التطبيق.</string>
@@ -22,7 +21,6 @@
     <string name="licenses_toast_copied">تم نسخ نص الترخيص إلى الحافظة</string>
     <string name="licenses_cd_close">إغلاق</string>
     <string name="licenses_cd_copy">نسخ نص الترخيص</string>
-    <string name="about_link_fdroid_title">F-Droid</string>
     <string name="about_link_source_title">الكود المصدري</string>
     <string name="about_maintainer_subtitle">الشخص الذي يقف وراء OpenPlayer.</string>
     <string name="about_maintainer_title">المشرف الرئيسي</string>

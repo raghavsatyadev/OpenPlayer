@@ -302,10 +302,10 @@
     <string name="updates_installed_version">已安装：%1$s</string>
     <string name="updates_channel_stable">稳定版</string>
     <string name="updates_channel_alpha">Alpha 版</string>
-    <string name="updates_channel_stable_source">稳定版 · F-Droid</string>
+    <string name="updates_channel_stable_source">稳定版 · GitHub</string>
     <string name="updates_channel_alpha_source">Alpha 版 · GitHub</string>
     <string name="updates_channel_title">发布渠道</string>
-    <string name="updates_channel_stable_description">由 F-Droid 构建并签名的经过测试的发布版。</string>
+    <string name="updates_channel_stable_description">发布在 GitHub 上的经过测试的发布版。</string>
     <string name="updates_channel_alpha_description">每次合并更改都会构建一个版本并发布到 GitHub，可能存在不够完善的地方。</string>
     <string name="updates_auto_check_title">自动检查</string>
     <string name="updates_auto_check_subtitle">每天检查一次更新，有可用更新时通知你。</string>
@@ -336,13 +336,11 @@
     <string name="updates_action_switch">如何切换</string>
     <string name="updates_action_dismiss">关闭</string>
     <string name="updates_switch_dialog_title">需要重新安装</string>
-    <string name="updates_switch_dialog_body">稳定版构建来自 F-Droid，Alpha 版构建来自 GitHub。两者使用不同的密钥签名，因此 Android 无法在二者之间直接更新。卸载会删除应用数据，请先备份。</string>
+    <string name="updates_switch_dialog_body">此版本无法原地更新，因为它是调试版本，或使用了不同的密钥签名。请先备份数据，安装正式版本，然后卸载此版本。</string>
     <string name="updates_switch_step_backup">1. 创建备份，并将文件保存到应用之外。</string>
-    <string name="updates_switch_step_download_stable">2. 若尚未安装 F-Droid，请先安装，然后在其中打开 OpenPlayer。</string>
     <string name="updates_switch_step_download_alpha">2. 下载 %1$s APK。</string>
     <string name="updates_switch_step_uninstall">3. 卸载本应用，安装新构建，然后恢复备份。</string>
     <string name="updates_switch_action_backup">备份</string>
-    <string name="updates_switch_action_open_fdroid">打开 F-Droid 页面</string>
     <string name="updates_switch_action_download">下载 APK</string>
     <string name="updates_switch_action_uninstall">卸载</string>
     <string name="updates_switch_action_close">关闭</string>

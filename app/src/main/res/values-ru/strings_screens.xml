@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about_contributions_format">%1$d вклад.</string>
-    <string name="about_link_fdroid_subtitle">Доступно в каталоге F-Droid</string>
     <string name="about_licenses_title">Лицензии и авторство</string>
     <string name="about_licenses_subtitle">Библиотеки с открытым исходным кодом, шрифты и встроенные данные</string>
     <string name="about_licenses_sheet_subtitle">Стороннее ПО, шрифты и данные, входящие в состав приложения.</string>
@@ -22,7 +21,6 @@
     <string name="licenses_toast_copied">Текст лицензии скопирован в буфер обмена</string>
     <string name="licenses_cd_close">Закрыть</string>
     <string name="licenses_cd_copy">Копировать текст лицензии</string>
-    <string name="about_link_fdroid_title">F-Droid</string>
     <string name="about_link_source_title">Исходный код</string>
     <string name="about_maintainer_subtitle">Сопровождение FOSS-версии и оригинальной (не-FOSS) версии.</string>
     <string name="about_maintainer_title">Сопровождающие</string>

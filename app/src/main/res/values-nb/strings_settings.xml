@@ -287,10 +287,10 @@
     <string name="updates_installed_version">Installert: %1$s</string>
     <string name="updates_channel_stable">Stabil</string>
     <string name="updates_channel_alpha">Alpha</string>
-    <string name="updates_channel_stable_source">Stabil · F-Droid</string>
+    <string name="updates_channel_stable_source">Stabil · GitHub</string>
     <string name="updates_channel_alpha_source">Alpha · GitHub</string>
     <string name="updates_channel_title">Utgivelseskanal</string>
-    <string name="updates_channel_stable_description">Testede utgivelser som bygges og signeres av F-Droid.</string>
+    <string name="updates_channel_stable_description">Testede utgivelser publisert på GitHub.</string>
     <string name="updates_channel_alpha_description">Et bygg for hver flettede endring, publisert på GitHub. Forvent noen ujevnheter.</string>
     <string name="updates_auto_check_title">Sjekk automatisk</string>
     <string name="updates_auto_check_subtitle">Se etter oppdateringer én gang om dagen og få varsel når en er tilgjengelig.</string>
@@ -321,13 +321,11 @@
     <string name="updates_action_switch">Slik bytter du</string>
     <string name="updates_action_dismiss">Lukk</string>
     <string name="updates_switch_dialog_title">Ominstallering kreves</string>
-    <string name="updates_switch_dialog_body">Stabile bygg kommer fra F-Droid og alpha-bygg fra GitHub. De er signert med ulike nøkler, så Android kan ikke oppdatere det ene med det andre. Avinstallering sletter appens data, så ta sikkerhetskopi først.</string>
+    <string name="updates_switch_dialog_body">Dette bygget kan ikke oppdateres direkte, fordi det er et feilsøkingsbygg eller er signert med en annen nøkkel. Ta sikkerhetskopi av dataene, installer utgivelsen og avinstaller deretter dette bygget.</string>
     <string name="updates_switch_step_backup">1. Lag en sikkerhetskopi og lagre filen utenfor appen.</string>
-    <string name="updates_switch_step_download_stable">2. Installer F-Droid hvis du ikke har det, og åpne OpenPlayer der.</string>
     <string name="updates_switch_step_download_alpha">2. Last ned %1$s-APK-en.</string>
     <string name="updates_switch_step_uninstall">3. Avinstaller denne appen, installer det nye bygget og gjenopprett sikkerhetskopien.</string>
     <string name="updates_switch_action_backup">Ta sikkerhetskopi</string>
-    <string name="updates_switch_action_open_fdroid">Åpne F-Droid-siden</string>
     <string name="updates_switch_action_download">Last ned APK</string>
     <string name="updates_switch_action_uninstall">Avinstaller</string>
     <string name="updates_switch_action_close">Lukk</string>

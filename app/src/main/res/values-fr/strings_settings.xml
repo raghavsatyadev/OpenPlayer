@@ -287,10 +287,10 @@
     <string name="updates_installed_version">Installée : %1$s</string>
     <string name="updates_channel_stable">Stable</string>
     <string name="updates_channel_alpha">Alpha</string>
-    <string name="updates_channel_stable_source">Stable · F-Droid</string>
+    <string name="updates_channel_stable_source">Stable · GitHub</string>
     <string name="updates_channel_alpha_source">Alpha · GitHub</string>
     <string name="updates_channel_title">Canal de publication</string>
-    <string name="updates_channel_stable_description">Versions testées, compilées et signées par F-Droid.</string>
+    <string name="updates_channel_stable_description">Versions testées, publiées sur GitHub.</string>
     <string name="updates_channel_alpha_description">Une version pour chaque modification fusionnée, publiée sur GitHub. Attendez-vous à des imperfections.</string>
     <string name="updates_auto_check_title">Vérifier automatiquement</string>
     <string name="updates_auto_check_subtitle">Recherche des mises à jour une fois par jour et vous avertit lorsqu\'une est disponible.</string>
@@ -321,13 +321,11 @@
     <string name="updates_action_switch">Comment changer</string>
     <string name="updates_action_dismiss">Ignorer</string>
     <string name="updates_switch_dialog_title">Réinstallation requise</string>
-    <string name="updates_switch_dialog_body">Les versions stables proviennent de F-Droid et les versions alpha de GitHub. Elles sont signées avec des clés différentes, donc Android ne peut pas mettre à jour l\'une avec l\'autre. La désinstallation supprime les données de l\'application, pensez donc à faire une sauvegarde au préalable.</string>
+    <string name="updates_switch_dialog_body">Cette version ne peut pas être mise à jour sur place, car c\'est une version de débogage ou elle est signée avec une autre clé. Sauvegardez vos données, installez la version publiée, puis désinstallez celle-ci.</string>
     <string name="updates_switch_step_backup">1. Créez une sauvegarde et enregistrez le fichier en dehors de l\'application.</string>
-    <string name="updates_switch_step_download_stable">2. Installez F-Droid si vous ne l\'avez pas, et ouvrez-y OpenPlayer.</string>
     <string name="updates_switch_step_download_alpha">2. Téléchargez l\'APK %1$s.</string>
     <string name="updates_switch_step_uninstall">3. Désinstallez cette application, installez la nouvelle version, puis restaurez votre sauvegarde.</string>
     <string name="updates_switch_action_backup">Sauvegarder</string>
-    <string name="updates_switch_action_open_fdroid">Ouvrir la page F-Droid</string>
     <string name="updates_switch_action_download">Télécharger l\'APK</string>
     <string name="updates_switch_action_uninstall">Désinstaller</string>
     <string name="updates_switch_action_close">Fermer</string>

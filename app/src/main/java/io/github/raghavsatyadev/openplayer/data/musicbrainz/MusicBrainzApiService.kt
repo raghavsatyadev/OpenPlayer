@@ -38,7 +38,7 @@ class MusicBrainzApiService @Inject constructor(
                     .header(
                         "User-Agent",
                         "OpenPlayer/${BuildConfig.VERSION_NAME} " +
-                            "(https://github.com/PixelPlayerHQ/PixelPlayerOSS)"
+                            "(https://github.com/raghavsatyadev/OpenPlayer)"
                     )
                     .header("Accept", "application/json")
                     .build()

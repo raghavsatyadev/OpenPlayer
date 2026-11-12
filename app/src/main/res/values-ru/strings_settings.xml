@@ -287,10 +287,10 @@
     <string name="updates_installed_version">Установлена: %1$s</string>
     <string name="updates_channel_stable">Стабильный</string>
     <string name="updates_channel_alpha">Альфа</string>
-    <string name="updates_channel_stable_source">Стабильный · F-Droid</string>
+    <string name="updates_channel_stable_source">Стабильный · GitHub</string>
     <string name="updates_channel_alpha_source">Альфа · GitHub</string>
     <string name="updates_channel_title">Канал выпуска</string>
-    <string name="updates_channel_stable_description">Проверенные выпуски, собранные и подписанные F-Droid.</string>
+    <string name="updates_channel_stable_description">Проверенные выпуски, опубликованные на GitHub.</string>
     <string name="updates_channel_alpha_description">Сборка для каждого принятого изменения, публикуется на GitHub. Возможны шероховатости.</string>
     <string name="updates_auto_check_title">Проверять автоматически</string>
     <string name="updates_auto_check_subtitle">Искать обновления раз в день и уведомлять, когда появится новая версия.</string>
@@ -321,13 +321,11 @@
     <string name="updates_action_switch">Как переключиться</string>
     <string name="updates_action_dismiss">Закрыть</string>
     <string name="updates_switch_dialog_title">Требуется переустановка</string>
-    <string name="updates_switch_dialog_body">Стабильные сборки выходят в F-Droid, а альфа-сборки — на GitHub. Они подписаны разными ключами, поэтому Android не может обновить одну сборку другой. При удалении данные приложения стираются, поэтому сначала создайте резервную копию.</string>
+    <string name="updates_switch_dialog_body">Эту сборку нельзя обновить поверх, потому что это отладочная сборка или она подписана другим ключом. Сделайте резервную копию данных, установите релиз, затем удалите эту сборку.</string>
     <string name="updates_switch_step_backup">1. Создайте резервную копию и сохраните файл вне приложения.</string>
-    <string name="updates_switch_step_download_stable">2. Установите F-Droid, если его нет, и откройте в нём OpenPlayer.</string>
     <string name="updates_switch_step_download_alpha">2. Скачайте APK версии %1$s.</string>
     <string name="updates_switch_step_uninstall">3. Удалите это приложение, установите новую сборку и восстановите резервную копию.</string>
     <string name="updates_switch_action_backup">Создать копию</string>
-    <string name="updates_switch_action_open_fdroid">Открыть страницу F-Droid</string>
     <string name="updates_switch_action_download">Скачать APK</string>
     <string name="updates_switch_action_uninstall">Удалить</string>
     <string name="updates_switch_action_close">Закрыть</string>

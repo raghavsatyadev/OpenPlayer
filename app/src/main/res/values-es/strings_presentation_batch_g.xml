@@ -476,7 +476,7 @@ La barra invertida (\) se puede usar para escapar los delimitadores de caractere
     <string-array name="presentation_batch_g_changelog_070_fixes">
         <item>Se añadieron metadatos de F-Droid, metadatos de tienda de Fastlane, notas de privacidad, notas de seguridad, documentación de dependencias y licencias, y guías para colaboradores.</item>
         <item>Las compilaciones de lanzamiento permanecen sin firmar cuando faltan las claves de firma locales.</item>
-        <item>Se añadió pixelplayer.disableReleaseSigning=true para compilaciones de verificación sin firmar y deterministas.</item>
+        <item>Se añadió openplayer.disableReleaseSigning=true para compilaciones de verificación sin firmar y deterministas.</item>
         <item>Se documentó el rastro de licencias de recursos y dependencias, incluidos los artefactos Maven nativos o binarios y las dependencias de JitPack.</item>
     </string-array>
     <string-array name="presentation_batch_g_changelog_070_added">

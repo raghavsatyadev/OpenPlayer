@@ -68,7 +68,7 @@ class M3uManager @Inject constructor(
     }
 
     companion object {
-        private const val PLAYLIST_ID_MARKER = "#PIXELPLAYER-PLAYLIST-ID:"
+        private const val PLAYLIST_ID_MARKER = "#OPENPLAYER-PLAYLIST-ID:"
 
         fun parseContent(content: String, songs: List<Song>): M3uParseResult {
             val exactMatches = songs

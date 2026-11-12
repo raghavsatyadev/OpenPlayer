@@ -212,8 +212,6 @@
     <string name="about_project_title">项目信息</string>
     <string name="about_project_subtitle">源代码、发布版本以及社区入口。</string>
     <string name="about_link_source_title">源代码</string>
-    <string name="about_link_fdroid_title">F‑Droid</string>
-    <string name="about_link_fdroid_subtitle">可在 F‑Droid 软件库获取</string>
     <string name="about_licenses_title">许可与致谢</string>
     <string name="about_licenses_subtitle">开源库、字体及内置数据</string>
     <string name="about_licenses_sheet_subtitle">本应用内置的第三方软件、字体及数据。</string>
