@@ -1,8 +1,9 @@
 package io.github.raghavsatyadev.openplayer.data.model
 
-import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.Res
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.StringResource
 
 @Immutable
 enum class SortDirection {
@@ -15,20 +16,20 @@ sealed class SortOption(
     val storageKey: String,
     val displayName: String,
     val methodLabel: String = displayName,
-    @StringRes val methodLabelRes: Int,
+    val methodLabelRes: StringResource,
     val methodKey: String = storageKey,
     val direction: SortDirection? = null
 ) {
     object SongDefaultOrder : SortOption(
         storageKey = "song_default_order",
         displayName = "Default Order",
-        methodLabelRes = R.string.sort_method_default_order
+        methodLabelRes = Res.string.sort_method_default_order
     )
     object SongTitleAZ : SortOption(
         storageKey = "song_title_az",
         displayName = "Title (A-Z)",
         methodLabel = "Title",
-        methodLabelRes = R.string.sort_method_title,
+        methodLabelRes = Res.string.sort_method_title,
         methodKey = "song_title",
         direction = SortDirection.Ascending
     )
@@ -36,7 +37,7 @@ sealed class SortOption(
         storageKey = "song_title_za",
         displayName = "Title (Z-A)",
         methodLabel = "Title",
-        methodLabelRes = R.string.sort_method_title,
+        methodLabelRes = Res.string.sort_method_title,
         methodKey = "song_title",
         direction = SortDirection.Descending
     )
@@ -44,7 +45,7 @@ sealed class SortOption(
         storageKey = "song_artist",
         displayName = "Artist",
         methodLabel = "Artist",
-        methodLabelRes = R.string.sort_method_artist,
+        methodLabelRes = Res.string.sort_method_artist,
         methodKey = "song_artist",
         direction = SortDirection.Ascending
     )
@@ -52,7 +53,7 @@ sealed class SortOption(
         storageKey = "song_artist_desc",
         displayName = "Artist (Z-A)",
         methodLabel = "Artist",
-        methodLabelRes = R.string.sort_method_artist,
+        methodLabelRes = Res.string.sort_method_artist,
         methodKey = "song_artist",
         direction = SortDirection.Descending
     )
@@ -60,7 +61,7 @@ sealed class SortOption(
         storageKey = "song_album",
         displayName = "Album",
         methodLabel = "Album",
-        methodLabelRes = R.string.sort_method_album,
+        methodLabelRes = Res.string.sort_method_album,
         methodKey = "song_album",
         direction = SortDirection.Ascending
     )
@@ -68,7 +69,7 @@ sealed class SortOption(
         storageKey = "song_album_desc",
         displayName = "Album (Z-A)",
         methodLabel = "Album",
-        methodLabelRes = R.string.sort_method_album,
+        methodLabelRes = Res.string.sort_method_album,
         methodKey = "song_album",
         direction = SortDirection.Descending
     )
@@ -76,7 +77,7 @@ sealed class SortOption(
         storageKey = "song_date_added",
         displayName = "Date Added",
         methodLabel = "Date Added",
-        methodLabelRes = R.string.sort_method_date_added,
+        methodLabelRes = Res.string.sort_method_date_added,
         methodKey = "song_date_added",
         direction = SortDirection.Descending
     )
@@ -84,7 +85,7 @@ sealed class SortOption(
         storageKey = "song_date_added_asc",
         displayName = "Date Added (Oldest First)",
         methodLabel = "Date Added",
-        methodLabelRes = R.string.sort_method_date_added,
+        methodLabelRes = Res.string.sort_method_date_added,
         methodKey = "song_date_added",
         direction = SortDirection.Ascending
     )
@@ -92,7 +93,7 @@ sealed class SortOption(
         storageKey = "song_duration",
         displayName = "Duration",
         methodLabel = "Duration",
-        methodLabelRes = R.string.sort_method_duration,
+        methodLabelRes = Res.string.sort_method_duration,
         methodKey = "song_duration",
         direction = SortDirection.Descending
     )
@@ -100,7 +101,7 @@ sealed class SortOption(
         storageKey = "song_duration_asc",
         displayName = "Duration (Shortest First)",
         methodLabel = "Duration",
-        methodLabelRes = R.string.sort_method_duration,
+        methodLabelRes = Res.string.sort_method_duration,
         methodKey = "song_duration",
         direction = SortDirection.Ascending
     )
@@ -109,7 +110,7 @@ sealed class SortOption(
         storageKey = "album_title_az",
         displayName = "Title (A-Z)",
         methodLabel = "Title",
-        methodLabelRes = R.string.sort_method_title,
+        methodLabelRes = Res.string.sort_method_title,
         methodKey = "album_title",
         direction = SortDirection.Ascending
     )
@@ -117,7 +118,7 @@ sealed class SortOption(
         storageKey = "album_title_za",
         displayName = "Title (Z-A)",
         methodLabel = "Title",
-        methodLabelRes = R.string.sort_method_title,
+        methodLabelRes = Res.string.sort_method_title,
         methodKey = "album_title",
         direction = SortDirection.Descending
     )
@@ -125,7 +126,7 @@ sealed class SortOption(
         storageKey = "album_artist",
         displayName = "Artist",
         methodLabel = "Artist",
-        methodLabelRes = R.string.sort_method_artist,
+        methodLabelRes = Res.string.sort_method_artist,
         methodKey = "album_artist",
         direction = SortDirection.Ascending
     )
@@ -133,7 +134,7 @@ sealed class SortOption(
         storageKey = "album_artist_desc",
         displayName = "Artist (Z-A)",
         methodLabel = "Artist",
-        methodLabelRes = R.string.sort_method_artist,
+        methodLabelRes = Res.string.sort_method_artist,
         methodKey = "album_artist",
         direction = SortDirection.Descending
     )
@@ -141,7 +142,7 @@ sealed class SortOption(
         storageKey = "album_release_year",
         displayName = "Release Year",
         methodLabel = "Release Year",
-        methodLabelRes = R.string.sort_method_release_year,
+        methodLabelRes = Res.string.sort_method_release_year,
         methodKey = "album_release_year",
         direction = SortDirection.Descending
     )
@@ -149,7 +150,7 @@ sealed class SortOption(
         storageKey = "album_release_year_asc",
         displayName = "Release Year (Oldest First)",
         methodLabel = "Release Year",
-        methodLabelRes = R.string.sort_method_release_year,
+        methodLabelRes = Res.string.sort_method_release_year,
         methodKey = "album_release_year",
         direction = SortDirection.Ascending
     )
@@ -157,7 +158,7 @@ sealed class SortOption(
         storageKey = "album_date_added",
         displayName = "Date Added",
         methodLabel = "Date Added",
-        methodLabelRes = R.string.sort_method_date_added,
+        methodLabelRes = Res.string.sort_method_date_added,
         methodKey = "album_date_added",
         direction = SortDirection.Descending
     )
@@ -165,7 +166,7 @@ sealed class SortOption(
         storageKey = "album_size_asc",
         displayName = "Fewest Songs",
         methodLabel = "Song Count",
-        methodLabelRes = R.string.sort_method_song_count,
+        methodLabelRes = Res.string.sort_method_song_count,
         methodKey = "album_size",
         direction = SortDirection.Ascending
     )
@@ -173,7 +174,7 @@ sealed class SortOption(
         storageKey = "album_size_desc",
         displayName = "Most Songs",
         methodLabel = "Song Count",
-        methodLabelRes = R.string.sort_method_song_count,
+        methodLabelRes = Res.string.sort_method_song_count,
         methodKey = "album_size",
         direction = SortDirection.Descending
     )
@@ -182,7 +183,7 @@ sealed class SortOption(
         storageKey = "artist_name_az",
         displayName = "Name (A-Z)",
         methodLabel = "Name",
-        methodLabelRes = R.string.sort_method_name,
+        methodLabelRes = Res.string.sort_method_name,
         methodKey = "artist_name",
         direction = SortDirection.Ascending
     )
@@ -190,7 +191,7 @@ sealed class SortOption(
         storageKey = "artist_name_za",
         displayName = "Name (Z-A)",
         methodLabel = "Name",
-        methodLabelRes = R.string.sort_method_name,
+        methodLabelRes = Res.string.sort_method_name,
         methodKey = "artist_name",
         direction = SortDirection.Descending
     )
@@ -198,7 +199,7 @@ sealed class SortOption(
         storageKey = "artist_num_songs_desc",
         displayName = "Number of Songs (Most)",
         methodLabel = "Number of Songs",
-        methodLabelRes = R.string.sort_method_num_songs,
+        methodLabelRes = Res.string.sort_method_num_songs,
         methodKey = "artist_num_songs",
         direction = SortDirection.Descending
     )
@@ -206,7 +207,7 @@ sealed class SortOption(
         storageKey = "artist_num_songs_asc",
         displayName = "Number of Songs (Fewest)",
         methodLabel = "Number of Songs",
-        methodLabelRes = R.string.sort_method_num_songs,
+        methodLabelRes = Res.string.sort_method_num_songs,
         methodKey = "artist_num_songs",
         direction = SortDirection.Ascending
     )
@@ -215,7 +216,7 @@ sealed class SortOption(
         storageKey = "playlist_name_az",
         displayName = "Name (A-Z)",
         methodLabel = "Name",
-        methodLabelRes = R.string.sort_method_name,
+        methodLabelRes = Res.string.sort_method_name,
         methodKey = "playlist_name",
         direction = SortDirection.Ascending
     )
@@ -223,7 +224,7 @@ sealed class SortOption(
         storageKey = "playlist_name_za",
         displayName = "Name (Z-A)",
         methodLabel = "Name",
-        methodLabelRes = R.string.sort_method_name,
+        methodLabelRes = Res.string.sort_method_name,
         methodKey = "playlist_name",
         direction = SortDirection.Descending
     )
@@ -231,7 +232,7 @@ sealed class SortOption(
         storageKey = "playlist_date_created",
         displayName = "Date Created",
         methodLabel = "Date Created",
-        methodLabelRes = R.string.sort_method_date_created,
+        methodLabelRes = Res.string.sort_method_date_created,
         methodKey = "playlist_date_created",
         direction = SortDirection.Descending
     )
@@ -239,7 +240,7 @@ sealed class SortOption(
         storageKey = "playlist_date_created_asc",
         displayName = "Date Created (Oldest First)",
         methodLabel = "Date Created",
-        methodLabelRes = R.string.sort_method_date_created,
+        methodLabelRes = Res.string.sort_method_date_created,
         methodKey = "playlist_date_created",
         direction = SortDirection.Ascending
     )
@@ -248,7 +249,7 @@ sealed class SortOption(
         storageKey = "liked_title_az",
         displayName = "Title (A-Z)",
         methodLabel = "Title",
-        methodLabelRes = R.string.sort_method_title,
+        methodLabelRes = Res.string.sort_method_title,
         methodKey = "liked_title",
         direction = SortDirection.Ascending
     )
@@ -256,7 +257,7 @@ sealed class SortOption(
         storageKey = "liked_title_za",
         displayName = "Title (Z-A)",
         methodLabel = "Title",
-        methodLabelRes = R.string.sort_method_title,
+        methodLabelRes = Res.string.sort_method_title,
         methodKey = "liked_title",
         direction = SortDirection.Descending
     )
@@ -264,7 +265,7 @@ sealed class SortOption(
         storageKey = "liked_artist",
         displayName = "Artist",
         methodLabel = "Artist",
-        methodLabelRes = R.string.sort_method_artist,
+        methodLabelRes = Res.string.sort_method_artist,
         methodKey = "liked_artist",
         direction = SortDirection.Ascending
     )
@@ -272,7 +273,7 @@ sealed class SortOption(
         storageKey = "liked_artist_desc",
         displayName = "Artist (Z-A)",
         methodLabel = "Artist",
-        methodLabelRes = R.string.sort_method_artist,
+        methodLabelRes = Res.string.sort_method_artist,
         methodKey = "liked_artist",
         direction = SortDirection.Descending
     )
@@ -280,7 +281,7 @@ sealed class SortOption(
         storageKey = "liked_album",
         displayName = "Album",
         methodLabel = "Album",
-        methodLabelRes = R.string.sort_method_album,
+        methodLabelRes = Res.string.sort_method_album,
         methodKey = "liked_album",
         direction = SortDirection.Ascending
     )
@@ -288,7 +289,7 @@ sealed class SortOption(
         storageKey = "liked_album_desc",
         displayName = "Album (Z-A)",
         methodLabel = "Album",
-        methodLabelRes = R.string.sort_method_album,
+        methodLabelRes = Res.string.sort_method_album,
         methodKey = "liked_album",
         direction = SortDirection.Descending
     )
@@ -296,7 +297,7 @@ sealed class SortOption(
         storageKey = "liked_date_liked",
         displayName = "Date Liked",
         methodLabel = "Date Liked",
-        methodLabelRes = R.string.sort_method_date_liked,
+        methodLabelRes = Res.string.sort_method_date_liked,
         methodKey = "liked_date_liked",
         direction = SortDirection.Descending
     )
@@ -304,7 +305,7 @@ sealed class SortOption(
         storageKey = "liked_date_liked_asc",
         displayName = "Date Liked (Oldest First)",
         methodLabel = "Date Liked",
-        methodLabelRes = R.string.sort_method_date_liked,
+        methodLabelRes = Res.string.sort_method_date_liked,
         methodKey = "liked_date_liked",
         direction = SortDirection.Ascending
     )
@@ -313,7 +314,7 @@ sealed class SortOption(
         storageKey = "folder_name_az",
         displayName = "Name (A-Z)",
         methodLabel = "Name",
-        methodLabelRes = R.string.sort_method_name,
+        methodLabelRes = Res.string.sort_method_name,
         methodKey = "folder_name",
         direction = SortDirection.Ascending
     )
@@ -321,7 +322,7 @@ sealed class SortOption(
         storageKey = "folder_name_za",
         displayName = "Name (Z-A)",
         methodLabel = "Name",
-        methodLabelRes = R.string.sort_method_name,
+        methodLabelRes = Res.string.sort_method_name,
         methodKey = "folder_name",
         direction = SortDirection.Descending
     )
@@ -329,7 +330,7 @@ sealed class SortOption(
         storageKey = "folder_song_count_asc",
         displayName = "Fewest Songs",
         methodLabel = "Song Count",
-        methodLabelRes = R.string.sort_method_song_count,
+        methodLabelRes = Res.string.sort_method_song_count,
         methodKey = "folder_song_count",
         direction = SortDirection.Ascending
     )
@@ -337,7 +338,7 @@ sealed class SortOption(
         storageKey = "folder_song_count_desc",
         displayName = "Most Songs",
         methodLabel = "Song Count",
-        methodLabelRes = R.string.sort_method_song_count,
+        methodLabelRes = Res.string.sort_method_song_count,
         methodKey = "folder_song_count",
         direction = SortDirection.Descending
     )
@@ -345,7 +346,7 @@ sealed class SortOption(
         storageKey = "folder_subdir_count_asc",
         displayName = "Fewest Subfolders",
         methodLabel = "Subfolder Count",
-        methodLabelRes = R.string.sort_method_subfolder_count,
+        methodLabelRes = Res.string.sort_method_subfolder_count,
         methodKey = "folder_subdir_count",
         direction = SortDirection.Ascending
     )
@@ -353,7 +354,7 @@ sealed class SortOption(
         storageKey = "folder_subdir_count_desc",
         displayName = "Most Subfolders",
         methodLabel = "Subfolder Count",
-        methodLabelRes = R.string.sort_method_subfolder_count,
+        methodLabelRes = Res.string.sort_method_subfolder_count,
         methodKey = "folder_subdir_count",
         direction = SortDirection.Descending
     )
@@ -363,7 +364,7 @@ sealed class SortOption(
         storageKey = "folder_song_title_az",
         displayName = "Title (A-Z)",
         methodLabel = "Title",
-        methodLabelRes = R.string.sort_method_title,
+        methodLabelRes = Res.string.sort_method_title,
         methodKey = "folder_song_title",
         direction = SortDirection.Ascending
     )
@@ -371,7 +372,7 @@ sealed class SortOption(
         storageKey = "folder_song_title_za",
         displayName = "Title (Z-A)",
         methodLabel = "Title",
-        methodLabelRes = R.string.sort_method_title,
+        methodLabelRes = Res.string.sort_method_title,
         methodKey = "folder_song_title",
         direction = SortDirection.Descending
     )
@@ -379,7 +380,7 @@ sealed class SortOption(
         storageKey = "folder_song_artist",
         displayName = "Artist",
         methodLabel = "Artist",
-        methodLabelRes = R.string.sort_method_artist,
+        methodLabelRes = Res.string.sort_method_artist,
         methodKey = "folder_song_artist",
         direction = SortDirection.Ascending
     )
@@ -387,7 +388,7 @@ sealed class SortOption(
         storageKey = "folder_song_artist_desc",
         displayName = "Artist (Z-A)",
         methodLabel = "Artist",
-        methodLabelRes = R.string.sort_method_artist,
+        methodLabelRes = Res.string.sort_method_artist,
         methodKey = "folder_song_artist",
         direction = SortDirection.Descending
     )
@@ -395,7 +396,7 @@ sealed class SortOption(
         storageKey = "folder_song_album",
         displayName = "Album",
         methodLabel = "Album",
-        methodLabelRes = R.string.sort_method_album,
+        methodLabelRes = Res.string.sort_method_album,
         methodKey = "folder_song_album",
         direction = SortDirection.Ascending
     )
@@ -403,7 +404,7 @@ sealed class SortOption(
         storageKey = "folder_song_album_desc",
         displayName = "Album (Z-A)",
         methodLabel = "Album",
-        methodLabelRes = R.string.sort_method_album,
+        methodLabelRes = Res.string.sort_method_album,
         methodKey = "folder_song_album",
         direction = SortDirection.Descending
     )
@@ -411,7 +412,7 @@ sealed class SortOption(
         storageKey = "folder_song_album_artist",
         displayName = "Album Artist",
         methodLabel = "Album Artist",
-        methodLabelRes = R.string.sort_method_album_artist,
+        methodLabelRes = Res.string.sort_method_album_artist,
         methodKey = "folder_song_album_artist",
         direction = SortDirection.Ascending
     )
@@ -419,7 +420,7 @@ sealed class SortOption(
         storageKey = "folder_song_album_artist_desc",
         displayName = "Album Artist (Z-A)",
         methodLabel = "Album Artist",
-        methodLabelRes = R.string.sort_method_album_artist,
+        methodLabelRes = Res.string.sort_method_album_artist,
         methodKey = "folder_song_album_artist",
         direction = SortDirection.Descending
     )
@@ -427,7 +428,7 @@ sealed class SortOption(
         storageKey = "folder_song_date_added",
         displayName = "Date Added",
         methodLabel = "Date Added",
-        methodLabelRes = R.string.sort_method_date_added,
+        methodLabelRes = Res.string.sort_method_date_added,
         methodKey = "folder_song_date_added",
         direction = SortDirection.Descending
     )
@@ -435,7 +436,7 @@ sealed class SortOption(
         storageKey = "folder_song_date_added_asc",
         displayName = "Date Added (Oldest First)",
         methodLabel = "Date Added",
-        methodLabelRes = R.string.sort_method_date_added,
+        methodLabelRes = Res.string.sort_method_date_added,
         methodKey = "folder_song_date_added",
         direction = SortDirection.Ascending
     )
@@ -443,7 +444,7 @@ sealed class SortOption(
         storageKey = "folder_song_duration",
         displayName = "Duration",
         methodLabel = "Duration",
-        methodLabelRes = R.string.sort_method_duration,
+        methodLabelRes = Res.string.sort_method_duration,
         methodKey = "folder_song_duration",
         direction = SortDirection.Descending
     )
@@ -451,7 +452,7 @@ sealed class SortOption(
         storageKey = "folder_song_duration_asc",
         displayName = "Duration (Shortest First)",
         methodLabel = "Duration",
-        methodLabelRes = R.string.sort_method_duration,
+        methodLabelRes = Res.string.sort_method_duration,
         methodKey = "folder_song_duration",
         direction = SortDirection.Ascending
     )
@@ -459,7 +460,7 @@ sealed class SortOption(
         storageKey = "genre_name_az",
         displayName = "Name (A-Z)",
         methodLabel = "Name",
-        methodLabelRes = R.string.sort_method_name,
+        methodLabelRes = Res.string.sort_method_name,
         methodKey = "genre_name",
         direction = SortDirection.Ascending
     )
@@ -467,7 +468,7 @@ sealed class SortOption(
         storageKey = "genre_name_za",
         displayName = "Name (Z-A)",
         methodLabel = "Name",
-        methodLabelRes = R.string.sort_method_name,
+        methodLabelRes = Res.string.sort_method_name,
         methodKey = "genre_name",
         direction = SortDirection.Descending
     )
@@ -475,7 +476,7 @@ sealed class SortOption(
         storageKey = "genre_song_count_desc",
         displayName = "Most Songs",
         methodLabel = "Song Count",
-        methodLabelRes = R.string.sort_method_song_count,
+        methodLabelRes = Res.string.sort_method_song_count,
         methodKey = "genre_song_count",
         direction = SortDirection.Descending
     )
@@ -483,7 +484,7 @@ sealed class SortOption(
         storageKey = "genre_song_count_asc",
         displayName = "Fewest Songs",
         methodLabel = "Song Count",
-        methodLabelRes = R.string.sort_method_song_count,
+        methodLabelRes = Res.string.sort_method_song_count,
         methodKey = "genre_song_count",
         direction = SortDirection.Ascending
     )

@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.data.preferences
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
@@ -10,8 +9,6 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.media3.common.Player
 import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceDiagnostics
 import io.github.raghavsatyadev.openplayer.data.model.PlaybackQueueSnapshot
 import io.github.raghavsatyadev.openplayer.data.model.Playlist
@@ -34,8 +31,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 object ThemePreference {
     const val DEFAULT = "default"
@@ -445,10 +440,10 @@ class UserPreferencesRepository(
     }
     val repeatModeFlow: Flow<Int> =
             dataStore.data.map { preferences ->
-                preferences[PreferencesKeys.REPEAT_MODE] ?: Player.REPEAT_MODE_OFF
+                preferences[PreferencesKeys.REPEAT_MODE] ?: 0 // Player.REPEAT_MODE_OFF
             }
 
-    suspend fun setRepeatMode(@Player.RepeatMode mode: Int) {
+    suspend fun setRepeatMode(mode: Int) {
         dataStore.edit { preferences -> preferences[PreferencesKeys.REPEAT_MODE] = mode }
     }
 
@@ -1437,21 +1432,6 @@ class UserPreferencesRepository(
         /** Default word-based delimiters (matched case-insensitively with whitespace boundaries) */
         val DEFAULT_ARTIST_WORD_DELIMITERS = listOf("featuring", "feat.", "feat", "ft.", "ft", "vs.", "vs", "versus", "with", "prod.", "prod")
         const val DEFAULT_ALBUM_ART_CACHE_LIMIT_MB = 200
-
-        /**
-         * Synchronous read of the folder-cover-art opt-in.
-         *
-         * [io.github.raghavsatyadev.openplayer.utils.AlbumArtUtils] resolves artwork from a Coil fetcher
-         * and a ContentProvider, both off the main thread, and it cannot proceed without knowing
-         * this value: resolving under a wrong assumption persists a cache entry or a "no art"
-         * marker that later reads then trust. The mirror is normally pushed in long before any
-         * artwork is requested, so this only runs if a very early request wins that race.
-         */
-        fun readUseFolderAlbumArtBlocking(context: Context): Boolean = runBlocking {
-            runCatching {
-                context.applicationContext.dataStore.data.first()[PreferencesKeys.USE_FOLDER_ALBUM_ART]
-            }.getOrNull() ?: false
-        }
     }
 
     val navBarCornerRadiusFlow: Flow<Int> =

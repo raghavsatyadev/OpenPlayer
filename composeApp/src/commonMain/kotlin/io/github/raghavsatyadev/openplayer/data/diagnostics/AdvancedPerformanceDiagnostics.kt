@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.diagnostics
 
-import android.os.Trace
+import io.github.raghavsatyadev.openplayer.utils.PlatformTrace
 import java.util.ArrayDeque
 
 /**
@@ -110,7 +110,7 @@ object AdvancedPerformanceDiagnostics {
         type: String,
         name: String,
         details: Map<String, String> = emptyMap(),
-        elapsedRealtimeMs: Long = android.os.SystemClock.elapsedRealtime(),
+        elapsedRealtimeMs: Long = PlatformTrace.elapsedRealtimeMs(),
         nowEpochMs: Long = System.currentTimeMillis()
     ) {
         if (!enabled) return
@@ -155,7 +155,7 @@ object AdvancedPerformanceDiagnostics {
 
     fun markLagNow(
         note: String? = null,
-        elapsedRealtimeMs: Long = android.os.SystemClock.elapsedRealtime(),
+        elapsedRealtimeMs: Long = PlatformTrace.elapsedRealtimeMs(),
         nowEpochMs: Long = System.currentTimeMillis()
     ) {
         recordEvent(
@@ -172,21 +172,21 @@ object AdvancedPerformanceDiagnostics {
 
     fun <T> trace(sectionName: String, block: () -> T): T {
         if (!enabled) return block()
-        Trace.beginSection(sectionName.take(MAX_TRACE_SECTION_CHARS))
+        PlatformTrace.beginSection(sectionName.take(MAX_TRACE_SECTION_CHARS))
         return try {
             block()
         } finally {
-            Trace.endSection()
+            PlatformTrace.endSection()
         }
     }
 
     suspend fun <T> traceSuspend(sectionName: String, block: suspend () -> T): T {
         if (!enabled) return block()
-        Trace.beginSection(sectionName.take(MAX_TRACE_SECTION_CHARS))
+        PlatformTrace.beginSection(sectionName.take(MAX_TRACE_SECTION_CHARS))
         return try {
             block()
         } finally {
-            Trace.endSection()
+            PlatformTrace.endSection()
         }
     }
 

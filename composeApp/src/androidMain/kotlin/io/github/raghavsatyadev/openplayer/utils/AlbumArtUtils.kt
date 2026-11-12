@@ -359,7 +359,7 @@ object AlbumArtUtils {
      */
     internal fun isFolderAlbumArtEnabled(appContext: Context): Boolean {
         val preferred = folderAlbumArtPreference
-            ?: UserPreferencesRepository.readUseFolderAlbumArtBlocking(appContext)
+            ?: io.github.raghavsatyadev.openplayer.data.preferences.readUseFolderAlbumArtBlocking(appContext)
                 .also { folderAlbumArtPreference = it }
         return preferred && canReadImageFiles(appContext)
     }

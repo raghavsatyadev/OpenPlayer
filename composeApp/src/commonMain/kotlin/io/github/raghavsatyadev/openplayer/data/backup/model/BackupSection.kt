@@ -1,109 +1,111 @@
 package io.github.raghavsatyadev.openplayer.data.backup.model
 
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.Res
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.DrawableResource
 
 enum class BackupSection(
     val key: String,
     val label: String,
     val description: String,
-    val iconRes: Int,
+    val iconRes: DrawableResource,
     val sinceVersion: Int = 1
 ) {
     PLAYLISTS(
         key = "playlists",
         label = "Playlists",
         description = "Your custom playlists and ordering preferences.",
-        iconRes = R.drawable.rounded_playlist_play_24
+        iconRes = Res.drawable.rounded_playlist_play_24
     ),
     GLOBAL_SETTINGS(
         key = "global_settings",
         label = "Global Settings",
         description = "Themes, behavior, playback, and app preferences.",
-        iconRes = R.drawable.rounded_settings_24
+        iconRes = Res.drawable.rounded_settings_24
     ),
     FAVORITES(
         key = "favorites",
         label = "Favorites",
         description = "Songs marked as favorite.",
-        iconRes = R.drawable.rounded_favorite_24
+        iconRes = Res.drawable.rounded_favorite_24
     ),
     LYRICS(
         key = "lyrics",
         label = "Saved Lyrics",
         description = "Lyrics you've saved or imported.",
-        iconRes = R.drawable.rounded_lyrics_24
+        iconRes = Res.drawable.rounded_lyrics_24
     ),
     SEARCH_HISTORY(
         key = "search_history",
         label = "Search History",
         description = "Recent search terms in the app.",
-        iconRes = R.drawable.rounded_search_24
+        iconRes = Res.drawable.rounded_search_24
     ),
     TRANSITIONS(
         key = "transitions",
         label = "Transition Rules",
         description = "Custom transition settings between songs.",
-        iconRes = R.drawable.rounded_align_justify_space_even_24
+        iconRes = Res.drawable.rounded_align_justify_space_even_24
     ),
     ENGAGEMENT_STATS(
         key = "engagement_stats",
         label = "Engagement Stats",
         description = "Play count and listening duration per song.",
-        iconRes = R.drawable.rounded_monitoring_24
+        iconRes = Res.drawable.rounded_monitoring_24
     ),
     PLAYBACK_HISTORY(
         key = "playback_history",
         label = "Playback History",
         description = "Timeline-based listening history for stats.",
-        iconRes = R.drawable.rounded_schedule_24
+        iconRes = Res.drawable.rounded_schedule_24
     ),
     QUICK_FILL(
         key = "quick_fill",
         label = "QuickFill Genres",
         description = "Custom genres and their icons.",
-        iconRes = R.drawable.rounded_instant_mix_24,
+        iconRes = Res.drawable.rounded_instant_mix_24,
         sinceVersion = 3
     ),
     ARTIST_IMAGES(
         key = "artist_images",
         label = "Artist Images",
         description = "Cached artist image URLs from Deezer.",
-        iconRes = R.drawable.rounded_person_24,
+        iconRes = Res.drawable.rounded_person_24,
         sinceVersion = 3
     ),
     EQUALIZER(
         key = "equalizer",
         label = "Equalizer",
         description = "Your custom equalizer presets and audio profiles.",
-        iconRes = R.drawable.rounded_surround_sound_24,
+        iconRes = Res.drawable.rounded_surround_sound_24,
         sinceVersion = 3
     ),
     AUDIO_BOOKMARKS(
         key = "audio_bookmarks",
         label = "Audio Bookmarks",
         description = "Saved timestamps inside songs and audiobooks.",
-        iconRes = R.drawable.round_bookmark_24,
+        iconRes = Res.drawable.round_bookmark_24,
         sinceVersion = 4
     ),
     SONG_USER_META(
         key = "song_user_meta",
         label = "Ratings, Moods & Tags",
         description = "Your star ratings, moods and tags on songs.",
-        iconRes = R.drawable.rounded_star_24,
+        iconRes = Res.drawable.rounded_star_24,
         sinceVersion = 5
     ),
     SAVED_QUEUES(
         key = "saved_queues",
         label = "Saved Queues",
         description = "Named play queues you saved.",
-        iconRes = R.drawable.rounded_queue_music_24,
+        iconRes = Res.drawable.rounded_queue_music_24,
         sinceVersion = 5
     ),
     LISTEN_HISTORY(
         key = "listen_history",
         label = "Listen History",
         description = "Every counted listen, including history imported from other services.",
-        iconRes = R.drawable.rounded_history_24,
+        iconRes = Res.drawable.rounded_history_24,
         sinceVersion = 6
     );
 

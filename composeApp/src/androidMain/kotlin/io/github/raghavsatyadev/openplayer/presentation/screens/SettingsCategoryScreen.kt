@@ -1731,7 +1731,7 @@ private fun buildBackupSelectionSummary(context: Context, selected: Set<BackupSe
     }
 }
 
-private fun backupSectionIconRes(section: BackupSection): Int {
+private fun backupSectionIconRes(section: BackupSection): org.jetbrains.compose.resources.DrawableResource {
     return section.iconRes
 }
 
