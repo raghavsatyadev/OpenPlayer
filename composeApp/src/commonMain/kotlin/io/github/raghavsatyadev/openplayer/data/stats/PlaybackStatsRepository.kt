@@ -1,11 +1,13 @@
 package io.github.raghavsatyadev.openplayer.data.stats
 
-import android.content.Context
-import android.util.AtomicFile
+import io.github.raghavsatyadev.openplayer.platform.AppDirectories
+import io.github.raghavsatyadev.openplayer.platform.PlatformAtomicFile
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.Res
+import io.github.raghavsatyadev.openplayer.resources.presentation_batch_g_stats_week_label
+import io.github.raghavsatyadev.openplayer.resources.getString
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.utils.GenreParser
 import java.io.File
@@ -35,12 +37,12 @@ import kotlin.math.roundToInt
 import co.touchlab.kermit.Logger
 
 class PlaybackStatsRepository(
-    private val context: Context
+    private val appDirectories: AppDirectories
 ) {
 
     private val gson = Gson()
-    private val historyFile = File(context.filesDir, "playback_history.json")
-    private val atomicHistoryFile = AtomicFile(historyFile)
+    private val historyFile = File(appDirectories.filesDir, "playback_history.json")
+    private val atomicHistoryFile = PlatformAtomicFile(historyFile)
     private val fileLock = Any()
     private var cachedEvents: List<PlaybackEvent>? = null
     private val eventsType = object : TypeToken<MutableList<PlaybackEvent>>() {}.type
@@ -210,12 +212,18 @@ class PlaybackStatsRepository(
     ): PlaybackStatsSummary = withContext(Dispatchers.IO) {
         val zoneId = ZoneId.systemDefault()
         val allEvents = readEvents()
+        val weekLabels = if (range == StatsTimeRange.MONTH) {
+            (1..MONTH_BUCKET_COUNT).map { getString(Res.string.presentation_batch_g_stats_week_label, it) }
+        } else {
+            emptyList()
+        }
         buildSummaryFromEvents(
             range = range,
             songs = songs,
             nowMillis = nowMillis,
             allEvents = allEvents,
-            zoneId = zoneId
+            zoneId = zoneId,
+            weekLabels = weekLabels
         )
     }
 
@@ -225,7 +233,8 @@ class PlaybackStatsRepository(
         nowMillis: Long,
         allEvents: List<PlaybackEvent>,
         zoneId: ZoneId = ZoneId.systemDefault(),
-        rankingLimit: Int = TOP_RANKING_LIMIT
+        rankingLimit: Int = TOP_RANKING_LIMIT,
+        weekLabels: List<String> = emptyList()
     ): PlaybackStatsSummary {
         val (startBound, endBound) = range.resolveBounds(allEvents, nowMillis, zoneId)
         val filteredEvents = clipEvents(allEvents, lowerBound = startBound, upperBound = endBound)
@@ -346,7 +355,8 @@ class PlaybackStatsRepository(
             zoneId = zoneId,
             now = Instant.ofEpochMilli(endBound),
             spans = overallSpans,
-            fallbackStart = effectiveStart ?: endBound
+            fallbackStart = effectiveStart ?: endBound,
+            weekLabels = weekLabels
         )
         val timelineEntries = accumulateTimelineEntries(timelineBuckets, overallSpans)
 
@@ -1082,12 +1092,13 @@ class PlaybackStatsRepository(
         zoneId: ZoneId,
         now: Instant,
         spans: List<PlaybackSpan>,
-        fallbackStart: Long
+        fallbackStart: Long,
+        weekLabels: List<String>
     ): List<TimelineBucket> {
         return when (range) {
             StatsTimeRange.DAY -> createDayBuckets(zoneId, now)
             StatsTimeRange.WEEK -> createWeekBuckets(zoneId, now)
-            StatsTimeRange.MONTH -> createMonthBuckets(zoneId, now)
+            StatsTimeRange.MONTH -> createMonthBuckets(zoneId, now, weekLabels)
             StatsTimeRange.YEAR -> createYearBuckets(zoneId, now)
             StatsTimeRange.ALL -> createAllTimeBuckets(zoneId, spans, fallbackStart, now)
         }
@@ -1129,10 +1140,10 @@ class PlaybackStatsRepository(
         }
     }
 
-    private fun createMonthBuckets(zoneId: ZoneId, now: Instant): List<TimelineBucket> {
+    private fun createMonthBuckets(zoneId: ZoneId, now: Instant, weekLabels: List<String>): List<TimelineBucket> {
         val yearMonth = YearMonth.from(now.atZone(zoneId))
         val daysInMonth = yearMonth.lengthOfMonth()
-        val bucketCount = 4
+        val bucketCount = MONTH_BUCKET_COUNT
         return buildList {
             repeat(bucketCount) { index ->
                 val startDay = index * 7 + 1
@@ -1148,7 +1159,7 @@ class PlaybackStatsRepository(
                 val end = yearMonth.atDay(endDay).plusDays(1).atStartOfDay(zoneId).toInstant()
                 add(
                     TimelineBucket(
-                        label = context.getString(R.string.presentation_batch_g_stats_week_label, index + 1),
+                        label = weekLabels.getOrElse(index) { "W${index + 1}" },
                         startMillis = start.toEpochMilli(),
                         endMillis = end.toEpochMilli(),
                         inclusiveEnd = false
@@ -1286,6 +1297,7 @@ class PlaybackStatsRepository(
 
         /** Entries in each top list of a summary. */
         private const val TOP_RANKING_LIMIT = 5
+        private const val MONTH_BUCKET_COUNT = 4
 
         /**
          * Entries in each top list of a recap: enough that its top five stay full once the

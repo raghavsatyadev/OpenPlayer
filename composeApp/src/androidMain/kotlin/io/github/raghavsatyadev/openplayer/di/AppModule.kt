@@ -12,6 +12,8 @@ import io.github.raghavsatyadev.openplayer.AppBuildInfo
 import io.github.raghavsatyadev.openplayer.OpenPlayerApplication
 import io.github.raghavsatyadev.openplayer.data.preferences.dataStore
 import io.github.raghavsatyadev.openplayer.data.service.MusicService
+import io.github.raghavsatyadev.openplayer.platform.AndroidAppDirectories
+import io.github.raghavsatyadev.openplayer.platform.AppDirectories
 import io.github.raghavsatyadev.openplayer.data.media.SongMetadataEditor
 import io.github.raghavsatyadev.openplayer.data.playlist.M3uSyncCoordinator
 import io.github.raghavsatyadev.openplayer.data.update.UpdateCheckScheduler
@@ -29,6 +31,7 @@ import org.koin.dsl.module
 val appModule = module {
     single { androidContext() as OpenPlayerApplication }
     single { Gson() }
+    single<AppDirectories> { AndroidAppDirectories(androidContext()) }
     single {
         SessionToken(
             androidContext(),

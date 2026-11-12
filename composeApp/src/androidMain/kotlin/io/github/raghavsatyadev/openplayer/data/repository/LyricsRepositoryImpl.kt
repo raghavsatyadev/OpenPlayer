@@ -1586,9 +1586,3 @@ class LyricsRepositoryImpl(
         }
     }
 }
-
-data class LyricsSearchResult(val record: LrcLibResponse, val lyrics: Lyrics, val rawLyrics: String)
-
-data class NoLyricsFoundException(val query: String? = null) : Exception()
-
-class LyricsException(message: String, cause: Throwable? = null) : Exception(message, cause)

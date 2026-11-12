@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.data
 
-import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -8,6 +7,7 @@ import com.google.gson.reflect.TypeToken
 import io.github.raghavsatyadev.openplayer.data.database.EngagementDao
 import io.github.raghavsatyadev.openplayer.data.database.SongEngagementEntity
 import io.github.raghavsatyadev.openplayer.data.model.Song
+import io.github.raghavsatyadev.openplayer.platform.AppDirectories
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import co.touchlab.kermit.Logger
@@ -17,12 +17,12 @@ import java.util.LinkedHashSet
 import java.util.concurrent.TimeUnit
 
 class DailyMixManager(
-    private val context: Context,
+    private val appDirectories: AppDirectories,
     private val engagementDao: EngagementDao
 ) {
 
     private val gson = Gson()
-    private val legacyScoresFile = File(context.filesDir, "song_scores.json")
+    private val legacyScoresFile = File(appDirectories.filesDir, "song_scores.json")
     private val fileLock = Any()
     private val statsType = object : TypeToken<MutableMap<String, SongEngagementStats>>() {}.type
 
@@ -84,7 +84,7 @@ class DailyMixManager(
                 engagementDao.upsertEngagements(entitiesToInsert)
                 Logger.withTag(TAG).i { "Migrated ${entitiesToInsert.size} engagement records from JSON to Room" }
 
-                val backupFile = File(context.filesDir, "song_scores.json.bak")
+                val backupFile = File(appDirectories.filesDir, "song_scores.json.bak")
                 legacyScoresFile.renameTo(backupFile)
             } catch (e: Exception) {
                 Logger.withTag(TAG).e(e) { "Failed to insert legacy engagement data into Room" }
