@@ -25,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -48,6 +47,8 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.VideoRow
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.VideosLibraryViewModel
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** Local videos and the tracks they match. Tapping a matched video plays its track with video on. */
 @Composable
@@ -160,7 +161,7 @@ private fun VideoListItem(row: VideoRow, onClick: () -> Unit) {
                 )
                 row.song?.let { song ->
                     Text(
-                        text = stringResource(R.string.video_track_line, song.title, song.displayArtist()),
+                        text = stringResource(Res.string.video_track_line, song.title, song.displayArtist()),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -191,19 +192,19 @@ private fun VideoPermissionPrompt(bottomBarHeight: Dp, onAllow: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             Text(
-                text = stringResource(R.string.video_permission_title),
+                text = stringResource(Res.string.video_permission_title),
                 style = MaterialTheme.typography.titleLarge,
                 fontFamily = RoundedSans,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
             )
             Text(
-                text = stringResource(R.string.video_permission_subtitle),
+                text = stringResource(Res.string.video_permission_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
             )
-            Button(onClick = onAllow) { Text(stringResource(R.string.video_permission_button)) }
+            Button(onClick = onAllow) { Text(stringResource(Res.string.video_permission_button)) }
         }
     }
 }

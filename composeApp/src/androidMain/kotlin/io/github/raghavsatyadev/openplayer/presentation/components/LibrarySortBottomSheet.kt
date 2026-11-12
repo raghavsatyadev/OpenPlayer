@@ -68,6 +68,8 @@ import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * Sort sheet for a library list.
@@ -210,7 +212,7 @@ fun LibrarySortBottomSheet(
             if (sourceToggleContent != null) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_sort_source),
+                    text = stringResource(Res.string.presentation_batch_g_sort_source),
                     style = MaterialTheme.typography.headlineSmall,
                     fontFamily = RoundedSans,
                     fontWeight = FontWeight.Bold,
@@ -264,9 +266,9 @@ private fun LibrarySheetSortSection(
 
         if (shouldShowDirectionToggle && resolvedSelectedOption != null) {
             val directionLabel = when (selectedDirection) {
-                SortDirection.Descending -> stringResource(R.string.presentation_batch_g_sort_descending)
-                SortDirection.Ascending -> stringResource(R.string.presentation_batch_g_sort_ascending)
-                null -> stringResource(R.string.presentation_batch_g_sort_original_order)
+                SortDirection.Descending -> stringResource(Res.string.presentation_batch_g_sort_descending)
+                SortDirection.Ascending -> stringResource(Res.string.presentation_batch_g_sort_ascending)
+                null -> stringResource(Res.string.presentation_batch_g_sort_original_order)
             }
             val isDescending = selectedDirection == SortDirection.Descending
 
@@ -487,7 +489,7 @@ private fun LibrarySheetSortDirectionCard(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_sort_order),
+                    text = stringResource(Res.string.presentation_batch_g_sort_order),
                     style = MaterialTheme.typography.labelLarge,
                     color = contentColor.copy(alpha = 0.82f)
                 )
@@ -561,7 +563,7 @@ internal fun LibrarySheetToggleCard(
                     {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
-                            contentDescription = stringResource(R.string.presentation_batch_g_cd_switch_on),
+                            contentDescription = stringResource(Res.string.presentation_batch_g_cd_switch_on),
                             modifier = Modifier.size(SwitchDefaults.IconSize),
                         )
                     }

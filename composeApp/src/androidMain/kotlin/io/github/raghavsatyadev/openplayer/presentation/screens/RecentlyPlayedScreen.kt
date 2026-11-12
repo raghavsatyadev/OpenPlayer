@@ -90,9 +90,10 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -103,8 +104,8 @@ fun RecentlyPlayedScreen(
     navController: NavController
 ) = traceSection("RecentlyPlayedScreen.Composition") {
     val context = LocalContext.current
-    val queueRecentlyPlayed = stringResource(R.string.presentation_batch_b_queue_recently_played)
-    val shuffleLabel = stringResource(R.string.shortcut_shuffle_short)
+    val queueRecentlyPlayed = stringResource(Res.string.presentation_batch_b_queue_recently_played)
+    val shuffleLabel = stringResource(Res.string.shortcut_shuffle_short)
     val playbackHistory by playerViewModel.playbackHistory.collectAsStateWithLifecycle()
     val currentSongId by remember(playerViewModel.stablePlayerState) {
         playerViewModel.stablePlayerState.map { it.currentSong?.id }.distinctUntilChanged()
@@ -193,7 +194,7 @@ fun RecentlyPlayedScreen(
             ) {
                 item(key = "recently_played_header") {
                     ExpressiveRecentlyPlayedHeader(
-                        title = stringResource(R.string.presentation_batch_b_recently_played_title),
+                        title = stringResource(Res.string.presentation_batch_b_recently_played_title),
                         songs = recentlyPlayedSongs,
                         selectedRange = selectedRange,
                         scrollState = lazyListState
@@ -361,7 +362,7 @@ fun RecentlyPlayedScreen(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                contentDescription = stringResource(R.string.auth_cd_back)
+                contentDescription = stringResource(Res.string.auth_cd_back)
             )
         }
     }
@@ -491,7 +492,7 @@ private fun RecentlyPlayedActions(
                 modifier = Modifier.size(ButtonDefaults.IconSize)
             )
             Spacer(Modifier.width(ButtonDefaults.IconSpacing))
-            Text(stringResource(R.string.presentation_batch_b_play_latest))
+            Text(stringResource(Res.string.presentation_batch_b_play_latest))
         }
 
         FilledTonalButton(
@@ -628,15 +629,14 @@ private fun RecentlyPlayedEmptyState(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = stringResource(
-                    R.string.presentation_batch_b_recent_empty_title,
+                text = stringResource(Res.string.presentation_batch_b_recent_empty_title,
                     range.displayName.lowercase()
                 ),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = stringResource(R.string.presentation_batch_b_recent_empty_subtitle),
+                text = stringResource(Res.string.presentation_batch_b_recent_empty_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

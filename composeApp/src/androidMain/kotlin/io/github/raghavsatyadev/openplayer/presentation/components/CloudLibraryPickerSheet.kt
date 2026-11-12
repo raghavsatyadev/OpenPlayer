@@ -33,13 +33,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * One selectable entry in a cloud library picker. Non-selectable entries
@@ -78,14 +79,14 @@ fun CloudLibraryPickerSheet(
                 .padding(bottom = 24.dp)
         ) {
             Text(
-                text = stringResource(R.string.auth_select_libraries_title),
+                text = stringResource(Res.string.auth_select_libraries_title),
                 style = MaterialTheme.typography.titleLarge,
                 fontFamily = RoundedSans,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.auth_select_libraries_subtitle),
+                text = stringResource(Res.string.auth_select_libraries_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 fontFamily = RoundedSans,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -94,8 +95,8 @@ fun CloudLibraryPickerSheet(
 
             CloudLibrarySelectorChoice(
                 icon = ImageVector.vectorResource(R.drawable.rounded_select_all_24),
-                title = stringResource(R.string.dash_libraries_all),
-                subtitle = stringResource(R.string.dash_libraries_all_subtitle),
+                title = stringResource(Res.string.dash_libraries_all),
+                subtitle = stringResource(Res.string.dash_libraries_all_subtitle),
                 checked = selectedIds.size == selectableIds.size,
                 enabled = true,
                 onClick = { selectedIds = selectableIds }
@@ -108,7 +109,7 @@ fun CloudLibraryPickerSheet(
                     CloudLibrarySelectorChoice(
                         icon = ImageVector.vectorResource(R.drawable.rounded_library_music_filled_24),
                         title = item.name,
-                        subtitle = stringResource(R.string.dash_libraries_folder_subtitle),
+                        subtitle = stringResource(Res.string.dash_libraries_folder_subtitle),
                         checked = item.id in selectedIds,
                         enabled = true,
                         onClick = {
@@ -123,7 +124,7 @@ fun CloudLibraryPickerSheet(
                     CloudLibrarySelectorChoice(
                         icon = ImageVector.vectorResource(R.drawable.rounded_folder_filled_24),
                         title = item.name,
-                        subtitle = stringResource(R.string.dash_libraries_not_music),
+                        subtitle = stringResource(Res.string.dash_libraries_not_music),
                         checked = false,
                         enabled = false,
                         onClick = {}
@@ -144,7 +145,7 @@ fun CloudLibraryPickerSheet(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(R.string.auth_select_libraries_confirm),
+                    stringResource(Res.string.auth_select_libraries_confirm),
                     fontFamily = RoundedSans
                 )
             }

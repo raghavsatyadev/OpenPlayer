@@ -39,9 +39,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private val buttonHeight = 44.dp
 private val segmentedOuterCornerRadius = 26.dp
@@ -123,7 +124,7 @@ fun SelectionActionRow(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_selection_all),
+                    text = stringResource(Res.string.presentation_batch_g_selection_all),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Medium,
                     fontFamily = RoundedSans
@@ -147,7 +148,7 @@ fun SelectionActionRow(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_selection_deselect),
+                    text = stringResource(Res.string.presentation_batch_g_selection_deselect),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Medium,
                     fontFamily = RoundedSans
@@ -167,7 +168,7 @@ fun SelectionActionRow(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_more_vert_24),
-                contentDescription = stringResource(R.string.presentation_batch_g_selection_cd_more),
+                contentDescription = stringResource(Res.string.presentation_batch_g_selection_cd_more),
                 modifier = Modifier.size(20.dp)
             )
         }

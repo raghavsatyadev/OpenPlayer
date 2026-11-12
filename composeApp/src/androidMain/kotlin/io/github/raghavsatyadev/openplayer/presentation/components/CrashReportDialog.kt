@@ -36,8 +36,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.raghavsatyadev.openplayer.utils.CrashLogData
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * Material3 Expressive styled dialog that displays crash information
@@ -62,7 +63,7 @@ fun CrashReportDialog(
         },
         title = {
             Text(
-                text = stringResource(R.string.crash_report_title),
+                text = stringResource(Res.string.crash_report_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -74,7 +75,7 @@ fun CrashReportDialog(
                     .verticalScroll(rememberScrollState())
             ) {
                 Text(
-                    text = stringResource(R.string.crash_report_subtitle),
+                    text = stringResource(Res.string.crash_report_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -88,7 +89,7 @@ fun CrashReportDialog(
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text(
-                            text = stringResource(R.string.crash_report_date_line, crashLog.formattedDate),
+                            text = stringResource(Res.string.crash_report_date_line, crashLog.formattedDate),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -96,7 +97,7 @@ fun CrashReportDialog(
                         Spacer(modifier = Modifier.height(8.dp))
                         
                         Text(
-                            text = stringResource(R.string.crash_report_error_label),
+                            text = stringResource(Res.string.crash_report_error_label),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.error
@@ -116,7 +117,7 @@ fun CrashReportDialog(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
-                            text = stringResource(R.string.crash_report_stack_preview_label),
+                            text = stringResource(Res.string.crash_report_stack_preview_label),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -160,7 +161,7 @@ fun CrashReportDialog(
                             modifier = Modifier.size(18.dp)
                         )
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text(stringResource(R.string.action_copy))
+                        Text(stringResource(Res.string.action_copy))
                     }
 
                     FilledTonalButton(
@@ -182,7 +183,7 @@ fun CrashReportDialog(
                             modifier = Modifier.size(18.dp)
                         )
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text(stringResource(R.string.action_share))
+                        Text(stringResource(Res.string.action_share))
                     }
                 }
             }
@@ -190,7 +191,7 @@ fun CrashReportDialog(
         confirmButton = {},
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.dismiss), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(stringResource(Res.string.dismiss), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     )

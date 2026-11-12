@@ -79,6 +79,8 @@ import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerTheme
 import kotlinx.collections.immutable.toImmutableList
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 class NavidromeLoginActivity : ComponentActivity() {
 
     override fun attachBaseContext(newBase: android.content.Context) {
@@ -197,7 +199,7 @@ fun NavidromeLoginScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.auth_navidrome_title),
+                        text = stringResource(Res.string.auth_navidrome_title),
                         fontFamily = RoundedSans,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -214,7 +216,7 @@ fun NavidromeLoginScreen(
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                            contentDescription = stringResource(R.string.auth_cd_back)
+                            contentDescription = stringResource(Res.string.auth_cd_back)
                         )
                     }
                 },
@@ -250,7 +252,7 @@ fun NavidromeLoginScreen(
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = R.drawable.ic_navidrome),
-                            contentDescription = stringResource(R.string.cd_navidrome_logo),
+                            contentDescription = stringResource(Res.string.cd_navidrome_logo),
                             tint = androidx.compose.ui.graphics.Color.Unspecified,
                             modifier = Modifier.size(42.dp)
                         )
@@ -269,7 +271,7 @@ fun NavidromeLoginScreen(
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = R.drawable.ic_subsonic),
-                            contentDescription = stringResource(R.string.cd_subsonic_logo),
+                            contentDescription = stringResource(Res.string.cd_subsonic_logo),
                             tint = androidx.compose.ui.graphics.Color.Unspecified,
                             modifier = Modifier.size(42.dp)
                         )
@@ -280,7 +282,7 @@ fun NavidromeLoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = stringResource(R.string.auth_navidrome_title),
+                text = stringResource(Res.string.auth_navidrome_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontFamily = RoundedSans,
                 fontWeight = FontWeight.Bold,
@@ -288,7 +290,7 @@ fun NavidromeLoginScreen(
             )
 
             Text(
-                text = stringResource(R.string.auth_navidrome_subtitle),
+                text = stringResource(Res.string.auth_navidrome_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -303,7 +305,7 @@ fun NavidromeLoginScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(R.string.auth_navidrome_info_card),
+                    text = stringResource(Res.string.auth_navidrome_info_card),
                     modifier = Modifier.padding(16.dp),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -324,7 +326,7 @@ fun NavidromeLoginScreen(
                     modifier = Modifier.padding(18.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.auth_connection_details),
+                        text = stringResource(Res.string.auth_connection_details),
                         style = MaterialTheme.typography.titleMedium,
                         fontFamily = RoundedSans,
                         fontWeight = FontWeight.Bold
@@ -333,7 +335,7 @@ fun NavidromeLoginScreen(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = stringResource(R.string.auth_connection_details_subtitle),
+                        text = stringResource(Res.string.auth_connection_details_subtitle),
                         style = MaterialTheme.typography.bodySmall,
                         fontFamily = RoundedSans,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -344,9 +346,9 @@ fun NavidromeLoginScreen(
                     ExpressiveLoginField(
                         value = serverUrl,
                         onValueChange = { serverUrl = it },
-                        label = stringResource(R.string.auth_server_url),
-                        placeholder = stringResource(R.string.auth_navidrome_server_placeholder),
-                        supportingText = stringResource(R.string.auth_navidrome_server_url_hint),
+                        label = stringResource(Res.string.auth_server_url),
+                        placeholder = stringResource(Res.string.auth_navidrome_server_placeholder),
+                        supportingText = stringResource(Res.string.auth_navidrome_server_url_hint),
                         leadingIcon = ImageVector.vectorResource(R.drawable.rounded_cloud_queue_filled_24),
                         enabled = !isLoading,
                         keyboardOptions = KeyboardOptions(
@@ -364,9 +366,9 @@ fun NavidromeLoginScreen(
                     ExpressiveLoginField(
                         value = username,
                         onValueChange = { username = it },
-                        label = stringResource(R.string.auth_username),
-                        placeholder = stringResource(R.string.auth_username_placeholder_admin),
-                        supportingText = stringResource(R.string.auth_navidrome_username_hint),
+                        label = stringResource(Res.string.auth_username),
+                        placeholder = stringResource(Res.string.auth_username_placeholder_admin),
+                        supportingText = stringResource(Res.string.auth_navidrome_username_hint),
                         leadingIcon = ImageVector.vectorResource(R.drawable.rounded_person_filled_24),
                         enabled = !isLoading,
                         keyboardOptions = KeyboardOptions(
@@ -384,9 +386,9 @@ fun NavidromeLoginScreen(
                     ExpressiveLoginField(
                         value = password,
                         onValueChange = { password = it },
-                        label = stringResource(R.string.auth_password),
-                        placeholder = stringResource(R.string.auth_password_placeholder),
-                        supportingText = stringResource(R.string.auth_navidrome_password_hint),
+                        label = stringResource(Res.string.auth_password),
+                        placeholder = stringResource(Res.string.auth_password_placeholder),
+                        supportingText = stringResource(Res.string.auth_navidrome_password_hint),
                         leadingIcon = ImageVector.vectorResource(R.drawable.rounded_lock_filled_24),
                         enabled = !isLoading,
                         visualTransformation = if (passwordVisible) {
@@ -434,7 +436,7 @@ fun NavidromeLoginScreen(
                         contentPadding = PaddingValues(horizontal = 14.dp, vertical = 10.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.auth_prefill_http),
+                            text = stringResource(Res.string.auth_prefill_http),
                             fontFamily = RoundedSans,
                             fontWeight = FontWeight.Medium
                         )
@@ -458,16 +460,16 @@ fun NavidromeLoginScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(R.string.auth_connecting), fontFamily = RoundedSans)
+                    Text(stringResource(Res.string.auth_connecting), fontFamily = RoundedSans)
                 } else {
-                    Text(stringResource(R.string.auth_connect), fontFamily = RoundedSans, fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(Res.string.auth_connect), fontFamily = RoundedSans, fontWeight = FontWeight.SemiBold)
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = stringResource(R.string.auth_navidrome_footer),
+                text = stringResource(Res.string.auth_navidrome_footer),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontFamily = RoundedSans

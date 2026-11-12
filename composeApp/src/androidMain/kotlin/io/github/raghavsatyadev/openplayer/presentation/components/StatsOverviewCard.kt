@@ -46,6 +46,8 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import androidx.compose.runtime.remember
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private enum class OverviewContentKey { Loading, Empty, Ready }
 
@@ -105,7 +107,7 @@ fun StatsOverviewCard(
                         Modifier.padding(start = 24.dp, top = 24.dp, bottom = 24.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.presentation_batch_g_stats_overview_title),
+                            text = stringResource(Res.string.presentation_batch_g_stats_overview_title),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -168,7 +170,7 @@ private fun OverviewContent(summary: PlaybackStatsRepository.PlaybackStatsSummar
         Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_stats_overview_total_plays),
+                    text = stringResource(Res.string.presentation_batch_g_stats_overview_total_plays),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -181,7 +183,7 @@ private fun OverviewContent(summary: PlaybackStatsRepository.PlaybackStatsSummar
             }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_stats_overview_avg_per_day),
+                    text = stringResource(Res.string.presentation_batch_g_stats_overview_avg_per_day),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -197,7 +199,7 @@ private fun OverviewContent(summary: PlaybackStatsRepository.PlaybackStatsSummar
         if (topTrack != null) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_stats_overview_top_track),
+                    text = stringResource(Res.string.presentation_batch_g_stats_overview_top_track),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -209,8 +211,7 @@ private fun OverviewContent(summary: PlaybackStatsRepository.PlaybackStatsSummar
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = stringResource(
-                        R.string.presentation_batch_g_stats_overview_top_track_line,
+                    text = stringResource(Res.string.presentation_batch_g_stats_overview_top_track_line,
                         topTrack.artist,
                         topTrack.playCount
                     ),
@@ -250,12 +251,12 @@ private fun EmptyOverviewContent() {
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_stats_empty_no_timeline_title),
+                    text = stringResource(Res.string.presentation_batch_g_stats_empty_no_timeline_title),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_stats_empty_no_timeline_subtitle),
+                    text = stringResource(Res.string.presentation_batch_g_stats_empty_no_timeline_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

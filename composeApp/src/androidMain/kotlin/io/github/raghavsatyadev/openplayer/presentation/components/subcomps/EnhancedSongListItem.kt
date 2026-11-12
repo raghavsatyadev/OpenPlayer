@@ -61,9 +61,10 @@ import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.AutoScrollingText
 import io.github.raghavsatyadev.openplayer.presentation.components.ShimmerBox
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Immutable
 private data class EnhancedSongAnimationTarget(
@@ -363,7 +364,7 @@ fun EnhancedSongListItem(
                                 } else {
                                     Icon(
                                         imageVector = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
-                                        contentDescription = stringResource(R.string.presentation_batch_g_list_cd_selected),
+                                        contentDescription = stringResource(Res.string.presentation_batch_g_list_cd_selected),
                                         tint = selectionOverlayContentColor,
                                         modifier = Modifier.size(28.dp)
                                     )
@@ -437,7 +438,7 @@ fun EnhancedSongListItem(
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_more_vert_24),
-                            contentDescription = stringResource(R.string.presentation_batch_g_list_cd_more_for_title, song.title),
+                            contentDescription = stringResource(Res.string.presentation_batch_g_list_cd_more_for_title, song.title),
                             modifier = Modifier.size(24.dp)
                         )
                     }

@@ -134,9 +134,10 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -370,7 +371,7 @@ fun EqualizerScreen(
         }
         
         CollapsibleCommonTopBar(
-            title = stringResource(R.string.settings_category_equalizer_title),
+            title = stringResource(Res.string.settings_category_equalizer_title),
             collapseFraction = collapseFraction,
             headerHeight = currentTopBarHeightDp,
             onBackClick = { navController.popBackStack() },
@@ -390,7 +391,7 @@ fun EqualizerScreen(
                             EqualizerViewMode.GRAPH -> ImageVector.vectorResource(R.drawable.rounded_show_chart_mirrored_24)
                             EqualizerViewMode.HYBRID -> ImageVector.vectorResource(R.drawable.rounded_view_quilt_filled_mirrored_24)
                         },
-                        contentDescription = stringResource(R.string.presentation_batch_d_eq_change_view_mode_cd)
+                        contentDescription = stringResource(Res.string.presentation_batch_d_eq_change_view_mode_cd)
                     )
                 }
 
@@ -416,9 +417,9 @@ fun EqualizerScreen(
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.rounded_power_settings_new_filled_24),
                         contentDescription = if (isEnabled) {
-                            stringResource(R.string.presentation_batch_d_eq_disable_cd)
+                            stringResource(Res.string.presentation_batch_d_eq_disable_cd)
                         } else {
-                            stringResource(R.string.presentation_batch_d_eq_enable_cd)
+                            stringResource(Res.string.presentation_batch_d_eq_enable_cd)
                         }
                     )
                 }
@@ -484,7 +485,7 @@ private fun PresetTabsRow(
                         Spacer(modifier = Modifier.width(4.dp))
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_star_filled_24),
-                            contentDescription = stringResource(R.string.presentation_batch_d_eq_custom_preset_cd),
+                            contentDescription = stringResource(Res.string.presentation_batch_d_eq_custom_preset_cd),
                             modifier = Modifier.size(10.dp),
                             tint = if (selectedIndex == index) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary 
                         )
@@ -495,14 +496,14 @@ private fun PresetTabsRow(
         
         TabAnimation(
             index = -1,
-            title = stringResource(R.string.presentation_batch_d_eq_edit_tab_title),
+            title = stringResource(Res.string.presentation_batch_d_eq_edit_tab_title),
             unselectedColor = MaterialTheme.colorScheme.surfaceContainerLowest,
             selectedIndex = selectedIndex,
             onClick = onEditClick 
         ) {
              Icon(
                 ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
-                contentDescription = stringResource(R.string.presentation_batch_d_eq_edit_presets_cd),
+                contentDescription = stringResource(Res.string.presentation_batch_d_eq_edit_presets_cd),
                 modifier = Modifier.size(18.dp)
             )
         }
@@ -570,7 +571,7 @@ private fun BandSlidersSection(
                             Spacer(modifier = Modifier.width(8.dp))
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_expand_more_24),
-                                contentDescription = stringResource(R.string.presentation_batch_d_eq_presets_cd),
+                                contentDescription = stringResource(Res.string.presentation_batch_d_eq_presets_cd),
                                 tint = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                         }
@@ -595,7 +596,7 @@ private fun BandSlidersSection(
                              )
                              Spacer(modifier = Modifier.width(6.dp))
                              Text(
-                                 text = stringResource(R.string.action_save),
+                                 text = stringResource(Res.string.action_save),
                                  color = MaterialTheme.colorScheme.onTertiaryContainer,
                                  fontWeight = FontWeight.Bold
                              )
@@ -621,7 +622,7 @@ private fun BandSlidersSection(
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = stringResource(R.string.presentation_batch_d_action_update),
+                                text = stringResource(Res.string.presentation_batch_d_action_update),
                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                                 fontWeight = FontWeight.Bold
                             )
@@ -645,7 +646,7 @@ private fun BandSlidersSection(
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = stringResource(R.string.equalizer_action_save_new),
+                                text = stringResource(Res.string.equalizer_action_save_new),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                                 fontWeight = FontWeight.Bold
                             )
@@ -1165,7 +1166,7 @@ private fun EffectControlsSection(
     ) {
         if (isBassBoostSupported) {
             EffectCard(
-                title = stringResource(R.string.presentation_batch_d_eq_bass_boost),
+                title = stringResource(Res.string.presentation_batch_d_eq_bass_boost),
                 value = bassBoostStrength,
                 valueRange = 0f..1000f,
                 isEnabled = bassBoostEnabled,
@@ -1174,14 +1175,14 @@ private fun EffectControlsSection(
             )
         } else if (!isBassBoostDismissed) {
              UnsupportedEffectCard(
-                title = stringResource(R.string.presentation_batch_d_eq_bass_boost),
+                title = stringResource(Res.string.presentation_batch_d_eq_bass_boost),
                 onDismiss = onDismissBassBoost
             )
         }
         
         if (isVirtualizerSupported) {
             EffectCard(
-                title = stringResource(R.string.presentation_batch_d_eq_virtualizer),
+                title = stringResource(Res.string.presentation_batch_d_eq_virtualizer),
                 value = virtualizerStrength,
                 valueRange = 0f..1000f,
                 isEnabled = virtualizerEnabled,
@@ -1190,14 +1191,14 @@ private fun EffectControlsSection(
             )
         } else if (!isVirtualizerDismissed) {
              UnsupportedEffectCard(
-                title = stringResource(R.string.presentation_batch_d_eq_virtualizer),
+                title = stringResource(Res.string.presentation_batch_d_eq_virtualizer),
                 onDismiss = onDismissVirtualizer
             )
         }
 
         if (isLoudnessEnhancerSupported) {
             EffectCard(
-                title = stringResource(R.string.presentation_batch_d_eq_loudness),
+                title = stringResource(Res.string.presentation_batch_d_eq_loudness),
                 value = loudnessStrength,
                 valueRange = 0f..1000f,
                 isEnabled = loudnessEnabled,
@@ -1206,7 +1207,7 @@ private fun EffectControlsSection(
             )
         } else if (!isLoudnessDismissed) {
              UnsupportedEffectCard(
-                title = stringResource(R.string.presentation_batch_d_eq_loudness),
+                title = stringResource(Res.string.presentation_batch_d_eq_loudness),
                 onDismiss = onDismissLoudness
             )
         }
@@ -1260,7 +1261,7 @@ private fun EffectCard(
                     
                     val percentage = ((value - valueRange.start) / (valueRange.endInclusive - valueRange.start) * 100).toInt()
                     Text(
-                        text = stringResource(R.string.ui_format_percent_d, percentage),
+                        text = stringResource(Res.string.ui_format_percent_d, percentage),
                         style = MaterialTheme.typography.titleMedium,
                         color = if (isEnabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -1302,7 +1303,7 @@ private fun UnsupportedEffectCard(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                    contentDescription = stringResource(R.string.dismiss),
+                    contentDescription = stringResource(Res.string.dismiss),
                     tint = MaterialTheme.colorScheme.error
                 )
             }
@@ -1326,7 +1327,7 @@ private fun UnsupportedEffectCard(
                     color = MaterialTheme.colorScheme.onErrorContainer
                 )
                 Text(
-                    text = stringResource(R.string.presentation_batch_d_eq_effect_not_supported),
+                    text = stringResource(Res.string.presentation_batch_d_eq_effect_not_supported),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.8f),
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -1352,7 +1353,7 @@ private fun UnsupportedEffectRow(
         val resolvedMessage = if (message.isNotEmpty()) {
             message
         } else {
-            stringResource(R.string.presentation_batch_d_eq_effect_not_supported_device)
+            stringResource(Res.string.presentation_batch_d_eq_effect_not_supported_device)
         }
         Row(
             modifier = Modifier
@@ -1382,7 +1383,7 @@ private fun UnsupportedEffectRow(
             IconButton(onClick = onDismiss) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                    contentDescription = stringResource(R.string.dismiss),
+                    contentDescription = stringResource(Res.string.dismiss),
                     tint = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
@@ -1479,7 +1480,7 @@ private fun VolumeControlCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.presentation_batch_d_eq_volume),
+                text = stringResource(Res.string.presentation_batch_d_eq_volume),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -1519,8 +1520,7 @@ private fun VolumeControlCard(
                 
                 Text(
                     modifier = Modifier.width(46.dp),
-                    text = stringResource(
-                        R.string.ui_format_percent_d,
+                    text = stringResource(Res.string.ui_format_percent_d,
                         (volume * 100).roundToInt()
                     ),
                     textAlign = TextAlign.Center,
@@ -1540,12 +1540,12 @@ private fun HybridBandSliders(
     onBandLevelChanged: (Int, Int) -> Unit
 ) {
     val context = LocalContext.current
-    val bandBass = stringResource(R.string.presentation_batch_d_eq_band_bass)
-    val bandLowMids = stringResource(R.string.presentation_batch_d_eq_band_low_mids)
-    val bandHighMids = stringResource(R.string.presentation_batch_d_eq_band_high_mids)
-    val bandTreble = stringResource(R.string.presentation_batch_d_eq_band_treble)
-    val bandBassLow = stringResource(R.string.presentation_batch_d_eq_band_bass_low)
-    val bandMidHigh = stringResource(R.string.presentation_batch_d_eq_band_mid_high)
+    val bandBass = stringResource(Res.string.presentation_batch_d_eq_band_bass)
+    val bandLowMids = stringResource(Res.string.presentation_batch_d_eq_band_low_mids)
+    val bandHighMids = stringResource(Res.string.presentation_batch_d_eq_band_high_mids)
+    val bandTreble = stringResource(Res.string.presentation_batch_d_eq_band_treble)
+    val bandBassLow = stringResource(Res.string.presentation_batch_d_eq_band_bass_low)
+    val bandMidHigh = stringResource(Res.string.presentation_batch_d_eq_band_mid_high)
     Column(modifier = Modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
@@ -1557,7 +1557,7 @@ private fun HybridBandSliders(
                 .padding(16.dp)
         ) {
              Text(
-                text = stringResource(R.string.presentation_batch_d_eq_frequency_response),
+                text = stringResource(Res.string.presentation_batch_d_eq_frequency_response),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.align(Alignment.TopStart).padding(bottom = 8.dp)
@@ -1700,7 +1700,7 @@ private fun HybridHorizontalSlider(
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = stringResource(R.string.presentation_batch_d_eq_unit_hz),
+                text = stringResource(Res.string.presentation_batch_d_eq_unit_hz),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

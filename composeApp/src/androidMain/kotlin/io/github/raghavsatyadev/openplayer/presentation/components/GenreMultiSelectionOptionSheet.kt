@@ -36,7 +36,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
@@ -52,6 +51,8 @@ import io.github.raghavsatyadev.openplayer.ui.theme.LocalOpenPlayerDarkTheme
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -87,7 +88,7 @@ fun GenreMultiSelectionOptionSheet(
 
                 Column {
                     AutoSizingTextToFill(
-                        text = stringResource(R.string.multi_selection_genres_count_upper, selectedGenres.size),
+                        text = stringResource(Res.string.multi_selection_genres_count_upper, selectedGenres.size),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         fontFamily = RoundedSans,
@@ -97,7 +98,7 @@ fun GenreMultiSelectionOptionSheet(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text = stringResource(R.string.multi_selection_selected),
+                        text = stringResource(Res.string.multi_selection_selected),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontFamily = RoundedSans,
@@ -110,7 +111,7 @@ fun GenreMultiSelectionOptionSheet(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = stringResource(R.string.multi_selection_genres_queue_hint),
+                text = stringResource(Res.string.multi_selection_genres_queue_hint),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -139,10 +140,10 @@ fun GenreMultiSelectionOptionSheet(
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
-                            contentDescription = stringResource(R.string.cd_play_all)
+                            contentDescription = stringResource(Res.string.cd_play_all)
                         )
                     },
-                    text = stringResource(R.string.play_playback)
+                    text = stringResource(Res.string.play_playback)
                 )
 
                 GenreSelectionActionButton(
@@ -160,10 +161,10 @@ fun GenreMultiSelectionOptionSheet(
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_playlist_add_24),
-                            contentDescription = stringResource(R.string.cd_add_to_playlist)
+                            contentDescription = stringResource(Res.string.cd_add_to_playlist)
                         )
                     },
-                    text = stringResource(R.string.shortcut_playlist_short)
+                    text = stringResource(Res.string.shortcut_playlist_short)
                 )
             }
 
@@ -191,10 +192,10 @@ fun GenreMultiSelectionOptionSheet(
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
-                            contentDescription = stringResource(R.string.cd_play_next_in_queue)
+                            contentDescription = stringResource(Res.string.cd_play_next_in_queue)
                         )
                     },
-                    text = stringResource(R.string.action_queue_next)
+                    text = stringResource(Res.string.action_queue_next)
                 )
 
                 GenreSelectionActionButton(
@@ -212,10 +213,10 @@ fun GenreMultiSelectionOptionSheet(
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
-                            contentDescription = stringResource(R.string.cd_add_all_to_queue)
+                            contentDescription = stringResource(Res.string.cd_add_all_to_queue)
                         )
                     },
-                    text = stringResource(R.string.action_add_to_queue)
+                    text = stringResource(Res.string.action_add_to_queue)
                 )
             }
 

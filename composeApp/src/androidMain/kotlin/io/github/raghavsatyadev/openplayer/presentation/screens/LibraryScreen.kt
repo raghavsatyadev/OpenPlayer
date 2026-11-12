@@ -267,6 +267,8 @@ import co.touchlab.kermit.Logger
 import java.io.File
 import kotlin.math.abs
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 val ListExtraBottomGap = 30.dp
 val PlayerSheetCollapsedCornerRadius = 32.dp
@@ -858,7 +860,7 @@ fun LibraryScreen(
                         } else {
                             Text(
                                 modifier = Modifier.padding(start = 8.dp),
-                                text = stringResource(R.string.presentation_batch_d_library_title),
+                                text = stringResource(Res.string.presentation_batch_d_library_title),
                                 fontFamily = RoundedSans,
                                 fontWeight = FontWeight.ExtraBold,
                                 color = MaterialTheme.colorScheme.primary,
@@ -879,7 +881,7 @@ fun LibraryScreen(
                         ) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_bookmark_filled_24),
-                                contentDescription = stringResource(R.string.audio_bookmarks_cd_open)
+                                contentDescription = stringResource(Res.string.audio_bookmarks_cd_open)
                             )
                         }
                         FilledIconButton(
@@ -894,7 +896,7 @@ fun LibraryScreen(
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.rounded_settings_24),
-                                contentDescription = stringResource(R.string.presentation_batch_d_open_settings_cd)
+                                contentDescription = stringResource(Res.string.presentation_batch_d_open_settings_cd)
                             )
                         }
                     },
@@ -948,13 +950,13 @@ fun LibraryScreen(
                         }
                         TabAnimation(
                             index = -1,
-                            title = stringResource(R.string.presentation_batch_d_edit_library_tabs_cd),
+                            title = stringResource(Res.string.presentation_batch_d_edit_library_tabs_cd),
                             selectedIndex = currentTabIndex,
                             onClick = { showReorderTabsSheet = true }
                         ) {
                             Icon(
                                 ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
-                                contentDescription = stringResource(R.string.presentation_batch_d_reorder_tabs_cd),
+                                contentDescription = stringResource(Res.string.presentation_batch_d_reorder_tabs_cd),
                                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
                             )
                         }
@@ -1272,7 +1274,7 @@ fun LibraryScreen(
                             val isGenresTab = currentTabId == LibraryTabId.GENRES
 
                             LibrarySortBottomSheet(
-                                title = stringResource(R.string.presentation_batch_d_sort_by),
+                                title = stringResource(Res.string.presentation_batch_d_sort_by),
                                 options = sanitizedSortOptions,
                                 selectedOption = selectedOptionForSheet,
                                 onDismiss = { playerViewModel.hideSortingSheet() },
@@ -1292,12 +1294,12 @@ fun LibraryScreen(
                                 onSecondaryDirectionToggle = { option ->
                                     playerViewModel.sortFolderSongs(option)
                                 },
-                                primaryTargetLabel = stringResource(R.string.library_tab_folders),
-                                secondaryTargetLabel = stringResource(R.string.library_tab_songs),
+                                primaryTargetLabel = stringResource(Res.string.library_tab_folders),
+                                secondaryTargetLabel = stringResource(Res.string.library_tab_songs),
                                 initiallyShowSecondary = playerUiState.currentFolder?.songs?.isNotEmpty() == true,
                                 showViewToggle = isFoldersTab,
-                                viewSectionTitle = stringResource(R.string.presentation_batch_d_view_section_view),
-                                viewToggleLabel = stringResource(R.string.presentation_batch_d_playlist_view),
+                                viewSectionTitle = stringResource(Res.string.presentation_batch_d_view_section_view),
+                                viewToggleLabel = stringResource(Res.string.presentation_batch_d_playlist_view),
                                 viewToggleChecked = playerUiState.isFoldersPlaylistView,
                                 onViewToggleChange = { isChecked ->
                                     playerViewModel.setFoldersPlaylistView(isChecked)
@@ -1323,7 +1325,7 @@ fun LibraryScreen(
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setAlbumsListView(false) },
-                                                text = stringResource(R.string.presentation_batch_d_view_grid),
+                                                text = stringResource(Res.string.presentation_batch_d_view_grid),
                                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_view_module_filled_24)
                                             )
 
@@ -1336,7 +1338,7 @@ fun LibraryScreen(
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setAlbumsListView(true) },
-                                                text = stringResource(R.string.presentation_batch_d_view_list),
+                                                text = stringResource(Res.string.presentation_batch_d_view_list),
                                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_view_list_filled_mirrored_24)
                                             )
                                         }
@@ -1357,7 +1359,7 @@ fun LibraryScreen(
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setGenreGridView(true) },
-                                                text = stringResource(R.string.presentation_batch_d_view_grid),
+                                                text = stringResource(Res.string.presentation_batch_d_view_grid),
                                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_view_module_filled_24)
                                             )
 
@@ -1370,7 +1372,7 @@ fun LibraryScreen(
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setGenreGridView(false) },
-                                                text = stringResource(R.string.presentation_batch_d_view_list),
+                                                text = stringResource(Res.string.presentation_batch_d_view_list),
                                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_view_list_filled_mirrored_24)
                                             )
                                         }
@@ -1392,7 +1394,7 @@ fun LibraryScreen(
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setFoldersSource(FolderSource.INTERNAL) },
-                                                text = stringResource(R.string.presentation_batch_d_storage_internal)
+                                                text = stringResource(Res.string.presentation_batch_d_storage_internal)
                                             )
                                             ToggleSegmentButton(
                                                 modifier = Modifier
@@ -1409,12 +1411,12 @@ fun LibraryScreen(
                                                         playerViewModel.setFoldersSource(FolderSource.SD_CARD)
                                                     }
                                                 },
-                                                text = stringResource(R.string.presentation_batch_d_storage_sd_card)
+                                                text = stringResource(Res.string.presentation_batch_d_storage_sd_card)
                                             )
                                         }
                                         if (!playerUiState.isSdCardAvailable) {
                                             Text(
-                                                text = stringResource(R.string.presentation_batch_d_sd_card_unavailable),
+                                                text = stringResource(Res.string.presentation_batch_d_sd_card_unavailable),
                                                 style = MaterialTheme.typography.bodySmall,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.padding(top = 8.dp, start = 2.dp)
@@ -1425,7 +1427,7 @@ fun LibraryScreen(
                                 extraContent = {
                                     if (currentTabId == LibraryTabId.PLAYLISTS || (isFoldersTab && playerUiState.isFoldersPlaylistView)) {
                                         Text(
-                                            text = stringResource(R.string.presentation_batch_d_view_section_layout),
+                                            text = stringResource(Res.string.presentation_batch_d_view_section_layout),
                                             style = MaterialTheme.typography.headlineSmall,
                                             fontFamily = io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans,
                                             fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
@@ -1447,7 +1449,7 @@ fun LibraryScreen(
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setPlaylistsGridView(false) },
-                                                text = stringResource(R.string.presentation_batch_d_view_list),
+                                                text = stringResource(Res.string.presentation_batch_d_view_list),
                                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_view_list_filled_mirrored_24)
                                             )
                                             ToggleSegmentButton(
@@ -1459,7 +1461,7 @@ fun LibraryScreen(
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setPlaylistsGridView(true) },
-                                                text = stringResource(R.string.presentation_batch_d_view_grid),
+                                                text = stringResource(Res.string.presentation_batch_d_view_grid),
                                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_view_module_filled_24)
                                             )
                                         }
@@ -1468,14 +1470,14 @@ fun LibraryScreen(
                                     if (!isFoldersTab && !isGenresTab) {
                                         Spacer(modifier = Modifier.height(12.dp))
                                         Text(
-                                            text = stringResource(R.string.presentation_batch_d_cloud_sources_heading),
+                                            text = stringResource(Res.string.presentation_batch_d_cloud_sources_heading),
                                             style = MaterialTheme.typography.headlineSmall,
                                             fontFamily = io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans,
                                             fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
                                             modifier = Modifier.padding(start = 2.dp, bottom = 8.dp)
                                         )
                                         io.github.raghavsatyadev.openplayer.presentation.components.LibrarySheetToggleCard(
-                                            label = stringResource(R.string.presentation_batch_d_cloud_only),
+                                            label = stringResource(Res.string.presentation_batch_d_cloud_only),
                                             checked = playerUiState.hideLocalMedia,
                                             boxBackgroundColor = if (playerUiState.hideLocalMedia)
                                                 MaterialTheme.colorScheme.tertiary
@@ -1642,7 +1644,7 @@ fun LibraryScreen(
                                         val folders = playerUiState.musicFolders
                                         val currentFolder = playerUiState.currentFolder
                                         val isLoading = playerUiState.isLoadingLibraryCategories
-                                        val defaultFolderName = stringResource(R.string.presentation_batch_d_folder_name_fallback)
+                                        val defaultFolderName = stringResource(Res.string.presentation_batch_d_folder_name_fallback)
 
                                         LibraryFoldersTab(
                                             folders = folders,
@@ -1936,7 +1938,7 @@ fun LibraryScreen(
     }
 
     if (showGenreMultiSelectionSheet && selectedGenres.isNotEmpty()) {
-        val noPlayableGenreSongsMessage = stringResource(R.string.player_no_playable_songs_in_genres)
+        val noPlayableGenreSongsMessage = stringResource(Res.string.player_no_playable_songs_in_genres)
         val clearGenreSelection = {
             selectedGenres = persistentListOf()
             showGenreMultiSelectionSheet = false
@@ -2138,22 +2140,21 @@ fun LibraryScreen(
                 pendingMergePlaylistIds = emptyList()
                 mergePlaylistName = ""
             },
-            title = { Text(stringResource(R.string.presentation_batch_d_merge_playlists_title)) },
+            title = { Text(stringResource(Res.string.presentation_batch_d_merge_playlists_title)) },
             text = {
                 Column {
-                    Text(stringResource(R.string.presentation_batch_d_merge_playlists_prompt))
+                    Text(stringResource(Res.string.presentation_batch_d_merge_playlists_prompt))
                     Spacer(modifier = Modifier.height(12.dp))
                     OutlinedTextField(
                         value = mergePlaylistName,
                         onValueChange = { mergePlaylistName = it },
-                        placeholder = { Text(stringResource(R.string.presentation_batch_d_merge_playlists_placeholder)) },
+                        placeholder = { Text(stringResource(Res.string.presentation_batch_d_merge_playlists_placeholder)) },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = stringResource(
-                            R.string.presentation_batch_d_merge_playlists_body,
+                        text = stringResource(Res.string.presentation_batch_d_merge_playlists_body,
                             pendingMergePlaylistIds.size
                         ),
                         style = MaterialTheme.typography.bodySmall,
@@ -2176,7 +2177,7 @@ fun LibraryScreen(
                         }
                     }
                 ) {
-                    Text(stringResource(R.string.action_merge))
+                    Text(stringResource(Res.string.action_merge))
                 }
             },
             dismissButton = {
@@ -2185,7 +2186,7 @@ fun LibraryScreen(
                     pendingMergePlaylistIds = emptyList()
                     mergePlaylistName = ""
                 }) {
-                    Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         )
@@ -2286,18 +2287,18 @@ private fun LibraryInlineSyncIndicator(
 
         val phaseLabel = when (syncProgress.phase) {
             SyncProgress.SyncPhase.FETCHING_MEDIASTORE ->
-                stringResource(R.string.sync_scanning)
+                stringResource(Res.string.sync_scanning)
             SyncProgress.SyncPhase.PROCESSING_FILES,
             SyncProgress.SyncPhase.SAVING_TO_DATABASE ->
-                stringResource(R.string.sync_processing)
+                stringResource(Res.string.sync_processing)
             SyncProgress.SyncPhase.SCANNING_LRC ->
-                stringResource(R.string.library_background_sync_lyrics)
+                stringResource(Res.string.library_background_sync_lyrics)
             SyncProgress.SyncPhase.CLEANING_CACHE ->
-                stringResource(R.string.library_background_sync_cache)
+                stringResource(Res.string.library_background_sync_cache)
             SyncProgress.SyncPhase.SYNCING_CLOUD ->
-                stringResource(R.string.library_background_sync_cloud)
+                stringResource(Res.string.library_background_sync_cloud)
             else ->
-                stringResource(R.string.sync_in_progress)
+                stringResource(Res.string.sync_in_progress)
         }
 
         Column(
@@ -2355,7 +2356,7 @@ private fun LibrarySyncOverlay(syncManager: io.github.raghavsatyadev.openplayer.
                     LoadingIndicator(modifier = Modifier.size(64.dp))
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = stringResource(R.string.syncing_library),
+                        text = stringResource(Res.string.syncing_library),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -2647,12 +2648,12 @@ private fun LibraryTabSwitcherSheet(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = stringResource(R.string.presentation_batch_d_library_tabs_sheet_title),
+                text = stringResource(Res.string.presentation_batch_d_library_tabs_sheet_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontFamily = RoundedSans
             )
             Text(
-                text = stringResource(R.string.presentation_batch_d_library_tabs_sheet_subtitle),
+                text = stringResource(Res.string.presentation_batch_d_library_tabs_sheet_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -2701,7 +2702,7 @@ private fun LibraryTabSwitcherSheet(
                                 contentDescription = null
                             )
                             Spacer(modifier = Modifier.width(10.dp))
-                            Text(stringResource(R.string.presentation_batch_d_reorder_tabs_label))
+                            Text(stringResource(Res.string.presentation_batch_d_reorder_tabs_label))
                         }
                     }
                 }
@@ -3361,7 +3362,7 @@ fun FolderListItem(
         Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_folder),
-                contentDescription = stringResource(R.string.presentation_batch_d_cd_folder),
+                contentDescription = stringResource(Res.string.presentation_batch_d_cd_folder),
                 modifier = Modifier
                     .size(48.dp)
                     .background(MaterialTheme.colorScheme.primaryContainer, ShapeCache.expressiveClover)
@@ -3552,7 +3553,7 @@ fun AlbumGridItemRedesigned(
                         var isLoadingImage by remember { mutableStateOf(true) }
                         SmartImage(
                             model = album.albumArtUriString,
-                            contentDescription = stringResource(R.string.cd_album_art_for_title, album.title),
+                            contentDescription = stringResource(Res.string.cd_album_art_for_title, album.title),
                             contentScale = ContentScale.Crop,
                             targetSize = Size(256, 256),
                             modifier = Modifier
@@ -3736,7 +3737,7 @@ fun ArtistListItem(
                         } else {
                             Icon(
                                 painter = painterResource(R.drawable.rounded_artist_24),
-                                contentDescription = stringResource(R.string.presentation_batch_d_cd_artist),
+                                contentDescription = stringResource(Res.string.presentation_batch_d_cd_artist),
                                 modifier = Modifier.padding(8.dp),
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer
                             )
@@ -3889,7 +3890,7 @@ fun AlbumListItem(
                         var isLoadingImage by remember { mutableStateOf(true) }
                         SmartImage(
                             model = album.albumArtUriString,
-                            contentDescription = stringResource(R.string.cd_album_art_for_title, album.title),
+                            contentDescription = stringResource(Res.string.cd_album_art_for_title, album.title),
                             contentScale = ContentScale.Crop,
                             targetSize = Size(256, 256),
                             modifier = Modifier.fillMaxSize(),

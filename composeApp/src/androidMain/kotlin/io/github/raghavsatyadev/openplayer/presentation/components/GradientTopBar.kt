@@ -39,7 +39,8 @@ import io.github.raghavsatyadev.openplayer.AppBuildInfo
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerStatusBarStyle
-import androidx.compose.ui.res.stringResource
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +80,7 @@ fun GenreGradientTopBar(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                    contentDescription = stringResource(R.string.auth_cd_back),
+                    contentDescription = stringResource(Res.string.auth_cd_back),
                     tint = startColor
                 )
             }
@@ -133,7 +134,7 @@ fun HomeGradientTopBar(
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.rounded_menu_24),
-                        contentDescription = stringResource(R.string.sidebar_open)
+                        contentDescription = stringResource(Res.string.sidebar_open)
                     )
                 }
                 FilledTonalButton(
@@ -147,8 +148,8 @@ fun HomeGradientTopBar(
                 ) {
                     Text(
                         text = when (AppBuildInfo.buildType) {
-                            "release" -> stringResource(R.string.presentation_batch_g_topbar_build_stable)
-                            "debug" -> stringResource(R.string.presentation_batch_g_topbar_build_debug)
+                            "release" -> stringResource(Res.string.presentation_batch_g_topbar_build_stable)
+                            "debug" -> stringResource(Res.string.presentation_batch_g_topbar_build_debug)
                             else -> AppBuildInfo.buildType.replaceFirstChar { it.uppercase() }
                         },
                         style = MaterialTheme.typography.titleSmall,
@@ -171,7 +172,7 @@ fun HomeGradientTopBar(
                 ) {
                     Icon(
                           imageVector = ImageVector.vectorResource(R.drawable.rounded_cloud_filled_24),
-                          contentDescription = stringResource(R.string.presentation_batch_g_streaming_title)
+                          contentDescription = stringResource(Res.string.presentation_batch_g_streaming_title)
                     )
                 }
                 FilledIconButton(
@@ -183,7 +184,7 @@ fun HomeGradientTopBar(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.round_newspaper_24),
-                        contentDescription = stringResource(R.string.presentation_batch_g_topbar_cd_changelog)
+                        contentDescription = stringResource(Res.string.presentation_batch_g_topbar_cd_changelog)
                     )
                 }
                 FilledIconButton(
@@ -195,7 +196,7 @@ fun HomeGradientTopBar(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.rounded_settings_24),
-                        contentDescription = stringResource(R.string.settings_top_bar_title)
+                        contentDescription = stringResource(Res.string.settings_top_bar_title)
                     )
                 }
             }

@@ -101,6 +101,8 @@ import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.data.preferences.LaunchTab
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -275,13 +277,13 @@ fun SettingsScreen(
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_search_24),
-                            contentDescription = stringResource(R.string.search),
+                            contentDescription = stringResource(Res.string.search),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(24.dp)
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                         Text(
-                            text = stringResource(R.string.settings_search_hint),
+                            text = stringResource(Res.string.settings_search_hint),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f)
                         )
@@ -323,7 +325,7 @@ fun SettingsScreen(
             }
         }
         CollapsibleCommonTopBar(
-                title = stringResource(R.string.settings_top_bar_title),
+                title = stringResource(Res.string.settings_top_bar_title),
                 collapseFraction = collapseFraction,
                 headerHeight = currentTopBarHeightDp,
                 onBackClick = onNavigationIconClick
@@ -362,7 +364,7 @@ fun SettingsScreen(
                             }) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                                    contentDescription = stringResource(R.string.auth_cd_back),
+                                    contentDescription = stringResource(Res.string.auth_cd_back),
                                     tint = MaterialTheme.colorScheme.onSurface
                                 )
                             }
@@ -372,7 +374,7 @@ fun SettingsScreen(
                                 onValueChange = { searchFieldValue = it },
                                 placeholder = {
                                     Text(
-                                        text = stringResource(R.string.settings_search_hint),
+                                        text = stringResource(Res.string.settings_search_hint),
                                         style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f)
                                     )
@@ -393,7 +395,7 @@ fun SettingsScreen(
                                 IconButton(onClick = { searchFieldValue = TextFieldValue("") }) {
                                     Icon(
                                         imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                                        contentDescription = stringResource(R.string.cd_clear_search_query),
+                                        contentDescription = stringResource(Res.string.cd_clear_search_query),
                                         tint = MaterialTheme.colorScheme.onSurface
                                     )
                                 }

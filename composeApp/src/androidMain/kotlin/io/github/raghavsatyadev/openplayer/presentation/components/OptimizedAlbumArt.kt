@@ -23,7 +23,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.SubcomposeAsyncImage
@@ -37,6 +36,8 @@ import coil3.size.Dimension
 import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.utils.LocalArtworkUri
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 internal const val MaxSafeAlbumArtDimensionPx = 2048
 internal val SafeOriginalAlbumArtSize = Size(MaxSafeAlbumArtDimensionPx, MaxSafeAlbumArtDimensionPx)
@@ -119,7 +120,7 @@ fun OptimizedAlbumArt(
 
     SubcomposeAsyncImage(
         model = requestModel,
-        contentDescription = stringResource(R.string.cd_album_art_of, title),
+        contentDescription = stringResource(Res.string.cd_album_art_of, title),
         modifier = modifier,
         contentScale = ContentScale.Crop,
         onSuccess = { state ->
@@ -166,7 +167,7 @@ private fun PlaceholderContent(title: String) {
     ) {
         Image(
             painter = painterResource(R.drawable.ic_music_placeholder),
-            contentDescription = stringResource(R.string.cd_album_art_placeholder, title),
+            contentDescription = stringResource(Res.string.cd_album_art_placeholder, title),
             contentScale = ContentScale.Fit,
             modifier = Modifier.size(96.dp),
             colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
@@ -187,7 +188,7 @@ private fun renderDirectAlbumArt(
         is ImageVector -> {
             Image(
                 imageVector = model,
-                contentDescription = stringResource(R.string.cd_album_art_of, title),
+                contentDescription = stringResource(Res.string.cd_album_art_of, title),
                 contentScale = ContentScale.Crop,
                 modifier = modifier.fillMaxSize()
             )
@@ -196,7 +197,7 @@ private fun renderDirectAlbumArt(
         is Painter -> {
             Image(
                 painter = model,
-                contentDescription = stringResource(R.string.cd_album_art_of, title),
+                contentDescription = stringResource(Res.string.cd_album_art_of, title),
                 contentScale = ContentScale.Crop,
                 modifier = modifier.fillMaxSize()
             )
@@ -205,7 +206,7 @@ private fun renderDirectAlbumArt(
         is ImageBitmap -> {
             Image(
                 bitmap = model,
-                contentDescription = stringResource(R.string.cd_album_art_of, title),
+                contentDescription = stringResource(Res.string.cd_album_art_of, title),
                 contentScale = ContentScale.Crop,
                 modifier = modifier.fillMaxSize()
             )
@@ -214,7 +215,7 @@ private fun renderDirectAlbumArt(
         is Bitmap -> {
             Image(
                 bitmap = model.asImageBitmap(),
-                contentDescription = stringResource(R.string.cd_album_art_of, title),
+                contentDescription = stringResource(Res.string.cd_album_art_of, title),
                 contentScale = ContentScale.Crop,
                 modifier = modifier.fillMaxSize()
             )

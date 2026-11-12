@@ -87,9 +87,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.EnhancedSongListItem
 import io.github.raghavsatyadev.openplayer.presentation.utils.getSegmentedItemShape
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.persistentListOf
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -101,9 +102,9 @@ fun DailyMixScreen(
     navController: NavController,
     smartMixViewModel: SmartMixViewModel = koinViewModel(),
 ) = traceSection("DailyMixScreen.Composition") {
-    val dailyMixTitle = stringResource(R.string.presentation_batch_b_daily_mix_title)
-    val playItLabel = stringResource(R.string.presentation_batch_b_play_it)
-    val shuffleLabel = stringResource(R.string.shortcut_shuffle_short)
+    val dailyMixTitle = stringResource(Res.string.presentation_batch_b_daily_mix_title)
+    val playItLabel = stringResource(Res.string.presentation_batch_b_play_it)
+    val shuffleLabel = stringResource(Res.string.shortcut_shuffle_short)
     val dailyMixSongs: ImmutableList<Song> by playerViewModel.dailyMixSongs.collectAsStateWithLifecycle()
     val currentSongId by remember { playerViewModel.stablePlayerState.map { it.currentSong?.id }.distinctUntilChanged() }.collectAsStateWithLifecycle(initialValue = null)
     val isPlaying by remember { playerViewModel.stablePlayerState.map { it.isPlaying }.distinctUntilChanged() }.collectAsStateWithLifecycle(initialValue = false)
@@ -266,7 +267,7 @@ fun DailyMixScreen(
                                 bottomEnd = 14.dp
                             )
                         ) {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(R.string.cd_play), modifier = Modifier.size(
+                            Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play), modifier = Modifier.size(
                                 ButtonDefaults.IconSize))
                             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                             Text(playItLabel)
@@ -335,7 +336,7 @@ fun DailyMixScreen(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                contentDescription = stringResource(R.string.auth_cd_back)
+                contentDescription = stringResource(Res.string.auth_cd_back)
             )
         }
 
@@ -384,7 +385,7 @@ private fun ExpressiveDailyMixHeader(
     scrollState: LazyListState,
     onTuneMix: () -> Unit
 ) = traceSection("ExpressiveDailyMixHeader.Composition") {
-    val dailyMixHeaderTitle = stringResource(R.string.presentation_batch_b_daily_mix_title)
+    val dailyMixHeaderTitle = stringResource(Res.string.presentation_batch_b_daily_mix_title)
     val albumArts = remember(songs) { songs.map { it.albumArtUriString }.distinct().take(3) }
     val totalDuration = remember(songs) { songs.sumOf { it.duration } }
 
@@ -511,8 +512,7 @@ private fun ExpressiveDailyMixHeader(
                 Spacer(Modifier.height(4.dp))
                 Text(
                     modifier = Modifier.padding(start = 3.dp),
-                    text = pluralStringResource(
-                        R.plurals.presentation_batch_b_songs_dot_duration,
+                    text = pluralStringResource(Res.plurals.presentation_batch_b_songs_dot_duration,
                         songs.size,
                         songs.size,
                         formatDuration(totalDuration)
@@ -532,7 +532,7 @@ private fun ExpressiveDailyMixHeader(
                 Icon(
                     modifier = Modifier.size(20.dp),
                     painter = painterResource(R.drawable.ic_smart_mix),
-                    contentDescription = stringResource(R.string.mix_tune_today)
+                    contentDescription = stringResource(Res.string.mix_tune_today)
                 )
             }
         }

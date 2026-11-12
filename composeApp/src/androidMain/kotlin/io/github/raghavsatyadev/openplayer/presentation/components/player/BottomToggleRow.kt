@@ -8,13 +8,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.Player
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.LocalMaterialTheme
 import io.github.raghavsatyadev.openplayer.presentation.components.ToggleSegmentButton
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun BottomToggleRow(
@@ -85,7 +86,7 @@ fun BottomToggleRow(
                 inactiveContentColor = inactiveContentColor,
                 onClick = onShuffleToggle,
                 iconId = R.drawable.rounded_shuffle_24,
-                contentDesc = stringResource(R.string.cd_shuffle)
+                contentDesc = stringResource(Res.string.cd_shuffle)
             )
             val repeatActive = repeatMode != Player.REPEAT_MODE_OFF
             val repeatIcon = when (repeatMode) {
@@ -103,7 +104,7 @@ fun BottomToggleRow(
                 inactiveContentColor = inactiveContentColor,
                 onClick = onRepeatToggle,
                 iconId = repeatIcon,
-                contentDesc = stringResource(R.string.cd_repeat)
+                contentDesc = stringResource(Res.string.cd_repeat)
             )
             ToggleSegmentButton(
                 modifier = commonModifier,
@@ -115,7 +116,7 @@ fun BottomToggleRow(
                 inactiveContentColor = inactiveContentColor,
                 onClick = onFavoriteToggle,
                 iconId = if (isFavorite) R.drawable.round_favorite_24 else R.drawable.rounded_favorite_24,
-                contentDesc = stringResource(R.string.cd_favorite)
+                contentDesc = stringResource(Res.string.cd_favorite)
             )
         }
     }

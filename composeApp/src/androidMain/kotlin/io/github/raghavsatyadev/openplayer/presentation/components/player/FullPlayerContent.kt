@@ -107,7 +107,6 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioBookmarks
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.ui.res.stringResource
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.R
@@ -146,6 +145,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.withContext
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private const val SKIP_COMMAND_GUARD_MS = 96L
 
@@ -707,7 +708,7 @@ fun FullPlayerContent(
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(
                                         modifier = Modifier.padding(start = 18.dp),
-                                        text = stringResource(R.string.setcat_now_playing),
+                                        text = stringResource(Res.string.setcat_now_playing),
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis,
                                         style = MaterialTheme.typography.labelLargeEmphasized,
@@ -717,7 +718,7 @@ fun FullPlayerContent(
                                     if (currentSong != null && currentSong.contentUriString.startsWith("http")) {
                                         Icon(
                                             imageVector = ImageVector.vectorResource(R.drawable.rounded_cloud_filled_24),
-                                            contentDescription = stringResource(R.string.presentation_batch_g_player_cd_cloud_stream),
+                                            contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_cloud_stream),
                                             tint = LocalMaterialTheme.current.onPrimaryContainer.copy(alpha = 0.6f),
                                             modifier = Modifier.padding(start = 8.dp).size(16.dp)
                                         )
@@ -743,7 +744,7 @@ fun FullPlayerContent(
                             ) {
                                 Icon(
                                     painter = painterResource(R.drawable.rounded_keyboard_arrow_down_24),
-                                    contentDescription = stringResource(R.string.presentation_batch_g_player_cd_collapse),
+                                    contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_collapse),
                                     tint = playerAccentColor
                                 )
                             }
@@ -772,7 +773,7 @@ fun FullPlayerContent(
                                         ImageVector.vectorResource(R.drawable.rounded_speaker_filled_24)
                                     },
                                     contentDescription = bluetoothOutputName
-                                        ?: stringResource(R.string.player_audio_output_title),
+                                        ?: stringResource(Res.string.player_audio_output_title),
                                     tint = playerAccentColor
                                 )
                             }
@@ -786,7 +787,7 @@ fun FullPlayerContent(
                             ) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_bookmark_filled_24),
-                                    contentDescription = stringResource(R.string.audio_bookmarks_cd_add),
+                                    contentDescription = stringResource(Res.string.audio_bookmarks_cd_add),
                                     tint = playerAccentColor
                                 )
                             }
@@ -803,7 +804,7 @@ fun FullPlayerContent(
                             ) {
                                 Icon(
                                     painter = painterResource(R.drawable.rounded_queue_music_24),
-                                    contentDescription = stringResource(R.string.presentation_batch_g_player_cd_queue),
+                                    contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_queue),
                                     tint = playerAccentColor
                                 )
                             }
@@ -1490,7 +1491,7 @@ private fun SongMetadataDisplaySection(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.rounded_lyrics_24),
-                        contentDescription = stringResource(R.string.presentation_batch_g_player_cd_lyrics),
+                        contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_lyrics),
                         tint = chipContentColor
                     )
                 }
@@ -1511,7 +1512,7 @@ private fun SongMetadataDisplaySection(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.rounded_queue_music_24),
-                        contentDescription = stringResource(R.string.presentation_batch_g_player_cd_queue),
+                        contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_queue),
                         tint = chipContentColor
                     )
                 }
@@ -1528,7 +1529,7 @@ private fun SongMetadataDisplaySection(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.rounded_lyrics_24),
-                    contentDescription = stringResource(R.string.presentation_batch_g_player_cd_lyrics)
+                    contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_lyrics)
                 )
             }
         }
@@ -1809,7 +1810,7 @@ private fun EfficientSlider(
         trackEdgePadding = trackEdgePadding,
         waveform = waveform,
         chapterMarkers = chapterMarkers,
-        semanticsLabel = stringResource(R.string.cd_playback_position),
+        semanticsLabel = stringResource(Res.string.cd_playback_position),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 0.dp)
@@ -2530,7 +2531,7 @@ private fun BottomToggleRow(
                 inactiveContentColor = inactiveContentColor,
                 onClick = onShuffleToggle,
                 iconId = R.drawable.rounded_shuffle_24,
-                contentDesc = stringResource(R.string.cd_shuffle)
+                contentDesc = stringResource(Res.string.cd_shuffle)
             )
             val repeatActive = repeatMode != Player.REPEAT_MODE_OFF
             val repeatIcon = when (repeatMode) {
@@ -2548,7 +2549,7 @@ private fun BottomToggleRow(
                 inactiveContentColor = inactiveContentColor,
                 onClick = onRepeatToggle,
                 iconId = repeatIcon,
-                contentDesc = stringResource(R.string.cd_repeat),
+                contentDesc = stringResource(Res.string.cd_repeat),
                 onLongClick = repeatN?.let { { showRepeatNPicker = true } },
                 badge = if (repeatNRemaining > 0) {
                     { RepeatNBadge(repeatNRemaining, Modifier.align(Alignment.TopEnd).padding(top = 6.dp, end = 10.dp)) }
@@ -2564,7 +2565,7 @@ private fun BottomToggleRow(
                 inactiveContentColor = inactiveContentColor,
                 onClick = onFavoriteToggle,
                 iconId = if (isFavorite) R.drawable.round_favorite_24 else R.drawable.rounded_favorite_24,
-                contentDesc = stringResource(R.string.cd_favorite)
+                contentDesc = stringResource(Res.string.cd_favorite)
             )
         }
     }

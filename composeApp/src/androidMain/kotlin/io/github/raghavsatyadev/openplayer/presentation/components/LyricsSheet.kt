@@ -69,7 +69,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.onLongClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -154,6 +153,8 @@ import kotlinx.coroutines.withContext
 import androidx.compose.runtime.produceState
 import kotlin.coroutines.cancellation.CancellationException
 import co.touchlab.kermit.Logger
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 internal data class LyricsSheetColors(
     val container: Color,
@@ -428,10 +429,10 @@ fun LyricsSheet(
     val coroutineScope = rememberCoroutineScope()
 
     val clipboard = LocalClipboard.current
-    val clipLabel = stringResource(R.string.lyrics)
-    val lyricsCopiedMessage = stringResource(R.string.lyrics_copied)
-    val lineCopiedMessage = stringResource(R.string.lyrics_line_copied)
-    val copyLineActionLabel = stringResource(R.string.lyrics_copy_line_action)
+    val clipLabel = stringResource(Res.string.lyrics)
+    val lyricsCopiedMessage = stringResource(Res.string.lyrics_copied)
+    val lineCopiedMessage = stringResource(Res.string.lyrics_line_copied)
+    val copyLineActionLabel = stringResource(Res.string.lyrics_copy_line_action)
 
     fun copyLyricsToClipboard(text: String, confirmation: String) {
         if (text.isBlank()) return
@@ -604,10 +605,10 @@ fun LyricsSheet(
         
         AlertDialog(
             onDismissRequest = { showSaveLyricsDialog = false },
-            title = { Text(stringResource(R.string.save_lyrics_dialog_title)) },
+            title = { Text(stringResource(Res.string.save_lyrics_dialog_title)) },
             text = {
                 Column {
-                    Text(stringResource(R.string.save_lyrics_dialog_message))
+                    Text(stringResource(Res.string.save_lyrics_dialog_message))
                     Spacer(modifier = Modifier.height(16.dp))
                     if (hasSynced) {
                         FilledTonalButton(
@@ -621,7 +622,7 @@ fun LyricsSheet(
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(stringResource(R.string.save_synced_lyrics))
+                            Text(stringResource(Res.string.save_synced_lyrics))
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                     }
@@ -637,7 +638,7 @@ fun LyricsSheet(
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(stringResource(R.string.save_plain_lyrics))
+                            Text(stringResource(Res.string.save_plain_lyrics))
                         }
                     }
                 }
@@ -645,7 +646,7 @@ fun LyricsSheet(
             confirmButton = {},
             dismissButton = {
                 TextButton(onClick = { showSaveLyricsDialog = false }) {
-                    Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         )
@@ -1023,14 +1024,14 @@ fun LyricsSheet(
                                 Icon(
                                     modifier = Modifier.size(32.dp),
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_pause_filled_24),
-                                    contentDescription = stringResource(R.string.cd_pause),
+                                    contentDescription = stringResource(Res.string.cd_pause),
                                     tint = onPlayPauseColor
                                 )
                             } else {
                                 Icon(
                                     modifier = Modifier.size(32.dp),
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
-                                    contentDescription = stringResource(R.string.cd_play),
+                                    contentDescription = stringResource(Res.string.cd_play),
                                     tint = onPlayPauseColor
                                 )
                             }
@@ -1184,7 +1185,7 @@ fun LyricsSheet(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_keyboard_arrow_up_24),
-                    contentDescription = stringResource(R.string.cd_show_controls)
+                    contentDescription = stringResource(Res.string.cd_show_controls)
                 )
             }
         }
@@ -2204,7 +2205,7 @@ private fun LyricsTrackInfo(
         SmartImage(
             model = song.albumArtUriString ?: R.drawable.rounded_album_24,
             shape = albumShape,
-            contentDescription = stringResource(R.string.cd_cover_art),
+            contentDescription = stringResource(Res.string.cd_cover_art),
             modifier = Modifier
                 .size(66.dp)
                 .padding(6.dp)

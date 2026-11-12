@@ -102,6 +102,8 @@ import kotlinx.coroutines.withContext
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import co.touchlab.kermit.Logger
 import kotlin.math.roundToInt
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private const val NoticesAssetPath = "licenses/THIRD_PARTY_NOTICES.md"
 
@@ -321,7 +323,7 @@ fun LicensesScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             Text(
-                                text = stringResource(R.string.about_licenses_title),
+                                text = stringResource(Res.string.about_licenses_title),
                                 style = ExpTitleTypography.displaySmall,
                                 color = MaterialTheme.colorScheme.onSurface,
                             )
@@ -341,7 +343,7 @@ fun LicensesScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = stringResource(R.string.about_licenses_sheet_subtitle),
+                                text = stringResource(Res.string.about_licenses_sheet_subtitle),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -387,7 +389,7 @@ fun LicensesScreen(
                             onValueChange = { searchQuery = it },
                             placeholder = {
                                 Text(
-                                    text = stringResource(R.string.licenses_search_placeholder),
+                                    text = stringResource(Res.string.licenses_search_placeholder),
                                     style = MaterialTheme.typography.bodyMedium,
                                 )
                             },
@@ -403,7 +405,7 @@ fun LicensesScreen(
                                     IconButton(onClick = { searchQuery = "" }) {
                                         Icon(
                                             imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                                            contentDescription = stringResource(R.string.licenses_cd_clear_search),
+                                            contentDescription = stringResource(Res.string.licenses_cd_clear_search),
                                         )
                                     }
                                 }
@@ -461,7 +463,7 @@ fun LicensesScreen(
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
-                                text = stringResource(R.string.licenses_empty_results, searchQuery),
+                                text = stringResource(Res.string.licenses_empty_results, searchQuery),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -486,7 +488,7 @@ fun LicensesScreen(
         }
 
         CollapsibleCommonTopBar(
-            title = stringResource(R.string.about_licenses_title),
+            title = stringResource(Res.string.about_licenses_title),
             collapseFraction = collapseFraction,
             headerHeight = currentTopBarHeightDp,
             onBackClick = onNavigationIconClick,
@@ -619,10 +621,10 @@ private fun LicenseDetailDialog(
     onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
-    val sectionLabel = stringResource(R.string.licenses_detail_section)
-    val sourceLabel = stringResource(R.string.licenses_detail_source)
-    val licenseLabel = stringResource(R.string.licenses_detail_license)
-    val copiedMessage = stringResource(R.string.licenses_toast_copied)
+    val sectionLabel = stringResource(Res.string.licenses_detail_section)
+    val sourceLabel = stringResource(Res.string.licenses_detail_source)
+    val licenseLabel = stringResource(Res.string.licenses_detail_license)
+    val copiedMessage = stringResource(Res.string.licenses_toast_copied)
     val noticeText = remember(item, licenseText, sectionLabel, sourceLabel, licenseLabel) {
         buildString {
             appendLine(item.name)
@@ -667,7 +669,7 @@ private fun LicenseDetailDialog(
                         IconButton(onClick = onDismiss) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                                contentDescription = stringResource(R.string.licenses_cd_close),
+                                contentDescription = stringResource(Res.string.licenses_cd_close),
                                 tint = MaterialTheme.colorScheme.onSurface,
                             )
                         }
@@ -705,7 +707,7 @@ private fun LicenseDetailDialog(
                         ) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_content_copy_filled_24),
-                                contentDescription = stringResource(R.string.licenses_cd_copy),
+                                contentDescription = stringResource(Res.string.licenses_cd_copy),
                                 tint = MaterialTheme.colorScheme.primary,
                             )
                         }

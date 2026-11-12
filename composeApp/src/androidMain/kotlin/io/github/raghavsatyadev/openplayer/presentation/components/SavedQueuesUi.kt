@@ -29,8 +29,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -39,6 +37,9 @@ import io.github.raghavsatyadev.openplayer.data.repository.SavedQueue
 import io.github.raghavsatyadev.openplayer.utils.formatDuration
 import java.text.DateFormat
 import java.util.Date
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** Default name for a new saved queue: the current date and time. */
 fun defaultSavedQueueName(nowMs: Long): String =
@@ -54,23 +55,23 @@ fun SaveQueueDialog(
     var name by rememberSaveable { mutableStateOf(defaultName) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.saved_queues_save_title)) },
+        title = { Text(stringResource(Res.string.saved_queues_save_title)) },
         text = {
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it.replace("\n", "") },
-                label = { Text(stringResource(R.string.saved_queues_name_label)) },
+                label = { Text(stringResource(Res.string.saved_queues_name_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
         },
         confirmButton = {
             TextButton(onClick = { onConfirm(name.trim().ifEmpty { defaultName }) }) {
-                Text(stringResource(R.string.saved_queues_save_confirm))
+                Text(stringResource(Res.string.saved_queues_save_confirm))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.saved_queues_cancel)) }
+            TextButton(onClick = onDismiss) { Text(stringResource(Res.string.saved_queues_cancel)) }
         }
     )
 }
@@ -104,13 +105,13 @@ fun SavedQueuesContent(
 
     Column(modifier = modifier.fillMaxWidth().padding(bottom = 16.dp)) {
         Text(
-            text = stringResource(R.string.saved_queues_title),
+            text = stringResource(Res.string.saved_queues_title),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
         )
         AnimatedVisibility(visible = queues.isEmpty()) {
             Text(
-                text = stringResource(R.string.saved_queues_empty),
+                text = stringResource(Res.string.saved_queues_empty),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp)
@@ -131,17 +132,17 @@ fun SavedQueuesContent(
     pendingDelete?.let { queue ->
         AlertDialog(
             onDismissRequest = { pendingDelete = null },
-            title = { Text(stringResource(R.string.saved_queues_delete_title)) },
-            text = { Text(stringResource(R.string.saved_queues_delete_message, queue.name)) },
+            title = { Text(stringResource(Res.string.saved_queues_delete_title)) },
+            text = { Text(stringResource(Res.string.saved_queues_delete_message, queue.name)) },
             confirmButton = {
                 TextButton(onClick = {
                     onDelete(queue)
                     pendingDelete = null
-                }) { Text(stringResource(R.string.saved_queues_delete_confirm)) }
+                }) { Text(stringResource(Res.string.saved_queues_delete_confirm)) }
             },
             dismissButton = {
                 TextButton(onClick = { pendingDelete = null }) {
-                    Text(stringResource(R.string.saved_queues_cancel))
+                    Text(stringResource(Res.string.saved_queues_cancel))
                 }
             }
         )
@@ -156,27 +157,27 @@ private fun SavedQueueRow(
     modifier: Modifier = Modifier
 ) {
     val count = queue.songIds.size
-    val countText = pluralStringResource(R.plurals.saved_queues_song_count, count, count)
+    val countText = pluralStringResource(Res.plurals.saved_queues_song_count, count, count)
     val date = remember(queue.createdAt) { defaultSavedQueueName(queue.createdAt) }
     ListItem(
         modifier = modifier.clickable(onClick = onPlay),
         leadingContent = {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
-                contentDescription = stringResource(R.string.saved_queues_cd_play, queue.name)
+                contentDescription = stringResource(Res.string.saved_queues_cd_play, queue.name)
             )
         },
         headlineContent = { Text(queue.name, maxLines = 1, overflow = TextOverflow.Ellipsis) },
         supportingContent = {
             Column {
                 Text(
-                    text = stringResource(R.string.saved_queues_item_summary, countText, date),
+                    text = stringResource(Res.string.saved_queues_item_summary, countText, date),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 if (queue.positionMs > 0L) {
                     Text(
-                        text = stringResource(R.string.saved_queues_item_position, formatDuration(queue.positionMs)),
+                        text = stringResource(Res.string.saved_queues_item_position, formatDuration(queue.positionMs)),
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
@@ -187,7 +188,7 @@ private fun SavedQueueRow(
                 IconButton(onClick = onDelete) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.rounded_delete_24),
-                        contentDescription = stringResource(R.string.saved_queues_cd_delete, queue.name)
+                        contentDescription = stringResource(Res.string.saved_queues_cd_delete, queue.name)
                     )
                 }
             }

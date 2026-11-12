@@ -35,7 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextOverflow
 import io.github.raghavsatyadev.openplayer.R
@@ -48,6 +47,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.util.lerp
 
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -100,7 +101,7 @@ fun LyricsFloatingToolbar(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                contentDescription = stringResource(R.string.auth_cd_back),
+                contentDescription = stringResource(Res.string.auth_cd_back),
                 tint = onBackgroundColor
             )
         }
@@ -123,7 +124,7 @@ fun LyricsFloatingToolbar(
                 inactiveContentColor = onBackgroundColor,
                 activeCornerRadius = 50.dp,
                 onClick = { onShowSyncedLyricsChange(true) },
-                text = stringResource(R.string.presentation_batch_g_lyrics_mode_synced),
+                text = stringResource(Res.string.presentation_batch_g_lyrics_mode_synced),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -138,7 +139,7 @@ fun LyricsFloatingToolbar(
                 inactiveContentColor = onBackgroundColor,
                 activeCornerRadius = 50.dp,
                 onClick = { onShowSyncedLyricsChange(false) },
-                text = stringResource(R.string.presentation_batch_g_lyrics_mode_static),
+                text = stringResource(Res.string.presentation_batch_g_lyrics_mode_static),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -155,7 +156,7 @@ fun LyricsFloatingToolbar(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_more_vert_24),
-                contentDescription = stringResource(R.string.presentation_batch_g_lyrics_cd_options),
+                contentDescription = stringResource(Res.string.presentation_batch_g_lyrics_cd_options),
                 tint = onBackgroundColor
             )
         }

@@ -16,6 +16,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.history.importer.HistoryImportSummary
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private const val SAMPLE_SHOWN = 10
 
@@ -25,9 +27,9 @@ fun HistoryImportSummaryBody(summary: HistoryImportSummary, onFinish: () -> Unit
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
             text = if (summary.imported > 0) {
-                stringResource(R.string.history_import_done_title, summary.imported)
+                stringResource(Res.string.history_import_done_title, summary.imported)
             } else {
-                stringResource(R.string.history_import_done_none)
+                stringResource(Res.string.history_import_done_none)
             },
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary
@@ -41,14 +43,14 @@ fun HistoryImportSummaryBody(summary: HistoryImportSummary, onFinish: () -> Unit
 
         if (summary.unmatchedSample.isNotEmpty()) {
             Text(
-                text = stringResource(R.string.history_import_unmatched_header),
+                text = stringResource(Res.string.history_import_unmatched_header),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(top = 8.dp)
             )
             summary.unmatchedSample.take(SAMPLE_SHOWN).forEach { track ->
                 Text(
-                    text = stringResource(R.string.history_import_unmatched_row, track.label, track.plays),
+                    text = stringResource(Res.string.history_import_unmatched_row, track.label, track.plays),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
@@ -57,7 +59,7 @@ fun HistoryImportSummaryBody(summary: HistoryImportSummary, onFinish: () -> Unit
             }
         }
         Button(onClick = onFinish, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
-            Text(stringResource(R.string.history_import_done_button))
+            Text(stringResource(Res.string.history_import_done_button))
         }
     }
 }

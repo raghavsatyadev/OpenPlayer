@@ -20,11 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun NoInternetDialog(
@@ -41,21 +42,21 @@ fun NoInternetDialog(
         },
         title = {
             Text(
-                text = stringResource(R.string.no_internet_dialog_title),
+                text = stringResource(Res.string.no_internet_dialog_title),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center
             )
         },
         text = {
             Text(
-                text = stringResource(R.string.no_internet_dialog_message),
+                text = stringResource(Res.string.no_internet_dialog_message),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center
             )
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.ok), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(stringResource(Res.string.ok), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     )
@@ -87,7 +88,7 @@ fun NoInternetScreen(
             )
             
             Text(
-                text = stringResource(R.string.offline_screen_title),
+                text = stringResource(Res.string.offline_screen_title),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
@@ -96,7 +97,7 @@ fun NoInternetScreen(
             Spacer(modifier = Modifier.height(8.dp))
             
             Text(
-                text = stringResource(R.string.offline_screen_message),
+                text = stringResource(Res.string.offline_screen_message),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
@@ -108,7 +109,7 @@ fun NoInternetScreen(
                 onClick = onRetry,
                 modifier = Modifier.fillMaxWidth(0.5f)
             ) {
-                Text(stringResource(R.string.auth_web_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(stringResource(Res.string.auth_web_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     }

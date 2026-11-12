@@ -48,12 +48,13 @@ import androidx.compose.ui.zIndex
 import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import androidx.compose.runtime.remember
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * Header component displayed during multi-selection mode.
@@ -114,7 +115,7 @@ fun SelectionHeader(
                     )
                 }
                 Text(
-                    text = if (selectedSongs.size == 1) stringResource(R.string.presentation_batch_g_selection_one_song) else stringResource(R.string.presentation_batch_g_selection_n_songs),
+                    text = if (selectedSongs.size == 1) stringResource(Res.string.presentation_batch_g_selection_one_song) else stringResource(Res.string.presentation_batch_g_selection_n_songs),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontFamily = RoundedSans
@@ -136,7 +137,7 @@ fun SelectionHeader(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_share_filled_24),
-                    contentDescription = stringResource(R.string.presentation_batch_g_selection_cd_share),
+                    contentDescription = stringResource(Res.string.presentation_batch_g_selection_cd_share),
                     modifier = Modifier.size(22.dp)
                 )
             }
@@ -151,7 +152,7 @@ fun SelectionHeader(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_favorite_filled_24),
-                    contentDescription = stringResource(R.string.presentation_batch_g_selection_cd_like),
+                    contentDescription = stringResource(Res.string.presentation_batch_g_selection_cd_like),
                     modifier = Modifier.size(22.dp)
                 )
             }
@@ -169,7 +170,7 @@ fun SelectionHeader(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_selection_play),
+                    text = stringResource(Res.string.presentation_batch_g_selection_play),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.SemiBold,
                     fontFamily = RoundedSans
@@ -240,8 +241,7 @@ private fun StackedCoverArts(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(
-                        R.string.presentation_batch_g_selection_overflow_count,
+                    text = stringResource(Res.string.presentation_batch_g_selection_overflow_count,
                         totalCount - songs.size
                     ),
                     style = MaterialTheme.typography.labelLarge,

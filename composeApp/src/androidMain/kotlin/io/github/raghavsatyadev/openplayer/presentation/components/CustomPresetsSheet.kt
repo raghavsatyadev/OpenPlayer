@@ -31,11 +31,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.equalizer.EqualizerPreset
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +62,7 @@ fun CustomPresetsSheet(
                 .padding(bottom = 24.dp)
         ) {
             Text(
-                text = stringResource(R.string.presentation_batch_g_presets_saved_title),
+                text = stringResource(Res.string.presentation_batch_g_presets_saved_title),
                 style = MaterialTheme.typography.titleLarge,
                 fontFamily = RoundedSans,
                 fontWeight = FontWeight.Bold,
@@ -76,7 +77,7 @@ fun CustomPresetsSheet(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = stringResource(R.string.presentation_batch_g_presets_empty),
+                        text = stringResource(Res.string.presentation_batch_g_presets_empty),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -156,21 +157,21 @@ private fun CustomPresetItem(
              IconButton(onClick = onPinClick) {
                 Icon(
                     imageVector = if (isPinned) ImageVector.vectorResource(R.drawable.rounded_star_filled_24) else ImageVector.vectorResource(R.drawable.rounded_star_24),
-                    contentDescription = if (isPinned) stringResource(R.string.presentation_batch_g_presets_cd_unpin) else stringResource(R.string.presentation_batch_g_presets_cd_pin),
+                    contentDescription = if (isPinned) stringResource(Res.string.presentation_batch_g_presets_cd_unpin) else stringResource(Res.string.presentation_batch_g_presets_cd_pin),
                     tint = if (isPinned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             IconButton(onClick = onRenameClick) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_24),
-                    contentDescription = stringResource(R.string.presentation_batch_g_presets_cd_rename),
+                    contentDescription = stringResource(Res.string.presentation_batch_g_presets_cd_rename),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             IconButton(onClick = onDeleteClick) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_delete_24),
-                    contentDescription = stringResource(R.string.presentation_batch_g_presets_cd_delete),
+                    contentDescription = stringResource(Res.string.presentation_batch_g_presets_cd_delete),
                     tint = MaterialTheme.colorScheme.error
                 )
             }

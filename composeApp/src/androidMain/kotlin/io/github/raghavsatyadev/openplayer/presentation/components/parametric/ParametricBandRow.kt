@@ -33,6 +33,8 @@ import io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricB
 import java.util.Locale
 import kotlin.math.log10
 import kotlin.math.pow
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 internal fun bandTypeLabel(type: ParametricBandType): String = stringResource(
@@ -60,7 +62,7 @@ fun ParametricBandRow(
         Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    stringResource(R.string.parametric_eq_band_number, number),
+                    stringResource(Res.string.parametric_eq_band_number, number),
                     style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier.width(72.dp),
                 )
@@ -90,26 +92,26 @@ fun ParametricBandRow(
                 IconButton(onClick = onRemove) {
                     Icon(
                         ImageVector.vectorResource(R.drawable.rounded_delete_24),
-                        stringResource(R.string.parametric_eq_band_remove_cd),
+                        stringResource(Res.string.parametric_eq_band_remove_cd),
                     )
                 }
             }
             LabeledSlider(
-                label = stringResource(R.string.parametric_eq_frequency),
-                valueText = stringResource(R.string.parametric_eq_hz_value, formatHz(band.frequencyHz)),
+                label = stringResource(Res.string.parametric_eq_frequency),
+                valueText = stringResource(Res.string.parametric_eq_hz_value, formatHz(band.frequencyHz)),
                 value = (log10(band.frequencyHz / ParametricBand.MIN_FREQ_HZ) / LOG_FREQ_SPAN).toFloat(),
                 valueRange = 0f..1f,
                 onValueChange = { onChange(band.copy(frequencyHz = (ParametricBand.MIN_FREQ_HZ * 10.0.pow(it * LOG_FREQ_SPAN)).toFloat())) },
             )
             LabeledSlider(
-                label = stringResource(R.string.parametric_eq_gain),
-                valueText = stringResource(R.string.parametric_eq_db_value, String.format(Locale.US, "%+.1f", band.gainDb)),
+                label = stringResource(Res.string.parametric_eq_gain),
+                valueText = stringResource(Res.string.parametric_eq_db_value, String.format(Locale.US, "%+.1f", band.gainDb)),
                 value = band.gainDb,
                 valueRange = -ParametricBand.MAX_GAIN_DB..ParametricBand.MAX_GAIN_DB,
                 onValueChange = { onChange(band.copy(gainDb = Math.round(it * 10f) / 10f)) },
             )
             LabeledSlider(
-                label = stringResource(R.string.parametric_eq_q),
+                label = stringResource(Res.string.parametric_eq_q),
                 valueText = String.format(Locale.US, "%.2f", band.q),
                 value = (log10(band.q / ParametricBand.MIN_Q) / LOG_Q_SPAN).toFloat(),
                 valueRange = 0f..1f,

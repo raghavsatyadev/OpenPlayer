@@ -38,7 +38,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
@@ -56,6 +55,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.utils.PlaybackSpeedUtils
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 const val PLAYBACK_SPEED_SLIDER_TEST_TAG = "playback_speed_slider"
 
@@ -105,14 +106,12 @@ fun PlaybackSpeedControls(
         }
     }
 
-    val title = stringResource(R.string.setcat_playback_speed)
-    val valueText = stringResource(
-        R.string.playback_speed_value,
+    val title = stringResource(Res.string.setcat_playback_speed)
+    val valueText = stringResource(Res.string.playback_speed_value,
         PlaybackSpeedUtils.formatFixed(draft, locale)
     )
-    val customActionLabel = stringResource(R.string.playback_speed_custom_action)
-    val sliderStateDescription = stringResource(
-        R.string.playback_speed_state_description,
+    val customActionLabel = stringResource(Res.string.playback_speed_custom_action)
+    val sliderStateDescription = stringResource(Res.string.playback_speed_state_description,
         PlaybackSpeedUtils.formatCompact(draft, locale)
     )
 
@@ -168,7 +167,7 @@ fun PlaybackSpeedControls(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_remove_24),
-                    contentDescription = stringResource(R.string.playback_speed_decrease)
+                    contentDescription = stringResource(Res.string.playback_speed_decrease)
                 )
             }
             Slider(
@@ -204,13 +203,13 @@ fun PlaybackSpeedControls(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_add_24),
-                    contentDescription = stringResource(R.string.playback_speed_increase)
+                    contentDescription = stringResource(Res.string.playback_speed_increase)
                 )
             }
         }
 
         Text(
-            text = stringResource(R.string.playback_speed_presets),
+            text = stringResource(Res.string.playback_speed_presets),
             style = MaterialTheme.typography.labelLarge,
             color = colors.onSurfaceVariant
         )
@@ -224,8 +223,7 @@ fun PlaybackSpeedControls(
                     onClick = { commit(preset) },
                     label = {
                         Text(
-                            stringResource(
-                                R.string.playback_speed_value,
+                            stringResource(Res.string.playback_speed_value,
                                 PlaybackSpeedUtils.formatCompact(preset, locale)
                             )
                         )
@@ -235,7 +233,7 @@ fun PlaybackSpeedControls(
         }
 
         Text(
-            text = stringResource(R.string.playback_speed_description),
+            text = stringResource(Res.string.playback_speed_description),
             style = MaterialTheme.typography.bodyMedium,
             color = colors.onSurfaceVariant
         )
@@ -280,21 +278,21 @@ fun PlaybackSpeedInputDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.playback_speed_custom_title)) },
+        title = { Text(stringResource(Res.string.playback_speed_custom_title)) },
         text = {
             OutlinedTextField(
                 value = fieldValue,
                 onValueChange = { candidate ->
                     if (PlaybackSpeedUtils.isEditableInput(candidate.text)) fieldValue = candidate
                 },
-                label = { Text(stringResource(R.string.playback_speed_custom_field_label)) },
-                suffix = { Text(stringResource(R.string.playback_speed_multiplier_suffix)) },
+                label = { Text(stringResource(Res.string.playback_speed_custom_field_label)) },
+                suffix = { Text(stringResource(Res.string.playback_speed_multiplier_suffix)) },
                 supportingText = {
                     Text(
                         if (isError) {
-                            stringResource(R.string.playback_speed_custom_error, minText, maxText)
+                            stringResource(Res.string.playback_speed_custom_error, minText, maxText)
                         } else {
-                            stringResource(R.string.playback_speed_custom_supporting, minText, maxText)
+                            stringResource(Res.string.playback_speed_custom_supporting, minText, maxText)
                         }
                     )
                 },
@@ -315,12 +313,12 @@ fun PlaybackSpeedInputDialog(
                 onClick = { parsed?.let(onConfirm) },
                 enabled = parsed != null
             ) {
-                Text(stringResource(R.string.ok))
+                Text(stringResource(Res.string.ok))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
+                Text(stringResource(Res.string.cancel))
             }
         }
     )

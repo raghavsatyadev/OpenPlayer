@@ -25,8 +25,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerStatusBarStyle
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun CollapsibleCommonTopBar(
@@ -93,7 +94,7 @@ fun CollapsibleCommonTopBar(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                    contentDescription = stringResource(R.string.auth_cd_back)
+                    contentDescription = stringResource(Res.string.auth_cd_back)
                 )
             }
 

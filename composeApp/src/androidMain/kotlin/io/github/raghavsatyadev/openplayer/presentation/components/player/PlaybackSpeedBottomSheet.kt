@@ -17,14 +17,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.PlaybackSpeedControls
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.coroutines.launch
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * The playback speed picker, reachable from the player. It edits the same persisted
@@ -74,7 +74,7 @@ fun PlaybackSpeedBottomSheet(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(stringResource(R.string.action_done))
+                Text(stringResource(Res.string.action_done))
             }
 
             Spacer(modifier = Modifier.height(12.dp))

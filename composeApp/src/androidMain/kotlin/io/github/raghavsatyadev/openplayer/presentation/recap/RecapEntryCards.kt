@@ -40,6 +40,8 @@ import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.ui.theme.ShapeCache
 import kotlinx.collections.immutable.ImmutableList
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @StringRes
 private fun RecapEntry.titleRes(): Int =
@@ -171,7 +173,7 @@ fun RecapHomeCard(
             modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 22.dp, bottom = 20.dp)
         ) {
             Text(
-                text = stringResource(R.string.recap_intro_kicker),
+                text = stringResource(Res.string.recap_intro_kicker),
                 style = MaterialTheme.typography.labelLarge,
                 fontFamily = rememberRecapFlexFont(weight = 660, width = 110f),
                 color = content.copy(alpha = 0.82f),
@@ -179,7 +181,7 @@ fun RecapHomeCard(
             )
             Spacer(Modifier.height(6.dp))
             Text(
-                text = stringResource(R.string.recap_home_card_title, entry.year),
+                text = stringResource(Res.string.recap_home_card_title, entry.year),
                 style = MaterialTheme.typography.headlineSmall,
                 fontFamily = rememberRecapFlexFont(weight = 840, width = 116f),
                 color = content,
@@ -187,7 +189,7 @@ fun RecapHomeCard(
             )
             Spacer(Modifier.height(6.dp))
             Text(
-                text = stringResource(R.string.recap_home_card_subtitle),
+                text = stringResource(Res.string.recap_home_card_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = content.copy(alpha = 0.86f)
             )
@@ -201,7 +203,7 @@ fun RecapHomeCard(
             ) {
                 Icon(ImageVector.vectorResource(R.drawable.rounded_auto_awesome_filled_24), contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.size(8.dp))
-                Text(stringResource(R.string.recap_home_card_open))
+                Text(stringResource(Res.string.recap_home_card_open))
             }
         }
         IconButton(
@@ -211,7 +213,7 @@ fun RecapHomeCard(
                 .align(Alignment.TopEnd)
                 .padding(6.dp)
         ) {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), contentDescription = stringResource(R.string.recap_home_card_dismiss))
+            Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), contentDescription = stringResource(Res.string.recap_home_card_dismiss))
         }
     }
 }

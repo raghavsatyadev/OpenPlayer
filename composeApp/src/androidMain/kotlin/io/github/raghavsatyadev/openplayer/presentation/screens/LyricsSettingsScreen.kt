@@ -51,7 +51,6 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
@@ -72,6 +71,8 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewMo
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private const val MIN_LYRICS_BLUR_STRENGTH = 0.1f
 private const val MAX_LYRICS_BLUR_STRENGTH = 2f
@@ -171,11 +172,11 @@ fun LyricsSettingsScreen(
             )
         ) {
             item(key = "lyrics_readability") {
-                LyricsSettingsSubsection(title = stringResource(R.string.setcat_lyrics_readability_section)) {
+                LyricsSettingsSubsection(title = stringResource(Res.string.setcat_lyrics_readability_section)) {
                     LyricsSliderItem(
-                        title = stringResource(R.string.setcat_lyrics_font_size_title),
-                        subtitle = stringResource(R.string.setcat_lyrics_font_size_subtitle),
-                        valueText = stringResource(R.string.setcat_lyrics_font_size_value, fontSizeDraft),
+                        title = stringResource(Res.string.setcat_lyrics_font_size_title),
+                        subtitle = stringResource(Res.string.setcat_lyrics_font_size_subtitle),
+                        valueText = stringResource(Res.string.setcat_lyrics_font_size_value, fontSizeDraft),
                         icon = ImageVector.vectorResource(R.drawable.rounded_format_size_24),
                         value = fontSizeDraft,
                         valueRange = MIN_LYRICS_FONT_SIZE_SP..MAX_LYRICS_FONT_SIZE_SP,
@@ -186,23 +187,23 @@ fun LyricsSettingsScreen(
                     )
 
                     ThemeSelectorItem(
-                        label = stringResource(R.string.lyrics_highlight_style_title),
-                        description = stringResource(R.string.lyrics_highlight_style_subtitle),
+                        label = stringResource(Res.string.lyrics_highlight_style_title),
+                        description = stringResource(Res.string.lyrics_highlight_style_subtitle),
                         options = mapOf(
                             LyricsWordHighlightStyle.WIPE.storageValue to
-                                stringResource(R.string.lyrics_highlight_style_wipe),
+                                stringResource(Res.string.lyrics_highlight_style_wipe),
                             LyricsWordHighlightStyle.FADE.storageValue to
-                                stringResource(R.string.lyrics_highlight_style_fade),
+                                stringResource(Res.string.lyrics_highlight_style_fade),
                             LyricsWordHighlightStyle.CLASSIC.storageValue to
-                                stringResource(R.string.lyrics_highlight_style_classic)
+                                stringResource(Res.string.lyrics_highlight_style_classic)
                         ),
                         optionDescriptions = mapOf(
                             LyricsWordHighlightStyle.WIPE.storageValue to
-                                stringResource(R.string.lyrics_highlight_style_wipe_desc),
+                                stringResource(Res.string.lyrics_highlight_style_wipe_desc),
                             LyricsWordHighlightStyle.FADE.storageValue to
-                                stringResource(R.string.lyrics_highlight_style_fade_desc),
+                                stringResource(Res.string.lyrics_highlight_style_fade_desc),
                             LyricsWordHighlightStyle.CLASSIC.storageValue to
-                                stringResource(R.string.lyrics_highlight_style_classic_desc)
+                                stringResource(Res.string.lyrics_highlight_style_classic_desc)
                         ),
                         selectedKey = uiState.lyricsWordHighlightStyle.storageValue,
                         onSelectionChanged = { key ->
@@ -215,8 +216,8 @@ fun LyricsSettingsScreen(
                     )
 
                     SwitchSettingItem(
-                        title = stringResource(R.string.lyrics_duet_layout_title),
-                        subtitle = stringResource(R.string.lyrics_duet_layout_subtitle),
+                        title = stringResource(Res.string.lyrics_duet_layout_title),
+                        subtitle = stringResource(Res.string.lyrics_duet_layout_subtitle),
                         checked = uiState.lyricsDuetLayoutEnabled,
                         onCheckedChange = settingsViewModel::setLyricsDuetLayoutEnabled,
                         leadingIcon = {
@@ -226,8 +227,8 @@ fun LyricsSettingsScreen(
                     )
 
                     SwitchSettingItem(
-                        title = stringResource(R.string.lyrics_background_vocals_title),
-                        subtitle = stringResource(R.string.lyrics_background_vocals_subtitle),
+                        title = stringResource(Res.string.lyrics_background_vocals_title),
+                        subtitle = stringResource(Res.string.lyrics_background_vocals_subtitle),
                         checked = uiState.showLyricsBackgroundVocals,
                         onCheckedChange = settingsViewModel::setShowLyricsBackgroundVocals,
                         leadingIcon = {
@@ -238,11 +239,11 @@ fun LyricsSettingsScreen(
 
                     val blurAvailable = uiState.useAnimatedLyrics
                     SwitchSettingItem(
-                        title = stringResource(R.string.presentation_batch_f_exp_lyric_blur_title),
+                        title = stringResource(Res.string.presentation_batch_f_exp_lyric_blur_title),
                         subtitle = if (blurAvailable) {
-                            stringResource(R.string.presentation_batch_f_exp_lyric_blur_subtitle)
+                            stringResource(Res.string.presentation_batch_f_exp_lyric_blur_subtitle)
                         } else {
-                            stringResource(R.string.setcat_lyrics_blur_requires_animated)
+                            stringResource(Res.string.setcat_lyrics_blur_requires_animated)
                         },
                         checked = uiState.animatedLyricsBlurEnabled,
                         onCheckedChange = settingsViewModel::setAnimatedLyricsBlurEnabled,
@@ -259,10 +260,9 @@ fun LyricsSettingsScreen(
                         exit = fadeOut() + shrinkVertically()
                     ) {
                         LyricsSliderItem(
-                            title = stringResource(R.string.presentation_batch_f_exp_blur_strength),
-                            subtitle = stringResource(R.string.presentation_batch_f_exp_blur_strength_subtitle),
-                            valueText = stringResource(
-                                R.string.presentation_batch_f_exp_blur_strength_value,
+                            title = stringResource(Res.string.presentation_batch_f_exp_blur_strength),
+                            subtitle = stringResource(Res.string.presentation_batch_f_exp_blur_strength_subtitle),
+                            valueText = stringResource(Res.string.presentation_batch_f_exp_blur_strength_value,
                                 blurStrengthDraft
                             ),
                             icon = ImageVector.vectorResource(R.drawable.rounded_linear_scale_24),
@@ -280,16 +280,16 @@ fun LyricsSettingsScreen(
 
             item(key = "lyrics_management") {
                 LyricsSettingsSubsection(
-                    title = stringResource(R.string.setcat_lyrics_management),
+                    title = stringResource(Res.string.setcat_lyrics_management),
                     addBottomSpace = false
                 ) {
                     ThemeSelectorItem(
-                        label = stringResource(R.string.setcat_lyrics_source_priority_label),
-                        description = stringResource(R.string.setcat_lyrics_source_priority_desc),
+                        label = stringResource(Res.string.setcat_lyrics_source_priority_label),
+                        description = stringResource(Res.string.setcat_lyrics_source_priority_desc),
                         options = mapOf(
-                            LyricsSourcePreference.EMBEDDED_FIRST.name to stringResource(R.string.setcat_lyrics_embedded_first),
-                            LyricsSourcePreference.API_FIRST.name to stringResource(R.string.setcat_lyrics_online_first),
-                            LyricsSourcePreference.LOCAL_FIRST.name to stringResource(R.string.setcat_lyrics_local_first)
+                            LyricsSourcePreference.EMBEDDED_FIRST.name to stringResource(Res.string.setcat_lyrics_embedded_first),
+                            LyricsSourcePreference.API_FIRST.name to stringResource(Res.string.setcat_lyrics_online_first),
+                            LyricsSourcePreference.LOCAL_FIRST.name to stringResource(Res.string.setcat_lyrics_local_first)
                         ),
                         selectedKey = uiState.lyricsSourcePreference.name,
                         onSelectionChanged = { key ->
@@ -305,8 +305,8 @@ fun LyricsSettingsScreen(
                         modifier = Modifier.settingHighlight("item_lyrics_source_priority", highlightKey)
                     )
                     SettingsItem(
-                        title = stringResource(R.string.setcat_reset_imported_lyrics_title),
-                        subtitle = stringResource(R.string.setcat_reset_imported_lyrics_subtitle),
+                        title = stringResource(Res.string.setcat_reset_imported_lyrics_title),
+                        subtitle = stringResource(Res.string.setcat_reset_imported_lyrics_subtitle),
                         leadingIcon = {
                             Icon(ImageVector.vectorResource(R.drawable.rounded_clear_all_24), null, tint = MaterialTheme.colorScheme.secondary)
                         },
@@ -318,7 +318,7 @@ fun LyricsSettingsScreen(
         }
 
         CollapsibleCommonTopBar(
-            title = stringResource(R.string.setcat_lyrics_title),
+            title = stringResource(Res.string.setcat_lyrics_title),
             collapseFraction = collapseFraction,
             headerHeight = currentTopBarHeight,
             onBackClick = { navController.popBackStack() }
@@ -328,8 +328,8 @@ fun LyricsSettingsScreen(
     if (showClearLyricsDialog) {
         AlertDialog(
             icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_warning_24), null) },
-            title = { Text(stringResource(R.string.dialog_reset_lyrics_title)) },
-            text = { Text(stringResource(R.string.dialog_cannot_undo)) },
+            title = { Text(stringResource(Res.string.dialog_reset_lyrics_title)) },
+            text = { Text(stringResource(Res.string.dialog_cannot_undo)) },
             onDismissRequest = { showClearLyricsDialog = false },
             confirmButton = {
                 TextButton(
@@ -338,12 +338,12 @@ fun LyricsSettingsScreen(
                         playerViewModel.resetAllLyrics()
                     }
                 ) {
-                    Text(stringResource(R.string.confirm), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(Res.string.confirm), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showClearLyricsDialog = false }) {
-                    Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         )

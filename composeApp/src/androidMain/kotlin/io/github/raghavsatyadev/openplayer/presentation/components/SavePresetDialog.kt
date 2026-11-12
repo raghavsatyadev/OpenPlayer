@@ -17,9 +17,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
-import androidx.compose.ui.res.stringResource
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun SavePresetDialog(
@@ -32,12 +32,12 @@ fun SavePresetDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(text = stringResource(R.string.equalizer_save_custom_preset_title), fontFamily = RoundedSans)
+            Text(text = stringResource(Res.string.equalizer_save_custom_preset_title), fontFamily = RoundedSans)
         },
         text = {
             Column {
                 Text(
-                    text = stringResource(R.string.equalizer_save_custom_preset_body),
+                    text = stringResource(Res.string.equalizer_save_custom_preset_body),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
@@ -47,14 +47,14 @@ fun SavePresetDialog(
                         name = it
                         isError = false
                     },
-                    label = { Text(stringResource(R.string.equalizer_preset_name_label)) },
+                    label = { Text(stringResource(Res.string.equalizer_preset_name_label)) },
                     singleLine = true,
                     isError = isError,
                     modifier = Modifier.fillMaxWidth()
                 )
                 if (isError) {
                     Text(
-                        text = stringResource(R.string.error_name_empty),
+                        text = stringResource(Res.string.error_name_empty),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier.padding(top = 4.dp)
@@ -73,12 +73,12 @@ fun SavePresetDialog(
                     }
                 }
             ) {
-                Text(stringResource(R.string.action_save))
+                Text(stringResource(Res.string.action_save))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     )
@@ -96,7 +96,7 @@ fun RenamePresetDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(text = stringResource(R.string.equalizer_rename_preset_title), fontFamily = RoundedSans)
+            Text(text = stringResource(Res.string.equalizer_rename_preset_title), fontFamily = RoundedSans)
         },
         text = {
             Column {
@@ -106,14 +106,14 @@ fun RenamePresetDialog(
                         name = it
                         isError = false
                     },
-                    label = { Text(stringResource(R.string.equalizer_preset_name_label)) },
+                    label = { Text(stringResource(Res.string.equalizer_preset_name_label)) },
                     singleLine = true,
                     isError = isError,
                     modifier = Modifier.fillMaxWidth()
                 )
                 if (isError) {
                     Text(
-                        text = stringResource(R.string.error_name_empty),
+                        text = stringResource(Res.string.error_name_empty),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier.padding(top = 4.dp)
@@ -132,12 +132,12 @@ fun RenamePresetDialog(
                     }
                 }
             ) {
-                Text(stringResource(R.string.action_rename))
+                Text(stringResource(Res.string.action_rename))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     )

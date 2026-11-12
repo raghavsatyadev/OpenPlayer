@@ -29,13 +29,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.TightWrapText
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SortOption
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,7 +70,7 @@ fun GenreSortBottomSheet(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_genre_sort_title),
+                    text = stringResource(Res.string.presentation_batch_g_genre_sort_title),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -91,7 +92,7 @@ fun GenreSortBottomSheet(
                     Icon(ImageVector.vectorResource(R.drawable.rounded_shuffle_24), contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
                     TightWrapText(
-                        text = stringResource(R.string.presentation_batch_g_genre_sort_shuffle),
+                        text = stringResource(Res.string.presentation_batch_g_genre_sort_shuffle),
                         modifier = Modifier.padding(end = 4.dp),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
@@ -110,7 +111,7 @@ fun GenreSortBottomSheet(
             Spacer(modifier = Modifier.height(32.dp))
             
             Text(
-                text = stringResource(R.string.presentation_batch_g_genre_sort_by),
+                text = stringResource(Res.string.presentation_batch_g_genre_sort_by),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Bold,
@@ -119,19 +120,19 @@ fun GenreSortBottomSheet(
 
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 SortOptionCard(
-                    text = stringResource(R.string.presentation_batch_g_genre_sort_artist),
+                    text = stringResource(Res.string.presentation_batch_g_genre_sort_artist),
                     icon = ImageVector.vectorResource(R.drawable.rounded_person_filled_24),
                     isSelected = currentSort == SortOption.ARTIST,
                     onClick = { onSortSelected(SortOption.ARTIST) }
                 )
                 SortOptionCard(
-                    text = stringResource(R.string.presentation_batch_g_genre_sort_album),
+                    text = stringResource(Res.string.presentation_batch_g_genre_sort_album),
                     icon = ImageVector.vectorResource(R.drawable.rounded_album_filled_24),
                     isSelected = currentSort == SortOption.ALBUM,
                     onClick = { onSortSelected(SortOption.ALBUM) }
                 )
                 SortOptionCard(
-                    text = stringResource(R.string.presentation_batch_g_genre_sort_title_opt),
+                    text = stringResource(Res.string.presentation_batch_g_genre_sort_title_opt),
                     icon = ImageVector.vectorResource(R.drawable.rounded_sort_by_alpha_24),
                     isSelected = currentSort == SortOption.TITLE,
                     onClick = { onSortSelected(SortOption.TITLE) }
@@ -182,7 +183,7 @@ fun SortOptionCard(
             if (isSelected) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
-                    contentDescription = stringResource(R.string.presentation_batch_g_cd_selected),
+                    contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                     tint = contentColor
                 )
             }

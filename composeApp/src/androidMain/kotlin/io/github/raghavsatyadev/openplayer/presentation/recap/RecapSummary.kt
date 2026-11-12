@@ -46,6 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.raghavsatyadev.openplayer.R
 import java.text.NumberFormat
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** Closing slide: a shareable card of the year's highlights, plus what to do next. */
 @Composable
@@ -60,7 +62,7 @@ internal fun RecapSummarySlide(
     val cardLayer = rememberGraphicsLayer()
     RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState, horizontalAlignment = Alignment.CenterHorizontally) {
         RecapKicker(
-            text = stringResource(R.string.recap_summary_kicker),
+            text = stringResource(Res.string.recap_summary_kicker),
             color = palette.content,
             textAlign = TextAlign.Center,
             modifier = Modifier.recapReveal(reveal, order = 0)
@@ -103,7 +105,7 @@ internal fun RecapSummarySlide(
                 Icon(ImageVector.vectorResource(R.drawable.rounded_share_filled_24), contentDescription = null, modifier = Modifier.size(20.dp))
                 Spacer(Modifier.size(8.dp))
                 Text(
-                    text = stringResource(R.string.recap_share),
+                    text = stringResource(Res.string.recap_share),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -122,7 +124,7 @@ internal fun RecapSummarySlide(
                     Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = null, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.size(8.dp))
                     Text(
-                        text = stringResource(R.string.recap_play_top_songs),
+                        text = stringResource(Res.string.recap_play_top_songs),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -137,7 +139,7 @@ internal fun RecapSummarySlide(
         ) {
             Icon(ImageVector.vectorResource(R.drawable.rounded_replay_24), contentDescription = null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.size(6.dp))
-            Text(stringResource(R.string.recap_replay))
+            Text(stringResource(Res.string.recap_replay))
         }
     }
 }
@@ -153,7 +155,7 @@ private fun RecapSummaryCard(slide: RecapSlide.Summary, palette: RecapPalette) {
         slide.topArtist?.let { artist ->
             add(
                 SummaryCellData(
-                    label = stringResource(R.string.recap_summary_top_artist),
+                    label = stringResource(Res.string.recap_summary_top_artist),
                     value = artist.name,
                     artUri = artist.imageUri,
                     monogramSource = artist.name,
@@ -162,17 +164,17 @@ private fun RecapSummaryCard(slide: RecapSlide.Summary, palette: RecapPalette) {
             )
         }
         slide.topSong?.let { song ->
-            add(SummaryCellData(label = stringResource(R.string.recap_summary_top_song), value = song.title, artUri = song.artUri))
+            add(SummaryCellData(label = stringResource(Res.string.recap_summary_top_song), value = song.title, artUri = song.artUri))
         }
         slide.topGenre?.let { genre ->
-            add(SummaryCellData(label = stringResource(R.string.recap_summary_top_genre), value = genre))
+            add(SummaryCellData(label = stringResource(Res.string.recap_summary_top_genre), value = genre))
         }
         slide.topAlbum?.let { album ->
-            add(SummaryCellData(label = stringResource(R.string.recap_summary_top_album), value = album.title, artUri = album.artUri))
+            add(SummaryCellData(label = stringResource(Res.string.recap_summary_top_album), value = album.title, artUri = album.artUri))
         }
         add(
             SummaryCellData(
-                label = stringResource(R.string.recap_summary_listening_style),
+                label = stringResource(Res.string.recap_summary_listening_style),
                 value = stringResource(slide.personality.titleRes)
             )
         )
@@ -195,7 +197,7 @@ private fun RecapSummaryCard(slide: RecapSlide.Summary, palette: RecapPalette) {
             )
             Spacer(Modifier.size(10.dp))
             Text(
-                text = stringResource(R.string.recap_intro_kicker),
+                text = stringResource(Res.string.recap_intro_kicker),
                 style = MaterialTheme.typography.labelLarge,
                 fontFamily = rememberRecapFlexFont(weight = 680, width = 110f),
                 color = ink.copy(alpha = 0.85f),
@@ -215,7 +217,7 @@ private fun RecapSummaryCard(slide: RecapSlide.Summary, palette: RecapPalette) {
         )
         Column {
             Text(
-                text = stringResource(R.string.recap_summary_minutes),
+                text = stringResource(Res.string.recap_summary_minutes),
                 style = MaterialTheme.typography.labelLarge,
                 color = ink.copy(alpha = 0.78f)
             )

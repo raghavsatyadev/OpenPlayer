@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_queues_action_save">Save queue</string>
+    <string name="saved_queues_action_open">Saved queues</string>
+    <string name="saved_queues_save_title">Save queue</string>
+    <string name="saved_queues_name_label">Name</string>
+    <string name="saved_queues_default_name">Queue %1$s</string>
+    <string name="saved_queues_save_confirm">Save</string>
+    <string name="saved_queues_cancel">Cancel</string>
+    <string name="saved_queues_saved_toast">Queue saved</string>
+    <string name="saved_queues_title">Saved queues</string>
+    <string name="saved_queues_empty">No saved queues yet. Use Save queue from the queue menu.</string>
+    <plurals name="saved_queues_song_count">
+        <item quantity="one">%d song</item>
+        <item quantity="other">%d songs</item>
+    </plurals>
+    <string name="saved_queues_item_summary">%1$s - %2$s</string>
+    <string name="saved_queues_item_position">Resumes at %1$s</string>
+    <string name="saved_queues_cd_play">Play %1$s</string>
+    <string name="saved_queues_cd_delete">Delete %1$s</string>
+    <string name="saved_queues_delete_title">Delete saved queue</string>
+    <string name="saved_queues_delete_message">Delete "%1$s"? This cannot be undone.</string>
+    <string name="saved_queues_delete_confirm">Delete</string>
+    <string name="saved_queues_restore_missing">%1$d songs were not found and were skipped</string>
+    <string name="saved_queues_restore_empty">None of the songs in this queue are in your library</string>
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Local music videos -->
+    <string name="library_tab_videos">Videos</string>
+    <string name="video_fullscreen">Fullscreen video</string>
+    <string name="video_exit_fullscreen">Exit fullscreen</string>
+    <string name="video_play">Play</string>
+    <string name="video_pause">Pause</string>
+    <string name="video_previous">Previous track</string>
+    <string name="video_next">Next track</string>
+    <string name="video_show_video">Show music video</string>
+    <string name="video_show_artwork">Show album art</string>
+    <string name="video_track_line">%1$s • %2$s</string>
+    <string name="lib_empty_videos_title">No videos found</string>
+    <string name="lib_empty_videos_subtitle">Video files on this device show up here, matched to your tracks by name.</string>
+    <string name="video_permission_title">Allow access to videos</string>
+    <string name="video_permission_subtitle">OpenPlayer needs to read video files to match them to your music.</string>
+    <string name="video_permission_button">Allow access</string>
+
+    <!-- Settings -->
+    <string name="setting_videos_section">Music videos</string>
+    <string name="setting_video_show_in_player_title">Show music videos in the player</string>
+    <string name="setting_video_show_in_player_subtitle">Play a matching local video, muted and in sync, instead of the album art.</string>
+    <string name="setting_video_matching_title">Match videos by</string>
+    <string name="setting_video_matching_auto">File name, then title and artist</string>
+    <string name="setting_video_matching_filename">File name only</string>
+    <string name="setting_video_matching_title_artist">Title and artist only</string>
+    <string name="setting_video_same_folder_title">Same folder only</string>
+    <string name="setting_video_same_folder_subtitle">Only use videos stored in the same folder as the track.</string>
+    <string name="setting_video_add_to_library_title">Add music videos to the library</string>
+    <string name="setting_video_add_to_library_subtitle">Videos in the scanned folders show up in Songs, Artists and Albums and play like any track.</string>
+    <string name="setting_video_folders_title">Video folders</string>
+    <string name="setting_video_folders_all">All folders</string>
+    <string name="setting_video_folders_summary">%1$d scanned • %2$d skipped</string>
+    <string name="setting_video_folders_help">Tick folders to scan only those. Block a folder to skip it, even inside a ticked one. With nothing ticked, every folder is scanned.</string>
+    <string name="setting_video_folders_reset">Reset to all folders</string>
+    <string name="setting_video_folder_include">Scan this folder</string>
+    <string name="setting_video_folder_exclude">Skip this folder</string>
+</resources>

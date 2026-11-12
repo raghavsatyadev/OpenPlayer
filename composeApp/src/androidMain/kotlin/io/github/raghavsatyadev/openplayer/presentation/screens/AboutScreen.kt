@@ -81,7 +81,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -108,6 +107,8 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewMode
 import kotlinx.coroutines.launch
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlin.math.roundToInt
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private data class Contributor(
     val id: String,
@@ -179,15 +180,15 @@ fun AboutScreen(
     val projectLinks = listOf(
         ProjectLink(
             id = "source",
-            title = stringResource(R.string.about_link_source_title),
-            subtitle = stringResource(R.string.about_link_source_subtitle),
+            title = stringResource(Res.string.about_link_source_title),
+            subtitle = stringResource(Res.string.about_link_source_subtitle),
             icon = painterResource(R.drawable.github),
             onClick = { openUrl(context, SourceRepoUrl) },
         ),
         ProjectLink(
             id = "licenses",
-            title = stringResource(R.string.about_licenses_title),
-            subtitle = stringResource(R.string.about_licenses_subtitle),
+            title = stringResource(Res.string.about_licenses_title),
+            subtitle = stringResource(Res.string.about_licenses_subtitle),
             icon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.rounded_balance_24)),
             onClick = { navController.navigateSafely(Screen.Licenses.route) },
         ),
@@ -322,8 +323,8 @@ fun AboutScreen(
 
             item(key = "project_title") {
                 AboutSectionHeader(
-                    title = stringResource(R.string.about_project_title),
-                    subtitle = stringResource(R.string.about_project_subtitle),
+                    title = stringResource(Res.string.about_project_title),
+                    subtitle = stringResource(Res.string.about_project_subtitle),
                     modifier = Modifier.padding(top = 24.dp),
                 )
             }
@@ -345,8 +346,8 @@ fun AboutScreen(
 
             item(key = "maintainer_title") {
                 AboutSectionHeader(
-                    title = stringResource(R.string.about_maintainer_title),
-                    subtitle = stringResource(R.string.about_maintainer_subtitle),
+                    title = stringResource(Res.string.about_maintainer_title),
+                    subtitle = stringResource(Res.string.about_maintainer_subtitle),
                     modifier = Modifier.padding(top = 24.dp),
                 )
             }
@@ -373,7 +374,7 @@ fun AboutScreen(
         }
 
         CollapsibleCommonTopBar(
-            title = stringResource(R.string.screen_about),
+            title = stringResource(Res.string.screen_about),
             collapseFraction = collapseFraction,
             headerHeight = currentTopBarHeightDp,
             onBackClick = onNavigationIconClick,
@@ -429,14 +430,14 @@ private fun AboutHeroCard(
                         verticalArrangement = Arrangement.spacedBy(2.dp),
                     ) {
                         Text(
-                            text = stringResource(R.string.about_app_name),
+                            text = stringResource(Res.string.about_app_name),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
                         Text(
-                            text = stringResource(R.string.about_tagline),
+                            text = stringResource(Res.string.about_tagline),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 2,
@@ -461,7 +462,7 @@ private fun AboutHeroCard(
                         },
                 ) {
                     Text(
-                        text = stringResource(R.string.about_version_format, versionName),
+                        text = stringResource(Res.string.about_version_format, versionName),
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
@@ -481,9 +482,9 @@ private fun AboutHeroCard(
 @Composable
 private fun CommunitySignalsRow() {
     val labels = listOf(
-        stringResource(R.string.about_signal_open_source) to ImageVector.vectorResource(R.drawable.rounded_public_24),
-        stringResource(R.string.about_signal_community_first) to ImageVector.vectorResource(R.drawable.rounded_auto_awesome_filled_24),
-        stringResource(R.string.about_signal_material3) to ImageVector.vectorResource(R.drawable.rounded_palette_filled_24),
+        stringResource(Res.string.about_signal_open_source) to ImageVector.vectorResource(R.drawable.rounded_public_24),
+        stringResource(Res.string.about_signal_community_first) to ImageVector.vectorResource(R.drawable.rounded_auto_awesome_filled_24),
+        stringResource(Res.string.about_signal_material3) to ImageVector.vectorResource(R.drawable.rounded_palette_filled_24),
     )
 
     FlowRow(
@@ -556,7 +557,7 @@ private fun AboutSupportCard(
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(R.string.about_support_eyebrow),
+                        text = stringResource(Res.string.about_support_eyebrow),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.78f),
                         fontWeight = FontWeight.SemiBold,
@@ -564,7 +565,7 @@ private fun AboutSupportCard(
                         overflow = TextOverflow.Ellipsis,
                     )
                     Text(
-                        text = stringResource(R.string.about_support_title),
+                        text = stringResource(Res.string.about_support_title),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontWeight = FontWeight.Bold,
@@ -575,7 +576,7 @@ private fun AboutSupportCard(
             }
 
             Text(
-                text = stringResource(R.string.about_support_body),
+                text = stringResource(Res.string.about_support_body),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.86f),
             )
@@ -585,9 +586,9 @@ private fun AboutSupportCard(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 listOf(
-                    stringResource(R.string.about_support_chip_foss),
-                    stringResource(R.string.about_support_chip_ci),
-                    stringResource(R.string.about_support_chip_streaming),
+                    stringResource(Res.string.about_support_chip_foss),
+                    stringResource(Res.string.about_support_chip_ci),
+                    stringResource(Res.string.about_support_chip_streaming),
                 ).forEach { label ->
                     Surface(
                         shape = AbsoluteSmoothCornerShape(16.dp, 60),
@@ -616,7 +617,7 @@ private fun AboutSupportCard(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = stringResource(R.string.about_support_cta),
+                    text = stringResource(Res.string.about_support_cta),
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -665,7 +666,7 @@ private fun AboutLinkCard(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = LocalIndication.current,
                 role = Role.Button,
-                onClickLabel = stringResource(R.string.cd_about_open_link, link.title),
+                onClickLabel = stringResource(Res.string.cd_about_open_link, link.title),
                 onClick = onClick,
             ),
         shape = shape,
@@ -810,8 +811,7 @@ private fun ContributorCard(
                     }
                     if (showContributionCount && contributor.contributions != null) {
                         ContributorLabel(
-                            text = stringResource(
-                                R.string.about_contributions_format,
+                            text = stringResource(Res.string.about_contributions_format,
                                 contributor.contributions,
                             ),
                         )
@@ -821,12 +821,12 @@ private fun ContributorCard(
 
             SocialIconButton(
                 painterRes = R.drawable.github,
-                contentDescription = stringResource(R.string.cd_open_github_profile),
+                contentDescription = stringResource(Res.string.cd_open_github_profile),
                 url = contributor.githubUrl,
             )
             SocialIconButton(
                 painterRes = R.drawable.telegram,
-                contentDescription = stringResource(R.string.cd_open_telegram_profile),
+                contentDescription = stringResource(Res.string.cd_open_telegram_profile),
                 url = contributor.telegramUrl,
             )
         }
@@ -874,7 +874,7 @@ private fun ContributorAvatar(
             cachedBitmap != null -> {
                 Image(
                     bitmap = cachedBitmap!!,
-                    contentDescription = stringResource(R.string.cd_contributor_avatar, name),
+                    contentDescription = stringResource(Res.string.cd_contributor_avatar, name),
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
                 )
@@ -885,7 +885,7 @@ private fun ContributorAvatar(
                         .data(avatarUrl)
                         .crossfade(true)
                         .build(),
-                    contentDescription = stringResource(R.string.cd_contributor_avatar, name),
+                    contentDescription = stringResource(Res.string.cd_contributor_avatar, name),
                     modifier = Modifier.fillMaxSize(),
                     shape = CircleShape,
                     contentScale = ContentScale.Crop,
@@ -908,7 +908,7 @@ private fun ContributorAvatar(
                 ) {
                     Icon(
                         painter = painterResource(iconRes),
-                        contentDescription = stringResource(R.string.cd_contributor_icon, name),
+                        contentDescription = stringResource(Res.string.cd_contributor_icon, name),
                         tint = iconTint,
                         modifier = Modifier.size(28.dp),
                     )

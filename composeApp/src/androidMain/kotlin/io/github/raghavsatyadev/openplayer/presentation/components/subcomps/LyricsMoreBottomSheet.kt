@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.remember
@@ -49,6 +48,8 @@ import io.github.raghavsatyadev.openplayer.data.model.Lyrics
 import io.github.raghavsatyadev.openplayer.presentation.components.ToggleSegmentButton
 import io.github.raghavsatyadev.openplayer.presentation.components.player.BottomToggleRow
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -120,13 +121,13 @@ fun LyricsMoreBottomSheet(
                 Text(
                     modifier = Modifier
                         .padding(start = 6.dp, bottom = 6.dp),
-                    text = stringResource(R.string.lyrics),
+                    text = stringResource(Res.string.lyrics),
                     color = accentColor,
                     style = MaterialTheme.typography.bodyLargeEmphasized
                 )
                 if (lyrics != null) {
                     ListItem(
-                        content = { Text(stringResource(R.string.save_lyrics_dialog_title).substringBefore("?")) },
+                        content = { Text(stringResource(Res.string.save_lyrics_dialog_title).substringBefore("?")) },
                         leadingContent = {
                             Icon(
                                 painter = painterResource(R.drawable.outline_save_24),
@@ -152,7 +153,7 @@ fun LyricsMoreBottomSheet(
                 // Save and Reset.
                 if (canCopyLyrics) {
                     ListItem(
-                        content = { Text(stringResource(R.string.lyrics_more_copy_lyrics)) },
+                        content = { Text(stringResource(Res.string.lyrics_more_copy_lyrics)) },
                         leadingContent = {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_content_copy_filled_24),
@@ -182,7 +183,7 @@ fun LyricsMoreBottomSheet(
                 }
 
                 ListItem(
-                    content = { Text(stringResource(R.string.reset_imported_lyrics)) },
+                    content = { Text(stringResource(Res.string.reset_imported_lyrics)) },
                     leadingContent = {
                         Icon(
                             painter = painterResource(R.drawable.outline_restart_alt_24),
@@ -207,8 +208,8 @@ fun LyricsMoreBottomSheet(
             if (showResetDialog) {
                 androidx.compose.material3.AlertDialog(
                     onDismissRequest = { showResetDialog = false },
-                    title = { Text(stringResource(R.string.lyrics_more_dialog_reset_title)) },
-                    text = { Text(stringResource(R.string.lyrics_more_dialog_reset_message)) },
+                    title = { Text(stringResource(Res.string.lyrics_more_dialog_reset_title)) },
+                    text = { Text(stringResource(Res.string.lyrics_more_dialog_reset_message)) },
                     confirmButton = {
                         androidx.compose.material3.TextButton(
                             onClick = {
@@ -217,14 +218,14 @@ fun LyricsMoreBottomSheet(
                                 onResetImportedLyrics()
                             }
                         ) {
-                            Text(stringResource(R.string.action_reset), color = MaterialTheme.colorScheme.error, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(stringResource(Res.string.action_reset), color = MaterialTheme.colorScheme.error, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     },
                     dismissButton = {
                         androidx.compose.material3.TextButton(
                             onClick = { showResetDialog = false }
                         ) {
-                            Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     },
                     containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
@@ -240,7 +241,7 @@ fun LyricsMoreBottomSheet(
                 Text(
                     modifier = Modifier
                         .padding(start = 6.dp, bottom = 6.dp),
-                    text = stringResource(R.string.lyrics_more_appearance),
+                    text = stringResource(Res.string.lyrics_more_appearance),
                     color = accentColor,
                     style = MaterialTheme.typography.bodyLargeEmphasized
                  )
@@ -253,7 +254,7 @@ fun LyricsMoreBottomSheet(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.lyrics_more_alignment),
+                        text = stringResource(Res.string.lyrics_more_alignment),
                         color = contentColor,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium
@@ -275,7 +276,7 @@ fun LyricsMoreBottomSheet(
                             activeCornerRadius = 50.dp,
                             onClick = { onLyricsAlignmentChange("left") },
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_format_align_left_mirrored_24),
-                            contentDesc = stringResource(R.string.cd_lyrics_align_left)
+                            contentDesc = stringResource(Res.string.cd_lyrics_align_left)
                         )
 
                         ToggleSegmentButton(
@@ -290,7 +291,7 @@ fun LyricsMoreBottomSheet(
                             activeCornerRadius = 50.dp,
                             onClick = { onLyricsAlignmentChange("center") },
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_format_align_center_24),
-                            contentDesc = stringResource(R.string.cd_lyrics_align_center)
+                            contentDesc = stringResource(Res.string.cd_lyrics_align_center)
                         )
 
                         ToggleSegmentButton(
@@ -305,7 +306,7 @@ fun LyricsMoreBottomSheet(
                             activeCornerRadius = 50.dp,
                             onClick = { onLyricsAlignmentChange("right") },
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_format_align_right_mirrored_24),
-                            contentDesc = stringResource(R.string.cd_lyrics_align_right)
+                            contentDesc = stringResource(Res.string.cd_lyrics_align_right)
                         )
                     }
                 }
@@ -335,7 +336,7 @@ fun LyricsMoreBottomSheet(
                     Text(
                         modifier = Modifier
                             .padding(start = 6.dp, bottom = 6.dp),
-                        text = stringResource(R.string.lyrics_more_controls),
+                        text = stringResource(Res.string.lyrics_more_controls),
                         color = accentColor,
                         style = MaterialTheme.typography.bodyLargeEmphasized
                     )
@@ -345,9 +346,9 @@ fun LyricsMoreBottomSheet(
                             content = {
                                 Text(
                                     if (isSyncControlsVisible) {
-                                        stringResource(R.string.lyrics_more_hide_sync_controls)
+                                        stringResource(Res.string.lyrics_more_hide_sync_controls)
                                     } else {
-                                        stringResource(R.string.lyrics_more_adjust_sync)
+                                        stringResource(Res.string.lyrics_more_adjust_sync)
                                     }
                                 )
                             },
@@ -382,7 +383,7 @@ fun LyricsMoreBottomSheet(
 
                     if (isRomanizationVisible) {
                         ListItem(
-                            content = { Text(stringResource(R.string.lyrics_more_show_romanization)) },
+                            content = { Text(stringResource(Res.string.lyrics_more_show_romanization)) },
                             leadingContent = {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_abc_24),
@@ -423,7 +424,7 @@ fun LyricsMoreBottomSheet(
 
                     if (isTranslationVisible) {
                         ListItem(
-                            content = { Text(stringResource(R.string.lyrics_more_show_translations)) },
+                            content = { Text(stringResource(Res.string.lyrics_more_show_translations)) },
                             leadingContent = {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_translate_24),
@@ -464,7 +465,7 @@ fun LyricsMoreBottomSheet(
 
                     if (isImmersiveVisible) {
                         ListItem(
-                            content = { Text(stringResource(R.string.lyrics_more_disable_immersive_once)) },
+                            content = { Text(stringResource(Res.string.lyrics_more_disable_immersive_once)) },
                             leadingContent = {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_visibility_off_filled_24),
@@ -507,7 +508,7 @@ fun LyricsMoreBottomSheet(
 
                     if (isKeepScreenOnVisible) {
                         ListItem(
-                            content = { Text(stringResource(R.string.lyrics_more_keep_screen_on)) },
+                            content = { Text(stringResource(Res.string.lyrics_more_keep_screen_on)) },
                             leadingContent = {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_brightness_high_filled_24),

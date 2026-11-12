@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setcat_search_tap_mode_label">Search result tap</string>
+    <string name="setcat_search_tap_mode_desc">What tapping a song in the search results does.</string>
+    <string name="search_tap_play_only_this">Play only this song</string>
+    <string name="search_tap_play_results">Play all search results from here</string>
+    <string name="search_tap_play_next">Play next</string>
+    <string name="search_tap_add_to_queue">Add to queue</string>
+    <string name="search_tap_play_album">Play album</string>
+    <string name="search_tap_play_artist">Play artist</string>
+    <string name="search_tap_toast_play_next">Will play next</string>
+    <string name="search_tap_toast_added">Added to queue</string>
+</resources>

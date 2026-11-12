@@ -3,7 +3,6 @@ package io.github.raghavsatyadev.openplayer.presentation.screens
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.graphics.vector.ImageVector
 import android.widget.Toast
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -74,6 +73,8 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ArtistSettings
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -172,7 +173,7 @@ fun WordDelimiterConfigScreen(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.word_delimiter_section_title),
+                            text = stringResource(Res.string.word_delimiter_section_title),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -181,7 +182,7 @@ fun WordDelimiterConfigScreen(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
-                            text = stringResource(R.string.word_delimiter_section_subtitle),
+                            text = stringResource(Res.string.word_delimiter_section_subtitle),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -190,7 +191,7 @@ fun WordDelimiterConfigScreen(
 
                         if (uiState.wordDelimiters.isEmpty()) {
                             Text(
-                                text = stringResource(R.string.word_delimiter_empty),
+                                text = stringResource(Res.string.word_delimiter_empty),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                             )
@@ -213,7 +214,7 @@ fun WordDelimiterConfigScreen(
                                         trailingIcon = {
                                             Icon(
                                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                                                contentDescription = stringResource(R.string.cd_remove),
+                                                contentDescription = stringResource(Res.string.cd_remove),
                                                 modifier = Modifier.size(18.dp)
                                             )
                                         },
@@ -241,7 +242,7 @@ fun WordDelimiterConfigScreen(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.word_delimiter_add_title),
+                            text = stringResource(Res.string.word_delimiter_add_title),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -258,7 +259,7 @@ fun WordDelimiterConfigScreen(
                                 onValueChange = { newDelimiter = it },
                                 placeholder = {
                                     Text(
-                                        text = stringResource(R.string.word_delimiter_hint),
+                                        text = stringResource(Res.string.word_delimiter_hint),
                                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                                     )
                                 },
@@ -309,7 +310,7 @@ fun WordDelimiterConfigScreen(
                             ) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_add_24),
-                                    contentDescription = stringResource(R.string.cd_add_word_delimiter)
+                                    contentDescription = stringResource(Res.string.cd_add_word_delimiter)
                                 )
                             }
                         }
@@ -327,7 +328,7 @@ fun WordDelimiterConfigScreen(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.word_delimiter_help_title),
+                            text = stringResource(Res.string.word_delimiter_help_title),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -336,7 +337,7 @@ fun WordDelimiterConfigScreen(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
-                            text = stringResource(R.string.word_delimiter_help_body),
+                            text = stringResource(Res.string.word_delimiter_help_body),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -346,7 +347,7 @@ fun WordDelimiterConfigScreen(
         }
 
         CollapsibleCommonTopBar(
-            title = stringResource(R.string.word_delimiters_screen_title),
+            title = stringResource(Res.string.word_delimiters_screen_title),
             collapseFraction = collapseFraction,
             headerHeight = currentTopBarHeightDp,
             onBackClick = { navController.popBackStack() },
@@ -370,7 +371,7 @@ fun WordDelimiterConfigScreen(
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_restart_alt_24),
-                            contentDescription = stringResource(R.string.cd_reset_defaults),
+                            contentDescription = stringResource(Res.string.cd_reset_defaults),
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -383,14 +384,14 @@ fun WordDelimiterConfigScreen(
                 onDismissRequest = { showResetDialog = false },
                 title = {
                     Text(
-                        text = stringResource(R.string.word_delimiter_reset_title),
+                        text = stringResource(Res.string.word_delimiter_reset_title),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
                     )
                 },
                 text = {
                     Text(
-                        text = stringResource(R.string.word_delimiter_reset_message),
+                        text = stringResource(Res.string.word_delimiter_reset_message),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -414,14 +415,14 @@ fun WordDelimiterConfigScreen(
                             contentColor = MaterialTheme.colorScheme.onError
                         )
                     ) {
-                        Text(stringResource(R.string.action_reset))
+                        Text(stringResource(Res.string.action_reset))
                     }
                 },
                 dismissButton = {
                     TextButton(
                         onClick = { showResetDialog = false }
                     ) {
-                        Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 },
                 containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,

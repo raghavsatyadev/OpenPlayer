@@ -72,6 +72,8 @@ import androidx.core.view.HapticFeedbackConstantsCompat
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
 import io.github.raghavsatyadev.openplayer.presentation.utils.performAppCompatHapticFeedback
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberSyncedSliderState
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun SettingsSection(title: String, icon: @Composable () -> Unit, content: @Composable () -> Unit) {
@@ -509,12 +511,12 @@ fun RefreshLibraryItem(
                         verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text(
-                            text = stringResource(R.string.presentation_batch_f_refresh_library_title),
+                            text = stringResource(Res.string.presentation_batch_f_refresh_library_title),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                            text = stringResource(R.string.presentation_batch_f_refresh_library_subtitle),
+                            text = stringResource(Res.string.presentation_batch_f_refresh_library_subtitle),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -539,7 +541,7 @@ fun RefreshLibraryItem(
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(R.string.presentation_batch_f_full_rescan))
+                    Text(stringResource(Res.string.presentation_batch_f_full_rescan))
                 }
             }
              
@@ -565,7 +567,7 @@ fun RefreshLibraryItem(
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(R.string.presentation_batch_f_rebuild_database))
+                    Text(stringResource(Res.string.presentation_batch_f_rebuild_database))
                 }
             }
 
@@ -579,8 +581,7 @@ fun RefreshLibraryItem(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                            text = stringResource(
-                                R.string.presentation_batch_f_sync_progress_detailed,
+                            text = stringResource(Res.string.presentation_batch_f_sync_progress_detailed,
                                 phaseLabel,
                                 (syncProgress.progress * 100).toInt(),
                                 syncProgress.currentCount,
@@ -593,8 +594,7 @@ fun RefreshLibraryItem(
                     LinearWavyProgressIndicator(modifier = Modifier.fillMaxWidth())
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                            text = stringResource(
-                                R.string.presentation_batch_f_sync_progress_indeterminate,
+                            text = stringResource(Res.string.presentation_batch_f_sync_progress_indeterminate,
                                 phaseLabel
                             ),
                             style = MaterialTheme.typography.labelMedium,
@@ -658,12 +658,12 @@ fun RefreshLyricsItem(
                         verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text(
-                            text = stringResource(R.string.presentation_batch_f_refresh_lyrics_title),
+                            text = stringResource(Res.string.presentation_batch_f_refresh_lyrics_title),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                            text = stringResource(R.string.presentation_batch_f_refresh_lyrics_subtitle),
+                            text = stringResource(Res.string.presentation_batch_f_refresh_lyrics_subtitle),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -679,7 +679,7 @@ fun RefreshLyricsItem(
                 ) {
                     Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_sync_24),
-                            contentDescription = stringResource(R.string.presentation_batch_f_cd_refresh_lyrics),
+                            contentDescription = stringResource(Res.string.presentation_batch_f_cd_refresh_lyrics),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
@@ -693,8 +693,7 @@ fun RefreshLyricsItem(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                        text = stringResource(
-                            R.string.presentation_batch_f_refresh_lyrics_processing,
+                        text = stringResource(Res.string.presentation_batch_f_refresh_lyrics_processing,
                             progress.currentCount,
                             progress.totalSongs
                         ),

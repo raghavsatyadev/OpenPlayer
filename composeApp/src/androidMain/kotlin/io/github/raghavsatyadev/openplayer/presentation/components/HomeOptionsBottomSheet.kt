@@ -11,9 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun HomeOptionsBottomSheet(
@@ -22,11 +23,11 @@ fun HomeOptionsBottomSheet(
 ) {
     Column(modifier.padding(bottom = 32.dp)) {
         ListItem(
-            content = { Text(stringResource(R.string.home_option_dj_mashup)) },
+            content = { Text(stringResource(Res.string.home_option_dj_mashup)) },
             leadingContent = {
                 Icon(
                     painter = painterResource(id = R.drawable.rounded_instant_mix_24),
-                    contentDescription = stringResource(R.string.home_option_dj_mashup)
+                    contentDescription = stringResource(Res.string.home_option_dj_mashup)
                 )
             },
             modifier = Modifier

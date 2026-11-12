@@ -103,6 +103,8 @@ import io.github.raghavsatyadev.openplayer.utils.StorageInfo
 import java.io.File
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -303,7 +305,7 @@ fun FileExplorerContent(
                         ) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                                contentDescription = stringResource(R.string.presentation_batch_g_file_explorer_cd_close)
+                                contentDescription = stringResource(Res.string.presentation_batch_g_file_explorer_cd_close)
                             )
                         }
                     }
@@ -321,7 +323,7 @@ fun FileExplorerContent(
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_refresh_24),
-                            contentDescription = stringResource(R.string.presentation_batch_g_file_explorer_cd_refresh)
+                            contentDescription = stringResource(Res.string.presentation_batch_g_file_explorer_cd_refresh)
                         )
                     }
                 }
@@ -338,11 +340,11 @@ fun FileExplorerContent(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_done_24),
-                    contentDescription = stringResource(R.string.presentation_batch_g_file_explorer_cd_done),
+                    contentDescription = stringResource(Res.string.presentation_batch_g_file_explorer_cd_done),
                     tint = MaterialTheme.colorScheme.onTertiaryContainer
                 )
                 Spacer(modifier = Modifier.width(10.dp))
-                Text(text = stringResource(R.string.presentation_batch_g_file_explorer_done))
+                Text(text = stringResource(Res.string.presentation_batch_g_file_explorer_done))
             }
         }
     ) { innerPadding ->
@@ -389,7 +391,7 @@ fun FileExplorerContent(
             }
 
             Text(
-                text = stringResource(R.string.presentation_batch_g_file_explorer_hint),
+                text = stringResource(Res.string.presentation_batch_g_file_explorer_hint),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
@@ -450,7 +452,7 @@ fun FileExplorerContent(
                             supportingText = loadingHint
                         )
 
-                        children.isEmpty() -> ExplorerEmptyState(text = stringResource(R.string.presentation_batch_g_file_explorer_empty_folders))
+                        children.isEmpty() -> ExplorerEmptyState(text = stringResource(Res.string.presentation_batch_g_file_explorer_empty_folders))
 
                         else -> {
                             LazyColumn(
@@ -523,8 +525,8 @@ private fun FileExplorerModeSwitcher(
     modifier: Modifier = Modifier
 ) {
     val tabs = listOf(
-        stringResource(R.string.presentation_batch_g_file_explorer_mode_folders),
-        stringResource(R.string.presentation_batch_g_file_explorer_mode_all_subfolders)
+        stringResource(Res.string.presentation_batch_g_file_explorer_mode_folders),
+        stringResource(Res.string.presentation_batch_g_file_explorer_mode_all_subfolders)
     )
     val selectedIndex = if (showAllFolders) 1 else 0
     // Connected Material 3 Expressive button group, so the two modes read as one control.
@@ -602,11 +604,11 @@ private fun AllFoldersList(
 ) {
     when {
         folders.isEmpty() && isLoading -> ExplorerLoadingState(
-            message = stringResource(R.string.presentation_batch_g_file_explorer_loading_all_subfolders)
+            message = stringResource(Res.string.presentation_batch_g_file_explorer_loading_all_subfolders)
         )
 
         folders.isEmpty() -> ExplorerEmptyState(
-            text = stringResource(R.string.presentation_batch_g_file_explorer_empty_folders)
+            text = stringResource(Res.string.presentation_batch_g_file_explorer_empty_folders)
         )
 
         else -> LazyColumn(
@@ -880,7 +882,7 @@ private fun FileExplorerHeader(
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                        contentDescription = stringResource(R.string.presentation_batch_g_file_explorer_cd_navigate_up),
+                        contentDescription = stringResource(Res.string.presentation_batch_g_file_explorer_cd_navigate_up),
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -956,7 +958,7 @@ private fun FileExplorerHeader(
                                 if (isRoot) {
                                     Icon(
                                         imageVector = ImageVector.vectorResource(R.drawable.rounded_home_filled_24),
-                                        contentDescription = stringResource(R.string.presentation_batch_g_file_explorer_cd_go_root),
+                                        contentDescription = stringResource(Res.string.presentation_batch_g_file_explorer_cd_go_root),
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier
                                             .padding(end = 4.dp)

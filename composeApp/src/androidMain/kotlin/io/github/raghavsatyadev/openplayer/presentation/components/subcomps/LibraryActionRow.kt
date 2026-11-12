@@ -81,7 +81,8 @@ import io.github.raghavsatyadev.openplayer.data.model.MusicFolder
 import io.github.raghavsatyadev.openplayer.data.model.StorageFilter
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import java.io.File
-import androidx.compose.ui.res.stringResource
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 val defaultShape = RoundedCornerShape(26.dp)
 val genHeight = 42.dp
@@ -244,14 +245,14 @@ private fun LibraryActionRowContent(
                     ) {
                         val icon = if (isPlaylistTab) ImageVector.vectorResource(R.drawable.rounded_playlist_add_24) else ImageVector.vectorResource(R.drawable.rounded_shuffle_24)
                         val text = if (isPlaylistTab) {
-                            stringResource(R.string.library_action_new)
+                            stringResource(Res.string.library_action_new)
                         } else {
-                            stringResource(R.string.shortcut_shuffle_short)
+                            stringResource(Res.string.shortcut_shuffle_short)
                         }
                         val contentDesc = if (isPlaylistTab) {
-                            stringResource(R.string.cd_create_new_playlist)
+                            stringResource(Res.string.cd_create_new_playlist)
                         } else {
-                            stringResource(R.string.cd_shuffle_play)
+                            stringResource(Res.string.cd_shuffle_play)
                         }
 
                         Row(
@@ -323,11 +324,11 @@ private fun LibraryActionRowContent(
                                 ) {
                                     Icon(
                                         painter = painterResource(R.drawable.rounded_upload_file_24),
-                                        contentDescription = stringResource(R.string.cd_import_m3u_playlist),
+                                        contentDescription = stringResource(Res.string.cd_import_m3u_playlist),
                                         modifier = Modifier.size(20.dp)
                                     )
                                     Text(
-                                        text = stringResource(R.string.import_file),
+                                        text = stringResource(Res.string.import_file),
                                         overflow = TextOverflow.Ellipsis,
                                         style = MaterialTheme.typography.labelLarge,
                                         fontWeight = FontWeight.Medium
@@ -387,7 +388,7 @@ private fun LibraryActionRowContent(
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_my_location_filled_24),
-                            contentDescription = stringResource(R.string.cd_locate_current_song)
+                            contentDescription = stringResource(Res.string.cd_locate_current_song)
                         )
                     }
                 }
@@ -405,9 +406,9 @@ private fun LibraryActionRowContent(
                          StorageFilter.OFFLINE -> ImageVector.vectorResource(R.drawable.rounded_phone_android_filled_24)
                      }
                      val tooltipText = when(currentStorageFilter) {
-                         StorageFilter.ALL -> stringResource(R.string.library_storage_filter_all_songs)
-                         StorageFilter.ONLINE -> stringResource(R.string.library_storage_filter_online)
-                         StorageFilter.OFFLINE -> stringResource(R.string.library_storage_filter_offline)
+                         StorageFilter.ALL -> stringResource(Res.string.library_storage_filter_all_songs)
+                         StorageFilter.ONLINE -> stringResource(Res.string.library_storage_filter_online)
+                         StorageFilter.OFFLINE -> stringResource(Res.string.library_storage_filter_offline)
                      }
                      val tooltipState = rememberTooltipState()
 
@@ -510,7 +511,7 @@ private fun LibraryActionRowContent(
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.rounded_sort_24),
-                        contentDescription = stringResource(R.string.cd_sort_options),
+                        contentDescription = stringResource(Res.string.cd_sort_options),
                     )
                 }
             }
@@ -571,9 +572,9 @@ fun Breadcrumbs(
             enabled = !isAtRoot
         ) {
             if (isAtRoot) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_home_filled_24), contentDescription = stringResource(R.string.tab_home))
+                Icon(ImageVector.vectorResource(R.drawable.rounded_home_filled_24), contentDescription = stringResource(Res.string.tab_home))
             } else {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(R.string.auth_cd_back))
+                Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
             }
         }
         Spacer(Modifier.width(8.dp))

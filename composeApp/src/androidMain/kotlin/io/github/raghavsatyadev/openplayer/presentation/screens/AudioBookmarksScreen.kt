@@ -128,7 +128,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.pluralStringResource
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.database.AudioBookmarkEntity
 import io.github.raghavsatyadev.openplayer.data.database.backupSongIdOfRestoredBookmark
@@ -154,6 +153,9 @@ import java.util.Locale
 import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -408,13 +410,11 @@ fun AudioBookmarksScreen(
             val doomedFolders = folders.filter { it.song.id in selection }
             val doomedIds = doomedFolders.flatMap { folder -> folder.bookmarks.map { it.id } }
             ConfirmDeleteBookmarksDialog(
-                title = pluralStringResource(
-                    R.plurals.audio_bookmarks_delete_folders_title,
+                title = pluralStringResource(Res.plurals.audio_bookmarks_delete_folders_title,
                     doomedFolders.size,
                     doomedFolders.size
                 ),
-                message = pluralStringResource(
-                    R.plurals.audio_bookmarks_delete_folders_message,
+                message = pluralStringResource(Res.plurals.audio_bookmarks_delete_folders_message,
                     doomedIds.size,
                     doomedIds.size
                 ),
@@ -575,12 +575,11 @@ fun AudioBookmarkFolderScreen(
 
             if (confirmDeleteSelection && isSelecting) {
                 ConfirmDeleteBookmarksDialog(
-                    title = pluralStringResource(
-                        R.plurals.audio_bookmarks_delete_moments_title,
+                    title = pluralStringResource(Res.plurals.audio_bookmarks_delete_moments_title,
                         selection.size,
                         selection.size
                     ),
-                    message = stringResource(R.string.audio_bookmarks_delete_moments_message),
+                    message = stringResource(Res.string.audio_bookmarks_delete_moments_message),
                     onDismiss = { confirmDeleteSelection = false },
                     onConfirm = {
                         confirmDeleteSelection = false
@@ -1363,7 +1362,7 @@ private fun BookmarkActionFabMenu(
                 }
             },
             icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), contentDescription = null) },
-            text = { Text(stringResource(R.string.audio_bookmarks_clear_filter)) },
+            text = { Text(stringResource(Res.string.audio_bookmarks_clear_filter)) },
             containerColor = if (hasQuery) {
                 MaterialTheme.colorScheme.tertiaryContainer
             } else {
@@ -1382,7 +1381,7 @@ private fun BookmarkActionFabMenu(
                 }
             },
             icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_keyboard_arrow_up_24), contentDescription = null) },
-            text = { Text(stringResource(R.string.audio_bookmarks_back_to_top)) },
+            text = { Text(stringResource(Res.string.audio_bookmarks_back_to_top)) },
             containerColor = if (canScrollToTop) {
                 MaterialTheme.colorScheme.secondaryContainer
             } else {
@@ -1439,7 +1438,7 @@ private fun BookmarkSelectionTopBar(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                    contentDescription = stringResource(R.string.cd_clear_selection)
+                    contentDescription = stringResource(Res.string.cd_clear_selection)
                 )
             }
 
@@ -1458,7 +1457,7 @@ private fun BookmarkSelectionTopBar(
                     contentAlignment = Alignment.CenterStart
                 ) {
                     Text(
-                        text = stringResource(R.string.audio_bookmarks_selected_count, selectedCount),
+                        text = stringResource(Res.string.audio_bookmarks_selected_count, selectedCount),
                         style = MaterialTheme.typography.titleMedium.copy(fontFamily = RoundedSans),
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
@@ -1493,7 +1492,7 @@ private fun BookmarkSelectionTopBar(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
-                    contentDescription = stringResource(R.string.audio_bookmarks_cd_delete_selected)
+                    contentDescription = stringResource(Res.string.audio_bookmarks_cd_delete_selected)
                 )
             }
         }
@@ -1532,12 +1531,12 @@ private fun ConfirmDeleteBookmarksDialog(
                     contentColor = MaterialTheme.colorScheme.onError
                 )
             ) {
-                Text(stringResource(R.string.delete_action))
+                Text(stringResource(Res.string.delete_action))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     )
@@ -1706,7 +1705,7 @@ private fun BookmarkFolderCard(
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
-                            contentDescription = stringResource(R.string.audio_bookmarks_cd_selected),
+                            contentDescription = stringResource(Res.string.audio_bookmarks_cd_selected),
                             tint = songScheme.onPrimary,
                             modifier = Modifier.size(18.dp)
                         )
@@ -1939,7 +1938,7 @@ private fun BookmarkMomentCard(
                         if (selected) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
-                                contentDescription = stringResource(R.string.audio_bookmarks_cd_selected),
+                                contentDescription = stringResource(Res.string.audio_bookmarks_cd_selected),
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(16.dp)
                             )
@@ -1958,7 +1957,7 @@ private fun BookmarkMomentCard(
                     IconButton(onClick = onMoreClick) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_more_vert_24),
-                            contentDescription = stringResource(R.string.audio_bookmarks_actions)
+                            contentDescription = stringResource(Res.string.audio_bookmarks_actions)
                         )
                     }
                 }
@@ -2120,7 +2119,7 @@ private fun BookmarkMomentPrimaryActions(
                 .weight(renameWeight)
                 .fillMaxHeight(),
             icon = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
-            label = stringResource(R.string.action_rename),
+            label = stringResource(Res.string.action_rename),
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             interactionSource = renameInteractionSource,
@@ -2303,7 +2302,7 @@ private fun RenameBookmarkDialog(
                     onValueChange = { title = it },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
-                    label = { Text(stringResource(R.string.audio_bookmarks_name_label)) },
+                    label = { Text(stringResource(Res.string.audio_bookmarks_name_label)) },
                     isError = title.isNotEmpty() && trimmedTitle.isEmpty(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -2317,12 +2316,12 @@ private fun RenameBookmarkDialog(
                 onClick = { onRename(trimmedTitle) },
                 enabled = canRename
             ) {
-                Text(stringResource(R.string.action_rename))
+                Text(stringResource(Res.string.action_rename))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     )

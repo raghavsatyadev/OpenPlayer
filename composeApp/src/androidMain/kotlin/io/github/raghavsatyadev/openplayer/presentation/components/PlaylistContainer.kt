@@ -75,7 +75,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -104,6 +103,8 @@ import androidx.compose.foundation.combinedClickable
 import kotlinx.coroutines.flow.map
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -168,12 +169,12 @@ fun PlaylistContainer(
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        stringResource(R.string.presentation_batch_e_no_playlist_created),
+                        stringResource(Res.string.presentation_batch_e_no_playlist_created),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        stringResource(R.string.presentation_batch_e_new_playlist_hint),
+                        stringResource(Res.string.presentation_batch_e_new_playlist_hint),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -539,7 +540,7 @@ private fun PlaylistGridItem(
                     } else {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
-                            contentDescription = stringResource(R.string.presentation_batch_g_cd_selected),
+                            contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                             tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(16.dp)
                         )
@@ -669,7 +670,7 @@ fun PlaylistItem(
                         Spacer(modifier = Modifier.width(8.dp))
                         Icon(
                             painter = painterResource(R.drawable.ic_navidrome),
-                            contentDescription = stringResource(R.string.cd_navidrome_logo),
+                            contentDescription = stringResource(Res.string.cd_navidrome_logo),
                             tint = Color.Unspecified,
                             modifier = Modifier.size(18.dp)
                         )
@@ -703,7 +704,7 @@ fun PlaylistItem(
                     } else {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
-                            contentDescription = stringResource(R.string.presentation_batch_g_cd_selected),
+                            contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                             tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(16.dp)
                         )
@@ -752,7 +753,7 @@ fun CreatePlaylistDialogRedesigned(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(R.string.create_playlist_dialog_title),
+                    text = stringResource(Res.string.create_playlist_dialog_title),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     fontFamily = RoundedSans,
@@ -762,8 +763,8 @@ fun CreatePlaylistDialogRedesigned(
                 OutlinedTextField(
                     value = playlistName,
                     onValueChange = { playlistName = it },
-                    label = { Text(stringResource(R.string.create_playlist_name_label)) },
-                    placeholder = { Text(stringResource(R.string.create_playlist_name_placeholder)) },
+                    label = { Text(stringResource(Res.string.create_playlist_name_label)) },
+                    placeholder = { Text(stringResource(Res.string.create_playlist_name_placeholder)) },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -792,7 +793,7 @@ fun CreatePlaylistDialogRedesigned(
                         onClick = onDismiss,
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text(stringResource(R.string.cancel), fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(stringResource(Res.string.cancel), fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
 
                     Button(
@@ -805,7 +806,7 @@ fun CreatePlaylistDialogRedesigned(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        Text(stringResource(R.string.action_create), fontWeight = FontWeight.Bold)
+                        Text(stringResource(Res.string.action_create), fontWeight = FontWeight.Bold)
                     }
                 }
             }

@@ -66,6 +66,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * The stored order *is* the list of visible tabs, so every known tab missing from it is hidden.
@@ -105,8 +107,8 @@ fun ReorderTabsSheet(
     if (showResetDialog) {
         AlertDialog(
             onDismissRequest = { showResetDialog = false },
-            title = { Text(stringResource(R.string.reorder_tabs_reset_dialog_title)) },
-            text = { Text(stringResource(R.string.reorder_tabs_reset_dialog_body)) },
+            title = { Text(stringResource(Res.string.reorder_tabs_reset_dialog_title)) },
+            text = { Text(stringResource(Res.string.reorder_tabs_reset_dialog_body)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -115,14 +117,14 @@ fun ReorderTabsSheet(
                         showResetDialog = false
                     }
                 ) {
-                    Text(stringResource(R.string.action_reset), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(Res.string.action_reset), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             },
             dismissButton = {
                 TextButton(
                     onClick = { showResetDialog = false }
                 ) {
-                    Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         )
@@ -166,7 +168,7 @@ fun ReorderTabsSheet(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        stringResource(R.string.reorder_tabs_sheet_title),
+                        stringResource(Res.string.reorder_tabs_sheet_title),
                         style = MaterialTheme.typography.displaySmall,
                         fontFamily = RoundedSans
                     )
@@ -200,7 +202,7 @@ fun ReorderTabsSheet(
                     ) {
                         ContainedLoadingIndicator()
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text(stringResource(R.string.reorder_tabs_reordering))
+                        Text(stringResource(Res.string.reorder_tabs_reordering))
                     }
                 } else {
                     LazyColumn(
@@ -212,7 +214,7 @@ fun ReorderTabsSheet(
                     ) {
                         item(key = "visible_header") {
                             TabsEditorSectionHeader(
-                                title = stringResource(R.string.reorder_tabs_visible_title),
+                                title = stringResource(Res.string.reorder_tabs_visible_title),
                                 count = localTabs.size
                             )
                         }
@@ -253,7 +255,7 @@ fun ReorderTabsSheet(
                                         ) {
                                             Icon(
                                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_drag_indicator_24),
-                                                contentDescription = stringResource(R.string.cd_drag_handle)
+                                                contentDescription = stringResource(Res.string.cd_drag_handle)
                                             )
                                         }
                                     },
@@ -269,7 +271,7 @@ fun ReorderTabsSheet(
                         if (hiddenTabs.isNotEmpty()) {
                             item(key = "hidden_header") {
                                 TabsEditorSectionHeader(
-                                    title = stringResource(R.string.reorder_tabs_hidden_title),
+                                    title = stringResource(Res.string.reorder_tabs_hidden_title),
                                     count = hiddenTabs.size
                                 )
                             }
@@ -369,7 +371,7 @@ private fun VisibleTabRow(
                     disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .38f)
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_remove_24), stringResource(R.string.reorder_tabs_hide_action))
+                Icon(ImageVector.vectorResource(R.drawable.rounded_remove_24), stringResource(Res.string.reorder_tabs_hide_action))
             }
         }
     }
@@ -419,7 +421,7 @@ private fun HiddenTabRow(
                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_add_24), stringResource(R.string.reorder_tabs_show_action))
+                Icon(ImageVector.vectorResource(R.drawable.rounded_add_24), stringResource(Res.string.reorder_tabs_show_action))
             }
         }
     }
@@ -475,7 +477,7 @@ fun FloatingToolBar(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.outline_restart_alt_24),
-                    contentDescription = stringResource(R.string.cd_reset),
+                    contentDescription = stringResource(Res.string.cd_reset),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -485,8 +487,8 @@ fun FloatingToolBar(
                     .align(Alignment.CenterVertically),
                 shape = CircleShape,
                 onClick = onClick,
-                icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_check_24), contentDescription = stringResource(R.string.action_done)) },
-                text = { Text(stringResource(R.string.action_done)) }
+                icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_check_24), contentDescription = stringResource(Res.string.action_done)) },
+                text = { Text(stringResource(Res.string.action_done)) }
             )
         }
     }

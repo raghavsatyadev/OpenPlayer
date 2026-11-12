@@ -95,6 +95,8 @@ import io.github.raghavsatyadev.openplayer.utils.formatSongCount
 import kotlin.math.roundToInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** How the hero's main button relates to what is playing right now. */
 enum class HeroPlayState {
@@ -646,7 +648,7 @@ private fun HeroActionGroup(
                     content = colors.onSurface,
                     interactionSource = shuffleInteraction,
                     motionScheme = motionScheme,
-                    contentDescription = stringResource(R.string.detail_hero_shuffle),
+                    contentDescription = stringResource(Res.string.detail_hero_shuffle),
                     modifier = Modifier
                         .weight(1f)
                         .animateWidth(shuffleInteraction)
@@ -733,7 +735,7 @@ private fun HeroActionGroup(
                         content = colors.onSurface,
                         interactionSource = addInteraction,
                         motionScheme = motionScheme,
-                        contentDescription = stringResource(R.string.detail_hero_more_actions),
+                        contentDescription = stringResource(Res.string.detail_hero_more_actions),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         val rotation by animateFloatAsState(
@@ -856,8 +858,8 @@ fun DetailSongsSummary(
     val totalMinutes = (durationMs / 60_000L).toInt()
     val duration = when {
         durationMs <= 0L -> null
-        totalMinutes >= 60 -> stringResource(R.string.detail_hero_duration_hours, totalMinutes / 60, totalMinutes % 60)
-        else -> stringResource(R.string.detail_hero_duration_minutes, totalMinutes.coerceAtLeast(1))
+        totalMinutes >= 60 -> stringResource(Res.string.detail_hero_duration_hours, totalMinutes / 60, totalMinutes % 60)
+        else -> stringResource(Res.string.detail_hero_duration_minutes, totalMinutes.coerceAtLeast(1))
     }
     Text(
         text = listOfNotNull(formatSongCount(songCount), duration).joinToString(" · "),
@@ -932,9 +934,9 @@ fun rememberSongCollectionMenuActions(
     onPlayNext: () -> Unit,
     onAddToQueue: () -> Unit,
 ): ImmutableList<DetailHeroMenuAction> {
-    val addToPlaylist = stringResource(R.string.detail_hero_add_to_playlist)
-    val playNext = stringResource(R.string.detail_hero_play_next)
-    val addToQueue = stringResource(R.string.detail_hero_add_to_queue)
+    val addToPlaylist = stringResource(Res.string.detail_hero_add_to_playlist)
+    val playNext = stringResource(Res.string.detail_hero_play_next)
+    val addToQueue = stringResource(Res.string.detail_hero_add_to_queue)
     val addToPlaylistIcon = ImageVector.vectorResource(R.drawable.rounded_playlist_add_24)
     val playNextIcon = ImageVector.vectorResource(R.drawable.rounded_skip_next_filled_24)
     val addToQueueIcon = ImageVector.vectorResource(R.drawable.rounded_queue_music_24)

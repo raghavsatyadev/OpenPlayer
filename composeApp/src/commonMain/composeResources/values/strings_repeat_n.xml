@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="repeat_n_title">Repeat this song</string>
+    <string name="repeat_n_subtitle">Play it again this many times, then continue the queue.</string>
+    <string name="repeat_n_option_cd">Repeat %1$d more times</string>
+    <string name="repeat_n_stop">Stop repeating</string>
+    <string name="repeat_n_badge_cd">%1$d repeats left</string>
+    <string name="repeat_n_start">Repeat</string>
+</resources>

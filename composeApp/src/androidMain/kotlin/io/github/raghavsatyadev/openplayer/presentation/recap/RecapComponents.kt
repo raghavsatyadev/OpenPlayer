@@ -60,7 +60,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
@@ -90,6 +89,8 @@ import kotlin.math.roundToLong
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.isActive
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** How far apart, in reveal progress, consecutive elements of a slide start appearing. */
 private const val REVEAL_STAGGER = 0.08f
@@ -461,7 +462,7 @@ internal fun RecapStatTile(
 /** Initials for an image-less artist, or the app's placeholder when the name has none. */
 @Composable
 internal fun rememberMonogram(name: String): String {
-    val placeholder = stringResource(R.string.presentation_batch_g_stats_avatar_placeholder)
+    val placeholder = stringResource(Res.string.presentation_batch_g_stats_avatar_placeholder)
     return remember(name, placeholder) {
         name.split(" ")
             .filter { it.isNotBlank() }

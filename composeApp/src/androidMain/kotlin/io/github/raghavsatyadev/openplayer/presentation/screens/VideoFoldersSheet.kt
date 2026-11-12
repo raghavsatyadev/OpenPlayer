@@ -23,11 +23,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private const val STORAGE_ROOT = "/storage/emulated/0/"
 
@@ -51,22 +52,22 @@ fun VideoFoldersSheet(
         containerColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(Modifier.padding(horizontal = 20.dp)) {
-            Text(stringResource(R.string.setting_video_folders_title), style = MaterialTheme.typography.headlineSmall)
+            Text(stringResource(Res.string.setting_video_folders_title), style = MaterialTheme.typography.headlineSmall)
             Text(
-                stringResource(R.string.setting_video_folders_help),
+                stringResource(Res.string.setting_video_folders_help),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 4.dp, bottom = 8.dp),
             )
             if (included.isNotEmpty() || excluded.isNotEmpty()) {
                 TextButton(onClick = { onChange(emptySet(), emptySet()) }) {
-                    Text(stringResource(R.string.setting_video_folders_reset))
+                    Text(stringResource(Res.string.setting_video_folders_reset))
                 }
             }
         }
         if (folders.isEmpty()) {
             Text(
-                stringResource(R.string.lib_empty_videos_title),
+                stringResource(Res.string.lib_empty_videos_title),
                 modifier = Modifier.padding(20.dp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -153,7 +154,7 @@ private fun FolderRow(
             FilledIconToggleButton(checked = isIncluded, onCheckedChange = onInclude) {
                 Icon(
                     painterResource(R.drawable.rounded_check_24),
-                    contentDescription = stringResource(R.string.setting_video_folder_include),
+                    contentDescription = stringResource(Res.string.setting_video_folder_include),
                 )
             }
             FilledIconToggleButton(
@@ -166,7 +167,7 @@ private fun FolderRow(
             ) {
                 Icon(
                     painterResource(R.drawable.rounded_block_24),
-                    contentDescription = stringResource(R.string.setting_video_folder_exclude),
+                    contentDescription = stringResource(Res.string.setting_video_folder_exclude),
                 )
             }
         }

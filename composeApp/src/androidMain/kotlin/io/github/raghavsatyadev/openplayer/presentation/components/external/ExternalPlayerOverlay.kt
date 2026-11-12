@@ -46,14 +46,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.media3.common.util.UnstableApi
 import coil3.size.Size
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.sanitizeNavBarCornerRadius
 import io.github.raghavsatyadev.openplayer.presentation.components.OptimizedAlbumArt
 import io.github.raghavsatyadev.openplayer.presentation.components.WavySliderExpressive
@@ -63,6 +61,8 @@ import io.github.raghavsatyadev.openplayer.utils.formatDuration
 import kotlin.math.abs
 import kotlin.math.roundToLong
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -294,7 +294,7 @@ fun ExternalPlayerOverlay(
                             thumbColor = progressColor,
                             wavelength = 30.dp,
                             isPlaying = stablePlayerState.isPlaying,
-                            semanticsLabel = stringResource(R.string.cd_playback_position)
+                            semanticsLabel = stringResource(Res.string.cd_playback_position)
                         )
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -359,7 +359,7 @@ fun ExternalPlayerOverlay(
                         ) {
                             Text(
                                 modifier = Modifier.padding(vertical = 10.dp),
-                                text = stringResource(id = R.string.open_full_player),
+                                text = stringResource(Res.string.open_full_player),
                                 style = MaterialTheme.typography.labelLarge
                             )
                         }

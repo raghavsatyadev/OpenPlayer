@@ -67,7 +67,8 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.data.preferences.NavBarStyle
 import io.github.raghavsatyadev.openplayer.presentation.components.resolveNavBarSurfaceHeight
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberSyncedSliderState
-import androidx.compose.ui.res.stringResource
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 const val DEFAULT_NAV_BAR_CORNER_RADIUS = 28f
 
@@ -130,7 +131,7 @@ fun NavBarCornerRadiusContent(
                                 containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                             )
                     ) {
-                        Icon(painterResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(R.string.auth_cd_back), tint = MaterialTheme.colorScheme.onSurface)
+                        Icon(painterResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back), tint = MaterialTheme.colorScheme.onSurface)
                     }
                 },
                 actions = {
@@ -151,7 +152,7 @@ fun NavBarCornerRadiusContent(
                             modifier = Modifier.size(18.dp)
                         )
                         Spacer(modifier = Modifier.size(8.dp))
-                        Text(stringResource(R.string.action_done))
+                        Text(stringResource(Res.string.action_done))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -177,7 +178,7 @@ fun NavBarCornerRadiusContent(
                 Spacer(modifier = Modifier.height(24.dp))
                 
                 Text(
-                    text = stringResource(R.string.presentation_batch_b_navbar_adjust_title),
+                    text = stringResource(Res.string.presentation_batch_b_navbar_adjust_title),
                     style = MaterialTheme.typography.displaySmall.copy(
                         fontWeight = FontWeight.Bold
                     ),
@@ -188,7 +189,7 @@ fun NavBarCornerRadiusContent(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = stringResource(R.string.presentation_batch_b_navbar_adjust_subtitle),
+                    text = stringResource(Res.string.presentation_batch_b_navbar_adjust_subtitle),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -222,7 +223,7 @@ fun NavBarCornerRadiusContent(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = stringResource(R.string.presentation_batch_b_corner_radius_label),
+                                text = stringResource(Res.string.presentation_batch_b_corner_radius_label),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -242,11 +243,11 @@ fun NavBarCornerRadiusContent(
                                 ) {
                                     Icon(
                                         ImageVector.vectorResource(R.drawable.rounded_refresh_24),
-                                        contentDescription = stringResource(R.string.cd_reset),
+                                        contentDescription = stringResource(Res.string.cd_reset),
                                         modifier = Modifier.size(14.dp)
                                     )
                                     Spacer(modifier = Modifier.size(6.dp))
-                                    Text(stringResource(R.string.action_reset), style = MaterialTheme.typography.labelMedium)
+                                    Text(stringResource(Res.string.action_reset), style = MaterialTheme.typography.labelMedium)
                                 }
                             }
                         }
@@ -296,8 +297,7 @@ fun NavBarCornerRadiusContent(
                             
                             Text(
                                 modifier = Modifier.width(46.dp),
-                                text = stringResource(
-                                    R.string.presentation_batch_b_corner_dp_format,
+                                text = stringResource(Res.string.presentation_batch_b_corner_dp_format,
                                     sliderValue.toInt()
                                 ),
                                 textAlign = TextAlign.Center,

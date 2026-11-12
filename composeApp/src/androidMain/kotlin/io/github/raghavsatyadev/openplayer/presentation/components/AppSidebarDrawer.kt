@@ -51,7 +51,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -59,6 +58,8 @@ import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.SidebarShortcutKeys
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.launch
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** How far the sheet slides toward its screen edge at full predictive-back progress. */
 private val PredictiveBackMaxOffset = 16.dp
@@ -213,10 +214,10 @@ private fun DrawerItem(
 
 @Composable
 private fun shortcutLabel(key: String): String = when (key) {
-    SidebarShortcutKeys.HOME -> stringResource(R.string.tab_home)
-    SidebarShortcutKeys.STATS -> stringResource(R.string.presentation_batch_g_stats_title)
-    SidebarShortcutKeys.EQUALIZER -> stringResource(R.string.settings_category_equalizer_title)
-    SidebarShortcutKeys.AUDIO_BOOKMARKS -> stringResource(R.string.audio_bookmarks_title)
+    SidebarShortcutKeys.HOME -> stringResource(Res.string.tab_home)
+    SidebarShortcutKeys.STATS -> stringResource(Res.string.presentation_batch_g_stats_title)
+    SidebarShortcutKeys.EQUALIZER -> stringResource(Res.string.settings_category_equalizer_title)
+    SidebarShortcutKeys.AUDIO_BOOKMARKS -> stringResource(Res.string.audio_bookmarks_title)
     else -> key
 }
 
@@ -241,14 +242,14 @@ private fun DrawerContent(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_app_name),
+                    text = stringResource(Res.string.presentation_batch_g_app_name),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_app_tagline),
+                    text = stringResource(Res.string.presentation_batch_g_app_tagline),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -263,7 +264,7 @@ private fun DrawerContent(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
-                    contentDescription = stringResource(R.string.sidebar_edit_shortcuts),
+                    contentDescription = stringResource(Res.string.sidebar_edit_shortcuts),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -322,7 +323,7 @@ private fun DrawerContent(
 
         DrawerItem(
             icon = painterResource(R.drawable.rounded_settings_24),
-            label = stringResource(R.string.settings_top_bar_title),
+            label = stringResource(Res.string.settings_top_bar_title),
             selected = selectedRoute == DrawerDestination.Settings.route,
             onClick = { onDestinationSelected(DrawerDestination.Settings) }
         )
@@ -343,7 +344,7 @@ private fun ShortcutsConfigDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = stringResource(R.string.sidebar_shortcuts_dialog_title),
+                text = stringResource(Res.string.sidebar_shortcuts_dialog_title),
                 fontWeight = FontWeight.Bold
             )
         },
@@ -384,12 +385,12 @@ private fun ShortcutsConfigDialog(
                     onDismiss()
                 }
             ) {
-                Text(stringResource(R.string.action_save), fontWeight = FontWeight.Bold)
+                Text(stringResource(Res.string.action_save), fontWeight = FontWeight.Bold)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
+                Text(stringResource(Res.string.cancel))
             }
         },
         shape = RoundedCornerShape(28.dp),

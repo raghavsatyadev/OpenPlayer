@@ -40,7 +40,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -49,6 +48,8 @@ import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 internal val LocalMaterialTheme = staticCompositionLocalOf<ColorScheme> { error("No ColorScheme provided") }
 
@@ -94,7 +95,7 @@ internal fun MiniPlayerContentInternal(
             key(song.id) {
                 SmartImage(
                     model = albumArtModel,
-                    contentDescription = stringResource(R.string.cd_album_art_for_title, song.title),
+                    contentDescription = stringResource(Res.string.cd_album_art_for_title, song.title),
                     shape = CircleShape,
                     targetSize = Size(150, 150),
                     modifier = Modifier.size(44.dp)
@@ -130,8 +131,8 @@ internal fun MiniPlayerContentInternal(
 
             AutoScrollingText(
                 text = when {
-                    isOutputConnecting -> stringResource(R.string.mini_player_connecting_device)
-                    isPreparingPlayback -> stringResource(R.string.mini_player_preparing_playback)
+                    isOutputConnecting -> stringResource(Res.string.mini_player_connecting_device)
+                    isPreparingPlayback -> stringResource(Res.string.mini_player_preparing_playback)
                     else -> song.title
                 },
                 style = titleStyle,
@@ -140,7 +141,7 @@ internal fun MiniPlayerContentInternal(
             )
             AutoScrollingText(
                 text = if (isPreparingPlayback) {
-                    stringResource(R.string.mini_player_loading_audio)
+                    stringResource(Res.string.mini_player_loading_audio)
                 } else {
                     song.displayArtist
                 },
@@ -168,7 +169,7 @@ internal fun MiniPlayerContentInternal(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_skip_previous_filled_24),
-                contentDescription = stringResource(R.string.previous_track),
+                contentDescription = stringResource(Res.string.previous_track),
                 tint = LocalMaterialTheme.current.primary,
                 modifier = Modifier.size(22.dp)
             )
@@ -219,7 +220,7 @@ internal fun MiniPlayerContentInternal(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_skip_next_filled_24),
-                contentDescription = stringResource(R.string.next_track),
+                contentDescription = stringResource(Res.string.next_track),
                 tint = LocalMaterialTheme.current.primary,
                 modifier = Modifier.size(22.dp)
             )

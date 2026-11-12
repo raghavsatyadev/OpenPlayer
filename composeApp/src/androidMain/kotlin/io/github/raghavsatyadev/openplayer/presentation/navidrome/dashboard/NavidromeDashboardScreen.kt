@@ -37,9 +37,10 @@ import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.utils.formatTimeAgo
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -70,7 +71,7 @@ fun NavidromeDashboardScreen(
             TopAppBar(
                 title = {
                     Text(
-                        stringResource(R.string.screen_subsonic_dashboard_title),
+                        stringResource(Res.string.screen_subsonic_dashboard_title),
                         fontFamily = RoundedSans,
                         fontWeight = FontWeight.Bold
                     )
@@ -88,7 +89,7 @@ fun NavidromeDashboardScreen(
                     ) {
                         Icon(
                             ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                            contentDescription = stringResource(R.string.auth_cd_back)
+                            contentDescription = stringResource(Res.string.auth_cd_back)
                         )
                     }
                 },
@@ -254,13 +255,13 @@ private fun DashboardContent(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = stringResource(R.string.dash_playlists_synced_count, playlists.size),
+                            text = stringResource(Res.string.dash_playlists_synced_count, playlists.size),
                             style = MaterialTheme.typography.bodySmall,
                             fontFamily = RoundedSans,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = stringResource(R.string.dash_last_synced_format, formatTimeAgo(lastSyncTime)),
+                            text = stringResource(Res.string.dash_last_synced_format, formatTimeAgo(lastSyncTime)),
                             style = MaterialTheme.typography.bodySmall,
                             fontFamily = RoundedSans,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
@@ -292,7 +293,7 @@ private fun DashboardContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(R.string.dash_title_playlists),
+                text = stringResource(Res.string.dash_title_playlists),
                 style = MaterialTheme.typography.titleMedium,
                 fontFamily = RoundedSans,
                 fontWeight = FontWeight.Bold
@@ -305,7 +306,7 @@ private fun DashboardContent(
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(Modifier.width(4.dp))
-                    Text(stringResource(R.string.dash_action_sync), fontFamily = RoundedSans, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(Res.string.dash_action_sync), fontFamily = RoundedSans, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         }
@@ -328,14 +329,14 @@ private fun DashboardContent(
                     )
                     Spacer(Modifier.height(16.dp))
                     Text(
-                        text = stringResource(R.string.dash_playlists_empty_title),
+                        text = stringResource(Res.string.dash_playlists_empty_title),
                         style = MaterialTheme.typography.bodyLarge,
                         fontFamily = RoundedSans,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        text = stringResource(R.string.dash_playlists_empty_hint_subsonic),
+                        text = stringResource(Res.string.dash_playlists_empty_hint_subsonic),
                         style = MaterialTheme.typography.bodyMedium,
                         fontFamily = RoundedSans,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
@@ -409,11 +410,10 @@ private fun SubsonicMenuCard(
         musicFolders.filter { it.id in effectiveSelectedIds }.map { it.name }.toImmutableList()
     }
     val librarySummary = when {
-        musicFoldersLoadFailed -> stringResource(R.string.dash_libraries_load_failed)
-        musicFolders.isEmpty() -> stringResource(R.string.dash_libraries_all)
-        effectiveSelectedIds.size == musicFolders.size -> stringResource(R.string.dash_libraries_all)
-        else -> stringResource(
-            R.string.dash_libraries_selected_count,
+        musicFoldersLoadFailed -> stringResource(Res.string.dash_libraries_load_failed)
+        musicFolders.isEmpty() -> stringResource(Res.string.dash_libraries_all)
+        effectiveSelectedIds.size == musicFolders.size -> stringResource(Res.string.dash_libraries_all)
+        else -> stringResource(Res.string.dash_libraries_selected_count,
             effectiveSelectedIds.size,
             musicFolders.size
         )
@@ -441,14 +441,14 @@ private fun SubsonicMenuCard(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = stringResource(R.string.dash_quick_actions),
+                text = stringResource(Res.string.dash_quick_actions),
                 style = MaterialTheme.typography.titleMedium,
                 fontFamily = RoundedSans,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.dash_quick_actions_subsonic_subtitle),
+                text = stringResource(Res.string.dash_quick_actions_subsonic_subtitle),
                 style = MaterialTheme.typography.bodySmall,
                 fontFamily = RoundedSans,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -484,7 +484,7 @@ private fun SubsonicMenuCard(
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(stringResource(R.string.dash_status_syncing), fontFamily = RoundedSans)
+                        Text(stringResource(Res.string.dash_status_syncing), fontFamily = RoundedSans)
                     } else {
                         Icon(
                             ImageVector.vectorResource(R.drawable.rounded_cloud_sync_filled_24),
@@ -492,7 +492,7 @@ private fun SubsonicMenuCard(
                             modifier = Modifier.size(18.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(stringResource(R.string.dash_action_sync_library), fontFamily = RoundedSans)
+                        Text(stringResource(Res.string.dash_action_sync_library), fontFamily = RoundedSans)
                     }
                 }
 
@@ -510,7 +510,7 @@ private fun SubsonicMenuCard(
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(R.string.dash_action_disconnect), fontFamily = RoundedSans)
+                    Text(stringResource(Res.string.dash_action_disconnect), fontFamily = RoundedSans)
                 }
             }
         }
@@ -577,7 +577,7 @@ private fun NavidromeLibrarySummaryPanel(
                 Spacer(modifier = Modifier.width(12.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(R.string.dash_libraries_title),
+                        text = stringResource(Res.string.dash_libraries_title),
                         style = MaterialTheme.typography.titleMedium,
                         fontFamily = RoundedSans,
                         fontWeight = FontWeight.Bold,
@@ -598,7 +598,7 @@ private fun NavidromeLibrarySummaryPanel(
                         onClick = onClick,
                         label = {
                             Text(
-                                stringResource(R.string.dash_libraries_change),
+                                stringResource(Res.string.dash_libraries_change),
                                 fontFamily = RoundedSans
                             )
                         },
@@ -624,7 +624,7 @@ private fun NavidromeLibrarySummaryPanel(
                             enabled = false,
                             label = {
                                 Text(
-                                    stringResource(R.string.dash_libraries_sync_needed),
+                                    stringResource(Res.string.dash_libraries_sync_needed),
                                     fontFamily = RoundedSans
                                 )
                             },
@@ -644,8 +644,7 @@ private fun NavidromeLibrarySummaryPanel(
                             enabled = false,
                             label = {
                                 Text(
-                                    stringResource(
-                                        R.string.dash_libraries_selected_count,
+                                    stringResource(Res.string.dash_libraries_selected_count,
                                         selectedCount,
                                         totalCount
                                     ),
@@ -684,7 +683,7 @@ private fun NavidromeLibrarySummaryPanel(
                             enabled = false,
                             label = {
                                 Text(
-                                    stringResource(R.string.dash_libraries_more_count, hiddenCount),
+                                    stringResource(Res.string.dash_libraries_more_count, hiddenCount),
                                     fontFamily = RoundedSans
                                 )
                             }
@@ -716,14 +715,14 @@ private fun LibrarySelectorSheet(
                 .padding(bottom = 24.dp)
         ) {
             Text(
-                text = stringResource(R.string.dash_libraries_title),
+                text = stringResource(Res.string.dash_libraries_title),
                 style = MaterialTheme.typography.titleLarge,
                 fontFamily = RoundedSans,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.dash_libraries_sheet_subtitle),
+                text = stringResource(Res.string.dash_libraries_sheet_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 fontFamily = RoundedSans,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -732,8 +731,8 @@ private fun LibrarySelectorSheet(
 
             LibrarySelectorChoice(
                 icon = ImageVector.vectorResource(R.drawable.rounded_select_all_24),
-                title = stringResource(R.string.dash_libraries_all),
-                subtitle = stringResource(R.string.dash_libraries_all_subtitle),
+                title = stringResource(Res.string.dash_libraries_all),
+                subtitle = stringResource(Res.string.dash_libraries_all_subtitle),
                 checked = effectiveSelectedIds.size == musicFolders.size,
                 onClick = { onSelectionChange(availableIds) }
             )
@@ -744,7 +743,7 @@ private fun LibrarySelectorSheet(
                 LibrarySelectorChoice(
                     icon = ImageVector.vectorResource(R.drawable.rounded_folder_filled_24),
                     title = folder.name,
-                    subtitle = stringResource(R.string.dash_libraries_folder_subtitle),
+                    subtitle = stringResource(Res.string.dash_libraries_folder_subtitle),
                     checked = folder.id in effectiveSelectedIds,
                     onClick = {
                         val nextIds = if (folder.id in effectiveSelectedIds) {
@@ -977,7 +976,7 @@ private fun PlaylistCard(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = stringResource(R.string.dash_song_count, playlist.songCount),
+                    text = stringResource(Res.string.dash_song_count, playlist.songCount),
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = RoundedSans,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -994,7 +993,7 @@ private fun PlaylistCard(
             ) {
                 Icon(
                     ImageVector.vectorResource(R.drawable.rounded_sync_24),
-                    contentDescription = stringResource(R.string.cd_sync),
+                    contentDescription = stringResource(Res.string.cd_sync),
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -1011,7 +1010,7 @@ private fun PlaylistCard(
                 ) {
                     Icon(
                         ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
-                        contentDescription = stringResource(R.string.cd_remove),
+                        contentDescription = stringResource(Res.string.cd_remove),
                         modifier = Modifier.size(20.dp)
                     )
                 }

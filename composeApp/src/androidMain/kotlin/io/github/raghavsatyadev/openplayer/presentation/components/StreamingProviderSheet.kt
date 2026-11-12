@@ -22,11 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.jellyfin.auth.JellyfinLoginActivity
 import io.github.raghavsatyadev.openplayer.presentation.navidrome.auth.NavidromeLoginActivity
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * Bottom sheet that lets the user choose between streaming providers.
@@ -64,7 +65,7 @@ fun StreamingProviderSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.presentation_batch_g_streaming_title),
+                text = stringResource(Res.string.presentation_batch_g_streaming_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontFamily = RoundedSans,
                 fontWeight = FontWeight.Bold,
@@ -74,7 +75,7 @@ fun StreamingProviderSheet(
             Spacer(Modifier.height(6.dp))
 
             Text(
-                text = stringResource(R.string.presentation_batch_g_streaming_subtitle),
+                text = stringResource(Res.string.presentation_batch_g_streaming_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 fontFamily = RoundedSans,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,

@@ -56,10 +56,11 @@ import io.github.raghavsatyadev.openplayer.presentation.utils.GenreIconProvider
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.ui.theme.LocalOpenPlayerDarkTheme
 import io.github.raghavsatyadev.openplayer.utils.formatSongCount
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * The genre tiles shown by Search and by the Library's Genres tab.
@@ -91,7 +92,7 @@ fun GenreCategoriesGrid(
             modifier = modifier.fillMaxSize().padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(stringResource(R.string.no_genres_available), style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(Res.string.no_genres_available), style = MaterialTheme.typography.bodyLarge)
         }
         return
     }
@@ -137,7 +138,7 @@ fun GenreCategoriesGrid(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(R.string.browse_by_genre),
+                    text = stringResource(Res.string.browse_by_genre),
                     style = MaterialTheme.typography.titleLarge
                 )
                 
@@ -156,7 +157,7 @@ fun GenreCategoriesGrid(
                 ) {
                 androidx.compose.material3.Icon(
                         imageVector = if (isGridView) ImageVector.vectorResource(R.drawable.rounded_view_list_filled_mirrored_24) else ImageVector.vectorResource(R.drawable.rounded_grid_view_filled_24),
-                        contentDescription = stringResource(R.string.cd_toggle_grid_list)
+                        contentDescription = stringResource(Res.string.cd_toggle_grid_list)
                     )
                 }
             }
@@ -271,7 +272,7 @@ private fun GenreCard(
             ) {
                 SmartImage(
                     model = GenreIconProvider.getGenreImageResource(genre.name, customIcons),
-                    contentDescription = stringResource(R.string.cd_genre_illustration),
+                    contentDescription = stringResource(Res.string.cd_genre_illustration),
                     modifier = Modifier
                         .fillMaxSize()
                         .alpha(0.55f),
@@ -328,7 +329,7 @@ private fun GenreCard(
                     } else {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
-                            contentDescription = stringResource(R.string.presentation_batch_g_cd_selected),
+                            contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                             tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(28.dp)
                         )

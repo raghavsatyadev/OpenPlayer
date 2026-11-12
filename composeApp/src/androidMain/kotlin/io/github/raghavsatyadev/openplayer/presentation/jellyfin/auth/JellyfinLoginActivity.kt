@@ -80,6 +80,8 @@ import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerTheme
 import kotlinx.collections.immutable.toImmutableList
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 class JellyfinLoginActivity : ComponentActivity() {
 
     override fun attachBaseContext(newBase: android.content.Context) {
@@ -198,7 +200,7 @@ fun JellyfinLoginScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.auth_jellyfin_title),
+                        text = stringResource(Res.string.auth_jellyfin_title),
                         fontFamily = RoundedSans,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -215,7 +217,7 @@ fun JellyfinLoginScreen(
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                            contentDescription = stringResource(R.string.auth_cd_back)
+                            contentDescription = stringResource(Res.string.auth_cd_back)
                         )
                     }
                 },
@@ -251,7 +253,7 @@ fun JellyfinLoginScreen(
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             painter = painterResource(R.drawable.ic_jellyfin),
-                            contentDescription = stringResource(R.string.cd_jellyfin_logo),
+                            contentDescription = stringResource(Res.string.cd_jellyfin_logo),
                             tint = Color.White,
                             modifier = Modifier.size(36.dp)
                         )
@@ -262,7 +264,7 @@ fun JellyfinLoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = stringResource(R.string.auth_jellyfin_title),
+                text = stringResource(Res.string.auth_jellyfin_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontFamily = RoundedSans,
                 fontWeight = FontWeight.Bold,
@@ -270,7 +272,7 @@ fun JellyfinLoginScreen(
             )
 
             Text(
-                text = stringResource(R.string.auth_jellyfin_subtitle),
+                text = stringResource(Res.string.auth_jellyfin_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -285,7 +287,7 @@ fun JellyfinLoginScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(R.string.auth_jellyfin_info_card),
+                    text = stringResource(Res.string.auth_jellyfin_info_card),
                     modifier = Modifier.padding(16.dp),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -306,7 +308,7 @@ fun JellyfinLoginScreen(
                     modifier = Modifier.padding(18.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.auth_connection_details),
+                        text = stringResource(Res.string.auth_connection_details),
                         style = MaterialTheme.typography.titleMedium,
                         fontFamily = RoundedSans,
                         fontWeight = FontWeight.Bold
@@ -315,7 +317,7 @@ fun JellyfinLoginScreen(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = stringResource(R.string.auth_jellyfin_connection_subtitle),
+                        text = stringResource(Res.string.auth_jellyfin_connection_subtitle),
                         style = MaterialTheme.typography.bodySmall,
                         fontFamily = RoundedSans,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -326,9 +328,9 @@ fun JellyfinLoginScreen(
                     JellyfinLoginField(
                         value = serverUrl,
                         onValueChange = { serverUrl = it },
-                        label = stringResource(R.string.auth_server_url),
-                        placeholder = stringResource(R.string.auth_jellyfin_server_placeholder),
-                        supportingText = stringResource(R.string.auth_jellyfin_server_url_hint),
+                        label = stringResource(Res.string.auth_server_url),
+                        placeholder = stringResource(Res.string.auth_jellyfin_server_placeholder),
+                        supportingText = stringResource(Res.string.auth_jellyfin_server_url_hint),
                         leadingIcon = ImageVector.vectorResource(R.drawable.rounded_dns_filled_24),
                         enabled = !isLoading,
                         keyboardOptions = KeyboardOptions(
@@ -346,9 +348,9 @@ fun JellyfinLoginScreen(
                     JellyfinLoginField(
                         value = username,
                         onValueChange = { username = it },
-                        label = stringResource(R.string.auth_username),
-                        placeholder = stringResource(R.string.auth_username_placeholder_admin),
-                        supportingText = stringResource(R.string.auth_jellyfin_username_hint),
+                        label = stringResource(Res.string.auth_username),
+                        placeholder = stringResource(Res.string.auth_username_placeholder_admin),
+                        supportingText = stringResource(Res.string.auth_jellyfin_username_hint),
                         leadingIcon = ImageVector.vectorResource(R.drawable.rounded_person_filled_24),
                         enabled = !isLoading,
                         keyboardOptions = KeyboardOptions(
@@ -366,9 +368,9 @@ fun JellyfinLoginScreen(
                     JellyfinLoginField(
                         value = password,
                         onValueChange = { password = it },
-                        label = stringResource(R.string.auth_password),
-                        placeholder = stringResource(R.string.auth_password_placeholder),
-                        supportingText = stringResource(R.string.auth_jellyfin_password_hint),
+                        label = stringResource(Res.string.auth_password),
+                        placeholder = stringResource(Res.string.auth_password_placeholder),
+                        supportingText = stringResource(Res.string.auth_jellyfin_password_hint),
                         leadingIcon = ImageVector.vectorResource(R.drawable.rounded_lock_filled_24),
                         enabled = !isLoading,
                         visualTransformation = if (passwordVisible) {
@@ -420,7 +422,7 @@ fun JellyfinLoginScreen(
                         contentPadding = PaddingValues(horizontal = 14.dp, vertical = 10.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.auth_use_http),
+                            text = stringResource(Res.string.auth_use_http),
                             fontFamily = RoundedSans,
                             fontWeight = FontWeight.Medium
                         )
@@ -444,16 +446,16 @@ fun JellyfinLoginScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(R.string.auth_connecting), fontFamily = RoundedSans)
+                    Text(stringResource(Res.string.auth_connecting), fontFamily = RoundedSans)
                 } else {
-                    Text(stringResource(R.string.auth_connect), fontFamily = RoundedSans, fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(Res.string.auth_connect), fontFamily = RoundedSans, fontWeight = FontWeight.SemiBold)
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = stringResource(R.string.auth_jellyfin_footer),
+                text = stringResource(Res.string.auth_jellyfin_footer),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontFamily = RoundedSans

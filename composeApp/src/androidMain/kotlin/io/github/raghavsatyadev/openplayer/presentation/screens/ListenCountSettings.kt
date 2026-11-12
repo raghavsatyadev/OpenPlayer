@@ -11,11 +11,11 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.history.ListenCountRule
 import kotlin.math.roundToInt
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private const val STEP = 5
 
@@ -34,7 +34,7 @@ fun ListenCountSettings(
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
         SliderSettingsItem(
-            label = stringResource(R.string.setcat_listen_count_seconds),
+            label = stringResource(Res.string.setcat_listen_count_seconds),
             value = seconds,
             valueRange = secondsRange.first.toFloat()..secondsRange.last.toFloat(),
             steps = (secondsRange.last - secondsRange.first) / STEP - 1,
@@ -43,7 +43,7 @@ fun ListenCountSettings(
             valueText = { "${it.roundToInt()}s" }
         )
         SliderSettingsItem(
-            label = stringResource(R.string.setcat_listen_count_percentage),
+            label = stringResource(Res.string.setcat_listen_count_percentage),
             value = percentage,
             valueRange = percentageRange.first.toFloat()..percentageRange.last.toFloat(),
             steps = (percentageRange.last - percentageRange.first) / STEP - 1,
@@ -52,7 +52,7 @@ fun ListenCountSettings(
             valueText = { "${it.roundToInt()}%" }
         )
         Text(
-            text = stringResource(R.string.setcat_listen_count_desc),
+            text = stringResource(Res.string.setcat_listen_count_desc),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)

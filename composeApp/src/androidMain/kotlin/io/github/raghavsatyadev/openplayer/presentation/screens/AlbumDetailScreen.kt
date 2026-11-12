@@ -117,6 +117,8 @@ import kotlin.math.roundToInt
 import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private const val UseSharedCollapsibleTopBarProbe = true
 
@@ -204,7 +206,7 @@ fun AlbumDetailScreen(
                             style = MaterialTheme.typography.bodyLarge
                         )
                         FilledTonalButton(onClick = { viewModel.retry() }) {
-                            Text(stringResource(R.string.library_retry))
+                            Text(stringResource(Res.string.library_retry))
                         }
                     }
                 }
@@ -500,7 +502,7 @@ fun AlbumDetailScreen(
                             if (songsByDisc.size > 1) {
                                 item(key = "disc_header_$discNumber") {
                                     Text(
-                                        text = stringResource(R.string.disc_number_header, discNumber),
+                                        text = stringResource(Res.string.disc_number_header, discNumber),
                                         style = MaterialTheme.typography.labelLarge,
                                         color = MaterialTheme.colorScheme.primary,
                                         fontWeight = FontWeight.Bold,
@@ -738,7 +740,7 @@ private fun AlbumHeaderBackdrop(
     ) {
         SmartImage(
             model = album.albumArtUriString,
-            contentDescription = stringResource(R.string.album_cover_for, album.title),
+            contentDescription = stringResource(Res.string.album_cover_for, album.title),
             contentScale = ContentScale.Crop,
             targetSize = headerImageRequestSize,
             allowHardware = true,
@@ -933,7 +935,7 @@ private fun CollapsingAlbumTopBar(
             if (showExpandedArtwork) {
                 SmartImage(
                     model = album.albumArtUriString,
-                    contentDescription = stringResource(R.string.album_cover_for, album.title),
+                    contentDescription = stringResource(Res.string.album_cover_for, album.title),
                     contentScale = ContentScale.Crop,
                     targetSize = headerImageRequestSize,
                     allowHardware = true,
@@ -968,7 +970,7 @@ private fun CollapsingAlbumTopBar(
                     onClick = onBackPressed,
                     colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
                 ) {
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(R.string.auth_cd_back))
+                    Icon(imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
                 }
 
                 if (showDownloadAction) {
@@ -1019,8 +1021,7 @@ private fun CollapsingAlbumTopBar(
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
-                            text = stringResource(
-                                R.string.album_detail_meta_line,
+                            text = stringResource(Res.string.album_detail_meta_line,
                                 album.artist,
                                 formatSongCount(songsCount)
                             ),
@@ -1044,7 +1045,7 @@ private fun CollapsingAlbumTopBar(
                             alpha = fabScale
                         }
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_shuffle_24), contentDescription = stringResource(R.string.cd_shuffle_play_album))
+                    Icon(ImageVector.vectorResource(R.drawable.rounded_shuffle_24), contentDescription = stringResource(Res.string.cd_shuffle_play_album))
                 }
             }
         }

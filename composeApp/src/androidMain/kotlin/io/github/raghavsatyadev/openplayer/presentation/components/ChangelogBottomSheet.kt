@@ -49,6 +49,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.Sine
 import io.github.raghavsatyadev.openplayer.ui.theme.ExpTitleTypography
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 data class ChangelogSection(
     @StringRes val titleRes: Int,
@@ -103,7 +105,7 @@ fun ChangelogBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.presentation_batch_g_changelog_title),
+                text = stringResource(Res.string.presentation_batch_g_changelog_title),
                 fontFamily = RoundedSans,
                 style = ExpTitleTypography.displaySmall,
                 color = MaterialTheme.colorScheme.onSurface
@@ -160,7 +162,7 @@ fun ChangelogBottomSheet(
                     contentDescription = null
                 )
             },
-            text = { Text(text = stringResource(R.string.presentation_batch_g_changelog_view_github)) },
+            text = { Text(text = stringResource(Res.string.presentation_batch_g_changelog_view_github)) },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(horizontal = 24.dp, vertical = 24.dp)

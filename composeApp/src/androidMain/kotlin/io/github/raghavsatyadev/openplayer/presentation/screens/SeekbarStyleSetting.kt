@@ -7,12 +7,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.SeekbarStyle
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.settingHighlight
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SeekbarViewModel
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** Wavy / Waveform choice for the full player's seekbar. */
 @Composable
@@ -20,11 +21,11 @@ fun SeekbarStyleSetting(highlightKey: String?) {
     val viewModel: SeekbarViewModel = koinViewModel()
     val style by viewModel.style.collectAsState()
     ThemeSelectorItem(
-        label = stringResource(R.string.setcat_seekbar_style_label),
-        description = stringResource(R.string.setcat_seekbar_style_desc),
+        label = stringResource(Res.string.setcat_seekbar_style_label),
+        description = stringResource(Res.string.setcat_seekbar_style_desc),
         options = mapOf(
-            SeekbarStyle.WAVY to stringResource(R.string.setcat_seekbar_wavy),
-            SeekbarStyle.WAVEFORM to stringResource(R.string.setcat_seekbar_waveform)
+            SeekbarStyle.WAVY to stringResource(Res.string.setcat_seekbar_wavy),
+            SeekbarStyle.WAVEFORM to stringResource(Res.string.setcat_seekbar_waveform)
         ),
         selectedKey = style,
         onSelectionChanged = { viewModel.setStyle(it) },

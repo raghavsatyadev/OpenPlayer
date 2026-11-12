@@ -13,6 +13,8 @@ import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.settingHighlight
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.SearchTapMode
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.SearchTapModeViewModel
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** Choice of what tapping a song in the search results does. */
 @Composable
@@ -20,8 +22,8 @@ fun SearchTapModeSetting(highlightKey: String?) {
     val viewModel: SearchTapModeViewModel = koinViewModel()
     val mode by viewModel.mode.collectAsState()
     ThemeSelectorItem(
-        label = stringResource(R.string.setcat_search_tap_mode_label),
-        description = stringResource(R.string.setcat_search_tap_mode_desc),
+        label = stringResource(Res.string.setcat_search_tap_mode_label),
+        description = stringResource(Res.string.setcat_search_tap_mode_desc),
         options = SearchTapMode.entries.associate { it.key to stringResource(it.labelRes) },
         selectedKey = mode.key,
         onSelectionChanged = { viewModel.setMode(SearchTapMode.fromKey(it)) },

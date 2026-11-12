@@ -53,6 +53,11 @@ kotlin {
     }
 
     sourceSets {
+        commonMain.dependencies {
+            api(libs.jetbrains.compose.runtime)
+            api(libs.jetbrains.compose.ui)
+            api(libs.jetbrains.compose.components.resources)
+        }
         androidMain.dependencies {
         implementation(libs.androidx.core.ktx)
         implementation(libs.androidx.documentfile)
@@ -138,6 +143,11 @@ kotlin {
         }
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "io.github.raghavsatyadev.openplayer.resources"
+    publicResClass = true
 }
 
 composeCompiler {

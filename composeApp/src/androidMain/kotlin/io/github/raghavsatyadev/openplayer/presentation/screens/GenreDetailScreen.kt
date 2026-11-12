@@ -96,8 +96,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlin.math.roundToInt
-import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -289,7 +290,7 @@ fun GenreDetailScreen(
             }
     }
     val genreDisplayName = themeGenre?.name ?: uiState.genre?.name ?: initialDisplayName
-    val genreShuffleLabel = stringResource(R.string.presentation_batch_b_genre_shuffle_label, genreDisplayName)
+    val genreShuffleLabel = stringResource(Res.string.presentation_batch_b_genre_shuffle_label, genreDisplayName)
     val genreFastScrollLabelProvider = remember(uiState.flattenedItems, uiState.sortOption) {
         { index: Int ->
             genreFastScrollLabel(
@@ -300,8 +301,8 @@ fun GenreDetailScreen(
         }
     }
     
-    val toastAddedToQueue = stringResource(R.string.toast_added_to_queue)
-    val toastPlayingNext = stringResource(R.string.toast_playing_next)
+    val toastAddedToQueue = stringResource(Res.string.toast_added_to_queue)
+    val toastPlayingNext = stringResource(Res.string.toast_playing_next)
 
     var showSortSheet by remember { mutableStateOf(false) }
     var showSongOptionsSheet by remember { mutableStateOf<Song?>(null) }
@@ -517,7 +518,7 @@ fun GenreDetailScreen(
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_more_vert_24),
-                            contentDescription = stringResource(R.string.cd_options),
+                            contentDescription = stringResource(Res.string.cd_options),
                             modifier = Modifier.size(28.dp)
                         )
                     }
@@ -555,7 +556,7 @@ fun GenreDetailScreen(
                                 Icon(ImageVector.vectorResource(R.drawable.rounded_auto_fix_high_filled_24), contentDescription = null)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = stringResource(R.string.genre_quick_fill),
+                                    text = stringResource(Res.string.genre_quick_fill),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -879,7 +880,7 @@ fun GenreCollapsibleTopBar(
                     contentColor = animatedContentColor
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(R.string.auth_cd_back), tint = animatedContentColor)
+                Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back), tint = animatedContentColor)
             }
 
             ExpressiveTopBarContent(
@@ -950,7 +951,7 @@ fun GenreArtistHeader(
                     } else {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_person_filled_24),
-                            contentDescription = stringResource(R.string.cd_generic_artist),
+                            contentDescription = stringResource(Res.string.cd_generic_artist),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier
                                 .padding(10.dp)
@@ -1047,7 +1048,7 @@ fun GenreAlbumHeader(
                     containerColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(R.string.cd_play_album))
+                Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_album))
             }
         }
     }

@@ -80,8 +80,9 @@ import kotlin.math.max
 import kotlin.math.min
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun PlaylistCreationTypeDialog(
@@ -127,7 +128,7 @@ fun PlaylistCreationTypeDialog(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = stringResource(R.string.presentation_batch_e_create_playlist_title),
+                        text = stringResource(Res.string.presentation_batch_e_create_playlist_title),
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontFamily = RoundedSans,
@@ -135,15 +136,15 @@ fun PlaylistCreationTypeDialog(
                         )
                     )
                     Text(
-                        text = stringResource(R.string.presentation_batch_e_create_playlist_subtitle),
+                        text = stringResource(Res.string.presentation_batch_e_create_playlist_subtitle),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
                     )
                 }
 
                 CreationModeCard(
-                    title = stringResource(R.string.presentation_batch_e_creation_mode_manual),
-                    subtitle = stringResource(R.string.presentation_batch_e_creation_mode_manual_subtitle),
+                    title = stringResource(Res.string.presentation_batch_e_creation_mode_manual),
+                    subtitle = stringResource(Res.string.presentation_batch_e_creation_mode_manual_subtitle),
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_playlist_add_24),
@@ -159,8 +160,8 @@ fun PlaylistCreationTypeDialog(
 
                 // Smart Mix runs offline, so it never needs setup first.
                 CreationModeCard(
-                    title = stringResource(R.string.mix_title),
-                    subtitle = stringResource(R.string.mix_library_subtitle),
+                    title = stringResource(Res.string.mix_title),
+                    subtitle = stringResource(Res.string.mix_library_subtitle),
                     icon = {
                         Icon(
                             painter = painterResource(R.drawable.ic_smart_mix),
@@ -176,8 +177,8 @@ fun PlaylistCreationTypeDialog(
 
                 if (onRulesSelected != null) {
                     CreationModeCard(
-                        title = stringResource(R.string.smart_rules_create_title),
-                        subtitle = stringResource(R.string.smart_rules_create_subtitle),
+                        title = stringResource(Res.string.smart_rules_create_title),
+                        subtitle = stringResource(Res.string.smart_rules_create_subtitle),
                         icon = {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_tune_24),

@@ -108,6 +108,8 @@ import io.github.raghavsatyadev.openplayer.R
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private const val UseSharedCollapsibleTopBarProbe = true
 
@@ -281,7 +283,7 @@ fun ArtistDetailScreen(
                                 style = MaterialTheme.typography.bodyLarge
                             )
                             FilledTonalButton(onClick = { viewModel.retry() }) {
-                                Text(stringResource(R.string.library_retry))
+                                Text(stringResource(Res.string.library_retry))
                             }
                         }
                     }
@@ -354,9 +356,9 @@ fun ArtistDetailScreen(
                     val visibleSectionKeys = remember(visibleSections) { visibleSections.map { it.collapseKey() } }
                     val albumCount = visibleSections.size
                     val albumCountLabel = if (albumCount == 1) {
-                        stringResource(R.string.detail_hero_album_count_one)
+                        stringResource(Res.string.detail_hero_album_count_one)
                     } else {
-                        stringResource(R.string.detail_hero_album_count_many, albumCount)
+                        stringResource(Res.string.detail_hero_album_count_many, albumCount)
                     }
                     val albumsCollapsedByDefault = uiState.albumsCollapsedByDefault
                     val isSectionExpanded: (String) -> Boolean = { sectionKey ->
@@ -846,14 +848,14 @@ private fun CollapsibleAlbumSectionHeader(
                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(R.string.presentation_batch_d_cd_play_title, section.title))
+                Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.presentation_batch_d_cd_play_title, section.title))
             }
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_expand_more_24),
                 contentDescription = if (isExpanded) {
-                    stringResource(R.string.presentation_batch_d_cd_collapse_title, section.title)
+                    stringResource(Res.string.presentation_batch_d_cd_collapse_title, section.title)
                 } else {
-                    stringResource(R.string.presentation_batch_d_cd_expand_title, section.title)
+                    stringResource(Res.string.presentation_batch_d_cd_expand_title, section.title)
                 },
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.graphicsLayer {
@@ -1071,7 +1073,7 @@ private fun SharedArtistTopBarProbe(
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
-                            contentDescription = stringResource(R.string.presentation_batch_d_edit_artist_image_cd)
+                            contentDescription = stringResource(Res.string.presentation_batch_d_edit_artist_image_cd)
                         )
                     }
 
@@ -1206,7 +1208,7 @@ private fun CustomCollapsingTopBar(
                     onClick = onBackPressed,
                     colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
                 ) {
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(R.string.auth_cd_back))
+                    Icon(imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
                 }
 
                 if (collapseFraction < 0.5f) {
@@ -1222,7 +1224,7 @@ private fun CustomCollapsingTopBar(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                             contentColor = MaterialTheme.colorScheme.onSurface
                         ) {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_edit_filled_24), contentDescription = stringResource(R.string.presentation_batch_d_edit_artist_image_cd))
+                            Icon(ImageVector.vectorResource(R.drawable.rounded_edit_filled_24), contentDescription = stringResource(Res.string.presentation_batch_d_edit_artist_image_cd))
                         }
                         ExpressiveDropdownMenu(
                             expanded = showImageMenu,
@@ -1287,7 +1289,7 @@ private fun CustomCollapsingTopBar(
                             alpha = fabScale
                         }
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_shuffle_24), contentDescription = stringResource(R.string.cd_shuffle_play_album))
+                    Icon(ImageVector.vectorResource(R.drawable.rounded_shuffle_24), contentDescription = stringResource(Res.string.cd_shuffle_play_album))
                 }
             }
         }
@@ -1372,8 +1374,8 @@ private fun artistImageMenuActions(
     onChangeImage: () -> Unit,
     onClearCustomImage: () -> Unit
 ): ImmutableList<DetailHeroMenuAction> {
-    val changePhoto = stringResource(R.string.presentation_batch_d_change_photo)
-    val resetToDefault = stringResource(R.string.presentation_batch_d_reset_to_default)
+    val changePhoto = stringResource(Res.string.presentation_batch_d_change_photo)
+    val resetToDefault = stringResource(Res.string.presentation_batch_d_reset_to_default)
     val changePhotoIcon = ImageVector.vectorResource(R.drawable.rounded_add_a_photo_filled_24)
     val resetIcon = ImageVector.vectorResource(R.drawable.rounded_delete_filled_24)
     return remember(hasCustomImage, changePhoto, resetToDefault, onChangeImage, onClearCustomImage) {

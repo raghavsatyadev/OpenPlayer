@@ -91,6 +91,8 @@ import kotlinx.coroutines.flow.map
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(UnstableApi::class)
 @ExperimentalMaterial3Api
@@ -150,7 +152,7 @@ fun SongPickerContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(R.string.song_picker_title),
+                    stringResource(Res.string.song_picker_title),
                     style = MaterialTheme.typography.displaySmall,
                     fontFamily = RoundedSans
                 )
@@ -231,7 +233,7 @@ fun SongPickerContent(
                     ) {
                         Icon(
                             ImageVector.vectorResource(R.drawable.rounded_check_24),
-                            contentDescription = stringResource(R.string.cd_confirm_add_songs),
+                            contentDescription = stringResource(Res.string.cd_confirm_add_songs),
                             modifier = Modifier.size(28.dp)
                         )
                     }
@@ -257,7 +259,7 @@ fun SongPickerContent(
                         )
                         Spacer(Modifier.width(10.dp))
                         Text(
-                            text = stringResource(R.string.song_picker_action_add),
+                            text = stringResource(Res.string.song_picker_action_add),
                             fontFamily = RoundedSans,
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.titleMedium
@@ -349,7 +351,7 @@ fun SongPickerSelectionPane(
                 onClick = { favoritesOnly = !favoritesOnly },
                 label = {
                     Text(
-                        text = stringResource(R.string.song_picker_filter_favorites),
+                        text = stringResource(Res.string.song_picker_filter_favorites),
                         fontFamily = RoundedSans,
                         fontWeight = if (favoritesOnly) FontWeight.Bold else FontWeight.Medium
                     )
@@ -445,7 +447,7 @@ private fun SongPickerSearchField(
             focusedSupportingTextColor = Color.Transparent,
         ),
         onValueChange = onSearchQueryChange,
-        label = { Text(stringResource(R.string.song_picker_search_label)) },
+        label = { Text(stringResource(Res.string.song_picker_search_label)) },
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -499,12 +501,12 @@ fun SongPickerPagingList(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(
-                        text = error.localizedMessage ?: stringResource(R.string.song_picker_error_load_failed),
+                        text = error.localizedMessage ?: stringResource(Res.string.song_picker_error_load_failed),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Button(onClick = { pagedSongs.retry() }) {
-                        Text(stringResource(R.string.library_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(stringResource(Res.string.library_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }
@@ -574,7 +576,7 @@ fun SongPickerPagingList(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Button(onClick = { pagedSongs.retry() }) {
-                                    Text(stringResource(R.string.song_picker_load_more), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    Text(stringResource(Res.string.song_picker_load_more), maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 }
                             }
                         }
@@ -829,9 +831,9 @@ fun SongPickerList(
                 ) {
                     Text(
                         text = if (searchQuery.isNotBlank())
-                            stringResource(R.string.search_no_results_for_query, searchQuery)
+                            stringResource(Res.string.search_no_results_for_query, searchQuery)
                         else
-                            stringResource(R.string.search_no_results_found),
+                            stringResource(Res.string.search_no_results_found),
                         style = MaterialTheme.typography.titleLarge,
                         fontFamily = RoundedSans,
                         fontWeight = FontWeight.SemiBold,

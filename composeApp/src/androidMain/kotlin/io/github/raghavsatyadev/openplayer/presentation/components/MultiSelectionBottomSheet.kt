@@ -84,6 +84,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.Auto
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.TightWrapText
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -185,7 +187,7 @@ fun MultiSelectionBottomSheet(
                         verticalArrangement = Arrangement.Center
                     ){
                         AutoSizingTextToFill(
-                            text = stringResource(R.string.multi_selection_songs_count_upper, selectedSongs.size),
+                            text = stringResource(Res.string.multi_selection_songs_count_upper, selectedSongs.size),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
                             fontFamily = RoundedSans,
@@ -196,7 +198,7 @@ fun MultiSelectionBottomSheet(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = stringResource(R.string.multi_selection_selected),
+                            text = stringResource(Res.string.multi_selection_selected),
                             style = MaterialTheme.typography.bodyLarge,
                             fontFamily = RoundedSans,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -220,7 +222,7 @@ fun MultiSelectionBottomSheet(
                         Icon(
                             modifier = Modifier.padding(horizontal = 8.dp),
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
-                            contentDescription = stringResource(R.string.cd_edit_song_metadata)
+                            contentDescription = stringResource(Res.string.cd_edit_song_metadata)
                         )
                     }
                 }
@@ -257,11 +259,11 @@ fun MultiSelectionBottomSheet(
                             ) {
                                 Icon(
                                     ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
-                                    contentDescription = stringResource(R.string.cd_play_all)
+                                    contentDescription = stringResource(Res.string.cd_play_all)
                                 )
                                 Spacer(Modifier.width(6.dp))
                                 TightWrapText(
-                                    text = stringResource(R.string.action_play_all),
+                                    text = stringResource(Res.string.action_play_all),
                                     modifier = Modifier.padding(end = 4.dp),
                                     overflow = TextOverflow.Ellipsis,
                                     maxLines = 2,
@@ -312,7 +314,7 @@ fun MultiSelectionBottomSheet(
                                 Icon(
                                     modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize),
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_share_filled_24),
-                                    contentDescription = stringResource(R.string.cd_share_all_as_zip)
+                                    contentDescription = stringResource(Res.string.cd_share_all_as_zip)
                                 )
                             }
                         }
@@ -336,12 +338,11 @@ fun MultiSelectionBottomSheet(
                             ) {
                                 Icon(
                                     ImageVector.vectorResource(R.drawable.rounded_cloud_download_filled_24),
-                                    contentDescription = stringResource(R.string.cloud_download_selected)
+                                    contentDescription = stringResource(Res.string.cloud_download_selected)
                                 )
                                 Spacer(Modifier.width(10.dp))
                                 TightWrapText(
-                                    text = stringResource(
-                                        R.string.cloud_download_selected_count,
+                                    text = stringResource(Res.string.cloud_download_selected_count,
                                         cloudSongCount
                                     ),
                                     modifier = Modifier.padding(end = 4.dp),
@@ -378,11 +379,11 @@ fun MultiSelectionBottomSheet(
                             ) {
                                 Icon(
                                     ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
-                                    contentDescription = stringResource(R.string.cd_add_all_to_queue)
+                                    contentDescription = stringResource(Res.string.cd_add_all_to_queue)
                                 )
                                 Spacer(Modifier.width(6.dp))
                                 TightWrapText(
-                                    text = stringResource(R.string.action_add_to_queue),
+                                    text = stringResource(Res.string.action_add_to_queue),
                                     modifier = Modifier.padding(end = 4.dp),
                                     overflow = TextOverflow.Ellipsis,
                                     maxLines = 2,
@@ -407,11 +408,11 @@ fun MultiSelectionBottomSheet(
                             ) {
                                 Icon(
                                     ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
-                                    contentDescription = stringResource(R.string.cd_play_next_in_queue)
+                                    contentDescription = stringResource(Res.string.cd_play_next_in_queue)
                                 )
                                 Spacer(Modifier.width(6.dp))
                                 TightWrapText(
-                                    text = stringResource(R.string.action_queue_next),
+                                    text = stringResource(Res.string.action_queue_next),
                                     modifier = Modifier.padding(end = 4.dp),
                                     overflow = TextOverflow.Ellipsis,
                                     maxLines = 2,
@@ -446,11 +447,11 @@ fun MultiSelectionBottomSheet(
                             ) {
                                 Icon(
                                     ImageVector.vectorResource(R.drawable.rounded_playlist_add_24),
-                                    contentDescription = stringResource(R.string.cd_add_to_playlist)
+                                    contentDescription = stringResource(Res.string.cd_add_to_playlist)
                                 )
                                 Spacer(Modifier.width(6.dp))
                                 TightWrapText(
-                                    text = stringResource(R.string.shortcut_playlist_short),
+                                    text = stringResource(Res.string.shortcut_playlist_short),
                                     modifier = Modifier.padding(end = 4.dp),
                                     overflow = TextOverflow.Ellipsis,
                                     maxLines = 2,
@@ -479,11 +480,11 @@ fun MultiSelectionBottomSheet(
                             ) {
                                 Icon(
                                     ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
-                                    contentDescription = stringResource(R.string.cd_delete_all_songs)
+                                    contentDescription = stringResource(Res.string.cd_delete_all_songs)
                                 )
                                 Spacer(Modifier.width(6.dp))
                                 TightWrapText(
-                                    text = stringResource(R.string.action_delete_all),
+                                    text = stringResource(Res.string.action_delete_all),
                                     modifier = Modifier.padding(end = 4.dp),
                                     overflow = TextOverflow.Ellipsis,
                                     maxLines = 2,

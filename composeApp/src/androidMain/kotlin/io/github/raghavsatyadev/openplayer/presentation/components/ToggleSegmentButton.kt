@@ -30,15 +30,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.LocalMaterialTheme
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun ToggleSegmentButton(
@@ -223,8 +223,8 @@ private fun ToggleSegmentButtonContainer(
         label = ""
     )
 
-    val stateOn = stringResource(R.string.a11y_toggle_on)
-    val stateOff = stringResource(R.string.a11y_toggle_off)
+    val stateOn = stringResource(Res.string.a11y_toggle_on)
+    val stateOff = stringResource(Res.string.a11y_toggle_off)
 
     Box(
         modifier = modifier

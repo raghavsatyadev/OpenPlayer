@@ -17,11 +17,11 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * Shimmering skeleton of lyric lines shown while lyrics load. The shimmer offset is only
@@ -34,7 +34,7 @@ internal fun LyricsLoadingPlaceholder(
     horizontalAlignment: Alignment.Horizontal,
     modifier: Modifier = Modifier,
 ) {
-    val loadingDescription = stringResource(R.string.loading_lyrics)
+    val loadingDescription = stringResource(Res.string.loading_lyrics)
     val transition = rememberInfiniteTransition(label = "lyricsLoadingShimmer")
     val shimmerOffset = transition.animateFloat(
         initialValue = -700f,

@@ -21,8 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.ui.unit.IntOffset
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
@@ -75,6 +73,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.presentation.screens.ExcludedDirectoriesScreen
 import io.github.raghavsatyadev.openplayer.presentation.components.ScreenWrapper
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.ProvideSettingsHighlight
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(UnstableApi::class)
 @SuppressLint("UnrememberedGetBackStackEntry")
@@ -454,7 +454,7 @@ fun AppNavigation(
                         )
                     }
                 } else {
-                    Text(stringResource(R.string.nav_error_genre_id_missing), modifier = Modifier)
+                    Text(stringResource(Res.string.nav_error_genre_id_missing), modifier = Modifier)
                 }
             }
             composable(

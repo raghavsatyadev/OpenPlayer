@@ -76,7 +76,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.ui.res.stringResource
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(
     ExperimentalAnimationApi::class,
@@ -145,7 +146,7 @@ fun BackupModuleSelectionDialog(
                             CenterAlignedTopAppBar(
                                 title = {
                                     Text(
-                                        text = stringResource(R.string.presentation_batch_g_backup_restore_modules),
+                                        text = stringResource(Res.string.presentation_batch_g_backup_restore_modules),
                                         style = MaterialTheme.typography.titleMedium.copy(
                                             fontSize = 24.sp,
                                             textGeometricTransform = TextGeometricTransform(scaleX = 1.2f),
@@ -166,7 +167,7 @@ fun BackupModuleSelectionDialog(
                                     ) {
                                         Icon(
                                             imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                                            contentDescription = stringResource(R.string.auth_cd_back)
+                                            contentDescription = stringResource(Res.string.auth_cd_back)
                                         )
                                     }
                                 },
@@ -201,7 +202,7 @@ fun BackupModuleSelectionDialog(
                                         ) {
                                             Icon(
                                                 painter = painterResource(R.drawable.round_select_all_24),
-                                                contentDescription = stringResource(R.string.presentation_batch_g_backup_cd_select_all)
+                                                contentDescription = stringResource(Res.string.presentation_batch_g_backup_cd_select_all)
                                             )
                                         }
                                         FilledIconButton(
@@ -214,7 +215,7 @@ fun BackupModuleSelectionDialog(
                                         ) {
                                             Icon(
                                                 painter = painterResource(R.drawable.baseline_deselect_24),
-                                                contentDescription = stringResource(R.string.presentation_batch_g_backup_cd_clear_selection)
+                                                contentDescription = stringResource(Res.string.presentation_batch_g_backup_cd_clear_selection)
                                             )
                                         }
                                     }
@@ -232,7 +233,7 @@ fun BackupModuleSelectionDialog(
                                             LoadingIndicator(modifier = Modifier.height(20.dp))
                                             androidx.compose.foundation.layout.Spacer(modifier = Modifier.size(8.dp))
                                             Text(
-                                                text = stringResource(R.string.presentation_batch_g_backup_restoring),
+                                                text = stringResource(Res.string.presentation_batch_g_backup_restoring),
                                                 style = MaterialTheme.typography.labelLarge,
                                                 fontWeight = FontWeight.SemiBold
                                             )
@@ -246,7 +247,7 @@ fun BackupModuleSelectionDialog(
                                                     contentDescription = null
                                                 )
                                                 Text(
-                                                    text = stringResource(R.string.presentation_batch_g_backup_restore_selected),
+                                                    text = stringResource(Res.string.presentation_batch_g_backup_restore_selected),
                                                     style = MaterialTheme.typography.labelLarge,
                                                     fontWeight = FontWeight.SemiBold
                                                 )
@@ -276,7 +277,7 @@ fun BackupModuleSelectionDialog(
                                     verticalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
                                     Text(
-                                        text = stringResource(R.string.presentation_batch_g_backup_details),
+                                        text = stringResource(Res.string.presentation_batch_g_backup_details),
                                         style = MaterialTheme.typography.titleSmall,
                                         color = MaterialTheme.colorScheme.onSurface,
                                         fontWeight = FontWeight.SemiBold
@@ -288,7 +289,7 @@ fun BackupModuleSelectionDialog(
                                     ) {
                                         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                             Text(
-                                                text = stringResource(R.string.presentation_batch_g_backup_created),
+                                                text = stringResource(Res.string.presentation_batch_g_backup_created),
                                                 style = MaterialTheme.typography.labelSmall,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
@@ -306,25 +307,24 @@ fun BackupModuleSelectionDialog(
                                     ) {
                                         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                             Text(
-                                                text = stringResource(R.string.presentation_batch_g_backup_app_version),
+                                                text = stringResource(Res.string.presentation_batch_g_backup_app_version),
                                                 style = MaterialTheme.typography.labelSmall,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
                                             Text(
-                                                text = plan.manifest.appVersion.ifEmpty { stringResource(R.string.presentation_batch_g_backup_unknown) },
+                                                text = plan.manifest.appVersion.ifEmpty { stringResource(Res.string.presentation_batch_g_backup_unknown) },
                                                 style = MaterialTheme.typography.bodySmall,
                                                 color = MaterialTheme.colorScheme.onSurface
                                             )
                                         }
                                         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                             Text(
-                                                text = stringResource(R.string.presentation_batch_g_backup_schema),
+                                                text = stringResource(Res.string.presentation_batch_g_backup_schema),
                                                 style = MaterialTheme.typography.labelSmall,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
                                             Text(
-                                                text = stringResource(
-                                                    R.string.backup_manifest_schema_v,
+                                                text = stringResource(Res.string.backup_manifest_schema_v,
                                                     plan.manifest.schemaVersion
                                                 ),
                                                 style = MaterialTheme.typography.bodySmall,
@@ -334,13 +334,12 @@ fun BackupModuleSelectionDialog(
                                         if (plan.manifest.deviceInfo.model.isNotBlank()) {
                                             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                                 Text(
-                                                    text = stringResource(R.string.presentation_batch_g_backup_device),
+                                                    text = stringResource(Res.string.presentation_batch_g_backup_device),
                                                     style = MaterialTheme.typography.labelSmall,
                                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                                 )
                                                 Text(
-                                                    text = stringResource(
-                                                        R.string.backup_manifest_device_line,
+                                                    text = stringResource(Res.string.backup_manifest_device_line,
                                                         plan.manifest.deviceInfo.manufacturer,
                                                         plan.manifest.deviceInfo.model
                                                     ),
@@ -354,7 +353,7 @@ fun BackupModuleSelectionDialog(
                                     }
 
                                     Text(
-                                        text = stringResource(R.string.presentation_batch_g_backup_modules_selected, selectedCount, availableCount),
+                                        text = stringResource(Res.string.presentation_batch_g_backup_modules_selected, selectedCount, availableCount),
                                         style = MaterialTheme.typography.titleSmall,
                                         color = MaterialTheme.colorScheme.primary,
                                         fontWeight = FontWeight.SemiBold
@@ -367,7 +366,7 @@ fun BackupModuleSelectionDialog(
                                         ) {
                                             LoadingIndicator(modifier = Modifier.height(24.dp))
                                             Text(
-                                                text = stringResource(R.string.presentation_batch_g_backup_transfer_progress),
+                                                text = stringResource(Res.string.presentation_batch_g_backup_transfer_progress),
                                                 style = MaterialTheme.typography.bodySmall,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
@@ -542,7 +541,7 @@ private fun BackupSectionSelectableCardShared(
                     )
                     if (detail != null && detail.entryCount > 0) {
                         Text(
-                            text = stringResource(R.string.presentation_batch_g_backup_entries_will_replace, detail.entryCount),
+                            text = stringResource(Res.string.presentation_batch_g_backup_entries_will_replace, detail.entryCount),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.tertiary
                         )

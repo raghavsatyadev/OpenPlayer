@@ -164,6 +164,8 @@ import java.util.Locale
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalPermissionsApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
@@ -488,9 +490,9 @@ fun DirectorySelectionPage(
     }
 
     PermissionPageLayout(
-        title = stringResource(R.string.setup_excluded_folders_title),
-        description = stringResource(R.string.setup_excluded_folders_description),
-        buttonText = stringResource(R.string.setup_choose_folders_ignore),
+        title = stringResource(Res.string.setup_excluded_folders_title),
+        description = stringResource(Res.string.setup_excluded_folders_description),
+        buttonText = stringResource(Res.string.setup_choose_folders_ignore),
         buttonEnabled = canOpenDirectoryPicker,
         onGrantClicked = {
             if (canOpenDirectoryPicker) {
@@ -509,7 +511,7 @@ fun DirectorySelectionPage(
         )
     ) {
         TextButton(onClick = onSkip) {
-            Text(stringResource(R.string.skip_for_now), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(stringResource(Res.string.skip_for_now), maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     }
 
@@ -659,14 +661,14 @@ fun WelcomePage() {
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Text(
-                text = stringResource(R.string.setup_welcome_prefix),
+                text = stringResource(Res.string.setup_welcome_prefix),
                 style = ExpTitleTypography.displayLarge.copy(
                     fontSize = 42.sp,
                     lineHeight = 1.1.em
                 ),
             )
             Text(
-                text = stringResource(R.string.app_name),
+                text = stringResource(Res.string.app_name),
                 style = MaterialTheme.typography.displayLarge.copy(
                     fontFamily = RoundedSans,
                     fontSize = 46.sp,
@@ -693,12 +695,12 @@ fun WelcomePage() {
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.setup_beta_symbol),
+                        text = stringResource(Res.string.setup_beta_symbol),
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Black
                     )
                     Text(
-                        text = stringResource(R.string.setup_beta_label),
+                        text = stringResource(Res.string.setup_beta_label),
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -760,7 +762,7 @@ fun WelcomePage() {
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = stringResource(R.string.setup_intro_body), style = MaterialTheme.typography.bodyLarge)
+        Text(text = stringResource(Res.string.setup_intro_body), style = MaterialTheme.typography.bodyLarge)
     }
 }
 
@@ -780,7 +782,7 @@ private fun SetupLanguagePill() {
     val currentLanguage = remember(currentLanguageTag) {
         AppLanguage.entries.firstOrNull { it.tag == currentLanguageTag } ?: AppLanguage.SYSTEM
     }
-    val languageLabel = stringResource(R.string.setcat_app_language_label)
+    val languageLabel = stringResource(Res.string.setcat_app_language_label)
     val currentLanguageName = stringResource(currentLanguage.labelRes)
 
     Surface(
@@ -860,10 +862,10 @@ fun MediaPermissionPage(
     }
 
     PermissionPageLayout(
-        title = stringResource(R.string.setup_permission_media_title),
+        title = stringResource(Res.string.setup_permission_media_title),
         granted = isGranted,
-        description = stringResource(R.string.setup_permission_media_description),
-        buttonText = if (isGranted) stringResource(R.string.setup_permission_granted) else stringResource(R.string.setup_grant_media_permission),
+        description = stringResource(Res.string.setup_permission_media_description),
+        buttonText = if (isGranted) stringResource(Res.string.setup_permission_granted) else stringResource(Res.string.setup_grant_media_permission),
         buttonEnabled = !isGranted,
         icons = mediaIcons,
         onGrantClicked = {
@@ -898,10 +900,10 @@ fun NotificationsPermissionPage(
     }
 
     PermissionPageLayout(
-        title = stringResource(R.string.setup_permission_notifications_title),
+        title = stringResource(Res.string.setup_permission_notifications_title),
         granted = isGranted,
-        description = stringResource(R.string.setup_permission_notifications_description),
-        buttonText = if (isGranted) stringResource(R.string.setup_permission_granted) else stringResource(R.string.setup_enable_notifications),
+        description = stringResource(Res.string.setup_permission_notifications_description),
+        buttonText = if (isGranted) stringResource(Res.string.setup_permission_granted) else stringResource(Res.string.setup_enable_notifications),
         buttonEnabled = !isGranted,
         icons = notificationIcons,
         onGrantClicked = {
@@ -931,10 +933,10 @@ fun AlarmsPermissionPage(
     val isGranted = uiState.alarmsPermissionGranted
 
     PermissionPageLayout(
-        title = stringResource(R.string.setup_permission_alarms_title),
+        title = stringResource(Res.string.setup_permission_alarms_title),
         granted = isGranted,
-        description = stringResource(R.string.setup_permission_alarms_description),
-        buttonText = if (isGranted) stringResource(R.string.setup_permission_granted) else stringResource(R.string.setup_grant_permission_generic),
+        description = stringResource(Res.string.setup_permission_alarms_description),
+        buttonText = if (isGranted) stringResource(Res.string.setup_permission_granted) else stringResource(Res.string.setup_grant_permission_generic),
         buttonEnabled = !isGranted,
         icons = icons,
         onGrantClicked = {
@@ -948,7 +950,7 @@ fun AlarmsPermissionPage(
     ) {
         if (!isGranted) {
             TextButton(onClick = onSkip) {
-                Text(stringResource(R.string.skip_for_now), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(stringResource(Res.string.skip_for_now), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     }
@@ -982,10 +984,10 @@ fun BatteryOptimizationPage(
     )
 
     PermissionPageLayout(
-        title = stringResource(R.string.setup_battery_optimization_title),
+        title = stringResource(Res.string.setup_battery_optimization_title),
         granted = isIgnoringOptimizations,
-        description = stringResource(R.string.setup_battery_optimization_description),
-        buttonText = if (isIgnoringOptimizations) stringResource(R.string.setup_permission_granted) else stringResource(R.string.setup_disable_battery_optimization),
+        description = stringResource(Res.string.setup_battery_optimization_description),
+        buttonText = if (isIgnoringOptimizations) stringResource(Res.string.setup_permission_granted) else stringResource(Res.string.setup_disable_battery_optimization),
         buttonEnabled = !isIgnoringOptimizations,
         icons = icons,
         onGrantClicked = {
@@ -996,7 +998,7 @@ fun BatteryOptimizationPage(
     ) {
         if (!isIgnoringOptimizations) {
             TextButton(onClick = onSkip) {
-                Text(stringResource(R.string.skip_for_now), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(stringResource(Res.string.skip_for_now), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     }
@@ -1013,12 +1015,12 @@ fun BackupRestorePage(
     val progress = uiState.backupTransferProgress
 
     PermissionPageLayout(
-        title = stringResource(R.string.setup_backup_have_title),
-        description = stringResource(R.string.setup_backup_have_description),
+        title = stringResource(Res.string.setup_backup_have_title),
+        description = stringResource(Res.string.setup_backup_have_description),
         buttonText = when {
-            uiState.isInspectingBackup -> stringResource(R.string.setup_inspecting_backup)
-            uiState.isRestoringBackup -> stringResource(R.string.setup_restoring_backup)
-            else -> stringResource(R.string.setup_import_backup)
+            uiState.isInspectingBackup -> stringResource(Res.string.setup_inspecting_backup)
+            uiState.isRestoringBackup -> stringResource(Res.string.setup_restoring_backup)
+            else -> stringResource(Res.string.setup_import_backup)
         },
         buttonEnabled = !isBusy,
         icons = persistentListOf(
@@ -1051,7 +1053,7 @@ fun BackupRestorePage(
                         ) {
                             LoadingIndicator(modifier = Modifier.size(20.dp))
                             Text(
-                                text = stringResource(R.string.setup_checking_backup),
+                                text = stringResource(Res.string.setup_checking_backup),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -1082,7 +1084,7 @@ fun BackupRestorePage(
             onClick = onSkip,
             enabled = !uiState.isRestoringBackup
         ) {
-            Text(stringResource(R.string.skip_not_now), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(stringResource(Res.string.skip_not_now), maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     }
 }
@@ -1104,21 +1106,21 @@ fun ThemeSelectionPage(
     val themeOptions = listOf(
         ThemeOptionItem(
             mode = AppThemeMode.DARK,
-            title = stringResource(R.string.setup_theme_dark_title),
-            description = stringResource(R.string.setup_theme_dark_description),
+            title = stringResource(Res.string.setup_theme_dark_title),
+            description = stringResource(Res.string.setup_theme_dark_description),
             icon = ImageVector.vectorResource(R.drawable.rounded_dark_mode_filled_24),
             recommended = true
         ),
         ThemeOptionItem(
             mode = AppThemeMode.LIGHT,
-            title = stringResource(R.string.setup_theme_light_title),
-            description = stringResource(R.string.setup_theme_light_description),
+            title = stringResource(Res.string.setup_theme_light_title),
+            description = stringResource(Res.string.setup_theme_light_description),
             icon = ImageVector.vectorResource(R.drawable.rounded_light_mode_24)
         ),
         ThemeOptionItem(
             mode = AppThemeMode.FOLLOW_SYSTEM,
-            title = stringResource(R.string.setup_theme_follow_title),
-            description = stringResource(R.string.setup_theme_follow_description),
+            title = stringResource(Res.string.setup_theme_follow_title),
+            description = stringResource(Res.string.setup_theme_follow_description),
             icon = ImageVector.vectorResource(R.drawable.rounded_phone_android_filled_24)
         )
     )
@@ -1136,7 +1138,7 @@ fun ThemeSelectionPage(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = stringResource(R.string.setup_theme_title),
+                text = stringResource(Res.string.setup_theme_title),
                 style = MaterialTheme.typography.displayMedium.copy(
                     fontFamily = RoundedSans,
                     fontSize = 32.sp
@@ -1145,7 +1147,7 @@ fun ThemeSelectionPage(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(R.string.setup_theme_subtitle),
+                text = stringResource(Res.string.setup_theme_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1168,7 +1170,7 @@ fun ThemeSelectionPage(
             }
 
             Text(
-                text = stringResource(R.string.setup_theme_footer),
+                text = stringResource(Res.string.setup_theme_footer),
                 style = MaterialTheme.typography.labelMedium,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
@@ -1252,7 +1254,7 @@ private fun ThemeModeOptionCard(
                         shape = RoundedCornerShape(999.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.setup_recommended),
+                            text = stringResource(Res.string.setup_recommended),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
@@ -1320,7 +1322,7 @@ fun ExternalServicesPage(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = stringResource(R.string.setup_external_services_title),
+                text = stringResource(Res.string.setup_external_services_title),
                 style = MaterialTheme.typography.displayMedium.copy(
                     fontFamily = RoundedSans,
                     fontSize = 32.sp
@@ -1329,7 +1331,7 @@ fun ExternalServicesPage(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(R.string.setup_external_services_subtitle),
+                text = stringResource(Res.string.setup_external_services_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1343,22 +1345,22 @@ fun ExternalServicesPage(
                 .padding(top = 20.dp)
         ) {
             ExternalServiceToggleCard(
-                title = stringResource(R.string.setup_external_lyrics_title),
-                description = stringResource(R.string.setup_external_lyrics_description),
+                title = stringResource(Res.string.setup_external_lyrics_title),
+                description = stringResource(Res.string.setup_external_lyrics_description),
                 checked = uiState.externalLyricsEnabled,
                 onCheckedChange = onExternalLyricsChanged,
                 icon = { Icon(painterResource(R.drawable.rounded_lyrics_24), null) }
             )
             ExternalServiceToggleCard(
-                title = stringResource(R.string.setup_external_artist_images_title),
-                description = stringResource(R.string.setup_external_artist_images_description),
+                title = stringResource(Res.string.setup_external_artist_images_title),
+                description = stringResource(Res.string.setup_external_artist_images_description),
                 checked = uiState.externalArtistImagesEnabled,
                 onCheckedChange = onExternalArtistImagesChanged,
                 icon = { Icon(painterResource(R.drawable.rounded_artist_24), null) }
             )
 
             Text(
-                text = stringResource(R.string.setup_external_services_footer),
+                text = stringResource(Res.string.setup_external_services_footer),
                 style = MaterialTheme.typography.labelMedium,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
@@ -1467,7 +1469,7 @@ fun LibraryLayoutPage(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
                 Text(
-                    text = stringResource(R.string.setup_library_layout_title),
+                    text = stringResource(Res.string.setup_library_layout_title),
                     style = MaterialTheme.typography.displayMedium.copy(
                         fontFamily = RoundedSans,
                         fontSize = titleSize
@@ -1477,7 +1479,7 @@ fun LibraryLayoutPage(
                 Spacer(modifier = Modifier.height(if (isCompactHeight) 10.dp else 16.dp))
 
                 Text(
-                    text = stringResource(R.string.setup_library_layout_subtitle),
+                    text = stringResource(Res.string.setup_library_layout_subtitle),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1513,12 +1515,12 @@ fun LibraryLayoutPage(
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = stringResource(R.string.setup_compact_mode),
+                                text = stringResource(Res.string.setup_compact_mode),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
-                                text = if (isCompact) stringResource(R.string.setup_compact_mode_pill_hint) else stringResource(R.string.setup_compact_mode_tab_hint),
+                                text = if (isCompact) stringResource(Res.string.setup_compact_mode_pill_hint) else stringResource(Res.string.setup_compact_mode_tab_hint),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -1535,7 +1537,7 @@ fun LibraryLayoutPage(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = stringResource(R.string.setup_library_layout_footer),
+                    text = stringResource(Res.string.setup_library_layout_footer),
                     style = MaterialTheme.typography.labelMedium,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
@@ -1591,7 +1593,7 @@ fun LibraryHeaderPreview(isCompact: Boolean, previewHeight: Dp = 180.dp) {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             LibraryNavigationPillSetupShow(
-                                title = stringResource(R.string.setup_preview_songs_label),
+                                title = stringResource(Res.string.setup_preview_songs_label),
                                 isExpanded = false,
                                 iconRes = R.drawable.rounded_music_note_24,
                                 pageIndex = 0,
@@ -1607,7 +1609,7 @@ fun LibraryHeaderPreview(isCompact: Boolean, previewHeight: Dp = 180.dp) {
                             .padding(top = 24.dp, start = 20.dp, end = 20.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.tab_library),
+                            text = stringResource(Res.string.tab_library),
                             fontFamily = RoundedSans,
                             fontWeight = FontWeight.ExtraBold,
                             color = MaterialTheme.colorScheme.primary,
@@ -1630,7 +1632,7 @@ fun LibraryHeaderPreview(isCompact: Boolean, previewHeight: Dp = 180.dp) {
                                 ) {
                                     Text(
                                         modifier = Modifier.padding(vertical = 10.dp, horizontal = 14.dp),
-                                        text = stringResource(R.string.tab_songs),
+                                        text = stringResource(Res.string.tab_songs),
                                         style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp),
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.primary
@@ -1658,7 +1660,7 @@ fun LibraryHeaderPreview(isCompact: Boolean, previewHeight: Dp = 180.dp) {
                                 ) {
                                     Text(
                                         modifier = Modifier.padding(vertical = 10.dp, horizontal = 14.dp),
-                                        text = stringResource(R.string.tab_albums),
+                                        text = stringResource(Res.string.tab_albums),
                                         style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp),
                                         fontWeight = FontWeight.Medium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1686,7 +1688,7 @@ fun LibraryHeaderPreview(isCompact: Boolean, previewHeight: Dp = 180.dp) {
                                 ) {
                                     Text(
                                         modifier = Modifier.padding(vertical = 10.dp, horizontal = 14.dp),
-                                        text = stringResource(R.string.tab_artists),
+                                        text = stringResource(Res.string.tab_artists),
                                         style = MaterialTheme.typography.titleMedium.copy(fontSize = 13.sp),
                                         fontWeight = FontWeight.Medium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1729,14 +1731,14 @@ fun FinishPage() {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(text = stringResource(R.string.setup_all_set_title), style = MaterialTheme.typography.headlineLarge)
+        Text(text = stringResource(Res.string.setup_all_set_title), style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(16.dp))
         PermissionIconCollage(
             modifier = Modifier.height(230.dp),
             icons = finishIcons
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = stringResource(R.string.setup_all_set_body), style = MaterialTheme.typography.bodyLarge)
+        Text(text = stringResource(Res.string.setup_all_set_body), style = MaterialTheme.typography.bodyLarge)
     }
 }
 
@@ -1945,7 +1947,7 @@ private fun SetupRestoreDialog(
                                 enabled = !inProgress,
                                 modifier = Modifier.height(52.dp)
                             ) {
-                                Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
                             }
                             Button(
                                 onClick = onConfirm,
@@ -1957,11 +1959,11 @@ private fun SetupRestoreDialog(
                                 if (inProgress) {
                                     LoadingIndicator(modifier = Modifier.size(18.dp))
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text(stringResource(R.string.restoring))
+                                    Text(stringResource(Res.string.restoring))
                                 } else {
                                     Icon(ImageVector.vectorResource(R.drawable.rounded_history_24), contentDescription = null)
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text(stringResource(R.string.restore_selected))
+                                    Text(stringResource(Res.string.restore_selected))
                                 }
                             }
                         }
@@ -1976,14 +1978,14 @@ private fun SetupRestoreDialog(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.setup_restore_backup_title),
+                        text = stringResource(Res.string.setup_restore_backup_title),
                         style = MaterialTheme.typography.displaySmall.copy(
                             fontFamily = RoundedSans
                         ),
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = stringResource(R.string.setup_restore_backup_subtitle),
+                        text = stringResource(Res.string.setup_restore_backup_subtitle),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -1998,8 +2000,7 @@ private fun SetupRestoreDialog(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(
-                                text = stringResource(
-                                    R.string.setup_modules_selected_format,
+                                text = stringResource(Res.string.setup_modules_selected_format,
                                     plan.selectedModules.size,
                                     plan.availableModules.size
                                 ),
@@ -2008,13 +2009,12 @@ private fun SetupRestoreDialog(
                                 color = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                text = stringResource(R.string.setup_backup_created_format, dateText),
+                                text = stringResource(Res.string.setup_backup_created_format, dateText),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                text = stringResource(
-                                    R.string.setup_backup_from_version,
+                                text = stringResource(Res.string.setup_backup_from_version,
                                     plan.manifest.appVersion.ifEmpty { context.getString(R.string.unknown_version) }
                                 ),
                                 style = MaterialTheme.typography.bodySmall,
@@ -2282,7 +2282,7 @@ fun LibraryNavigationPillSetupShow(
                 Icon(
                     modifier = Modifier.rotate(arrowRotation),
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_keyboard_arrow_down_24),
-                    contentDescription = stringResource(R.string.cd_expand_menu),
+                    contentDescription = stringResource(Res.string.cd_expand_menu),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
@@ -2385,15 +2385,14 @@ fun SetupBottomBar(
                 ) { targetPage ->
                     if (targetPage == 0) {
                         Text(
-                            text = stringResource(R.string.setup_lets_go),
+                            text = stringResource(Res.string.setup_lets_go),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary,
                         )
                     } else {
                         Text(
-                            text = stringResource(
-                                R.string.setup_step_format,
+                            text = stringResource(Res.string.setup_step_format,
                                 targetPage,
                                 pagerState.pageCount - 1
                             ),
@@ -2447,12 +2446,12 @@ fun SetupBottomBar(
                         label = "AnimatedFabIcon"
                     ) { isNextPage ->
                         if (isNextPage) {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_forward_24), contentDescription = stringResource(R.string.cd_next_step))
+                            Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_forward_24), contentDescription = stringResource(Res.string.cd_next_step))
                         } else {
                             if (isFinishButtonEnabled) {
-                                Icon(ImageVector.vectorResource(R.drawable.rounded_check_24), contentDescription = stringResource(R.string.cd_finish))
+                                Icon(ImageVector.vectorResource(R.drawable.rounded_check_24), contentDescription = stringResource(Res.string.cd_finish))
                             } else {
-                                Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), contentDescription = stringResource(R.string.cd_close))
+                                Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), contentDescription = stringResource(Res.string.cd_close))
                             }
                         }
                     }
@@ -2496,7 +2495,7 @@ fun NavBarLayoutPage(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
                 Text(
-                    text = stringResource(R.string.setup_app_navigation_title),
+                    text = stringResource(Res.string.setup_app_navigation_title),
                     style = MaterialTheme.typography.displayMedium.copy(
                         fontFamily = RoundedSans,
                         fontSize = titleSize
@@ -2506,7 +2505,7 @@ fun NavBarLayoutPage(
                 Spacer(modifier = Modifier.height(if (isCompactHeight) 10.dp else 16.dp))
 
                 Text(
-                    text = stringResource(R.string.setup_app_navigation_subtitle),
+                    text = stringResource(Res.string.setup_app_navigation_subtitle),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -2545,12 +2544,12 @@ fun NavBarLayoutPage(
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = stringResource(R.string.setup_navbar_default_style),
+                                    text = stringResource(Res.string.setup_navbar_default_style),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold
                                 )
                                 Text(
-                                    text = if (isDefault) stringResource(R.string.setup_nav_floating_pill_description) else stringResource(R.string.setup_nav_full_width_description),
+                                    text = if (isDefault) stringResource(Res.string.setup_nav_floating_pill_description) else stringResource(Res.string.setup_nav_full_width_description),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -2580,7 +2579,7 @@ fun NavBarLayoutPage(
                                  ) {
                                      Icon(ImageVector.vectorResource(R.drawable.rounded_rounded_corner_24), contentDescription = null, modifier = Modifier.size(18.dp))
                                      Spacer(modifier = Modifier.width(8.dp))
-                                     Text(stringResource(R.string.customize_corner_radius))
+                                     Text(stringResource(Res.string.customize_corner_radius))
                                  }
                              }
                         }
@@ -2590,7 +2589,7 @@ fun NavBarLayoutPage(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = stringResource(R.string.setup_navbar_footer),
+                    text = stringResource(Res.string.setup_navbar_footer),
                     style = MaterialTheme.typography.labelMedium,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),

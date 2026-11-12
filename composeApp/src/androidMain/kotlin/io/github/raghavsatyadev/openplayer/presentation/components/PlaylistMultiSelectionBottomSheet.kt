@@ -51,11 +51,12 @@ import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.Tigh
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.utils.resolvePlaylistCoverContentColor
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import androidx.compose.runtime.remember
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * Bottom sheet for batch operations on multiple selected playlists.
@@ -126,7 +127,7 @@ fun PlaylistMultiSelectionBottomSheet(
                     Column {
                         // Inherits LocalContentColor, which is onSurface inside the sheet.
                         AutoSizingTextToFill(
-                            text = stringResource(R.string.multi_selection_playlists_count_upper, selectedPlaylists.size),
+                            text = stringResource(Res.string.multi_selection_playlists_count_upper, selectedPlaylists.size),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
                             fontFamily = RoundedSans,
@@ -136,7 +137,7 @@ fun PlaylistMultiSelectionBottomSheet(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = stringResource(R.string.multi_selection_selected),
+                            text = stringResource(Res.string.multi_selection_selected),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontFamily = RoundedSans,
@@ -178,11 +179,11 @@ fun PlaylistMultiSelectionBottomSheet(
                             ) {
                                 Icon(
                                     ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
-                                    contentDescription = stringResource(R.string.cd_delete_all_songs)
+                                    contentDescription = stringResource(Res.string.cd_delete_all_songs)
                                 )
                                 Spacer(Modifier.width(6.dp))
                                 TightWrapText(
-                                    text = stringResource(R.string.delete_action),
+                                    text = stringResource(Res.string.delete_action),
                                     modifier = Modifier.padding(end = 4.dp),
                                     overflow = TextOverflow.Ellipsis,
                                     maxLines = 2,
@@ -207,11 +208,11 @@ fun PlaylistMultiSelectionBottomSheet(
                             ) {
                                 Icon(
                                     ImageVector.vectorResource(R.drawable.rounded_file_download_24),
-                                    contentDescription = stringResource(R.string.cd_export_all)
+                                    contentDescription = stringResource(Res.string.cd_export_all)
                                 )
                                 Spacer(Modifier.width(6.dp))
                                 TightWrapText(
-                                    text = stringResource(R.string.action_export),
+                                    text = stringResource(Res.string.action_export),
                                     modifier = Modifier.padding(end = 4.dp),
                                     overflow = TextOverflow.Ellipsis,
                                     maxLines = 2,
@@ -246,11 +247,11 @@ fun PlaylistMultiSelectionBottomSheet(
                             ) {
                                 Icon(
                                     ImageVector.vectorResource(R.drawable.rounded_merge_24),
-                                    contentDescription = stringResource(R.string.cd_merge_all)
+                                    contentDescription = stringResource(Res.string.cd_merge_all)
                                 )
                                 Spacer(Modifier.width(6.dp))
                                 TightWrapText(
-                                    text = stringResource(R.string.action_merge),
+                                    text = stringResource(Res.string.action_merge),
                                     modifier = Modifier.padding(end = 4.dp),
                                     overflow = TextOverflow.Ellipsis,
                                     maxLines = 2,
@@ -275,11 +276,11 @@ fun PlaylistMultiSelectionBottomSheet(
                             ) {
                                 Icon(
                                     ImageVector.vectorResource(R.drawable.rounded_share_filled_24),
-                                    contentDescription = stringResource(R.string.cd_share_all)
+                                    contentDescription = stringResource(Res.string.cd_share_all)
                                 )
                                 Spacer(Modifier.width(6.dp))
                                 TightWrapText(
-                                    text = stringResource(R.string.action_share),
+                                    text = stringResource(Res.string.action_share),
                                     modifier = Modifier.padding(end = 4.dp),
                                     overflow = TextOverflow.Ellipsis,
                                     maxLines = 2,

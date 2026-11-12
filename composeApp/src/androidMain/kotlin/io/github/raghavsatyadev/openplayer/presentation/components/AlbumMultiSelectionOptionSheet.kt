@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.compose.ui.res.stringResource
 import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Album
@@ -50,6 +49,8 @@ import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import androidx.compose.runtime.remember
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -86,7 +87,7 @@ fun AlbumMultiSelectionOptionSheet(
 
                 Column {
                     AutoSizingTextToFill(
-                        text = stringResource(R.string.presentation_batch_g_album_sel_count, selectedAlbums.size),
+                        text = stringResource(Res.string.presentation_batch_g_album_sel_count, selectedAlbums.size),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         fontFamily = RoundedSans,
@@ -96,7 +97,7 @@ fun AlbumMultiSelectionOptionSheet(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = stringResource(R.string.presentation_batch_g_album_sel_selected),
+                        text = stringResource(Res.string.presentation_batch_g_album_sel_selected),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontFamily = RoundedSans,
@@ -109,12 +110,12 @@ fun AlbumMultiSelectionOptionSheet(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = stringResource(R.string.presentation_batch_g_album_sel_queue_hint),
+                text = stringResource(Res.string.presentation_batch_g_album_sel_queue_hint),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                text = stringResource(R.string.presentation_batch_g_album_sel_limit, maxSelection),
+                text = stringResource(Res.string.presentation_batch_g_album_sel_limit, maxSelection),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -143,10 +144,10 @@ fun AlbumMultiSelectionOptionSheet(
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
-                            contentDescription = stringResource(R.string.cd_play_selected_albums)
+                            contentDescription = stringResource(Res.string.cd_play_selected_albums)
                         )
                     },
-                    text = stringResource(R.string.play_playback)
+                    text = stringResource(Res.string.play_playback)
                 )
 
                 AlbumSelectionActionButton(
@@ -164,10 +165,10 @@ fun AlbumMultiSelectionOptionSheet(
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_playlist_add_24),
-                            contentDescription = stringResource(R.string.cd_add_to_playlist)
+                            contentDescription = stringResource(Res.string.cd_add_to_playlist)
                         )
                     },
-                    text = stringResource(R.string.shortcut_playlist_short)
+                    text = stringResource(Res.string.shortcut_playlist_short)
                 )
             }
 
@@ -195,10 +196,10 @@ fun AlbumMultiSelectionOptionSheet(
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
-                            contentDescription = stringResource(R.string.cd_play_selected_albums_next)
+                            contentDescription = stringResource(Res.string.cd_play_selected_albums_next)
                         )
                     },
-                    text = stringResource(R.string.action_queue_next)
+                    text = stringResource(Res.string.action_queue_next)
                 )
 
                 AlbumSelectionActionButton(
@@ -216,10 +217,10 @@ fun AlbumMultiSelectionOptionSheet(
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
-                            contentDescription = stringResource(R.string.cd_add_selected_albums_to_queue)
+                            contentDescription = stringResource(Res.string.cd_add_selected_albums_to_queue)
                         )
                     },
-                    text = stringResource(R.string.action_add_to_queue)
+                    text = stringResource(Res.string.action_add_to_queue)
                 )
             }
 

@@ -41,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -55,6 +54,8 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.LyricsSearchUi
 import io.github.raghavsatyadev.openplayer.utils.ProviderText
 import io.github.raghavsatyadev.openplayer.utils.shapes.RoundedStarShape
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun FetchLyricsDialog(
@@ -177,7 +178,7 @@ private fun IdleContent(
         )
     } else {
         Text(
-            text = stringResource(R.string.lyrics_not_found),
+            text = stringResource(Res.string.lyrics_not_found),
             style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center
         )
@@ -186,7 +187,7 @@ private fun IdleContent(
     Spacer(modifier = Modifier.height(12.dp))
 
     Text(
-        text = stringResource(R.string.search_lyrics_online_prompt),
+        text = stringResource(Res.string.search_lyrics_online_prompt),
         style = MaterialTheme.typography.bodyMedium,
         textAlign = TextAlign.Center,
         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -210,12 +211,12 @@ private fun IdleContent(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(R.string.fetch_lyrics_show_options_title),
+                    text = stringResource(Res.string.fetch_lyrics_show_options_title),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Text(
-                    text = stringResource(R.string.fetch_lyrics_show_options_subtitle),
+                    text = stringResource(Res.string.fetch_lyrics_show_options_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.75f)
                 )
@@ -244,7 +245,7 @@ private fun IdleContent(
         ) {
             Icon(ImageVector.vectorResource(R.drawable.rounded_search_24), contentDescription = null, modifier = Modifier.size(20.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            Text(stringResource(R.string.search), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(stringResource(Res.string.search), maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
 
         Button(
@@ -258,7 +259,7 @@ private fun IdleContent(
         ) {
             Icon(ImageVector.vectorResource(R.drawable.rounded_cloud_upload_filled_24), contentDescription = null, modifier = Modifier.size(20.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            Text(stringResource(R.string.import_file))
+            Text(stringResource(Res.string.import_file))
         }
 
         TextButton(
@@ -266,7 +267,7 @@ private fun IdleContent(
             modifier = Modifier.fillMaxWidth().height(52.dp),
             shape = RoundedCornerShape(18.dp)
         ) {
-            Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     }
 }
@@ -282,7 +283,7 @@ private fun LoadingContent() {
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = stringResource(R.string.searching_lyrics),
+            text = stringResource(Res.string.searching_lyrics),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface
         )
@@ -296,7 +297,7 @@ private fun PickResultContent(
     onCancel: () -> Unit
 ) {
     Text(
-        text = stringResource(R.string.found_n_matches_format).format(results.size),
+        text = stringResource(Res.string.found_n_matches_format).format(results.size),
         style = MaterialTheme.typography.headlineSmall,
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth()
@@ -315,8 +316,8 @@ private fun PickResultContent(
 
         item {
             ProviderText(
-                providerText = stringResource(R.string.lyrics_provided_by),
-                uri = stringResource(R.string.lrclib_uri),
+                providerText = stringResource(Res.string.lyrics_provided_by),
+                uri = stringResource(Res.string.lrclib_uri),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp)
             )
@@ -330,7 +331,7 @@ private fun PickResultContent(
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant)
     ) {
-        Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -393,7 +394,7 @@ private fun ResultItemCard(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         ) {
                             Text(
-                                text = stringResource(R.string.lyrics_synced_badge),
+                                text = stringResource(Res.string.lyrics_synced_badge),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -402,8 +403,7 @@ private fun ResultItemCard(
                     }
                 }
                 Text(
-                    text = stringResource(
-                        R.string.presentation_batch_g_list_song_artist_album,
+                    text = stringResource(Res.string.presentation_batch_g_list_song_artist_album,
                         result.record.artistName,
                         result.record.albumName
                     ),
@@ -453,14 +453,14 @@ fun NotFoundContent(
     Spacer(Modifier.height(16.dp))
 
     Text(
-        text = stringResource(R.string.lyrics_not_found),
+        text = stringResource(Res.string.lyrics_not_found),
         style = MaterialTheme.typography.headlineSmall
     )
 
     Spacer(Modifier.height(12.dp))
 
     Text(
-        text = stringResource(R.string.lyrics_custom_search_hint),
+        text = stringResource(Res.string.lyrics_custom_search_hint),
         style = MaterialTheme.typography.bodyMedium,
         textAlign = TextAlign.Center,
         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -472,14 +472,14 @@ fun NotFoundContent(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            text = stringResource(R.string.song_field_title),
+            text = stringResource(Res.string.song_field_title),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.labelLarge
         )
         OutlinedTextField(
             value = title,
             onValueChange = { title = it },
-            placeholder = { Text(stringResource(R.string.song_field_title)) },
+            placeholder = { Text(stringResource(Res.string.song_field_title)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -491,14 +491,14 @@ fun NotFoundContent(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            text = stringResource(R.string.song_field_artist_optional),
+            text = stringResource(Res.string.song_field_artist_optional),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.labelLarge
         )
         OutlinedTextField(
             value = artist,
             onValueChange = { artist = it },
-            placeholder = { Text(stringResource(R.string.song_field_artist_optional)) },
+            placeholder = { Text(stringResource(Res.string.song_field_artist_optional)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -525,7 +525,7 @@ fun NotFoundContent(
         ) {
             Icon(ImageVector.vectorResource(R.drawable.rounded_search_24), null)
             Spacer(Modifier.width(8.dp))
-            Text(stringResource(R.string.search))
+            Text(stringResource(Res.string.search))
         }
 
         TextButton(
@@ -533,7 +533,7 @@ fun NotFoundContent(
             modifier = Modifier.fillMaxWidth().height(52.dp),
             shape = RoundedCornerShape(18.dp)
         ) {
-            Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     }
 }
@@ -561,7 +561,7 @@ private fun ErrorContent(
     Spacer(modifier = Modifier.height(24.dp))
 
     Text(
-        text = stringResource(R.string.error),
+        text = stringResource(Res.string.error),
         style = MaterialTheme.typography.headlineSmall,
         color = MaterialTheme.colorScheme.error
     )
@@ -586,6 +586,6 @@ private fun ErrorContent(
         ),
         shape = RoundedCornerShape(18.dp)
     ) {
-        Text(stringResource(R.string.ok), maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(stringResource(Res.string.ok), maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }

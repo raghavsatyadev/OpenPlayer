@@ -104,6 +104,8 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun AccountsScreen(
@@ -219,7 +221,7 @@ fun AccountsScreen(
             if (uiState.connectedAccounts.isNotEmpty()) {
                 item {
                     Text(
-                        text = stringResource(R.string.presentation_batch_b_accounts_linked_services),
+                        text = stringResource(Res.string.presentation_batch_b_accounts_linked_services),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -267,7 +269,7 @@ fun AccountsScreen(
                 if (uiState.disconnectedServices.isNotEmpty()) {
                     item {
                         Text(
-                            text = stringResource(R.string.accounts_available_services),
+                            text = stringResource(Res.string.accounts_available_services),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface,
@@ -292,7 +294,7 @@ fun AccountsScreen(
         }
 
         CollapsibleCommonTopBar(
-            title = stringResource(R.string.settings_accounts_row_title),
+            title = stringResource(Res.string.settings_accounts_row_title),
             collapseFraction = collapseFraction,
             headerHeight = currentTopBarHeightDp,
             onBackClick = onBackClick,
@@ -352,10 +354,10 @@ private fun ConnectedAccountCard(
     painter: androidx.compose.ui.graphics.painter.Painter? = null,
     extraContent: (@Composable () -> Unit)? = null
 ) {
-    val statusConnected = stringResource(R.string.presentation_batch_b_accounts_status_connected)
-    val openService = stringResource(R.string.presentation_batch_b_accounts_open_service)
-    val loggingOut = stringResource(R.string.presentation_batch_b_accounts_logging_out)
-    val logOut = stringResource(R.string.cd_logout)
+    val statusConnected = stringResource(Res.string.presentation_batch_b_accounts_status_connected)
+    val openService = stringResource(Res.string.presentation_batch_b_accounts_open_service)
+    val loggingOut = stringResource(Res.string.presentation_batch_b_accounts_logging_out)
+    val logOut = stringResource(Res.string.cd_logout)
     val palette = servicePalette(account.service)
     val cardShape = AbsoluteSmoothCornerShape(28.dp, 60)
 
@@ -523,8 +525,8 @@ private fun EmptyAccountsCard(
     disconnectedServices: ImmutableList<ExternalServiceAccount>,
     onConnect: (ExternalServiceAccount) -> Unit
 ) {
-    val noLinkedTitle = stringResource(R.string.presentation_batch_b_accounts_no_linked_title)
-    val noLinkedBody = stringResource(R.string.presentation_batch_b_accounts_no_linked_body)
+    val noLinkedTitle = stringResource(Res.string.presentation_batch_b_accounts_no_linked_title)
+    val noLinkedBody = stringResource(Res.string.presentation_batch_b_accounts_no_linked_body)
     Card(
         shape = AbsoluteSmoothCornerShape(28.dp, 60),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
@@ -645,9 +647,9 @@ private fun ServiceIcon(service: ExternalServiceAccount, tint: Color, modifier: 
 @Composable
 private fun serviceDisplayName(service: ExternalServiceAccount): String {
     return when (service) {
-        ExternalServiceAccount.NAVIDROME -> stringResource(R.string.cd_subsonic_logo)
-        ExternalServiceAccount.JELLYFIN -> stringResource(R.string.auth_jellyfin_title)
-        ExternalServiceAccount.LISTENBRAINZ -> stringResource(R.string.accounts_listenbrainz_title)
+        ExternalServiceAccount.NAVIDROME -> stringResource(Res.string.cd_subsonic_logo)
+        ExternalServiceAccount.JELLYFIN -> stringResource(Res.string.auth_jellyfin_title)
+        ExternalServiceAccount.LISTENBRAINZ -> stringResource(Res.string.accounts_listenbrainz_title)
     }
 }
 
@@ -725,7 +727,7 @@ private fun ConnectServiceButton(
     service: ExternalServiceAccount,
     onConnect: (ExternalServiceAccount) -> Unit
 ) {
-    val connectTemplate = stringResource(R.string.presentation_batch_b_accounts_connect_service)
+    val connectTemplate = stringResource(Res.string.presentation_batch_b_accounts_connect_service)
     FilledTonalButton(
         onClick = { onConnect(service) },
         shape = AbsoluteSmoothCornerShape(18.dp, 60),
@@ -788,13 +790,13 @@ private fun ListenBrainzCardExtras(
             ) {
                 Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
                     Text(
-                        text = stringResource(R.string.accounts_listenbrainz_needs_reauth),
+                        text = stringResource(Res.string.accounts_listenbrainz_needs_reauth),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onErrorContainer
                     )
                     TextButton(onClick = onReconnect) {
                         Text(
-                            text = stringResource(R.string.accounts_listenbrainz_reconnect),
+                            text = stringResource(Res.string.accounts_listenbrainz_reconnect),
                             fontWeight = FontWeight.SemiBold
                         )
                     }
@@ -802,28 +804,28 @@ private fun ListenBrainzCardExtras(
             }
         }
         ScrobbleSourceToggleRow(
-            label = stringResource(R.string.accounts_listenbrainz_scrobble_local),
+            label = stringResource(Res.string.accounts_listenbrainz_scrobble_local),
             checked = model.scrobbleLocal,
             onCheckedChange = onToggleLocal
         )
         ScrobbleSourceToggleRow(
-            label = stringResource(R.string.accounts_listenbrainz_scrobble_navidrome),
+            label = stringResource(Res.string.accounts_listenbrainz_scrobble_navidrome),
             checked = model.scrobbleNavidrome,
             onCheckedChange = onToggleNavidrome
         )
         ScrobbleSourceToggleRow(
-            label = stringResource(R.string.accounts_listenbrainz_scrobble_jellyfin),
+            label = stringResource(Res.string.accounts_listenbrainz_scrobble_jellyfin),
             checked = model.scrobbleJellyfin,
             onCheckedChange = onToggleJellyfin
         )
         Text(
-            text = stringResource(R.string.accounts_listenbrainz_toggle_hint),
+            text = stringResource(Res.string.accounts_listenbrainz_toggle_hint),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         model.serverUrl?.let { serverUrl ->
             Text(
-                text = stringResource(R.string.accounts_listenbrainz_custom_server, serverUrl),
+                text = stringResource(Res.string.accounts_listenbrainz_custom_server, serverUrl),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -843,13 +845,13 @@ private fun ListenBrainzStatsContent(
         ) {
             stats.listenCount?.let { count ->
                 StatTile(
-                    title = stringResource(R.string.accounts_listenbrainz_stat_listens),
+                    title = stringResource(Res.string.accounts_listenbrainz_stat_listens),
                     value = NumberFormat.getIntegerInstance().format(count),
                     modifier = Modifier.weight(1f)
                 )
             }
             StatTile(
-                title = stringResource(R.string.accounts_listenbrainz_stat_queued),
+                title = stringResource(Res.string.accounts_listenbrainz_stat_queued),
                 value = pendingCount.toString(),
                 modifier = Modifier.weight(1f)
             )
@@ -969,7 +971,7 @@ private fun ListenBrainzNowPlayingRow(
             if (isPlaying) {
                 Column {
                     Text(
-                        text = stringResource(R.string.accounts_listenbrainz_now_playing_label),
+                        text = stringResource(Res.string.accounts_listenbrainz_now_playing_label),
                         style = MaterialTheme.typography.labelSmall,
                         color = contentColor
                     )
@@ -977,8 +979,7 @@ private fun ListenBrainzNowPlayingRow(
                         text = if (artist.isNullOrBlank()) {
                             track.orEmpty()
                         } else {
-                            stringResource(
-                                R.string.accounts_listenbrainz_now_playing_format,
+                            stringResource(Res.string.accounts_listenbrainz_now_playing_format,
                                 track.orEmpty(),
                                 artist
                             )
@@ -992,7 +993,7 @@ private fun ListenBrainzNowPlayingRow(
                 }
             } else {
                 Text(
-                    text = stringResource(R.string.accounts_listenbrainz_now_playing_idle),
+                    text = stringResource(Res.string.accounts_listenbrainz_now_playing_idle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = contentColor
                 )
@@ -1038,17 +1039,17 @@ private fun ListenBrainzTokenDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.accounts_listenbrainz_token_dialog_title)) },
+        title = { Text(stringResource(Res.string.accounts_listenbrainz_token_dialog_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
-                    text = stringResource(R.string.accounts_listenbrainz_token_dialog_body),
+                    text = stringResource(Res.string.accounts_listenbrainz_token_dialog_body),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 OutlinedTextField(
                     value = token,
                     onValueChange = { token = it },
-                    label = { Text(stringResource(R.string.accounts_listenbrainz_token_hint)) },
+                    label = { Text(stringResource(Res.string.accounts_listenbrainz_token_hint)) },
                     singleLine = true,
                     isError = failedState != null && !failedState.invalidUrl,
                     visualTransformation = PasswordVisualTransformation(),
@@ -1058,9 +1059,9 @@ private fun ListenBrainzTokenDialog(
                 OutlinedTextField(
                     value = serverUrl,
                     onValueChange = { serverUrl = it },
-                    label = { Text(stringResource(R.string.accounts_listenbrainz_server_hint)) },
+                    label = { Text(stringResource(Res.string.accounts_listenbrainz_server_hint)) },
                     supportingText = {
-                        Text(stringResource(R.string.accounts_listenbrainz_server_supporting))
+                        Text(stringResource(Res.string.accounts_listenbrainz_server_supporting))
                     },
                     singleLine = true,
                     isError = failedState?.invalidUrl == true,
@@ -1088,7 +1089,7 @@ private fun ListenBrainzTokenDialog(
                         )
                     }
                 ) {
-                    Text(stringResource(R.string.accounts_listenbrainz_get_token))
+                    Text(stringResource(Res.string.accounts_listenbrainz_get_token))
                 }
             }
         },
@@ -1100,13 +1101,13 @@ private fun ListenBrainzTokenDialog(
                 if (connectState == ListenBrainzConnectState.Connecting) {
                     LoadingIndicator(modifier = Modifier.size(16.dp))
                 } else {
-                    Text(stringResource(R.string.accounts_listenbrainz_connect))
+                    Text(stringResource(Res.string.accounts_listenbrainz_connect))
                 }
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
+                Text(stringResource(Res.string.cancel))
             }
         }
     )

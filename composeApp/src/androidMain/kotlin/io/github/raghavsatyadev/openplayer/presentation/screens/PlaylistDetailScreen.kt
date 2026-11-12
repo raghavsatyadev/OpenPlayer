@@ -91,7 +91,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
@@ -146,6 +145,8 @@ import kotlinx.coroutines.launch
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(
@@ -168,32 +169,32 @@ fun PlaylistDetailScreen(
         derivedStateOf { playerStableState.currentSong != null }
     }
     val context = LocalContext.current
-    val fallbackPlaylistName = stringResource(R.string.shortcut_playlist_short)
-    val sortSongsLabel = stringResource(R.string.presentation_batch_b_sort_songs)
-    val moreOptionsLabel = stringResource(R.string.presentation_batch_b_more_options)
-    val playItLabel = stringResource(R.string.presentation_batch_b_play_it)
-    val shuffleLabel = stringResource(R.string.shortcut_shuffle_short)
-    val addSongsCd = stringResource(R.string.presentation_batch_b_add_songs)
-    val addLabel = stringResource(R.string.presentation_batch_b_add)
-    val removeLabel = stringResource(R.string.cd_remove)
-    val removeSongsCd = stringResource(R.string.presentation_batch_b_remove_songs)
-    val reorderLabel = stringResource(R.string.presentation_batch_b_reorder)
-    val reorderSongsCd = stringResource(R.string.presentation_batch_b_reorder_songs)
-    val reorderSongCd = stringResource(R.string.presentation_batch_b_reorder_song)
-    val playlistEmptyTitle = stringResource(R.string.presentation_batch_b_playlist_empty_title)
-    val playlistEmptyFolder = stringResource(R.string.presentation_batch_b_playlist_empty_folder_body)
-    val playlistEmptyAddHint = stringResource(R.string.presentation_batch_b_playlist_empty_add_hint)
-    val playlistOptionsTitle = stringResource(R.string.presentation_batch_b_playlist_options_title)
-    val editPlaylistLabel = stringResource(R.string.presentation_batch_b_edit_playlist)
-    val deletePlaylistLabel = stringResource(R.string.presentation_batch_b_delete_playlist)
-    val setDefaultTransitionLabel = stringResource(R.string.presentation_batch_b_set_default_transition)
-    val exportPlaylistLabel = stringResource(R.string.presentation_batch_b_export_playlist)
-    val downloadPlaylistLabel = stringResource(R.string.cloud_playlist_download)
-    val deletePlaylistConfirmTitle = stringResource(R.string.presentation_batch_b_delete_playlist_confirm_title)
-    val deletePlaylistConfirmBody = stringResource(R.string.presentation_batch_b_delete_playlist_confirm_body)
-    val sortSheetTitle = stringResource(R.string.presentation_batch_b_sort_songs)
-    val toastAddedToQueue = stringResource(R.string.toast_added_to_queue)
-    val toastPlayingNext = stringResource(R.string.toast_playing_next)
+    val fallbackPlaylistName = stringResource(Res.string.shortcut_playlist_short)
+    val sortSongsLabel = stringResource(Res.string.presentation_batch_b_sort_songs)
+    val moreOptionsLabel = stringResource(Res.string.presentation_batch_b_more_options)
+    val playItLabel = stringResource(Res.string.presentation_batch_b_play_it)
+    val shuffleLabel = stringResource(Res.string.shortcut_shuffle_short)
+    val addSongsCd = stringResource(Res.string.presentation_batch_b_add_songs)
+    val addLabel = stringResource(Res.string.presentation_batch_b_add)
+    val removeLabel = stringResource(Res.string.cd_remove)
+    val removeSongsCd = stringResource(Res.string.presentation_batch_b_remove_songs)
+    val reorderLabel = stringResource(Res.string.presentation_batch_b_reorder)
+    val reorderSongsCd = stringResource(Res.string.presentation_batch_b_reorder_songs)
+    val reorderSongCd = stringResource(Res.string.presentation_batch_b_reorder_song)
+    val playlistEmptyTitle = stringResource(Res.string.presentation_batch_b_playlist_empty_title)
+    val playlistEmptyFolder = stringResource(Res.string.presentation_batch_b_playlist_empty_folder_body)
+    val playlistEmptyAddHint = stringResource(Res.string.presentation_batch_b_playlist_empty_add_hint)
+    val playlistOptionsTitle = stringResource(Res.string.presentation_batch_b_playlist_options_title)
+    val editPlaylistLabel = stringResource(Res.string.presentation_batch_b_edit_playlist)
+    val deletePlaylistLabel = stringResource(Res.string.presentation_batch_b_delete_playlist)
+    val setDefaultTransitionLabel = stringResource(Res.string.presentation_batch_b_set_default_transition)
+    val exportPlaylistLabel = stringResource(Res.string.presentation_batch_b_export_playlist)
+    val downloadPlaylistLabel = stringResource(Res.string.cloud_playlist_download)
+    val deletePlaylistConfirmTitle = stringResource(Res.string.presentation_batch_b_delete_playlist_confirm_title)
+    val deletePlaylistConfirmBody = stringResource(Res.string.presentation_batch_b_delete_playlist_confirm_body)
+    val sortSheetTitle = stringResource(Res.string.presentation_batch_b_sort_songs)
+    val toastAddedToQueue = stringResource(Res.string.toast_added_to_queue)
+    val toastPlayingNext = stringResource(Res.string.toast_playing_next)
     val currentPlaylist = uiState.currentPlaylistDetails
     val isFolderPlaylist = currentPlaylist?.id?.startsWith(FOLDER_PLAYLIST_PREFIX) == true
     val isSmartPlaylist = currentPlaylist?.isSmartPlaylist == true
@@ -333,8 +334,7 @@ fun PlaylistDetailScreen(
                         modifier = Modifier
                             .padding(start = 8.dp)
                             .then(if (expanded) Modifier.paddingFromBaseline(bottom = 28.dp) else Modifier),
-                        text = stringResource(
-                            R.string.presentation_batch_f_status_bullet_step,
+                        text = stringResource(Res.string.presentation_batch_f_status_bullet_step,
                             formatSongCount(songsInPlaylist.size),
                             formatTotalDuration(songsInPlaylist)
                         ),
@@ -351,7 +351,7 @@ fun PlaylistDetailScreen(
                         ),
                         onClick = onBackClick
                     ) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), stringResource(R.string.auth_cd_back))
+                        Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), stringResource(Res.string.auth_cd_back))
                     }
                 },
                 actions = {
@@ -391,7 +391,7 @@ fun PlaylistDetailScreen(
                 Modifier
                     .fillMaxSize()
                     .padding(top = innerPadding.calculateTopPadding()), Alignment.Center
-            ) { Text(stringResource(id = R.string.playlist_not_found)) }
+            ) { Text(stringResource(Res.string.playlist_not_found)) }
         } else if (currentPlaylist == null) {
             Box(
                 Modifier
@@ -444,7 +444,7 @@ fun PlaylistDetailScreen(
                     ) {
                         Icon(
                             ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
-                            contentDescription = stringResource(R.string.cd_play),
+                            contentDescription = stringResource(Res.string.cd_play),
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
@@ -721,7 +721,7 @@ fun PlaylistDetailScreen(
                             Text(playlistEmptyTitle, style = MaterialTheme.typography.titleMedium)
                             val emptyMessage = when {
                                 isFolderPlaylist -> playlistEmptyFolder
-                                isSmartPlaylist -> stringResource(R.string.presentation_batch_b_playlist_empty_smart_body)
+                                isSmartPlaylist -> stringResource(Res.string.presentation_batch_b_playlist_empty_smart_body)
                                 else -> playlistEmptyAddHint
                             }
                             Text(emptyMessage, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -935,7 +935,7 @@ fun PlaylistDetailScreen(
                     if (isRulePlaylist) {
                         PlaylistActionItem(
                             icon = painterResource(R.drawable.rounded_tune_24),
-                            label = stringResource(R.string.smart_rules_edit_menu),
+                            label = stringResource(Res.string.smart_rules_edit_menu),
                             shape = getSegmentedItemShape(1, optionCount),
                             onClick = {
                                 showPlaylistOptionsSheet = false
@@ -1058,12 +1058,12 @@ fun PlaylistDetailScreen(
                         showDeleteConfirmation = false
                     }
                 ) {
-                    Text(stringResource(R.string.delete_action), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(Res.string.delete_action), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteConfirmation = false }) {
-                    Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         )
@@ -1271,9 +1271,9 @@ private fun PlaylistActionItem(
 @Composable
 fun RenamePlaylistDialog(currentName: String, onDismiss: () -> Unit, onRename: (String) -> Unit) {
     var newName by remember { mutableStateOf(TextFieldValue(currentName)) }
-    val renameTitle = stringResource(R.string.presentation_batch_b_rename_playlist_dialog_title)
-    val newNameLabel = stringResource(R.string.presentation_batch_b_new_name)
-    val renameAction = stringResource(R.string.action_rename)
+    val renameTitle = stringResource(Res.string.presentation_batch_b_rename_playlist_dialog_title)
+    val newNameLabel = stringResource(Res.string.presentation_batch_b_new_name)
+    val renameAction = stringResource(Res.string.action_rename)
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(renameTitle) },
@@ -1293,6 +1293,6 @@ fun RenamePlaylistDialog(currentName: String, onDismiss: () -> Unit, onRename: (
                 enabled = newName.text.isNotBlank() && newName.text != currentName
             ) { Text(renameAction, maxLines = 1, overflow = TextOverflow.Ellipsis) }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis) } }
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis) } }
     )
 }

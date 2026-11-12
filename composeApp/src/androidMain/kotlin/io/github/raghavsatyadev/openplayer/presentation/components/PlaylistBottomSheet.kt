@@ -50,6 +50,8 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewMo
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -106,9 +108,9 @@ fun PlaylistBottomSheet(
         contentWindowInsets = { BottomSheetDefaults.modalWindowInsets }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            val playlistCreatedToast = stringResource(R.string.playlist_created_songs_added_toast)
-            val songsAddedToast = stringResource(R.string.playlist_songs_added_toast)
-            val savedToast = stringResource(R.string.playlist_saved_toast)
+            val playlistCreatedToast = stringResource(Res.string.playlist_created_songs_added_toast)
+            val songsAddedToast = stringResource(Res.string.playlist_songs_added_toast)
+            val savedToast = stringResource(Res.string.playlist_saved_toast)
 
             Column {
                 Row(
@@ -120,9 +122,9 @@ fun PlaylistBottomSheet(
                 ) {
                     Text(
                         if (songs.size > 1) {
-                            stringResource(R.string.playlist_picker_add_songs_title, songs.size)
+                            stringResource(Res.string.playlist_picker_add_songs_title, songs.size)
                         } else {
-                            stringResource(R.string.playlist_picker_select_playlists)
+                            stringResource(Res.string.playlist_picker_select_playlists)
                         },
                         style = MaterialTheme.typography.displaySmall,
                         fontFamily = RoundedSans
@@ -141,7 +143,7 @@ fun PlaylistBottomSheet(
                         focusedSupportingTextColor = Color.Transparent,
                     ),
                     onValueChange = { searchQuery = it },
-                    label = { Text(stringResource(R.string.search_playlists_hint)) },
+                    label = { Text(stringResource(Res.string.search_playlists_hint)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -239,7 +241,7 @@ fun PlaylistBottomSheet(
                     playerViewModel.sendToast(if (songs.size > 1) songsAddedToast else savedToast)
                     playerViewModel.multiSelectionStateHolder.clearSelection()
                 },
-                icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_save_filled_24), stringResource(R.string.action_save)) },
+                icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_save_filled_24), stringResource(Res.string.action_save)) },
                 text = { Text(stringResource(if (songs.size > 1) R.string.song_picker_action_add else R.string.action_save)) },
             )
         }

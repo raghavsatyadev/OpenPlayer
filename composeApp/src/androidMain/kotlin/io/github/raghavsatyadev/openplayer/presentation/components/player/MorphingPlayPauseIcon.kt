@@ -13,7 +13,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.drawscope.scale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
@@ -21,7 +20,8 @@ import androidx.graphics.shapes.CornerRounding
 import androidx.graphics.shapes.Morph
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private val ICON_CORNER = CornerRounding(radius = 0.07f)
 private val SEAM_CORNER = CornerRounding.Unrounded
@@ -74,9 +74,9 @@ fun MorphingPlayPauseIcon(
     val rightPath = remember { rightAndroidPath.asComposePath() }
     val glyphPath = remember { androidx.compose.ui.graphics.Path() }
     val contentDesc = if (isPlaying) {
-        stringResource(R.string.cd_pause)
+        stringResource(Res.string.cd_pause)
     } else {
-        stringResource(R.string.cd_play)
+        stringResource(Res.string.cd_play)
     }
 
     Canvas(

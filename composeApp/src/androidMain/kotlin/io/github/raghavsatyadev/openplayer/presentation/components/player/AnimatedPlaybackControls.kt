@@ -32,7 +32,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -41,6 +40,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.LocalMaterial
 import kotlinx.coroutines.delay
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlin.math.roundToInt
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private enum class PlaybackButtonType { NONE, PREVIOUS, PLAY_PAUSE, NEXT }
 
@@ -162,7 +163,7 @@ fun AnimatedPlaybackControls(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_skip_previous_filled_24),
-                    contentDescription = stringResource(R.string.previous_track),
+                    contentDescription = stringResource(Res.string.previous_track),
                     tint = tintPreviousIcon,
                     modifier = Modifier.size(iconSize)
                 )
@@ -221,7 +222,7 @@ fun AnimatedPlaybackControls(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_skip_next_filled_24),
-                    contentDescription = stringResource(R.string.next_track),
+                    contentDescription = stringResource(Res.string.next_track),
                     tint = tintNextIcon,
                     modifier = Modifier.size(iconSize)
                 )

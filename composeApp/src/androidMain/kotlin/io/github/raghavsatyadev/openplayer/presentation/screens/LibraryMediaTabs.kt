@@ -38,7 +38,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -49,7 +48,6 @@ import androidx.paging.compose.LazyPagingItems
 import coil3.imageLoader
 import coil3.request.ImageRequest
 import coil3.size.Size
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Album
 import io.github.raghavsatyadev.openplayer.data.model.Artist
 import io.github.raghavsatyadev.openplayer.data.model.LibraryTabId
@@ -76,6 +74,8 @@ import io.github.raghavsatyadev.openplayer.presentation.utils.SegmentedItemShape
 import io.github.raghavsatyadev.openplayer.presentation.utils.getSegmentedGridItemShape
 import io.github.raghavsatyadev.openplayer.presentation.utils.getSegmentedItemShape
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private val EmptyColorSchemePairFlow: StateFlow<ColorSchemePair?> = MutableStateFlow(null)
 
@@ -208,15 +208,15 @@ fun LibraryAlbumsTab(
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(R.string.library_error_loading_albums), style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(Res.string.library_error_loading_albums), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        error.localizedMessage ?: stringResource(R.string.error_unknown),
+                        error.localizedMessage ?: stringResource(Res.string.error_unknown),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Button(onClick = { albums.retry() }) {
-                        Text(stringResource(R.string.library_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(stringResource(Res.string.library_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }
@@ -504,15 +504,15 @@ fun LibraryArtistsTab(
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(R.string.library_error_loading_artists), style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(Res.string.library_error_loading_artists), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        error.localizedMessage ?: stringResource(R.string.error_unknown),
+                        error.localizedMessage ?: stringResource(Res.string.error_unknown),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Button(onClick = { artists.retry() }) {
-                        Text(stringResource(R.string.library_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(stringResource(Res.string.library_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }

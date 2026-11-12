@@ -202,6 +202,9 @@ bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref 
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
 jdom2 = { module = "org.jdom:jdom2", version.ref = "jdom2" }
 jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
+jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
+jetbrains-compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
 apache-httpclient = { module = "org.apache.httpcomponents:httpclient", version.ref = "httpclient" }
 
 

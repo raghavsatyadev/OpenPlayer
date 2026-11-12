@@ -22,13 +22,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.worker.SyncProgress
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlin.math.roundToInt
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * A professional progress indicator for library synchronization.
@@ -74,7 +74,7 @@ fun SyncProgressBar(
                 )
 
                 Text(
-                    text = stringResource(R.string.presentation_batch_g_sync_percent, percentage),
+                    text = stringResource(Res.string.presentation_batch_g_sync_percent, percentage),
                     style = MaterialTheme.typography.titleMedium,
                     fontFamily = RoundedSans,
                     fontWeight = FontWeight.Bold,
@@ -100,9 +100,9 @@ fun SyncProgressBar(
             ) {
                 Text(
                     text = if (totalCount > 0) {
-                        stringResource(R.string.sync_files_progress, currentCount, totalCount)
+                        stringResource(Res.string.sync_files_progress, currentCount, totalCount)
                     } else {
-                        stringResource(R.string.sync_scanning)
+                        stringResource(Res.string.sync_scanning)
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -115,7 +115,7 @@ fun SyncProgressBar(
                     )
                 } else if (syncProgress.isCompleted) {
                     Text(
-                        text = stringResource(R.string.sync_complete),
+                        text = stringResource(Res.string.sync_complete),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.tertiary
@@ -130,7 +130,7 @@ fun SyncProgressBar(
                     horizontalArrangement = Arrangement.End
                 ) {
                     Text(
-                        text = stringResource(R.string.cancel),
+                        text = stringResource(Res.string.cancel),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.padding(4.dp)
@@ -144,15 +144,15 @@ fun SyncProgressBar(
 @Composable
 private fun getPhaseText(syncProgress: SyncProgress): String {
     return when {
-        syncProgress.isCompleted -> stringResource(R.string.sync_complete)
+        syncProgress.isCompleted -> stringResource(Res.string.sync_complete)
         syncProgress.isRunning -> {
             when {
-                syncProgress.totalCount == 0 -> stringResource(R.string.sync_scanning)
-                syncProgress.hasProgress -> stringResource(R.string.sync_processing)
-                else -> stringResource(R.string.sync_in_progress)
+                syncProgress.totalCount == 0 -> stringResource(Res.string.sync_scanning)
+                syncProgress.hasProgress -> stringResource(Res.string.sync_processing)
+                else -> stringResource(Res.string.sync_in_progress)
             }
         }
-        else -> stringResource(R.string.sync_pending)
+        else -> stringResource(Res.string.sync_pending)
     }
 }
 
@@ -185,7 +185,7 @@ fun CompactSyncProgressIndicator(
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = stringResource(R.string.presentation_batch_g_sync_percent, (animatedProgress * 100).roundToInt()),
+            text = stringResource(Res.string.presentation_batch_g_sync_percent, (animatedProgress * 100).roundToInt()),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

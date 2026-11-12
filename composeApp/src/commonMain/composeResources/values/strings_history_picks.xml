@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_picks_time_of_day">Around this time</string>
+    <string name="history_picks_more_like">More like %1$s</string>
+    <string name="history_picks_lost_memories">Lost memories</string>
+    <string name="history_picks_play_all">Play all</string>
+    <string name="history_picks_mode_alongside">Played alongside</string>
+    <string name="history_picks_mode_time_range">Same time range</string>
+    <string name="history_picks_mode_discovered">Discovered together</string>
+    <string name="history_picks_mode_era">Same era</string>
+</resources>

@@ -31,7 +31,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -53,7 +52,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.LoadState
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.ExpressiveScrollBar
 import io.github.raghavsatyadev.openplayer.presentation.components.animatedScrollbarInset
 import io.github.raghavsatyadev.openplayer.ui.theme.LocalShowScrollbar
@@ -61,6 +59,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.songFastScrol
 import androidx.compose.ui.text.style.TextOverflow
 import io.github.raghavsatyadev.openplayer.presentation.utils.SegmentedItemShapeDefaults
 import io.github.raghavsatyadev.openplayer.presentation.utils.getSegmentedItemShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 
 @androidx.annotation.OptIn(UnstableApi::class)
@@ -211,15 +211,15 @@ fun LibrarySongsTab(
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(R.string.library_error_loading_songs), style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(Res.string.library_error_loading_songs), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        error.localizedMessage ?: stringResource(R.string.error_unknown),
+                        error.localizedMessage ?: stringResource(Res.string.error_unknown),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Button(onClick = { songs.retry() }) {
-                        Text(stringResource(R.string.library_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(stringResource(Res.string.library_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }

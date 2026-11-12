@@ -54,10 +54,11 @@ import io.github.raghavsatyadev.openplayer.presentation.utils.performAppCompatHa
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlin.math.roundToInt
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 val predefinedTimes = listOf(0, 5, 10, 15, 20, 30, 45, 60)
 
@@ -136,7 +137,7 @@ fun TimerOptionsBottomSheet(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    text = stringResource(R.string.sleep_timer_ui_title),
+                    text = stringResource(Res.string.sleep_timer_ui_title),
                     fontFamily = RoundedSans,
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary
@@ -151,9 +152,9 @@ fun TimerOptionsBottomSheet(
                     timerSliderPosition.roundToInt().coerceIn(0, predefinedTimes.size - 1)
                 val currentMinutes = predefinedTimes[currentIndex]
                 val timerDisplayText = if (currentMinutes == 0) {
-                    stringResource(R.string.sleep_timer_ui_slider_label_timer)
+                    stringResource(Res.string.sleep_timer_ui_slider_label_timer)
                 } else {
-                    stringResource(R.string.sleep_timer_n_minutes_format, currentMinutes)
+                    stringResource(Res.string.sleep_timer_n_minutes_format, currentMinutes)
                 }
                 Text(
                     text = timerDisplayText,
@@ -243,15 +244,14 @@ fun TimerOptionsBottomSheet(
 
                 val currentPlayCount = counterSliderPosition.toInt()
                 val timesPart = if (currentPlayCount == 1) {
-                    stringResource(R.string.sleep_timer_ui_play_count_one_time)
+                    stringResource(Res.string.sleep_timer_ui_play_count_one_time)
                 } else {
-                    pluralStringResource(
-                        R.plurals.sleep_timer_play_count_times,
+                    pluralStringResource(Res.plurals.sleep_timer_play_count_times,
                         currentPlayCount,
                         currentPlayCount
                     )
                 }
-                val counterDisplayText = stringResource(R.string.sleep_timer_ui_play_count_label, timesPart)
+                val counterDisplayText = stringResource(Res.string.sleep_timer_ui_play_count_label, timesPart)
                 Text(
                     text = counterDisplayText,
                     style = MaterialTheme.typography.labelMedium,
@@ -344,7 +344,7 @@ fun TimerOptionsBottomSheet(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(R.string.sleep_timer_ui_end_of_current_track),
+                        text = stringResource(Res.string.sleep_timer_ui_end_of_current_track),
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 8.dp),
@@ -371,7 +371,7 @@ fun TimerOptionsBottomSheet(
                             {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
-                                    contentDescription = stringResource(R.string.cd_switch_on),
+                                    contentDescription = stringResource(Res.string.cd_switch_on),
                                     tint = MaterialTheme.colorScheme.tertiaryContainer,
                                     modifier = Modifier.size(SwitchDefaults.IconSize),
                                 )
@@ -406,7 +406,7 @@ fun TimerOptionsBottomSheet(
                         .weight(1f)
                         .height(buttonHeight)
                 ) {
-                    Text(stringResource(R.string.sleep_timer_ui_custom_time))
+                    Text(stringResource(Res.string.sleep_timer_ui_custom_time))
                 }
                 Button(
                     onClick = {
@@ -429,7 +429,7 @@ fun TimerOptionsBottomSheet(
                         .weight(1f)
                         .height(buttonHeight)
                 ) {
-                    Text(stringResource(R.string.sleep_timer_ui_cancel_timer))
+                    Text(stringResource(Res.string.sleep_timer_ui_cancel_timer))
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -459,7 +459,7 @@ fun TimerOptionsBottomSheet(
                         onDismiss()
                     }
                 ) {
-                    Text(stringResource(R.string.ok))
+                    Text(stringResource(Res.string.ok))
                 }
             },
             dismissButton = {
@@ -468,12 +468,12 @@ fun TimerOptionsBottomSheet(
                         showCustomTimePicker = false
                     }
                 ) {
-                    Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         ) {
             Text(
-                text = stringResource(R.string.sleep_timer_ui_set_custom_duration),
+                text = stringResource(Res.string.sleep_timer_ui_set_custom_duration),
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(bottom = 20.dp)
             )

@@ -3,7 +3,6 @@ package io.github.raghavsatyadev.openplayer.presentation.components.player
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.clickable
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,6 +37,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.data.model.Lyrics
 import java.util.Locale
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private val BookmarkTitleWhitespaceRegex = Regex("\\s+")
 
@@ -55,7 +56,7 @@ fun AddBookmarkDialog(
         String.format(Locale.US, "%02d:%02d", minutes, seconds)
     }
 
-    val defaultTitle = stringResource(R.string.add_bookmark_default_name, formattedTime)
+    val defaultTitle = stringResource(Res.string.add_bookmark_default_name, formattedTime)
     val availableLyricTitle = remember(lyricTitle) { lyricTitle?.trim()?.takeIf { it.isNotBlank() } }
     var customTitle by remember(defaultTitle) { mutableStateOf(defaultTitle) }
     var useLyricTitle by remember(availableLyricTitle) { mutableStateOf(false) }
@@ -92,7 +93,7 @@ fun AddBookmarkDialog(
         },
         title = {
             Text(
-                text = stringResource(R.string.add_bookmark_title),
+                text = stringResource(Res.string.add_bookmark_title),
                 style = MaterialTheme.typography.titleLarge
             )
         },
@@ -124,7 +125,7 @@ fun AddBookmarkDialog(
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                             Text(
-                                text = stringResource(R.string.add_bookmark_saved_point),
+                                text = stringResource(Res.string.add_bookmark_saved_point),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.72f)
                             )
@@ -154,7 +155,7 @@ fun AddBookmarkDialog(
                                 verticalArrangement = Arrangement.spacedBy(3.dp)
                             ) {
                                 Text(
-                                    text = stringResource(R.string.add_bookmark_use_lyric_line),
+                                    text = stringResource(Res.string.add_bookmark_use_lyric_line),
                                     style = MaterialTheme.typography.labelLarge,
                                     color = if (useLyricTitle) {
                                         MaterialTheme.colorScheme.onPrimaryContainer
@@ -228,14 +229,14 @@ fun AddBookmarkDialog(
                 enabled = resolvedTitle.isNotBlank(),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(stringResource(R.string.action_save))
+                Text(stringResource(Res.string.action_save))
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onDismiss
             ) {
-                Text(stringResource(R.string.cancel))
+                Text(stringResource(Res.string.cancel))
             }
         },
         shape = RoundedCornerShape(32.dp),

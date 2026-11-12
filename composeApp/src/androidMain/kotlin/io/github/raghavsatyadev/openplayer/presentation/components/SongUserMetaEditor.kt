@@ -32,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
@@ -41,6 +40,8 @@ import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.SongUserMeta
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SongUserMetaViewModel
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * The song options sheet entry: a button that shows the song's rating and opens
@@ -67,7 +68,7 @@ fun SongUserMetaEntryButton(
         )
         Spacer(Modifier.size(10.dp))
         Column(horizontalAlignment = Alignment.Start) {
-            Text(stringResource(R.string.user_meta_entry_title))
+            Text(stringResource(Res.string.user_meta_entry_title))
             val summary = summaryText(meta)
             if (summary != null) {
                 Text(
@@ -101,9 +102,9 @@ private fun produceSuggestions(load: suspend () -> List<String>) =
 private fun summaryText(meta: SongUserMeta?): String? {
     if (meta == null || meta.isEmpty) return null
     val parts = buildList {
-        if (meta.rating > 0) add(stringResource(R.string.user_meta_rating_value, meta.rating))
-        if (meta.moods.isNotEmpty()) add(stringResource(R.string.user_meta_summary_moods, meta.moods.size))
-        if (meta.tags.isNotEmpty()) add(stringResource(R.string.user_meta_summary_tags, meta.tags.size))
+        if (meta.rating > 0) add(stringResource(Res.string.user_meta_rating_value, meta.rating))
+        if (meta.moods.isNotEmpty()) add(stringResource(Res.string.user_meta_summary_moods, meta.moods.size))
+        if (meta.tags.isNotEmpty()) add(stringResource(Res.string.user_meta_summary_tags, meta.tags.size))
     }
     return parts.joinToString(" - ")
 }
@@ -162,7 +163,7 @@ fun SongUserMetaEditorContent(
     ) {
         Column {
             Text(
-                text = stringResource(R.string.user_meta_editor_title),
+                text = stringResource(Res.string.user_meta_editor_title),
                 style = MaterialTheme.typography.titleLarge
             )
             Text(
@@ -175,16 +176,16 @@ fun SongUserMetaEditorContent(
 
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
-                text = stringResource(R.string.user_meta_rating),
+                text = stringResource(Res.string.user_meta_rating),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.primary
             )
             StarRatingRow(rating = rating, onRatingChange = { rating = it })
             Text(
                 text = if (rating == 0) {
-                    stringResource(R.string.user_meta_rating_none)
+                    stringResource(Res.string.user_meta_rating_none)
                 } else {
-                    stringResource(R.string.user_meta_rating_value, rating)
+                    stringResource(Res.string.user_meta_rating_value, rating)
                 },
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -192,15 +193,15 @@ fun SongUserMetaEditorContent(
         }
 
         ChipInputField(
-            label = stringResource(R.string.user_meta_moods),
-            hint = stringResource(R.string.user_meta_add_mood_hint),
+            label = stringResource(Res.string.user_meta_moods),
+            hint = stringResource(Res.string.user_meta_add_mood_hint),
             values = moods,
             suggestions = moodSuggestions,
             onValuesChange = { moods = it }
         )
         ChipInputField(
-            label = stringResource(R.string.user_meta_tags),
-            hint = stringResource(R.string.user_meta_add_tag_hint),
+            label = stringResource(Res.string.user_meta_tags),
+            hint = stringResource(Res.string.user_meta_add_tag_hint),
             values = tags,
             suggestions = tagSuggestions,
             onValuesChange = { tags = it }
@@ -210,10 +211,10 @@ fun SongUserMetaEditorContent(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
         ) {
-            TextButton(onClick = onCancel) { Text(stringResource(R.string.user_meta_cancel)) }
+            TextButton(onClick = onCancel) { Text(stringResource(Res.string.user_meta_cancel)) }
             FilledTonalButton(
                 onClick = { onSave(SongUserMeta(initial.songId, rating, moods, tags)) }
-            ) { Text(stringResource(R.string.user_meta_save)) }
+            ) { Text(stringResource(Res.string.user_meta_save)) }
         }
     }
 }
@@ -241,7 +242,7 @@ fun StarRatingRow(
                 imageVector = ImageVector.vectorResource(
                     if (filled) R.drawable.rounded_star_filled_24 else R.drawable.rounded_star_24
                 ),
-                contentDescription = stringResource(R.string.user_meta_cd_star, star),
+                contentDescription = stringResource(Res.string.user_meta_cd_star, star),
                 tint = tint,
                 modifier = Modifier
                     .size(44.dp)

@@ -53,6 +53,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.Sine
 import io.github.raghavsatyadev.openplayer.ui.theme.ExpTitleTypography
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -125,8 +127,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                             verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Text(
-                                text = stringResource(
-                                    R.string.presentation_batch_g_beta_sheet_welcome_title,
+                                text = stringResource(Res.string.presentation_batch_g_beta_sheet_welcome_title,
                                     AppBuildInfo.versionName
                                 ),
                                 style = MaterialTheme.typography.titleMedium,
@@ -158,8 +159,8 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
             if (AppBuildInfo.buildType != "release") {
                 item(key = "section-expect") {
                     BetaFaqSection(
-                        title = stringResource(R.string.presentation_batch_g_beta_sheet_expect_title),
-                        summary = stringResource(R.string.presentation_batch_g_beta_sheet_expect_summary),
+                        title = stringResource(Res.string.presentation_batch_g_beta_sheet_expect_title),
+                        summary = stringResource(Res.string.presentation_batch_g_beta_sheet_expect_summary),
                         icon = ImageVector.vectorResource(R.drawable.rounded_whatshot_filled_24),
                         iconTint = MaterialTheme.colorScheme.primary,
                         initiallyExpanded = true
@@ -178,14 +179,14 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
 
             item(key = "section-reporting") {
                 BetaFaqSection(
-                    title = stringResource(R.string.presentation_batch_g_beta_sheet_report_title),
-                    summary = stringResource(R.string.presentation_batch_g_beta_sheet_report_summary),
+                    title = stringResource(Res.string.presentation_batch_g_beta_sheet_report_title),
+                    summary = stringResource(Res.string.presentation_batch_g_beta_sheet_report_summary),
                     icon = ImageVector.vectorResource(R.drawable.rounded_search_24),
                     iconTint = MaterialTheme.colorScheme.secondary
                 ) {
                     BetaSubsectionHeader(
                         icon = ImageVector.vectorResource(R.drawable.rounded_search_24),
-                        title = stringResource(R.string.presentation_batch_g_beta_sheet_before_title)
+                        title = stringResource(Res.string.presentation_batch_g_beta_sheet_before_title)
                     )
                     BetaBulletList(
                         items = listOf(
@@ -198,7 +199,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     BetaSectionDivider()
                     BetaSubsectionHeader(
                         icon = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
-                        title = stringResource(R.string.presentation_batch_g_beta_sheet_issue_type_title)
+                        title = stringResource(Res.string.presentation_batch_g_beta_sheet_issue_type_title)
                     )
                     BetaBulletList(
                         items = listOf(
@@ -212,15 +213,15 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
 
             item(key = "section-bug-report") {
                 BetaFaqSection(
-                    title = stringResource(R.string.presentation_batch_g_beta_sheet_bug_title),
-                    summary = stringResource(R.string.presentation_batch_g_beta_sheet_bug_summary_text),
+                    title = stringResource(Res.string.presentation_batch_g_beta_sheet_bug_title),
+                    summary = stringResource(Res.string.presentation_batch_g_beta_sheet_bug_summary_text),
                     icon = ImageVector.vectorResource(R.drawable.rounded_bug_report_filled_24),
                     iconTint = MaterialTheme.colorScheme.error,
                     containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
                 ) {
                     BetaSubsectionHeader(
                         icon = ImageVector.vectorResource(R.drawable.rounded_bug_report_filled_24),
-                        title = stringResource(R.string.presentation_batch_g_beta_sheet_bug_template_title)
+                        title = stringResource(Res.string.presentation_batch_g_beta_sheet_bug_template_title)
                     )
                     BetaFieldList(
                         items = listOf(
@@ -236,7 +237,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     BetaSectionDivider()
                     BetaSubsectionHeader(
                         icon = ImageVector.vectorResource(R.drawable.rounded_info_filled_24),
-                        title = stringResource(R.string.presentation_batch_g_beta_sheet_env_title)
+                        title = stringResource(Res.string.presentation_batch_g_beta_sheet_env_title)
                     )
                     BetaFieldList(
                         items = listOf(
@@ -252,8 +253,8 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
 
             item(key = "section-feature") {
                 BetaFaqSection(
-                    title = stringResource(R.string.presentation_batch_g_beta_sheet_feature_title),
-                    summary = stringResource(R.string.presentation_batch_g_beta_sheet_feature_summary),
+                    title = stringResource(Res.string.presentation_batch_g_beta_sheet_feature_title),
+                    summary = stringResource(Res.string.presentation_batch_g_beta_sheet_feature_summary),
                     icon = ImageVector.vectorResource(R.drawable.rounded_highlight_filled_24),
                     iconTint = MaterialTheme.colorScheme.primary
                 ) {
@@ -271,15 +272,15 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
 
             item(key = "section-quality") {
                 BetaFaqSection(
-                    title = stringResource(R.string.presentation_batch_g_beta_sheet_quality_title),
-                    summary = stringResource(R.string.presentation_batch_g_beta_sheet_quality_summary),
+                    title = stringResource(Res.string.presentation_batch_g_beta_sheet_quality_title),
+                    summary = stringResource(Res.string.presentation_batch_g_beta_sheet_quality_summary),
                     icon = ImageVector.vectorResource(R.drawable.rounded_gavel_24),
                     iconTint = MaterialTheme.colorScheme.tertiary,
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.45f)
                 ) {
                     BetaSubsectionHeader(
                         icon = ImageVector.vectorResource(R.drawable.rounded_gavel_24),
-                        title = stringResource(R.string.presentation_batch_g_beta_sheet_title_examples_title)
+                        title = stringResource(Res.string.presentation_batch_g_beta_sheet_title_examples_title)
                     )
                     BetaBulletList(
                         items = listOf(
@@ -291,7 +292,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     BetaSectionDivider()
                     BetaSubsectionHeader(
                         icon = ImageVector.vectorResource(R.drawable.rounded_warning_filled_24),
-                        title = stringResource(R.string.presentation_batch_g_beta_sheet_avoid_title),
+                        title = stringResource(Res.string.presentation_batch_g_beta_sheet_avoid_title),
                         tint = MaterialTheme.colorScheme.error
                     )
                     BetaBulletList(
@@ -304,10 +305,10 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     BetaSectionDivider()
                     BetaSubsectionHeader(
                         icon = ImageVector.vectorResource(R.drawable.rounded_shield_filled_24),
-                        title = stringResource(R.string.presentation_batch_g_beta_sheet_privacy_title)
+                        title = stringResource(Res.string.presentation_batch_g_beta_sheet_privacy_title)
                     )
                     Text(
-                        text = stringResource(R.string.presentation_batch_g_beta_sheet_privacy_body),
+                        text = stringResource(Res.string.presentation_batch_g_beta_sheet_privacy_body),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -316,33 +317,33 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
 
             item(key = "section-nightly") {
                 BetaFaqSection(
-                    title = stringResource(R.string.presentation_batch_g_beta_sheet_nightly_title),
-                    summary = stringResource(R.string.presentation_batch_g_beta_sheet_nightly_summary),
+                    title = stringResource(Res.string.presentation_batch_g_beta_sheet_nightly_title),
+                    summary = stringResource(Res.string.presentation_batch_g_beta_sheet_nightly_summary),
                     icon = ImageVector.vectorResource(R.drawable.rounded_nights_stay_filled_24),
                     iconTint = MaterialTheme.colorScheme.secondary,
                     containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.42f)
                 ) {
                     BetaSubsectionHeader(
                         icon = ImageVector.vectorResource(R.drawable.rounded_nights_stay_filled_24),
-                        title = stringResource(R.string.presentation_batch_g_beta_sheet_nightly_title)
+                        title = stringResource(Res.string.presentation_batch_g_beta_sheet_nightly_title)
                     )
                     Text(
-                        text = stringResource(R.string.presentation_batch_g_beta_sheet_nightly_body),
+                        text = stringResource(Res.string.presentation_batch_g_beta_sheet_nightly_body),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = stringResource(R.string.presentation_batch_g_beta_sheet_nightly_access),
+                        text = stringResource(Res.string.presentation_batch_g_beta_sheet_nightly_access),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     BetaSectionDivider()
                     BetaSubsectionHeader(
                         icon = ImageVector.vectorResource(R.drawable.rounded_cloud_filled_24),
-                        title = stringResource(R.string.presentation_batch_g_beta_sheet_nightly_report_title)
+                        title = stringResource(Res.string.presentation_batch_g_beta_sheet_nightly_report_title)
                     )
                     Text(
-                        text = stringResource(R.string.presentation_batch_g_beta_sheet_nightly_report_body),
+                        text = stringResource(Res.string.presentation_batch_g_beta_sheet_nightly_report_body),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -374,7 +375,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                 )
             },
             text = {
-                Text(text = stringResource(R.string.presentation_batch_g_beta_sheet_report_bug))
+                Text(text = stringResource(Res.string.presentation_batch_g_beta_sheet_report_bug))
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -430,13 +431,13 @@ private fun GitHubReportCard(
                 }
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text(
-                        text = stringResource(R.string.presentation_batch_g_beta_sheet_github_title),
+                        text = stringResource(Res.string.presentation_batch_g_beta_sheet_github_title),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                     Text(
-                        text = stringResource(R.string.presentation_batch_g_beta_sheet_github_body),
+                        text = stringResource(Res.string.presentation_batch_g_beta_sheet_github_body),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.82f)
                     )
@@ -462,7 +463,7 @@ private fun GitHubReportCard(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                     )
                 ) {
-                    Text(text = stringResource(R.string.presentation_batch_g_beta_sheet_open_issues))
+                    Text(text = stringResource(Res.string.presentation_batch_g_beta_sheet_open_issues))
                 }
                 Button(
                     onClick = onReportIssue,
@@ -478,7 +479,7 @@ private fun GitHubReportCard(
                         smoothnessAsPercentBR = 60
                     )
                 ) {
-                    Text(text = stringResource(R.string.presentation_batch_g_beta_sheet_report_bug))
+                    Text(text = stringResource(Res.string.presentation_batch_g_beta_sheet_report_bug))
                 }
             }
         }

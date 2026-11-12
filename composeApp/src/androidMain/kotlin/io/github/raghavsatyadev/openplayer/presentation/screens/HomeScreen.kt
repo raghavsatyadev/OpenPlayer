@@ -122,8 +122,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import io.github.raghavsatyadev.openplayer.ui.theme.ShapeCache
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private const val HomeLoadingPlaceholderMinDurationMillis = 1200L
 private const val HomeScrollRestoreGraceMillis = 1_500L
@@ -233,9 +234,9 @@ fun HomeScreen(
         yourMixSongs.isNotEmpty() || hasHomeLoadingMinimumElapsed || isBenchmarkMode
     }
 
-    val yourMixSubtitle = stringResource(R.string.home_your_mix_subtitle)
-    val yourMixQueueName = stringResource(R.string.home_your_mix_queue_name)
-    val recentlyPlayedQueueName = stringResource(R.string.presentation_batch_b_queue_recently_played)
+    val yourMixSubtitle = stringResource(Res.string.home_your_mix_subtitle)
+    val yourMixQueueName = stringResource(Res.string.home_your_mix_queue_name)
+    val recentlyPlayedQueueName = stringResource(Res.string.presentation_batch_b_queue_recently_played)
 
     // Seed with the live value: starting from null made the bottom padding grow one frame
     // after returning to Home, once the scroll position was already restored, which left the
@@ -714,13 +715,13 @@ private fun YourMixEmptyPlaceholder(
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.home_empty_placeholder_title),
+                    text = stringResource(Res.string.home_empty_placeholder_title),
                     style = MaterialTheme.typography.titleLarge,
                     color = colors.onSurface,
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    text = stringResource(R.string.home_empty_placeholder_subtitle),
+                    text = stringResource(Res.string.home_empty_placeholder_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = colors.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -747,7 +748,7 @@ private fun YourMixEmptyPlaceholder(
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = stringResource(R.string.home_empty_placeholder_refresh))
+                Text(text = stringResource(Res.string.home_empty_placeholder_refresh))
             }
         }
     }
@@ -777,7 +778,7 @@ fun YourMixHeader(
                 .padding(top = 48.dp, start = 12.dp)
         ) {
             Text(
-                text = stringResource(R.string.home_your_mix_title),
+                text = stringResource(Res.string.home_your_mix_title),
                 style = titleStyle,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
@@ -810,7 +811,7 @@ fun YourMixHeader(
         ) {
             Icon(
                 painter = painterResource(R.drawable.rounded_shuffle_24),
-                contentDescription = stringResource(R.string.cd_shuffle_play),
+                contentDescription = stringResource(Res.string.cd_shuffle_play),
                 modifier = Modifier.size(36.dp)
             )
         }
@@ -855,7 +856,7 @@ fun SongListItemFavs(
             ) {
                 SmartImage(
                     model = albumArtUrl,
-                    contentDescription = stringResource(R.string.cd_album_art_for_title, title),
+                    contentDescription = stringResource(Res.string.cd_album_art_for_title, title),
                     contentScale = ContentScale.Crop,
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier.size(48.dp)

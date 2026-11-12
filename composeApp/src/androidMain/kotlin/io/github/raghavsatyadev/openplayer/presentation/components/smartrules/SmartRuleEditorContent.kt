@@ -35,14 +35,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartMatchMode
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartSortField
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * The rule playlist editor with all its state passed in: name, match mode, condition rows
@@ -68,7 +69,7 @@ fun SmartRuleEditorContent(
                 OutlinedTextField(
                     value = state.name,
                     onValueChange = { onStateChange(state.copy(name = it)) },
-                    label = { Text(stringResource(R.string.smart_rules_name_label)) },
+                    label = { Text(stringResource(Res.string.smart_rules_name_label)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -79,25 +80,25 @@ fun SmartRuleEditorContent(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = stringResource(R.string.smart_rules_match_label),
+                        text = stringResource(Res.string.smart_rules_match_label),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     FilterChip(
                         selected = state.matchMode == SmartMatchMode.ALL,
                         onClick = { onStateChange(state.copy(matchMode = SmartMatchMode.ALL)) },
-                        label = { Text(stringResource(R.string.smart_rules_match_all)) },
+                        label = { Text(stringResource(Res.string.smart_rules_match_all)) },
                     )
                     FilterChip(
                         selected = state.matchMode == SmartMatchMode.ANY,
                         onClick = { onStateChange(state.copy(matchMode = SmartMatchMode.ANY)) },
-                        label = { Text(stringResource(R.string.smart_rules_match_any)) },
+                        label = { Text(stringResource(Res.string.smart_rules_match_any)) },
                     )
                 }
             }
             item(key = "conditionsHeader") {
                 Text(
-                    text = stringResource(R.string.smart_rules_conditions_label),
+                    text = stringResource(Res.string.smart_rules_conditions_label),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -105,7 +106,7 @@ fun SmartRuleEditorContent(
             if (state.conditions.isEmpty()) {
                 item(key = "noConditions") {
                     Text(
-                        text = stringResource(R.string.smart_rules_no_conditions),
+                        text = stringResource(Res.string.smart_rules_no_conditions),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.animateItem(),
@@ -128,7 +129,7 @@ fun SmartRuleEditorContent(
                 ) {
                     Icon(ImageVector.vectorResource(R.drawable.rounded_add_24), contentDescription = null)
                     Text(
-                        text = stringResource(R.string.smart_rules_add_condition),
+                        text = stringResource(Res.string.smart_rules_add_condition),
                         modifier = Modifier.padding(start = 8.dp),
                     )
                 }
@@ -152,7 +153,7 @@ private fun SortAndLimit(
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
-            text = stringResource(R.string.smart_rules_sort_label),
+            text = stringResource(Res.string.smart_rules_sort_label),
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -162,7 +163,7 @@ private fun SortAndLimit(
                 options = choices,
                 selected = state.sort?.field,
                 label = { field ->
-                    if (field == null) stringResource(R.string.smart_rules_sort_none) else smartSortFieldLabel(field)
+                    if (field == null) stringResource(Res.string.smart_rules_sort_none) else smartSortFieldLabel(field)
                 },
                 onSelect = { onStateChange(state.setSortField(it)) },
             )
@@ -175,7 +176,7 @@ private fun SortAndLimit(
                 IconButton(onClick = { onStateChange(state.toggleSortDirection()) }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_downward_24),
-                        contentDescription = stringResource(R.string.smart_rules_sort_direction),
+                        contentDescription = stringResource(Res.string.smart_rules_sort_direction),
                         modifier = Modifier.rotate(rotation),
                     )
                 }
@@ -184,8 +185,8 @@ private fun SortAndLimit(
         OutlinedTextField(
             value = state.limitText,
             onValueChange = { onStateChange(state.copy(limitText = it.filter(Char::isDigit).take(5))) },
-            label = { Text(stringResource(R.string.smart_rules_limit_label)) },
-            placeholder = { Text(stringResource(R.string.smart_rules_limit_hint)) },
+            label = { Text(stringResource(Res.string.smart_rules_limit_label)) },
+            placeholder = { Text(stringResource(Res.string.smart_rules_limit_hint)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.width(160.dp),
@@ -218,15 +219,15 @@ private fun PreviewBar(
             ) { count ->
                 Text(
                     text = if (count == null) {
-                        stringResource(R.string.smart_rules_preview_loading)
+                        stringResource(Res.string.smart_rules_preview_loading)
                     } else {
-                        pluralStringResource(R.plurals.smart_rules_preview_count, count, count)
+                        pluralStringResource(Res.plurals.smart_rules_preview_count, count, count)
                     },
                     style = MaterialTheme.typography.titleMedium,
                 )
             }
-            TextButton(onClick = onCancel) { Text(stringResource(R.string.smart_rules_cancel)) }
-            Button(onClick = onSave, enabled = canSave) { Text(stringResource(R.string.smart_rules_save)) }
+            TextButton(onClick = onCancel) { Text(stringResource(Res.string.smart_rules_cancel)) }
+            Button(onClick = onSave, enabled = canSave) { Text(stringResource(Res.string.smart_rules_save)) }
         }
     }
 }

@@ -44,6 +44,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private data class PlayerArtistShortcutItem(
     val artist: Artist,
@@ -86,8 +88,8 @@ internal fun PlayerArtistPickerBottomSheet(
     }
 
     val countLabel = when (shortcutItems.size) {
-        1 -> stringResource(R.string.artist_picker_count_single)
-        else -> stringResource(R.string.artist_picker_count_multiple, shortcutItems.size)
+        1 -> stringResource(Res.string.artist_picker_count_single)
+        else -> stringResource(Res.string.artist_picker_count_multiple, shortcutItems.size)
     }
 
     ModalBottomSheet(
@@ -109,7 +111,7 @@ internal fun PlayerArtistPickerBottomSheet(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = stringResource(R.string.artist_picker_title),
+                text = stringResource(Res.string.artist_picker_title),
                 style = MaterialTheme.typography.headlineMedium,
                 fontFamily = RoundedSans,
                 fontWeight = FontWeight.Bold,

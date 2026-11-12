@@ -52,7 +52,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.TextStyle
@@ -78,6 +77,9 @@ import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.Play
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.MixPreview
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlin.math.roundToInt
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private enum class MixComposerPage { Request, Refine, Preview }
 
@@ -133,9 +135,9 @@ fun MixComposerSheet(
     val colors = MaterialTheme.colorScheme
     val palette = neuralMixPalette()
     val motion = remember { MotionScheme.expressive() }
-    val requestLabel = stringResource(R.string.mix_request_label)
-    val actionLabel = stringResource(R.string.mix_preview_action)
-    val thinkingLabel = stringResource(R.string.mix_thinking)
+    val requestLabel = stringResource(Res.string.mix_request_label)
+    val actionLabel = stringResource(Res.string.mix_preview_action)
+    val thinkingLabel = stringResource(Res.string.mix_thinking)
     val keyboardVisible = WindowInsets.ime.getBottom(density) > 0
     val fieldColors = TextFieldDefaults.colors(
         focusedContainerColor = colors.surfaceContainerHighest,
@@ -170,7 +172,7 @@ fun MixComposerSheet(
     val navBottomDp = with(density) { navBottom.toDp() }
 
     val promptStyle = MaterialTheme.typography.titleMedium.copy(fontFamily = RoundedSans)
-    val placeholder = stringResource(R.string.mix_request_placeholder)
+    val placeholder = stringResource(Res.string.mix_request_placeholder)
     // Seeded from the window so the first frame already uses (almost) the fitted size.
     val windowWidth = LocalWindowInfo.current.containerSize.width
     var promptArea by remember(windowWidth) {
@@ -237,16 +239,16 @@ fun MixComposerSheet(
                 ) {
                     if (currentPage != MixComposerPage.Request) {
                         IconButton({ haptics.perform(MixHapticLevel.Light); back() }, enabled = !isSaving, modifier = Modifier.background(palette.panel, RoundedCornerShape(50))) {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), stringResource(R.string.mix_back), Modifier.size(22.dp))
+                            Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), stringResource(Res.string.mix_back), Modifier.size(22.dp))
                         }
                     } else NeuralMixEmblem()
                     Text(
-                        if (currentPage == MixComposerPage.Refine) stringResource(R.string.mix_refine) else composerTitle,
+                        if (currentPage == MixComposerPage.Refine) stringResource(Res.string.mix_refine) else composerTitle,
                         Modifier.weight(1f).semantics { heading() }, style = MaterialTheme.typography.titleMedium,
                         fontFamily = RoundedSans, fontWeight = FontWeight.Medium,
                     )
                     IconButton(close, enabled = !isSaving, modifier = Modifier.background(palette.panel, RoundedCornerShape(50))) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), stringResource(R.string.mix_close), Modifier.size(22.dp))
+                        Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), stringResource(Res.string.mix_close), Modifier.size(22.dp))
                     }
                 }
 
@@ -339,10 +341,10 @@ fun MixComposerSheet(
                                 fontFamily = RoundedSans, modifier = Modifier.padding(vertical = 8.dp))
                             Surface(color = colors.surfaceContainer, shape = RoundedCornerShape(22.dp)) {
                                 Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Text(stringResource(R.string.mix_length), style = MaterialTheme.typography.titleMedium)
+                                    Text(stringResource(Res.string.mix_length), style = MaterialTheme.typography.titleMedium)
                                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                         listOf(null, 15, 25, 50).forEach { count ->
-                                            NeuralMixChoice(if (count == null) stringResource(R.string.mix_auto) else stringResource(R.string.mix_up_to, count),
+                                            NeuralMixChoice(if (count == null) stringResource(Res.string.mix_auto) else stringResource(Res.string.mix_up_to, count),
                                                 selectedCount == count, true, onClick = { haptics.perform(MixHapticLevel.Tick); selectedCount = count; onClearError() })
                                         }
                                     }
@@ -350,7 +352,7 @@ fun MixComposerSheet(
                             }
                             Surface(color = colors.surfaceContainer, shape = RoundedCornerShape(22.dp)) {
                                 Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Text(stringResource(R.string.mix_energy), style = MaterialTheme.typography.titleMedium)
+                                    Text(stringResource(Res.string.mix_energy), style = MaterialTheme.typography.titleMedium)
                                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                         listOf(null to R.string.mix_auto, 85 to R.string.mix_energy_calm, 120 to R.string.mix_energy_steady, 165 to R.string.mix_energy_energetic).forEach { (bpm, label) ->
                                             NeuralMixChoice(stringResource(label), selectedEnergy == bpm, true,
@@ -359,10 +361,10 @@ fun MixComposerSheet(
                                     }
                                 }
                             }
-                            Text(stringResource(R.string.mix_refine_hint), style = MaterialTheme.typography.bodyMedium, color = colors.onSurfaceVariant)
+                            Text(stringResource(Res.string.mix_refine_hint), style = MaterialTheme.typography.bodyMedium, color = colors.onSurfaceVariant)
                         }
                         NeuralMixButton({ haptics.perform(MixHapticLevel.Light); back() }, modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp)) {
-                            Text(stringResource(R.string.mix_done), fontFamily = RoundedSans)
+                            Text(stringResource(Res.string.mix_done), fontFamily = RoundedSans)
                         }
                     }
                     MixComposerPage.Preview -> {
@@ -454,11 +456,11 @@ private class SlackAroundFirst(
 @Composable
 private fun MixRefineRow(selectedCount: Int?, selectedEnergy: Int?, enabled: Boolean, onClick: () -> Unit) {
     val colors = MaterialTheme.colorScheme
-    val length = selectedCount?.let { stringResource(R.string.mix_up_to, it) } ?: stringResource(R.string.mix_auto)
+    val length = selectedCount?.let { stringResource(Res.string.mix_up_to, it) } ?: stringResource(Res.string.mix_auto)
     val energy = stringResource(when (selectedEnergy) {
         85 -> R.string.mix_energy_calm; 120 -> R.string.mix_energy_steady; 165 -> R.string.mix_energy_energetic; else -> R.string.mix_auto
     })
-    val summary = stringResource(R.string.mix_selection_summary, length, energy)
+    val summary = stringResource(Res.string.mix_selection_summary, length, energy)
     // Anchored to the card's lower-left corner with the same 20 dp inset as the sides.
     Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp).clip(RoundedCornerShape(28.dp))
         .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
@@ -470,7 +472,7 @@ private fun MixRefineRow(selectedCount: Int?, selectedEnergy: Int?, enabled: Boo
             Icon(ImageVector.vectorResource(R.drawable.rounded_tune_24), null, Modifier.size(22.dp), tint = colors.onTertiaryContainer)
         }
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(stringResource(R.string.mix_refine), style = MaterialTheme.typography.titleSmall,
+            Text(stringResource(Res.string.mix_refine), style = MaterialTheme.typography.titleSmall,
                 fontFamily = RoundedSans, fontWeight = FontWeight.Medium, color = colors.onSurface,
                 maxLines = 1, overflow = TextOverflow.Ellipsis)
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -512,20 +514,20 @@ private fun MixPreviewList(
                     fontFamily = RoundedSans, fontWeight = FontWeight.Medium)
                 val minutes = (preview.songs.sumOf { it.duration } / 60_000L).toInt()
                 Surface(color = colors.tertiaryContainer, contentColor = colors.onTertiaryContainer, shape = RoundedCornerShape(16.dp)) {
-                    Text(pluralStringResource(R.plurals.mix_matching_songs, preview.songs.size, preview.songs.size, minutes),
+                    Text(pluralStringResource(Res.plurals.mix_matching_songs, preview.songs.size, preview.songs.size, minutes),
                         Modifier.padding(horizontal = 16.dp, vertical = 10.dp), style = MaterialTheme.typography.labelLarge)
                 }
                 if (preview.requestedCount != null && preview.songs.size < preview.requestedCount) {
-                    Text(stringResource(R.string.mix_short_result), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
+                    Text(stringResource(Res.string.mix_short_result), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
                 }
                 if (!isDailyMix && preview.savedName == null) {
                     TextField(playlistName, onValueChange = onNameChange,
-                        modifier = Modifier.fillMaxWidth(), label = { Text(stringResource(R.string.mix_playlist_name)) },
+                        modifier = Modifier.fillMaxWidth(), label = { Text(stringResource(Res.string.mix_playlist_name)) },
                         shape = RoundedCornerShape(28.dp), colors = fieldColors, singleLine = true, enabled = !isSaving,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(onDone = { onNameDone() }))
                 }
-                preview.savedName?.let { Text(stringResource(R.string.mix_saved, it), style = MaterialTheme.typography.bodyMedium, color = colors.primary) }
+                preview.savedName?.let { Text(stringResource(Res.string.mix_saved, it), style = MaterialTheme.typography.bodyMedium, color = colors.primary) }
                 error?.let { MixError(it) }
                 Spacer(Modifier.height(4.dp))
             }
@@ -585,7 +587,7 @@ private fun MixPreviewActionBar(
                         disabledContainerColor = colors.onSecondaryContainer.copy(alpha = .06f),
                         disabledContentColor = colors.onSecondaryContainer.copy(alpha = .38f),
                     )) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_edit_filled_24), stringResource(R.string.mix_edit_request), Modifier.size(22.dp))
+                    Icon(ImageVector.vectorResource(R.drawable.rounded_edit_filled_24), stringResource(Res.string.mix_edit_request), Modifier.size(22.dp))
                 }
                 Button(onSave, enabled = saveEnabled, modifier = Modifier.weight(1f).fillMaxHeight(),
                     shape = CircleShape,

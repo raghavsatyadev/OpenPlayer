@@ -63,6 +63,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHei
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.UpdatesUiState
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.UpdatesViewModel
 import co.touchlab.kermit.Logger
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun UpdatesScreen(
@@ -79,7 +81,7 @@ fun UpdatesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(R.string.updates_title), fontWeight = FontWeight.Bold) },
+                title = { Text(text = stringResource(Res.string.updates_title), fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     FilledTonalIconButton(
                         onClick = onBack,
@@ -87,7 +89,7 @@ fun UpdatesScreen(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
                         )
                     ) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(R.string.auth_cd_back))
+                        Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
@@ -126,7 +128,7 @@ fun UpdatesScreen(
             item(key = "settings") {
                 ExpressiveSettingsGroup {
                     ThemeSelectorItem(
-                        label = stringResource(R.string.updates_channel_title),
+                        label = stringResource(Res.string.updates_channel_title),
                         description = stringResource(
                             when (state.selectedChannel) {
                                 UpdateChannel.STABLE -> R.string.updates_channel_stable_description
@@ -134,12 +136,12 @@ fun UpdatesScreen(
                             }
                         ),
                         options = mapOf(
-                            UpdateChannel.STABLE.storageKey to stringResource(R.string.updates_channel_stable_source),
-                            UpdateChannel.ALPHA.storageKey to stringResource(R.string.updates_channel_alpha_source),
+                            UpdateChannel.STABLE.storageKey to stringResource(Res.string.updates_channel_stable_source),
+                            UpdateChannel.ALPHA.storageKey to stringResource(Res.string.updates_channel_alpha_source),
                         ),
                         optionDescriptions = mapOf(
-                            UpdateChannel.STABLE.storageKey to stringResource(R.string.updates_channel_stable_description),
-                            UpdateChannel.ALPHA.storageKey to stringResource(R.string.updates_channel_alpha_description),
+                            UpdateChannel.STABLE.storageKey to stringResource(Res.string.updates_channel_stable_description),
+                            UpdateChannel.ALPHA.storageKey to stringResource(Res.string.updates_channel_alpha_description),
                         ),
                         selectedKey = state.selectedChannel.storageKey,
                         onSelectionChanged = { key ->
@@ -151,8 +153,8 @@ fun UpdatesScreen(
                     )
                     Spacer(Modifier.height(4.dp))
                     SwitchSettingItem(
-                        title = stringResource(R.string.updates_auto_check_title),
-                        subtitle = stringResource(R.string.updates_auto_check_subtitle),
+                        title = stringResource(Res.string.updates_auto_check_title),
+                        subtitle = stringResource(Res.string.updates_auto_check_subtitle),
                         checked = state.autoCheckEnabled,
                         onCheckedChange = viewModel::setAutoCheck,
                         leadingIcon = {
@@ -211,7 +213,7 @@ private fun UpdateStatusCard(
                 )
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text(
-                        text = stringResource(R.string.updates_installed_version, state.installedVersion),
+                        text = stringResource(Res.string.updates_installed_version, state.installedVersion),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -230,16 +232,16 @@ private fun UpdateStatusCard(
             )
 
             when (val status = state.status) {
-                UpdateStatus.Idle -> PrimaryAction(stringResource(R.string.updates_action_check), onCheck)
+                UpdateStatus.Idle -> PrimaryAction(stringResource(Res.string.updates_action_check), onCheck)
                 UpdateStatus.Checking -> LoadingIndicator(modifier = Modifier.size(28.dp))
-                is UpdateStatus.UpToDate -> SecondaryAction(stringResource(R.string.updates_action_check_again), onCheck)
+                is UpdateStatus.UpToDate -> SecondaryAction(stringResource(Res.string.updates_action_check_again), onCheck)
                 is UpdateStatus.Available -> {
                     if (status.requiresReinstall) {
-                        PrimaryAction(stringResource(R.string.updates_action_switch)) { onShowSwitch(status.release) }
+                        PrimaryAction(stringResource(Res.string.updates_action_switch)) { onShowSwitch(status.release) }
                     } else {
-                        PrimaryAction(stringResource(R.string.updates_action_install), onInstall)
+                        PrimaryAction(stringResource(Res.string.updates_action_install), onInstall)
                     }
-                    SecondaryAction(stringResource(R.string.updates_action_release_notes)) {
+                    SecondaryAction(stringResource(Res.string.updates_action_release_notes)) {
                         onOpenUrl(status.release.pageUrl)
                     }
                 }
@@ -249,19 +251,19 @@ private fun UpdateStatusCard(
                     } else {
                         LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                     }
-                    SecondaryAction(stringResource(R.string.updates_action_cancel), onCancel)
+                    SecondaryAction(stringResource(Res.string.updates_action_cancel), onCancel)
                 }
                 is UpdateStatus.AwaitingInstallPermission -> {
-                    PrimaryAction(stringResource(R.string.updates_action_allow_installs), onAllowInstalls)
-                    SecondaryAction(stringResource(R.string.updates_action_cancel), onCancel)
+                    PrimaryAction(stringResource(Res.string.updates_action_allow_installs), onAllowInstalls)
+                    SecondaryAction(stringResource(Res.string.updates_action_cancel), onCancel)
                 }
                 // The committed session is decided in the system prompt (its Cancel aborts it).
                 is UpdateStatus.AwaitingConfirmation ->
-                    PrimaryAction(stringResource(R.string.updates_action_open_prompt)) { onOpenPrompt(status.confirmIntent) }
+                    PrimaryAction(stringResource(Res.string.updates_action_open_prompt)) { onOpenPrompt(status.confirmIntent) }
                 is UpdateStatus.Installing -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                 is UpdateStatus.Failed -> {
-                    PrimaryAction(stringResource(R.string.updates_action_check_again), onCheck)
-                    SecondaryAction(stringResource(R.string.updates_action_dismiss), onDismiss)
+                    PrimaryAction(stringResource(Res.string.updates_action_check_again), onCheck)
+                    SecondaryAction(stringResource(Res.string.updates_action_dismiss), onDismiss)
                 }
             }
         }
@@ -280,27 +282,25 @@ private fun SecondaryAction(label: String, onClick: () -> Unit) {
 
 @Composable
 private fun statusMessage(state: UpdatesUiState): String = when (val status = state.status) {
-    UpdateStatus.Idle -> stringResource(R.string.updates_status_idle)
-    UpdateStatus.Checking -> stringResource(R.string.updates_status_checking)
-    is UpdateStatus.UpToDate -> stringResource(
-        R.string.updates_status_up_to_date,
+    UpdateStatus.Idle -> stringResource(Res.string.updates_status_idle)
+    UpdateStatus.Checking -> stringResource(Res.string.updates_status_checking)
+    is UpdateStatus.UpToDate -> stringResource(Res.string.updates_status_up_to_date,
         stringResource(channelLabel(status.channel))
     )
     is UpdateStatus.Available -> when {
-        !status.requiresReinstall -> stringResource(R.string.updates_status_available, status.release.versionName)
-        status.release.channel != state.installedChannel -> stringResource(
-            R.string.updates_status_reinstall,
+        !status.requiresReinstall -> stringResource(Res.string.updates_status_available, status.release.versionName)
+        status.release.channel != state.installedChannel -> stringResource(Res.string.updates_status_reinstall,
             status.release.versionName,
             stringResource(channelLabel(status.release.channel))
         )
-        else -> stringResource(R.string.updates_status_reinstall_signature, status.release.versionName)
+        else -> stringResource(Res.string.updates_status_reinstall_signature, status.release.versionName)
     }
     is UpdateStatus.Downloading -> status.progress
-        ?.let { stringResource(R.string.updates_status_downloading_progress, status.release.versionName, (it * 100).toInt()) }
-        ?: stringResource(R.string.updates_status_downloading, status.release.versionName)
-    is UpdateStatus.AwaitingInstallPermission -> stringResource(R.string.updates_status_permission, status.release.versionName)
-    is UpdateStatus.AwaitingConfirmation -> stringResource(R.string.updates_status_confirm, status.release.versionName)
-    is UpdateStatus.Installing -> stringResource(R.string.updates_status_installing, status.release.versionName)
+        ?.let { stringResource(Res.string.updates_status_downloading_progress, status.release.versionName, (it * 100).toInt()) }
+        ?: stringResource(Res.string.updates_status_downloading, status.release.versionName)
+    is UpdateStatus.AwaitingInstallPermission -> stringResource(Res.string.updates_status_permission, status.release.versionName)
+    is UpdateStatus.AwaitingConfirmation -> stringResource(Res.string.updates_status_confirm, status.release.versionName)
+    is UpdateStatus.Installing -> stringResource(Res.string.updates_status_installing, status.release.versionName)
     is UpdateStatus.Failed -> stringResource(
         when (status.error) {
             UpdateError.CHECK_FAILED -> R.string.updates_error_check
@@ -323,26 +323,26 @@ private fun ChannelSwitchDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.updates_switch_dialog_title)) },
+        title = { Text(stringResource(Res.string.updates_switch_dialog_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(stringResource(R.string.updates_switch_dialog_body))
-                Text(stringResource(R.string.updates_switch_step_backup))
+                Text(stringResource(Res.string.updates_switch_dialog_body))
+                Text(stringResource(Res.string.updates_switch_step_backup))
                 FilledTonalButton(onClick = onBackup, modifier = Modifier.fillMaxWidth()) {
-                    Text(stringResource(R.string.updates_switch_action_backup))
+                    Text(stringResource(Res.string.updates_switch_action_backup))
                 }
-                Text(stringResource(R.string.updates_switch_step_download_alpha, release.versionName))
+                Text(stringResource(Res.string.updates_switch_step_download_alpha, release.versionName))
                 FilledTonalButton(onClick = onDownload, modifier = Modifier.fillMaxWidth()) {
-                    Text(stringResource(R.string.updates_switch_action_download))
+                    Text(stringResource(Res.string.updates_switch_action_download))
                 }
-                Text(stringResource(R.string.updates_switch_step_uninstall))
+                Text(stringResource(Res.string.updates_switch_step_uninstall))
                 OutlinedButton(onClick = onUninstall, modifier = Modifier.fillMaxWidth()) {
-                    Text(stringResource(R.string.updates_switch_action_uninstall), color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(Res.string.updates_switch_action_uninstall), color = MaterialTheme.colorScheme.error)
                 }
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.updates_switch_action_close)) }
+            TextButton(onClick = onDismiss) { Text(stringResource(Res.string.updates_switch_action_close)) }
         }
     )
 }

@@ -22,6 +22,8 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.HistoryPicksSt
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SeedPickMode
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ThemeStateHolder
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** What the history sections need from the Home screen. */
 class HistoryPickActions(
@@ -43,7 +45,7 @@ fun LazyListScope.historyPickSections(
 ) {
     if (state.timeOfDay.isNotEmpty()) {
         item(key = "history_time_of_day", contentType = "history_pick_section") {
-            val title = stringResource(R.string.history_picks_time_of_day)
+            val title = stringResource(Res.string.history_picks_time_of_day)
             PickSection(
                 title = title,
                 songs = state.timeOfDay,
@@ -61,7 +63,7 @@ fun LazyListScope.historyPickSections(
     if (seed != null && mode != null && !seedSongs.isNullOrEmpty()) {
         item(key = "history_more_like", contentType = "history_pick_section") {
             PickSection(
-                title = stringResource(R.string.history_picks_more_like, seed.title),
+                title = stringResource(Res.string.history_picks_more_like, seed.title),
                 songs = seedSongs,
                 actions = actions,
                 themeStateHolder = themeStateHolder,
@@ -84,7 +86,7 @@ fun LazyListScope.historyPickSections(
     if (year != null && !yearSongs.isNullOrEmpty()) {
         item(key = "history_lost_memories", contentType = "history_pick_section") {
             PickSection(
-                title = stringResource(R.string.history_picks_lost_memories),
+                title = stringResource(Res.string.history_picks_lost_memories),
                 songs = yearSongs,
                 actions = actions,
                 themeStateHolder = themeStateHolder,
@@ -129,7 +131,7 @@ private fun PickSection(
         modifier = modifier,
         title = title,
         actionIconRes = R.drawable.rounded_play_arrow_24,
-        actionDescription = stringResource(R.string.history_picks_play_all),
+        actionDescription = stringResource(Res.string.history_picks_play_all),
         minSongs = 1,
         headerContent = chips,
         animateChanges = true,

@@ -56,6 +56,8 @@ import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerVideoViewModel
 import io.github.raghavsatyadev.openplayer.utils.PhoneOrientationPolicy
 import kotlinx.coroutines.delay
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * The video over the whole app: immersive, edge to edge, turned to landscape for wide videos, with
@@ -169,7 +171,7 @@ private fun FullscreenControls(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            OverlayIcon(R.drawable.rounded_fullscreen_exit_24, stringResource(R.string.video_exit_fullscreen), onExit)
+            OverlayIcon(R.drawable.rounded_fullscreen_exit_24, stringResource(Res.string.video_exit_fullscreen), onExit)
         }
 
         Row(
@@ -177,7 +179,7 @@ private fun FullscreenControls(
             horizontalArrangement = Arrangement.spacedBy(28.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            OverlayIcon(R.drawable.rounded_skip_previous_24, stringResource(R.string.video_previous)) {
+            OverlayIcon(R.drawable.rounded_skip_previous_24, stringResource(Res.string.video_previous)) {
                 onInteract(); audio?.seekToPrevious()
             }
             FilledIconButton(
@@ -197,7 +199,7 @@ private fun FullscreenControls(
                     modifier = Modifier.size(36.dp),
                 )
             }
-            OverlayIcon(R.drawable.rounded_skip_next_24, stringResource(R.string.video_next)) {
+            OverlayIcon(R.drawable.rounded_skip_next_24, stringResource(Res.string.video_next)) {
                 onInteract(); audio?.seekToNext()
             }
         }

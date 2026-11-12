@@ -73,6 +73,8 @@ import io.github.raghavsatyadev.openplayer.presentation.screens.TabAnimation
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.utils.AudioMetaUtils
 import androidx.compose.ui.res.stringResource
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -342,7 +344,7 @@ fun SongInfoBottomSheet(
                         ) {
                             SmartImage(
                                 model = song.albumArtUriString,
-                                contentDescription = stringResource(R.string.widget_album_art),
+                                contentDescription = stringResource(Res.string.widget_album_art),
                                 shape = albumArtShape,
                                 modifier = Modifier.size(80.dp),
                                 contentScale = ContentScale.Crop
@@ -374,7 +376,7 @@ fun SongInfoBottomSheet(
                                     Icon(
                                         modifier = Modifier.padding(horizontal = 8.dp),
                                         imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
-                                        contentDescription = stringResource(R.string.cd_edit_song_metadata)
+                                        contentDescription = stringResource(Res.string.cd_edit_song_metadata)
                                     )
                                 }
                             }
@@ -428,12 +430,12 @@ fun SongInfoBottomSheet(
                                                     elevation = FloatingActionButtonDefaults.elevation(0.dp),
                                                     shape = playButtonShape,
                                                     icon = {
-                                                        Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(R.string.cd_play_song_action))
+                                                        Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_song_action))
                                                     },
                                                     text = {
                                                         Text(
                                                             modifier = Modifier.padding(end = 10.dp),
-                                                            text = stringResource(R.string.play_playback)
+                                                            text = stringResource(Res.string.play_playback)
                                                         )
                                                     }
                                                 )
@@ -488,7 +490,7 @@ fun SongInfoBottomSheet(
                                                     Icon(
                                                         modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize),
                                                         imageVector = ImageVector.vectorResource(R.drawable.rounded_share_filled_24),
-                                                        contentDescription = stringResource(R.string.cd_share_song_file)
+                                                        contentDescription = stringResource(Res.string.cd_share_song_file)
                                                     )
                                                 }
                                             }
@@ -515,10 +517,10 @@ fun SongInfoBottomSheet(
                                                 ) {
                                                     Icon(
                                                         ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
-                                                        contentDescription = stringResource(R.string.cd_add_to_queue)
+                                                        contentDescription = stringResource(Res.string.cd_add_to_queue)
                                                     )
                                                     Spacer(Modifier.width(14.dp))
-                                                    Text(stringResource(R.string.action_add_to_queue))
+                                                    Text(stringResource(Res.string.action_add_to_queue))
                                                 }
                                                 FilledTonalButton(
                                                     modifier = Modifier
@@ -534,10 +536,10 @@ fun SongInfoBottomSheet(
                                                 ) {
                                                     Icon(
                                                         ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
-                                                        contentDescription = stringResource(R.string.cd_play_next_in_queue)
+                                                        contentDescription = stringResource(Res.string.cd_play_next_in_queue)
                                                     )
                                                     Spacer(Modifier.width(8.dp))
-                                                    Text(stringResource(R.string.action_queue_next))
+                                                    Text(stringResource(Res.string.action_queue_next))
                                                 }
                                             }
                                         }
@@ -563,10 +565,10 @@ fun SongInfoBottomSheet(
                                                 ) {
                                                     Icon(
                                                         ImageVector.vectorResource(R.drawable.rounded_playlist_add_24),
-                                                        contentDescription = stringResource(R.string.cd_add_to_playlist)
+                                                        contentDescription = stringResource(Res.string.cd_add_to_playlist)
                                                     )
                                                     Spacer(Modifier.width(8.dp))
-                                                    Text(stringResource(R.string.shortcut_playlist_short))
+                                                    Text(stringResource(Res.string.shortcut_playlist_short))
                                                 }
 
                                                 FilledTonalButton(
@@ -616,16 +618,16 @@ fun SongInfoBottomSheet(
                                                     Spacer(Modifier.width(8.dp))
                                                     Text(
                                                         when (offlineDownload?.status) {
-                                                            OfflineDownloadStatus.QUEUED -> stringResource(R.string.cloud_download_queued)
+                                                            OfflineDownloadStatus.QUEUED -> stringResource(Res.string.cloud_download_queued)
                                                             OfflineDownloadStatus.DOWNLOADING -> offlineDownload?.progress
-                                                                ?.let { stringResource(R.string.cloud_download_progress, (it * 100).toInt()) }
-                                                                ?: stringResource(R.string.cloud_downloading)
-                                                            OfflineDownloadStatus.COMPLETE -> stringResource(R.string.cloud_remove_download)
-                                                            OfflineDownloadStatus.FAILED -> stringResource(R.string.cloud_download_retry)
+                                                                ?.let { stringResource(Res.string.cloud_download_progress, (it * 100).toInt()) }
+                                                                ?: stringResource(Res.string.cloud_downloading)
+                                                            OfflineDownloadStatus.COMPLETE -> stringResource(Res.string.cloud_remove_download)
+                                                            OfflineDownloadStatus.FAILED -> stringResource(Res.string.cloud_download_retry)
                                                             null -> if (isCloudSong) {
-                                                                stringResource(R.string.cloud_download_action)
+                                                                stringResource(Res.string.cloud_download_action)
                                                             } else {
-                                                                stringResource(R.string.delete_action)
+                                                                stringResource(Res.string.delete_action)
                                                             }
                                                         },
                                                         maxLines = 1,
@@ -657,10 +659,10 @@ fun SongInfoBottomSheet(
                                             ) {
                                                 Icon(
                                                     ImageVector.vectorResource(R.drawable.rounded_travel_explore_24),
-                                                    contentDescription = stringResource(R.string.musicbrainz_lookup)
+                                                    contentDescription = stringResource(Res.string.musicbrainz_lookup)
                                                 )
                                                 Spacer(Modifier.width(10.dp))
-                                                Text(stringResource(R.string.musicbrainz_lookup))
+                                                Text(stringResource(Res.string.musicbrainz_lookup))
                                             }
                                         }
 
@@ -688,38 +690,38 @@ fun SongInfoBottomSheet(
                                                 verticalArrangement = Arrangement.spacedBy(4.dp)
                                             ) {
                                                 SongInfoSegmentedListItem(
-                                                    headline = stringResource(R.string.song_info_label_duration),
+                                                    headline = stringResource(Res.string.song_info_label_duration),
                                                     supporting = formatDuration(song.duration),
                                                     icon = ImageVector.vectorResource(R.drawable.rounded_schedule_filled_24),
-                                                    iconDescription = stringResource(R.string.cd_duration_icon),
+                                                    iconDescription = stringResource(Res.string.cd_duration_icon),
                                                     shape = infoSegmentItemShape,
                                                 )
 
                                                 if (!song.genre.isNullOrEmpty()) {
                                                     SongInfoSegmentedListItem(
-                                                        headline = stringResource(R.string.song_field_genre),
+                                                        headline = stringResource(Res.string.song_field_genre),
                                                         supporting = song.genre,
                                                         icon = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
-                                                        iconDescription = stringResource(R.string.cd_genre_icon),
+                                                        iconDescription = stringResource(Res.string.cd_genre_icon),
                                                         shape = infoSegmentItemShape,
                                                         onClick = onNavigateToGenre,
                                                     )
                                                 }
 
                                                 SongInfoSegmentedListItem(
-                                                    headline = stringResource(R.string.song_field_album),
+                                                    headline = stringResource(Res.string.song_field_album),
                                                     supporting = song.album,
                                                     icon = ImageVector.vectorResource(R.drawable.rounded_album_filled_24),
-                                                    iconDescription = stringResource(R.string.cd_album_icon),
+                                                    iconDescription = stringResource(Res.string.cd_album_icon),
                                                     shape = infoSegmentItemShape,
                                                     onClick = onNavigateToAlbum,
                                                 )
 
                                                 SongInfoSegmentedListItem(
-                                                    headline = stringResource(R.string.song_field_artist),
+                                                    headline = stringResource(Res.string.song_field_artist),
                                                     supporting = song.displayArtist,
                                                     icon = ImageVector.vectorResource(R.drawable.rounded_person_filled_24),
-                                                    iconDescription = stringResource(R.string.cd_artist_icon),
+                                                    iconDescription = stringResource(Res.string.cd_artist_icon),
                                                     shape = infoSegmentItemShape,
                                                     onClick = {
                                                         if (song.artists.size > 1) {
@@ -732,10 +734,10 @@ fun SongInfoBottomSheet(
 
                                                 if (!audioMetaLabel.isNullOrEmpty()) {
                                                     SongInfoSegmentedListItem(
-                                                        headline = stringResource(R.string.song_info_label_song_metadata),
+                                                        headline = stringResource(Res.string.song_info_label_song_metadata),
                                                         supporting = audioMetaLabel,
                                                         icon = ImageVector.vectorResource(R.drawable.rounded_info_filled_24),
-                                                        iconDescription = stringResource(R.string.cd_audio_format_icon),
+                                                        iconDescription = stringResource(Res.string.cd_audio_format_icon),
                                                         shape = infoSegmentItemShape,
                                                     )
                                                 }
@@ -781,7 +783,7 @@ fun SongInfoBottomSheet(
                 ) {
                     TabAnimation(
                         index = 0,
-                        title = stringResource(R.string.song_info_tab_options),
+                        title = stringResource(Res.string.song_info_tab_options),
                         selectedIndex = pagerState.currentPage,
                         onClick = {
                             scope.launch {
@@ -793,12 +795,12 @@ fun SongInfoBottomSheet(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 ImageVector.vectorResource(R.drawable.rounded_menu_24),
-                                contentDescription = stringResource(R.string.cd_options),
+                                contentDescription = stringResource(Res.string.cd_options),
                                 modifier = Modifier.padding(horizontal = 4.dp)
                             )
                             Spacer(Modifier.width(4.dp))
                             Text(
-                                stringResource(R.string.song_info_tab_options_badge),
+                                stringResource(Res.string.song_info_tab_options_badge),
                                 fontFamily = RoundedSans,
                                 fontWeight = FontWeight.Bold,
                             )
@@ -807,7 +809,7 @@ fun SongInfoBottomSheet(
 
                     TabAnimation(
                         index = 1,
-                        title = stringResource(R.string.song_info_tab_details),
+                        title = stringResource(Res.string.song_info_tab_details),
                         selectedIndex = pagerState.currentPage,
                         onClick = {
                             scope.launch {
@@ -819,12 +821,12 @@ fun SongInfoBottomSheet(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 ImageVector.vectorResource(R.drawable.rounded_info_filled_24),
-                                contentDescription = stringResource(R.string.cd_details_tab),
+                                contentDescription = stringResource(Res.string.cd_details_tab),
                                 modifier = Modifier.padding(horizontal = 4.dp)
                             )
                             Spacer(Modifier.width(4.dp))
                             Text(
-                                stringResource(R.string.song_info_tab_info_badge),
+                                stringResource(Res.string.song_info_tab_info_badge),
                                 fontFamily = RoundedSans,
                                 fontWeight = FontWeight.Bold
                             )
@@ -867,14 +869,14 @@ fun SongInfoBottomSheet(
             AlertDialog(
                 onDismissRequest = {},
                 confirmButton = {},
-                title = { Text(stringResource(R.string.musicbrainz_lookup)) },
+                title = { Text(stringResource(Res.string.musicbrainz_lookup)) },
                 text = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         LoadingIndicator(modifier = Modifier.size(28.dp))
-                        Text(stringResource(R.string.musicbrainz_searching))
+                        Text(stringResource(Res.string.musicbrainz_searching))
                     }
                 }
             )
@@ -885,15 +887,15 @@ fun SongInfoBottomSheet(
                 onDismissRequest = songInfoViewModel::dismissMusicBrainz,
                 confirmButton = {
                     TextButton(onClick = { songInfoViewModel.searchMusicBrainz(song) }) {
-                        Text(stringResource(R.string.cloud_download_retry))
+                        Text(stringResource(Res.string.cloud_download_retry))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = songInfoViewModel::dismissMusicBrainz) {
-                        Text(stringResource(R.string.cancel))
+                        Text(stringResource(Res.string.cancel))
                     }
                 },
-                title = { Text(stringResource(R.string.musicbrainz_lookup_failed)) },
+                title = { Text(stringResource(Res.string.musicbrainz_lookup_failed)) },
                 text = { Text(state.message) }
             )
         }
@@ -903,13 +905,13 @@ fun SongInfoBottomSheet(
                 onDismissRequest = songInfoViewModel::dismissMusicBrainz,
                 confirmButton = {
                     TextButton(onClick = songInfoViewModel::dismissMusicBrainz) {
-                        Text(stringResource(R.string.cancel))
+                        Text(stringResource(Res.string.cancel))
                     }
                 },
-                title = { Text(stringResource(R.string.musicbrainz_choose_match)) },
+                title = { Text(stringResource(Res.string.musicbrainz_choose_match)) },
                 text = {
                     if (state.matches.isEmpty()) {
-                        Text(stringResource(R.string.musicbrainz_no_results))
+                        Text(stringResource(Res.string.musicbrainz_no_results))
                     } else {
                         LazyColumn(
                             modifier = Modifier.heightIn(max = 420.dp),
@@ -936,7 +938,7 @@ fun SongInfoBottomSheet(
                                             style = MaterialTheme.typography.bodyMedium
                                         )
                                         Text(
-                                            stringResource(R.string.musicbrainz_match_score, match.score),
+                                            stringResource(Res.string.musicbrainz_match_score, match.score),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.primary
                                         )
@@ -1019,13 +1021,13 @@ private fun ToneTargetPickerDialog(
                 ) {
                     ToneDialogIcon(target = null)
                     Text(
-                        text = stringResource(R.string.song_info_tone_picker_title),
+                        text = stringResource(Res.string.song_info_tone_picker_title),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                     )
                 }
                 Text(
-                    text = stringResource(R.string.song_info_tone_picker_body),
+                    text = stringResource(Res.string.song_info_tone_picker_body),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -1047,7 +1049,7 @@ private fun ToneTargetPickerDialog(
                     horizontalArrangement = Arrangement.End,
                 ) {
                     TextButton(onClick = onDismiss) {
-                        Text(stringResource(R.string.cancel))
+                        Text(stringResource(Res.string.cancel))
                     }
                 }
             }
@@ -1121,14 +1123,13 @@ private fun ToneConfirmationDialog(
                 ) {
                     ToneDialogIcon(target = target)
                     Text(
-                        text = stringResource(R.string.song_info_tone_confirm_title),
+                        text = stringResource(Res.string.song_info_tone_confirm_title),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                     )
                 }
                 Text(
-                    text = stringResource(
-                        R.string.song_info_tone_confirm_body,
+                    text = stringResource(Res.string.song_info_tone_confirm_body,
                         song.title,
                         stringResource(target.confirmLabelResId),
                     ),
@@ -1142,10 +1143,10 @@ private fun ToneConfirmationDialog(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     TextButton(onClick = onDismiss) {
-                        Text(stringResource(R.string.cancel))
+                        Text(stringResource(Res.string.cancel))
                     }
                     FilledTonalButton(onClick = onConfirm) {
-                        Text(stringResource(R.string.song_info_tone_confirm_action))
+                        Text(stringResource(Res.string.song_info_tone_confirm_action))
                     }
                 }
             }
@@ -1217,7 +1218,7 @@ private fun RingtoneActionButton(
             Icon(
                 modifier = Modifier.size(if (compactText) 20.dp else 24.dp),
                 painter = painterResource(R.drawable.rounded_notifications_active_24),
-                contentDescription = stringResource(R.string.cd_choose_song_tone),
+                contentDescription = stringResource(Res.string.cd_choose_song_tone),
             )
             Spacer(Modifier.width(if (compactText) 6.dp else 8.dp))
             Text(
@@ -1241,7 +1242,7 @@ private fun RingtoneActionButton(
             Icon(
                 modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize),
                 painter = painterResource(R.drawable.rounded_notifications_active_24),
-                contentDescription = stringResource(R.string.cd_choose_song_tone),
+                contentDescription = stringResource(Res.string.cd_choose_song_tone),
             )
         }
     }

@@ -72,6 +72,8 @@ import kotlin.math.roundToInt
 import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtQuality
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(UnstableApi::class)
 @Composable
@@ -174,7 +176,7 @@ fun ExperimentalSettingsScreen(
         ) {
             item(key = "player_ui_tweaks_section") {
                 SettingsSection(
-                    title = stringResource(R.string.presentation_batch_f_exp_player_ui_tweaks_section),
+                    title = stringResource(Res.string.presentation_batch_f_exp_player_ui_tweaks_section),
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_style_24),
@@ -205,8 +207,8 @@ fun ExperimentalSettingsScreen(
                             val canUseTriggerMode = isAnyDelayEnabled && placeholdersEnabled
 
                             SwitchSettingItem(
-                                title = stringResource(R.string.presentation_batch_f_exp_animated_lyrics_title),
-                                subtitle = stringResource(R.string.presentation_batch_f_exp_animated_lyrics_subtitle),
+                                title = stringResource(Res.string.presentation_batch_f_exp_animated_lyrics_title),
+                                subtitle = stringResource(Res.string.presentation_batch_f_exp_animated_lyrics_subtitle),
                                 checked = uiState.useAnimatedLyrics,
                                 onCheckedChange = settingsViewModel::setUseAnimatedLyrics,
                                 leadingIcon = {
@@ -225,7 +227,7 @@ fun ExperimentalSettingsScreen(
                                     .clip(RoundedCornerShape(10.dp))
                             ) {
                                 Text(
-                                    text = stringResource(R.string.presentation_batch_f_exp_step1_delay_header),
+                                    text = stringResource(Res.string.presentation_batch_f_exp_step1_delay_header),
                                     style = MaterialTheme.typography.titleSmall,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
@@ -233,8 +235,8 @@ fun ExperimentalSettingsScreen(
                             }
 
                             SwitchSettingItem(
-                                title = stringResource(R.string.presentation_batch_f_exp_delay_everything_title),
-                                subtitle = stringResource(R.string.presentation_batch_f_exp_delay_everything_subtitle),
+                                title = stringResource(Res.string.presentation_batch_f_exp_delay_everything_title),
+                                subtitle = stringResource(Res.string.presentation_batch_f_exp_delay_everything_subtitle),
                                 checked = delayAllEnabled,
                                 onCheckedChange = settingsViewModel::setDelayAllFullPlayerContent,
                                 leadingIcon = {
@@ -253,8 +255,8 @@ fun ExperimentalSettingsScreen(
                             ) {
                                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                     SwitchSettingItem(
-                                        title = stringResource(R.string.presentation_batch_f_exp_album_carousel_title),
-                                        subtitle = stringResource(R.string.presentation_batch_f_exp_album_carousel_subtitle),
+                                        title = stringResource(Res.string.presentation_batch_f_exp_album_carousel_title),
+                                        subtitle = stringResource(Res.string.presentation_batch_f_exp_album_carousel_subtitle),
                                         checked = loadingTweaks.delayAlbumCarousel,
                                         onCheckedChange = settingsViewModel::setDelayAlbumCarousel,
                                         leadingIcon = {
@@ -267,8 +269,8 @@ fun ExperimentalSettingsScreen(
                                     )
 
                                     SwitchSettingItem(
-                                        title = stringResource(R.string.presentation_batch_f_exp_song_metadata_title),
-                                        subtitle = stringResource(R.string.presentation_batch_f_exp_song_metadata_subtitle),
+                                        title = stringResource(Res.string.presentation_batch_f_exp_song_metadata_title),
+                                        subtitle = stringResource(Res.string.presentation_batch_f_exp_song_metadata_subtitle),
                                         checked = loadingTweaks.delaySongMetadata,
                                         onCheckedChange = settingsViewModel::setDelaySongMetadata,
                                         leadingIcon = {
@@ -281,8 +283,8 @@ fun ExperimentalSettingsScreen(
                                     )
 
                                     SwitchSettingItem(
-                                        title = stringResource(R.string.presentation_batch_f_exp_progress_bar_title),
-                                        subtitle = stringResource(R.string.presentation_batch_f_exp_progress_bar_subtitle),
+                                        title = stringResource(Res.string.presentation_batch_f_exp_progress_bar_title),
+                                        subtitle = stringResource(Res.string.presentation_batch_f_exp_progress_bar_subtitle),
                                         checked = loadingTweaks.delayProgressBar,
                                         onCheckedChange = settingsViewModel::setDelayProgressBar,
                                         leadingIcon = {
@@ -295,8 +297,8 @@ fun ExperimentalSettingsScreen(
                                     )
 
                                     SwitchSettingItem(
-                                        title = stringResource(R.string.presentation_batch_f_exp_playback_controls_title),
-                                        subtitle = stringResource(R.string.presentation_batch_f_exp_playback_controls_subtitle),
+                                        title = stringResource(Res.string.presentation_batch_f_exp_playback_controls_title),
+                                        subtitle = stringResource(Res.string.presentation_batch_f_exp_playback_controls_subtitle),
                                         checked = loadingTweaks.delayControls,
                                         onCheckedChange = settingsViewModel::setDelayControls,
                                         leadingIcon = {
@@ -322,7 +324,7 @@ fun ExperimentalSettingsScreen(
                                         .clip(RoundedCornerShape(10.dp))
                                 ) {
                                     Text(
-                                        text = stringResource(R.string.presentation_batch_f_exp_delay_all_active_hint),
+                                        text = stringResource(Res.string.presentation_batch_f_exp_delay_all_active_hint),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
@@ -337,7 +339,7 @@ fun ExperimentalSettingsScreen(
                                     .clip(RoundedCornerShape(10.dp))
                             ) {
                                 Text(
-                                    text = stringResource(R.string.presentation_batch_f_exp_step2_placeholders_header),
+                                    text = stringResource(Res.string.presentation_batch_f_exp_step2_placeholders_header),
                                     style = MaterialTheme.typography.titleSmall,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
@@ -345,8 +347,8 @@ fun ExperimentalSettingsScreen(
                             }
 
                             SwitchSettingItem(
-                                title = stringResource(R.string.presentation_batch_f_exp_use_placeholders_title),
-                                subtitle = stringResource(R.string.presentation_batch_f_exp_use_placeholders_subtitle),
+                                title = stringResource(Res.string.presentation_batch_f_exp_use_placeholders_title),
+                                subtitle = stringResource(Res.string.presentation_batch_f_exp_use_placeholders_subtitle),
                                 checked = placeholdersEnabled,
                                 onCheckedChange = settingsViewModel::setFullPlayerPlaceholders,
                                 leadingIcon = {
@@ -377,15 +379,15 @@ fun ExperimentalSettingsScreen(
                                             verticalArrangement = Arrangement.spacedBy(12.dp)
                                         ) {
                                             Text(
-                                                text = stringResource(R.string.presentation_batch_f_exp_step3_trigger_header),
+                                                text = stringResource(Res.string.presentation_batch_f_exp_step3_trigger_header),
                                                 style = MaterialTheme.typography.titleMedium,
                                                 color = MaterialTheme.colorScheme.onSurface
                                             )
                                             Text(
                                                 text = if (canUseTriggerMode) {
-                                                    stringResource(R.string.presentation_batch_f_exp_trigger_mode_unlocked)
+                                                    stringResource(Res.string.presentation_batch_f_exp_trigger_mode_unlocked)
                                                 } else {
-                                                    stringResource(R.string.presentation_batch_f_exp_trigger_mode_locked)
+                                                    stringResource(Res.string.presentation_batch_f_exp_trigger_mode_locked)
                                                 },
                                                 style = MaterialTheme.typography.bodyMedium,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -396,16 +398,16 @@ fun ExperimentalSettingsScreen(
                                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                                             ) {
                                                 TriggerModeOptionCard(
-                                                    title = stringResource(R.string.presentation_batch_f_exp_threshold_title),
-                                                    subtitle = stringResource(R.string.presentation_batch_f_exp_threshold_subtitle),
+                                                    title = stringResource(Res.string.presentation_batch_f_exp_threshold_title),
+                                                    subtitle = stringResource(Res.string.presentation_batch_f_exp_threshold_subtitle),
                                                     selected = !switchOnDragRelease,
                                                     enabled = canUseTriggerMode,
                                                     onClick = { settingsViewModel.setFullPlayerSwitchOnDragRelease(false) },
                                                     modifier = Modifier.weight(1f)
                                                 )
                                                 TriggerModeOptionCard(
-                                                    title = stringResource(R.string.presentation_batch_f_exp_drag_release_title),
-                                                    subtitle = stringResource(R.string.presentation_batch_f_exp_drag_release_subtitle),
+                                                    title = stringResource(Res.string.presentation_batch_f_exp_drag_release_title),
+                                                    subtitle = stringResource(Res.string.presentation_batch_f_exp_drag_release_subtitle),
                                                     selected = switchOnDragRelease,
                                                     enabled = canUseTriggerMode,
                                                     onClick = { settingsViewModel.setFullPlayerSwitchOnDragRelease(true) },
@@ -445,12 +447,12 @@ fun ExperimentalSettingsScreen(
 
                                                         Column(modifier = Modifier.weight(1f)) {
                                                             Text(
-                                                                text = stringResource(R.string.presentation_batch_f_exp_expand_threshold_title),
+                                                                text = stringResource(Res.string.presentation_batch_f_exp_expand_threshold_title),
                                                                 style = MaterialTheme.typography.titleMedium,
                                                                 color = MaterialTheme.colorScheme.onSurface
                                                             )
                                                             Text(
-                                                                text = stringResource(R.string.presentation_batch_f_exp_expand_threshold_subtitle),
+                                                                text = stringResource(Res.string.presentation_batch_f_exp_expand_threshold_subtitle),
                                                                 style = MaterialTheme.typography.bodyMedium,
                                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                                             )
@@ -468,8 +470,7 @@ fun ExperimentalSettingsScreen(
                                                     )
 
                                                     Text(
-                                                        text = stringResource(
-                                                            R.string.presentation_batch_f_exp_content_appears_at,
+                                                        text = stringResource(Res.string.presentation_batch_f_exp_content_appears_at,
                                                             appearThresholdPercent
                                                         ),
                                                         style = MaterialTheme.typography.bodyMedium,
@@ -479,8 +480,8 @@ fun ExperimentalSettingsScreen(
                                             }
 
                                             SwitchSettingItem(
-                                                title = stringResource(R.string.presentation_batch_f_exp_apply_on_close_title),
-                                                subtitle = stringResource(R.string.presentation_batch_f_exp_apply_on_close_subtitle),
+                                                title = stringResource(Res.string.presentation_batch_f_exp_apply_on_close_title),
+                                                subtitle = stringResource(Res.string.presentation_batch_f_exp_apply_on_close_subtitle),
                                                 checked = loadingTweaks.applyPlaceholdersOnClose,
                                                 onCheckedChange = settingsViewModel::setFullPlayerPlaceholdersOnClose,
                                                 enabled = isAnyDelayEnabled,
@@ -522,12 +523,12 @@ fun ExperimentalSettingsScreen(
 
                                                             Column(modifier = Modifier.weight(1f)) {
                                                                 Text(
-                                                                    text = stringResource(R.string.presentation_batch_f_exp_close_threshold_title),
+                                                                    text = stringResource(Res.string.presentation_batch_f_exp_close_threshold_title),
                                                                     style = MaterialTheme.typography.titleMedium,
                                                                     color = MaterialTheme.colorScheme.onSurface
                                                                 )
                                                                 Text(
-                                                                    text = stringResource(R.string.presentation_batch_f_exp_close_threshold_subtitle),
+                                                                    text = stringResource(Res.string.presentation_batch_f_exp_close_threshold_subtitle),
                                                                     style = MaterialTheme.typography.bodyMedium,
                                                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                                                 )
@@ -545,8 +546,7 @@ fun ExperimentalSettingsScreen(
                                                         )
 
                                                         Text(
-                                                            text = stringResource(
-                                                                R.string.presentation_batch_f_exp_placeholders_after_collapse,
+                                                            text = stringResource(Res.string.presentation_batch_f_exp_placeholders_after_collapse,
                                                                 closeThresholdPercent
                                                             ),
                                                             style = MaterialTheme.typography.bodyMedium,
@@ -570,7 +570,7 @@ fun ExperimentalSettingsScreen(
                                                 .clip(RoundedCornerShape(10.dp))
                                         ) {
                                             Text(
-                                                text = stringResource(R.string.presentation_batch_f_exp_drag_release_bypass),
+                                                text = stringResource(Res.string.presentation_batch_f_exp_drag_release_bypass),
                                                 style = MaterialTheme.typography.bodyMedium,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
@@ -579,8 +579,8 @@ fun ExperimentalSettingsScreen(
                                     }
 
                                     SwitchSettingItem(
-                                        title = stringResource(R.string.presentation_batch_f_exp_transparent_placeholders_title),
-                                        subtitle = stringResource(R.string.presentation_batch_f_exp_transparent_placeholders_subtitle),
+                                        title = stringResource(Res.string.presentation_batch_f_exp_transparent_placeholders_title),
+                                        subtitle = stringResource(Res.string.presentation_batch_f_exp_transparent_placeholders_subtitle),
                                         checked = loadingTweaks.transparentPlaceholders,
                                         onCheckedChange = settingsViewModel::setTransparentPlaceholders,
                                         leadingIcon = {
@@ -605,7 +605,7 @@ fun ExperimentalSettingsScreen(
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
                 ) {
                      Text(
-                        text = stringResource(R.string.presentation_batch_f_exp_visual_quality),
+                        text = stringResource(Res.string.presentation_batch_f_exp_visual_quality),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.weight(1f)
@@ -623,7 +623,7 @@ fun ExperimentalSettingsScreen(
                 val albumArtQuality = uiState.albumArtQuality
                 
                  SettingsSection(
-                    title = stringResource(R.string.presentation_batch_f_exp_album_art_resolution),
+                    title = stringResource(Res.string.presentation_batch_f_exp_album_art_resolution),
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
@@ -678,7 +678,7 @@ fun ExperimentalSettingsScreen(
                                        if (isSelected) {
                                             Icon(
                                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_linear_scale_24),
-                                                contentDescription = stringResource(R.string.presentation_batch_f_cd_selected),
+                                                contentDescription = stringResource(Res.string.presentation_batch_f_cd_selected),
                                                 tint = MaterialTheme.colorScheme.primary
                                             )
                                        }
@@ -696,7 +696,7 @@ fun ExperimentalSettingsScreen(
         }
 
         CollapsibleCommonTopBar(
-            title = stringResource(R.string.presentation_batch_f_exp_screen_title),
+            title = stringResource(Res.string.presentation_batch_f_exp_screen_title),
             collapseFraction = collapseFraction,
             headerHeight = currentTopBarHeightDp,
             onBackClick = onNavigationIconClick

@@ -42,7 +42,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -53,6 +52,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.service.repeatn.RepeatNCounter
 import kotlinx.coroutines.flow.StateFlow
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** What the repeat button needs for repeat-N, provided once above the full player. */
 class RepeatNUi(
@@ -82,7 +83,7 @@ fun RepeatNBadge(remaining: Int, modifier: Modifier = Modifier) {
         label = "repeatNBadge",
     ) { value ->
         if (value > 0) {
-            val cd = stringResource(R.string.repeat_n_badge_cd, value)
+            val cd = stringResource(Res.string.repeat_n_badge_cd, value)
             Surface(
                 shape = CircleShape,
                 color = MaterialTheme.colorScheme.primary,
@@ -134,13 +135,13 @@ fun RepeatNPickerContent(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Text(
-                        text = stringResource(R.string.repeat_n_title),
+                        text = stringResource(Res.string.repeat_n_title),
                         style = MaterialTheme.typography.titleLarge,
                     )
                     RepeatNBadge(remaining)
                 }
                 Text(
-                    text = stringResource(R.string.repeat_n_subtitle),
+                    text = stringResource(Res.string.repeat_n_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -151,7 +152,7 @@ fun RepeatNPickerContent(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             for (n in RepeatNCounter.MIN_TIMES..RepeatNCounter.MAX_TIMES) {
-                val cd = stringResource(R.string.repeat_n_option_cd, n)
+                val cd = stringResource(Res.string.repeat_n_option_cd, n)
                 FilterChip(
                     selected = selected == n,
                     onClick = { selected = n },
@@ -175,11 +176,11 @@ fun RepeatNPickerContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (remaining > 0) {
-                TextButton(onClick = onStop) { Text(stringResource(R.string.repeat_n_stop)) }
+                TextButton(onClick = onStop) { Text(stringResource(Res.string.repeat_n_stop)) }
                 Spacer(Modifier.size(8.dp))
             }
             FilledTonalButton(onClick = { onPick(selected) }) {
-                Text(stringResource(R.string.repeat_n_start))
+                Text(stringResource(Res.string.repeat_n_start))
             }
         }
     }

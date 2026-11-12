@@ -156,6 +156,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.Sele
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.CloudDownloadsViewModel
 import androidx.compose.runtime.State
 import androidx.compose.ui.unit.Dp
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private data class SearchUiSlice(
     val selectedSearchFilter: SearchFilterType = SearchFilterType.ALL,
@@ -388,7 +390,7 @@ fun SearchScreen(
                                 onExpandedChange = {},
                                 placeholder = {
                                     Text(
-                                        stringResource(R.string.search_placeholder),
+                                        stringResource(Res.string.search_placeholder),
                                         style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.primary
                                     )
@@ -396,7 +398,7 @@ fun SearchScreen(
                                 leadingIcon = {
                                     Icon(
                                         imageVector = ImageVector.vectorResource(R.drawable.rounded_search_24),
-                                        contentDescription = stringResource(R.string.cd_search_icon),
+                                        contentDescription = stringResource(Res.string.cd_search_icon),
                                         tint = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.size(24.dp)
                                     )
@@ -417,7 +419,7 @@ fun SearchScreen(
                                         ) {
                                             Icon(
                                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                                                contentDescription = stringResource(R.string.cd_clear_search_query),
+                                                contentDescription = stringResource(Res.string.cd_clear_search_query),
                                                 tint = MaterialTheme.colorScheme.primary
                                             )
                                         }
@@ -449,7 +451,7 @@ fun SearchScreen(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.rounded_settings_24),
-                        contentDescription = stringResource(R.string.presentation_batch_d_open_settings_cd)
+                        contentDescription = stringResource(Res.string.presentation_batch_d_open_settings_cd)
                     )
                 }
             }
@@ -1008,13 +1010,13 @@ fun SearchHistoryList(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                stringResource(R.string.recent_searches),
+                stringResource(Res.string.recent_searches),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold
             )
             if (historyItems.isNotEmpty()) {
                 TextButton(onClick = onClearAllHistory) {
-                    Text(stringResource(R.string.clear_all), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(stringResource(Res.string.clear_all), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         }
@@ -1053,7 +1055,7 @@ fun SearchHistoryListItem(
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_history_24),
-                contentDescription = stringResource(R.string.cd_search_history_icon),
+                contentDescription = stringResource(Res.string.cd_search_history_icon),
                 modifier = Modifier.size(20.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -1068,7 +1070,7 @@ fun SearchHistoryListItem(
         IconButton(onClick = { onHistoryDelete(item.query) }) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_delete_forever_filled_24),
-                contentDescription = stringResource(R.string.cd_delete_search_history_item),
+                contentDescription = stringResource(Res.string.cd_delete_search_history_item),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
         }
@@ -1086,7 +1088,7 @@ fun EmptySearchResults(searchQuery: String, colorScheme: ColorScheme) {
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.rounded_search_24),
-            contentDescription = stringResource(R.string.cd_no_search_results),
+            contentDescription = stringResource(Res.string.cd_no_search_results),
             modifier = Modifier
                 .size(80.dp)
                 .padding(bottom = 16.dp),
@@ -1095,9 +1097,9 @@ fun EmptySearchResults(searchQuery: String, colorScheme: ColorScheme) {
 
         Text(
             text = if (searchQuery.isNotBlank()) {
-                stringResource(R.string.search_no_results_for_query, searchQuery)
+                stringResource(Res.string.search_no_results_for_query, searchQuery)
             } else {
-                stringResource(R.string.search_nothing_found)
+                stringResource(Res.string.search_nothing_found)
             },
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
@@ -1107,7 +1109,7 @@ fun EmptySearchResults(searchQuery: String, colorScheme: ColorScheme) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = stringResource(R.string.search_try_different_or_filters),
+            text = stringResource(Res.string.search_try_different_or_filters),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
             textAlign = TextAlign.Center
@@ -1156,7 +1158,7 @@ fun SearchResultsList(
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(stringResource(R.string.search_no_results_found), style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(Res.string.search_no_results_found), style = MaterialTheme.typography.bodyLarge)
         }
         return
     }
@@ -1480,7 +1482,7 @@ fun SearchResultAlbumItem(
             ) {
                 SmartImage(
                     model = album.albumArtUriString,
-                    contentDescription = stringResource(R.string.cd_album_art_of, album.title),
+                    contentDescription = stringResource(Res.string.cd_album_art_of, album.title),
                     targetSize = SmartImageListTargetSize,
                     modifier = Modifier
                         .size(56.dp)
@@ -1515,7 +1517,7 @@ fun SearchResultAlbumItem(
                         contentColor = MaterialTheme.colorScheme.onSecondary
                     )
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(R.string.cd_play_album), modifier = Modifier.size(24.dp))
+                    Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_album), modifier = Modifier.size(24.dp))
                 }
             }
             if (isSelectionMode && isSelected) {
@@ -1565,7 +1567,7 @@ fun SearchResultArtistItem(
             if (!artist.effectiveImageUrl.isNullOrBlank()) {
                 SmartImage(
                     model = artist.effectiveImageUrl,
-                    contentDescription = stringResource(R.string.cd_artist_format, artist.name),
+                    contentDescription = stringResource(Res.string.cd_artist_format, artist.name),
                     targetSize = SmartImageListTargetSize,
                     modifier = Modifier
                         .size(56.dp)
@@ -1574,7 +1576,7 @@ fun SearchResultArtistItem(
             } else {
                 Icon(
                     painter = painterResource(id = R.drawable.rounded_artist_24),
-                    contentDescription = stringResource(R.string.cd_artist_icon),
+                    contentDescription = stringResource(Res.string.cd_artist_icon),
                     modifier = Modifier
                         .size(56.dp)
                         .background(MaterialTheme.colorScheme.tertiaryContainer, ShapeCache.expressiveAvatar)
@@ -1606,7 +1608,7 @@ fun SearchResultArtistItem(
                     contentColor = MaterialTheme.colorScheme.onTertiary
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(R.string.cd_play_artist), modifier = Modifier.size(24.dp))
+                Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_artist), modifier = Modifier.size(24.dp))
             }
         }
     }
@@ -1696,7 +1698,7 @@ fun SearchResultPlaylistItem(
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(R.string.cd_play_playlist), modifier = Modifier.size(24.dp))
+                    Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_playlist), modifier = Modifier.size(24.dp))
                 }
             }
             if (isSelectionMode && isSelected) {
@@ -1791,7 +1793,7 @@ fun SearchFilterChip(
         if (selected) {
             Icon(
                 painter = painterResource(R.drawable.rounded_check_circle_24),
-                contentDescription = stringResource(R.string.presentation_batch_g_cd_selected),
+                contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                 modifier = Modifier.size(FilterChipDefaults.IconSize)
             )
             Spacer(Modifier.width(8.dp))

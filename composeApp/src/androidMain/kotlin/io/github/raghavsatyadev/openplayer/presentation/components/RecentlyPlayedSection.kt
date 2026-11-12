@@ -48,13 +48,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.model.RecentlyPlayedSongUiModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ThemeStateHolder
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private val HomeRecentlyPlayedPillHeight = 58.dp
 private val HomeRecentlyPlayedPillSpacing = 8.dp
@@ -130,7 +131,7 @@ fun RecentlyPlayedSection(
         ) {
             Text(
                 modifier = Modifier.padding(start = 6.dp),
-                text = title ?: stringResource(R.string.presentation_batch_g_recently_played_title),
+                text = title ?: stringResource(Res.string.presentation_batch_g_recently_played_title),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold
             )
@@ -323,7 +324,7 @@ private fun RecentlyPlayedPill(
             // Pills have no more-options button, so a long press opens the song options.
             // combinedClickable performs the long-press haptic itself.
             .combinedClickable(
-                onLongClickLabel = stringResource(R.string.presentation_batch_b_more_options),
+                onLongClickLabel = stringResource(Res.string.presentation_batch_b_more_options),
                 onLongClick = onLongClick,
                 onClick = onClick
             )

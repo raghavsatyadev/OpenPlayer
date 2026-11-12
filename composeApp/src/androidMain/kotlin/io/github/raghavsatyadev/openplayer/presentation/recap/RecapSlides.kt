@@ -57,7 +57,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -81,6 +80,9 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** Bars on the listening clock, one per hour. */
 private const val HOURS_PER_DAY = 24
@@ -144,7 +146,7 @@ private fun IntroSlide(
 ) {
     RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState, horizontalAlignment = Alignment.CenterHorizontally) {
         RecapKicker(
-            text = stringResource(R.string.recap_intro_kicker),
+            text = stringResource(Res.string.recap_intro_kicker),
             color = palette.content,
             textAlign = TextAlign.Center,
             modifier = Modifier.recapReveal(reveal, order = 0)
@@ -186,7 +188,7 @@ private fun IntroSlide(
         )
         Spacer(Modifier.height(12.dp))
         RecapBody(
-            text = stringResource(R.string.recap_intro_subtitle),
+            text = stringResource(Res.string.recap_intro_subtitle),
             color = palette.content,
             textAlign = TextAlign.Center,
             modifier = Modifier.recapReveal(reveal, order = 4)
@@ -202,7 +204,7 @@ private fun IntroSlide(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = stringResource(R.string.recap_tap_hint),
+                text = stringResource(Res.string.recap_tap_hint),
                 style = MaterialTheme.typography.labelLarge,
                 fontFamily = rememberRecapFlexFont(weight = 620, width = 106f),
                 color = palette.content
@@ -246,7 +248,7 @@ private fun MinutesSlide(
         )
         RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState) {
             RecapKicker(
-                text = stringResource(R.string.recap_minutes_kicker, slide.year),
+                text = stringResource(Res.string.recap_minutes_kicker, slide.year),
                 color = palette.content,
                 modifier = Modifier.recapReveal(reveal, order = 0)
             )
@@ -260,15 +262,15 @@ private fun MinutesSlide(
                     .recapReveal(reveal, order = 1)
             )
             Text(
-                text = pluralStringResource(R.plurals.recap_minutes_unit, minutesForPlural),
+                text = pluralStringResource(Res.plurals.recap_minutes_unit, minutesForPlural),
                 modifier = Modifier.recapReveal(reveal, order = 2),
                 style = MaterialTheme.typography.headlineMedium,
                 fontFamily = rememberRecapFlexFont(weight = 720, width = 114f),
                 color = palette.content
             )
             val equivalent = when {
-                days >= 1 -> pluralStringResource(R.plurals.recap_minutes_days_equivalent, days, days)
-                hours >= 1 -> pluralStringResource(R.plurals.recap_minutes_hours_equivalent, hours, hours)
+                days >= 1 -> pluralStringResource(Res.plurals.recap_minutes_days_equivalent, days, days)
+                hours >= 1 -> pluralStringResource(Res.plurals.recap_minutes_hours_equivalent, hours, hours)
                 else -> null
             }
             if (equivalent != null) {
@@ -287,13 +289,13 @@ private fun MinutesSlide(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 RecapStatTile(
-                    label = stringResource(R.string.recap_minutes_daily_average),
+                    label = stringResource(Res.string.recap_minutes_daily_average),
                     value = formatRecapDuration(slide.averageDailyMs),
                     color = palette.content,
                     modifier = Modifier.weight(1f)
                 )
                 RecapStatTile(
-                    label = stringResource(R.string.recap_minutes_active_days),
+                    label = stringResource(Res.string.recap_minutes_active_days),
                     value = activeDays,
                     color = palette.content,
                     modifier = Modifier.weight(1f)
@@ -337,7 +339,7 @@ private fun MonthsSlide(
 
     RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState) {
         RecapKicker(
-            text = stringResource(R.string.recap_months_kicker),
+            text = stringResource(Res.string.recap_months_kicker),
             color = palette.content,
             modifier = Modifier.recapReveal(reveal, order = 0)
         )
@@ -352,7 +354,7 @@ private fun MonthsSlide(
         )
         Spacer(Modifier.height(8.dp))
         RecapBody(
-            text = stringResource(R.string.recap_months_detail, formatRecapDuration(peakMs)),
+            text = stringResource(Res.string.recap_months_detail, formatRecapDuration(peakMs)),
             color = palette.content,
             modifier = Modifier.recapReveal(reveal, order = 2)
         )
@@ -466,7 +468,7 @@ private fun ClockSlide(
 
     RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState, horizontalAlignment = Alignment.CenterHorizontally) {
         RecapKicker(
-            text = stringResource(R.string.recap_clock_kicker),
+            text = stringResource(Res.string.recap_clock_kicker),
             color = palette.content,
             textAlign = TextAlign.Center,
             modifier = Modifier.recapReveal(reveal, order = 0)
@@ -528,7 +530,7 @@ private fun ClockSlide(
         if (favoriteDay != null) {
             Spacer(Modifier.height(20.dp))
             RecapChip(
-                text = stringResource(R.string.recap_clock_favorite_day, favoriteDay),
+                text = stringResource(Res.string.recap_clock_favorite_day, favoriteDay),
                 color = palette.content,
                 modifier = Modifier.recapReveal(reveal, order = 5)
             )
@@ -644,7 +646,7 @@ private fun DedicationSlide(
         )
         RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState) {
             RecapKicker(
-                text = stringResource(R.string.recap_dedication_kicker),
+                text = stringResource(Res.string.recap_dedication_kicker),
                 color = palette.content,
                 modifier = Modifier.recapReveal(reveal, order = 0)
             )
@@ -656,7 +658,7 @@ private fun DedicationSlide(
                 modifier = Modifier.recapReveal(reveal, order = 1)
             )
             Text(
-                text = pluralStringResource(R.plurals.recap_streak_unit, streak),
+                text = pluralStringResource(Res.plurals.recap_streak_unit, streak),
                 modifier = Modifier.recapReveal(reveal, order = 2),
                 style = MaterialTheme.typography.headlineMedium,
                 fontFamily = rememberRecapFlexFont(weight = 720, width = 114f),
@@ -670,13 +672,13 @@ private fun DedicationSlide(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 RecapStatTile(
-                    label = stringResource(R.string.recap_dedication_longest_session),
+                    label = stringResource(Res.string.recap_dedication_longest_session),
                     value = formatRecapDuration(slide.longestSessionMs),
                     color = palette.content,
                     modifier = Modifier.weight(1f)
                 )
                 RecapStatTile(
-                    label = stringResource(R.string.recap_dedication_biggest_day),
+                    label = stringResource(Res.string.recap_dedication_biggest_day),
                     value = biggestDay,
                     detail = formatRecapDuration(slide.biggestDayMs),
                     color = palette.content,
@@ -704,7 +706,7 @@ private fun DedicationSlide(
                     )
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = stringResource(R.string.recap_dedication_first_song),
+                            text = stringResource(Res.string.recap_dedication_first_song),
                             style = MaterialTheme.typography.labelLarge,
                             color = palette.content.copy(alpha = 0.78f),
                             maxLines = 1,
@@ -767,7 +769,7 @@ private fun GenresSlide(
         )
         RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState) {
             RecapKicker(
-                text = stringResource(R.string.recap_genres_kicker),
+                text = stringResource(Res.string.recap_genres_kicker),
                 color = palette.content,
                 modifier = Modifier.recapReveal(reveal, order = 0)
             )
@@ -781,7 +783,7 @@ private fun GenresSlide(
             )
             Spacer(Modifier.height(8.dp))
             RecapBody(
-                text = stringResource(R.string.recap_genres_share, percent.format(leader.share.toDouble())),
+                text = stringResource(Res.string.recap_genres_share, percent.format(leader.share.toDouble())),
                 color = palette.content,
                 modifier = Modifier.recapReveal(reveal, order = 2)
             )
@@ -865,7 +867,7 @@ private fun DecadeSlide(
     }
     RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState, horizontalAlignment = Alignment.CenterHorizontally) {
         RecapKicker(
-            text = stringResource(R.string.recap_decade_kicker),
+            text = stringResource(Res.string.recap_decade_kicker),
             color = palette.content,
             textAlign = TextAlign.Center,
             modifier = Modifier.recapReveal(reveal, order = 0)
@@ -892,7 +894,7 @@ private fun DecadeSlide(
                 modifier = Modifier.fillMaxSize()
             )
             RecapHeadline(
-                text = stringResource(R.string.recap_decade_value, slide.decade),
+                text = stringResource(Res.string.recap_decade_value, slide.decade),
                 color = palette.onAccent,
                 maxFontSize = 72.sp,
                 minFontSize = 28.sp,
@@ -904,7 +906,7 @@ private fun DecadeSlide(
         }
         Spacer(Modifier.height(28.dp))
         RecapBody(
-            text = stringResource(R.string.recap_decade_detail, percent),
+            text = stringResource(Res.string.recap_decade_detail, percent),
             color = palette.content,
             textAlign = TextAlign.Center,
             modifier = Modifier.recapReveal(reveal, order = 3)
@@ -928,7 +930,7 @@ private fun AlbumsSlide(
     val fanned = slide.albums.take(3)
     RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState) {
         RecapKicker(
-            text = stringResource(R.string.recap_albums_kicker),
+            text = stringResource(Res.string.recap_albums_kicker),
             color = palette.content,
             modifier = Modifier.recapReveal(reveal, order = 0)
         )
@@ -982,7 +984,7 @@ private fun AlbumsSlide(
         ) {
             RecapChip(text = formatRecapDuration(leader.durationMs), color = palette.content)
             RecapChip(
-                text = pluralStringResource(R.plurals.stats_plays_count, leader.playCount, leader.playCount),
+                text = pluralStringResource(Res.plurals.stats_plays_count, leader.playCount, leader.playCount),
                 color = palette.content
             )
         }
@@ -1003,7 +1005,7 @@ private fun AlbumsSlide(
         )
         Spacer(Modifier.height(16.dp))
         RecapBody(
-            text = pluralStringResource(R.plurals.recap_unique_albums, slide.uniqueAlbums, slide.uniqueAlbums),
+            text = pluralStringResource(Res.plurals.recap_unique_albums, slide.uniqueAlbums, slide.uniqueAlbums),
             color = palette.content,
             modifier = Modifier.recapReveal(reveal, order = 6)
         )
@@ -1023,7 +1025,7 @@ private fun ArtistsSlide(
     val spin = rememberSpin(active = isActive, periodMillis = 30_000)
     RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState) {
         RecapKicker(
-            text = stringResource(R.string.recap_artists_kicker),
+            text = stringResource(Res.string.recap_artists_kicker),
             color = palette.content,
             modifier = Modifier.recapReveal(reveal, order = 0)
         )
@@ -1074,7 +1076,7 @@ private fun ArtistsSlide(
         ) {
             RecapChip(text = formatRecapDuration(leader.durationMs), color = palette.content)
             RecapChip(
-                text = pluralStringResource(R.plurals.stats_tracks_count, leader.songCount, leader.songCount),
+                text = pluralStringResource(Res.plurals.stats_tracks_count, leader.songCount, leader.songCount),
                 color = palette.content
             )
         }
@@ -1096,7 +1098,7 @@ private fun ArtistsSlide(
         )
         Spacer(Modifier.height(16.dp))
         RecapBody(
-            text = pluralStringResource(R.plurals.recap_unique_artists, slide.uniqueArtists, slide.uniqueArtists),
+            text = pluralStringResource(Res.plurals.recap_unique_artists, slide.uniqueArtists, slide.uniqueArtists),
             color = palette.content,
             modifier = Modifier.recapReveal(reveal, order = 6)
         )
@@ -1118,7 +1120,7 @@ private fun SongsSlide(
     val towardsSleeve = if (LocalLayoutDirection.current == LayoutDirection.Rtl) 1f else -1f
     RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState) {
         RecapKicker(
-            text = stringResource(R.string.recap_songs_kicker),
+            text = stringResource(Res.string.recap_songs_kicker),
             color = palette.content,
             modifier = Modifier.recapReveal(reveal, order = 0)
         )
@@ -1175,7 +1177,7 @@ private fun SongsSlide(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             RecapChip(
-                text = pluralStringResource(R.plurals.stats_plays_count, leader.playCount, leader.playCount),
+                text = pluralStringResource(Res.plurals.stats_plays_count, leader.playCount, leader.playCount),
                 color = palette.content
             )
             RecapChip(text = formatRecapDuration(leader.durationMs), color = palette.content)
@@ -1197,7 +1199,7 @@ private fun SongsSlide(
         )
         Spacer(Modifier.height(16.dp))
         RecapBody(
-            text = pluralStringResource(R.plurals.recap_unique_songs, slide.uniqueSongs, slide.uniqueSongs),
+            text = pluralStringResource(Res.plurals.recap_unique_songs, slide.uniqueSongs, slide.uniqueSongs),
             color = palette.content,
             modifier = Modifier.recapReveal(reveal, order = 6)
         )

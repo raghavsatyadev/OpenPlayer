@@ -42,6 +42,8 @@ import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerVideoViewModel
 import kotlinx.collections.immutable.ImmutableList
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * The full player's cover: the matching local video when one exists and video is on, otherwise
@@ -124,7 +126,7 @@ internal fun PlayerVideoCover(
                 ) {
                     CoverButton(
                         iconRes = R.drawable.rounded_fullscreen_24,
-                        description = stringResource(R.string.video_fullscreen),
+                        description = stringResource(Res.string.video_fullscreen),
                         onClick = { viewModel.setFullscreen(true) },
                     )
                     toggleButton()

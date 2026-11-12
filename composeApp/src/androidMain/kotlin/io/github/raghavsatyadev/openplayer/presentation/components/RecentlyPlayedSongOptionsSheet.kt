@@ -9,16 +9,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.util.UnstableApi
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * Song options for a Home "Recently played" pill. The pills have no more-options button, so a
@@ -38,8 +38,8 @@ fun RecentlyPlayedSongOptionsSheet(
     onNavigateToArtist: (artistId: Long) -> Unit,
     onNavigateToGenre: (Song) -> Unit
 ) {
-    val addedToQueueMessage = stringResource(R.string.toast_added_to_queue)
-    val playingNextMessage = stringResource(R.string.toast_playing_next)
+    val addedToQueueMessage = stringResource(Res.string.toast_added_to_queue)
+    val playingNextMessage = stringResource(Res.string.toast_playing_next)
     val selectedSongForInfo by playerViewModel.selectedSongForInfo.collectAsStateWithLifecycle()
     val favoriteSongIds by playerViewModel.favoriteSongIds.collectAsStateWithLifecycle()
     var showPlaylistBottomSheet by remember(song.id) { mutableStateOf(false) }

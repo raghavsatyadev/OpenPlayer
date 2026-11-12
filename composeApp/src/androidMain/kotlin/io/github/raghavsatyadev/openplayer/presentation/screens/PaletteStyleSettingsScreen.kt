@@ -72,6 +72,8 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewMo
 import io.github.raghavsatyadev.openplayer.ui.theme.LocalOpenPlayerDarkTheme
 import io.github.raghavsatyadev.openplayer.ui.theme.generateColorSchemeFromSeed
 import kotlin.math.roundToInt
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -208,13 +210,13 @@ fun PaletteStyleSettingsScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.presentation_batch_f_palette_style_heading),
+                        text = stringResource(Res.string.presentation_batch_f_palette_style_heading),
                         style = MaterialTheme.typography.titleLarge,
                         color = previewScheme.onSurface,
                         fontWeight = FontWeight.SemiBold
                     )
                     Text(
-                        text = stringResource(R.string.presentation_batch_f_palette_style_subtitle),
+                        text = stringResource(Res.string.presentation_batch_f_palette_style_subtitle),
                         style = MaterialTheme.typography.bodyMedium,
                         color = previewScheme.onSurfaceVariant
                     )
@@ -299,14 +301,14 @@ private fun PaletteStyleHeader(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                    contentDescription = stringResource(R.string.presentation_batch_f_cd_close)
+                    contentDescription = stringResource(Res.string.presentation_batch_f_cd_close)
                 )
             }
 
             Spacer(modifier = Modifier.width(12.dp))
 
             Text(
-                text = stringResource(R.string.presentation_batch_f_colors_title),
+                text = stringResource(Res.string.presentation_batch_f_colors_title),
                 style = MaterialTheme.typography.headlineMedium,
                 color = scheme.onSurface,
                 modifier = Modifier.weight(1f)
@@ -325,7 +327,7 @@ private fun PaletteStyleHeader(
                 )
             ) {
                 Text(
-                    text = stringResource(R.string.presentation_batch_f_apply),
+                    text = stringResource(Res.string.presentation_batch_f_apply),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -644,13 +646,13 @@ private fun PaletteAccuracySlider(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = stringResource(R.string.presentation_batch_f_color_accuracy_title),
+                    text = stringResource(Res.string.presentation_batch_f_color_accuracy_title),
                     style = MaterialTheme.typography.titleMedium,
                     color = scheme.onSurface,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = stringResource(R.string.presentation_batch_f_color_accuracy_subtitle),
+                    text = stringResource(Res.string.presentation_batch_f_color_accuracy_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = scheme.onSurfaceVariant
                 )
@@ -706,12 +708,12 @@ private fun PaletteAccuracySlider(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(R.string.presentation_batch_f_accuracy_current),
+                text = stringResource(Res.string.presentation_batch_f_accuracy_current),
                 style = MaterialTheme.typography.bodySmall,
                 color = scheme.onSurfaceVariant
             )
             Text(
-                text = stringResource(R.string.presentation_batch_f_accuracy_more_accurate),
+                text = stringResource(Res.string.presentation_batch_f_accuracy_more_accurate),
                 style = MaterialTheme.typography.bodySmall,
                 color = scheme.onSurfaceVariant
             )
@@ -745,9 +747,9 @@ private fun albumArtPaletteStyleLabel(style: AlbumArtPaletteStyle): String =
 private fun accuracySummaryText(value: Int): String {
     val clamped = AlbumArtColorAccuracy.clamp(value)
     return when {
-        clamped == 0 -> stringResource(R.string.presentation_batch_f_accuracy_summary_current)
-        clamped in 1..3 -> stringResource(R.string.presentation_batch_f_accuracy_summary_subtle, clamped)
-        clamped in 4..7 -> stringResource(R.string.presentation_batch_f_accuracy_summary_balanced, clamped)
-        else -> stringResource(R.string.presentation_batch_f_accuracy_summary_precise, clamped)
+        clamped == 0 -> stringResource(Res.string.presentation_batch_f_accuracy_summary_current)
+        clamped in 1..3 -> stringResource(Res.string.presentation_batch_f_accuracy_summary_subtle, clamped)
+        clamped in 4..7 -> stringResource(Res.string.presentation_batch_f_accuracy_summary_balanced, clamped)
+        else -> stringResource(Res.string.presentation_batch_f_accuracy_summary_precise, clamped)
     }
 }

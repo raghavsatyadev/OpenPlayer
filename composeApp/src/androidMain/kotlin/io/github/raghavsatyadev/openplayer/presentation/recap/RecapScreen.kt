@@ -102,6 +102,8 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import co.touchlab.kermit.Logger
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** How long a slide stays before the story moves on by itself. */
 private const val SLIDE_DURATION_MS = 7_000
@@ -148,8 +150,8 @@ fun RecapScreen(
         }
 
         is RecapUiState.Ready -> {
-            val queueName = stringResource(R.string.recap_top_songs_queue_name, state.model.year)
-            val shareFailed = stringResource(R.string.recap_share_failed)
+            val queueName = stringResource(Res.string.recap_top_songs_queue_name, state.model.year)
+            val shareFailed = stringResource(Res.string.recap_share_failed)
             val scope = rememberCoroutineScope()
             RecapStory(
                 model = state.model,
@@ -274,8 +276,8 @@ private fun RecapStory(
     }
 
     val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-    val nextLabel = stringResource(R.string.recap_action_next_slide)
-    val previousLabel = stringResource(R.string.recap_action_previous_slide)
+    val nextLabel = stringResource(Res.string.recap_action_next_slide)
+    val previousLabel = stringResource(Res.string.recap_action_previous_slide)
     val safeDrawing = WindowInsets.safeDrawing.asPaddingValues()
     val slidePadding = PaddingValues(
         top = safeDrawing.calculateTopPadding() + ChromeHeight,
@@ -398,8 +400,7 @@ private fun RecapChrome(
     val tint by animateColorAsState(currentPalette.content, label = "recapChromeTint")
     RecapSystemBarsAppearance(lightBackground = currentPalette.background.luminance() > 0.5f)
 
-    val progressDescription = stringResource(
-        R.string.recap_cd_slide_progress,
+    val progressDescription = stringResource(Res.string.recap_cd_slide_progress,
         pagerState.currentPage + 1,
         slideCount
     )
@@ -442,7 +443,7 @@ private fun RecapChrome(
             IconButton(onClick = onClose, colors = buttonColors) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                    contentDescription = stringResource(R.string.recap_cd_close)
+                    contentDescription = stringResource(Res.string.recap_cd_close)
                 )
             }
         }
@@ -464,7 +465,7 @@ private fun RecapStatusPage(onClose: () -> Unit, content: @Composable () -> Unit
                 .align(Alignment.TopEnd)
                 .padding(8.dp)
         ) {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), contentDescription = stringResource(R.string.recap_cd_close))
+            Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), contentDescription = stringResource(Res.string.recap_cd_close))
         }
         Box(modifier = Modifier.align(Alignment.Center)) {
             content()
@@ -494,21 +495,21 @@ private fun RecapNotEnoughData(year: Int, onClose: () -> Unit) {
             )
         }
         Text(
-            text = stringResource(R.string.recap_not_enough_title),
+            text = stringResource(Res.string.recap_not_enough_title),
             style = MaterialTheme.typography.headlineSmall,
             fontFamily = rememberRecapFlexFont(weight = 760, width = 112f),
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center
         )
         Text(
-            text = stringResource(R.string.recap_not_enough_subtitle, year),
+            text = stringResource(Res.string.recap_not_enough_subtitle, year),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
         Spacer(Modifier.height(4.dp))
         FilledTonalButton(onClick = onClose) {
-            Text(stringResource(R.string.recap_close))
+            Text(stringResource(Res.string.recap_close))
         }
     }
 }

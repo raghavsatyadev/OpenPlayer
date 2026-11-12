@@ -39,6 +39,8 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ParametricEqUi
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ParametricEqViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ParametricMessage
 import java.util.Locale
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 class ParametricEqActions(
     val onPreampChange: (Float) -> Unit,
@@ -64,19 +66,19 @@ fun EqualizerModeSwitch(
                 selected = !parametric,
                 onClick = { onParametricChange(false) },
                 shape = SegmentedButtonDefaults.itemShape(0, 2),
-            ) { Text(stringResource(R.string.parametric_eq_mode_graphic)) }
+            ) { Text(stringResource(Res.string.parametric_eq_mode_graphic)) }
             SegmentedButton(
                 selected = parametric,
                 onClick = { onParametricChange(true) },
                 enabled = parametricAvailable,
                 shape = SegmentedButtonDefaults.itemShape(1, 2),
-            ) { Text(stringResource(R.string.parametric_eq_mode_parametric)) }
+            ) { Text(stringResource(Res.string.parametric_eq_mode_parametric)) }
         }
         AnimatedVisibility(!parametricAvailable) {
-            Text(stringResource(R.string.parametric_eq_unavailable), color = MaterialTheme.colorScheme.error)
+            Text(stringResource(Res.string.parametric_eq_unavailable), color = MaterialTheme.colorScheme.error)
         }
         Text(
-            stringResource(R.string.parametric_eq_mode_hint),
+            stringResource(Res.string.parametric_eq_mode_hint),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -93,7 +95,7 @@ fun ParametricEqSection(viewModel: ParametricEqViewModel, modifier: Modifier = M
     val exportLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
         if (uri != null) viewModel.exportTo(uri)
     }
-    val fileName = stringResource(R.string.parametric_eq_export_file_name)
+    val fileName = stringResource(Res.string.parametric_eq_export_file_name)
     val actions = remember(viewModel, importLauncher, exportLauncher, fileName) {
         ParametricEqActions(
             onPreampChange = viewModel::setPreamp,
@@ -120,31 +122,31 @@ fun ParametricEqEditor(
         modifier.fillMaxWidth().padding(horizontal = 16.dp).animateContentSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text(stringResource(R.string.parametric_eq_title), style = MaterialTheme.typography.titleLarge)
+        Text(stringResource(Res.string.parametric_eq_title), style = MaterialTheme.typography.titleLarge)
         AnimatedVisibility(!state.available) {
-            Text(stringResource(R.string.parametric_eq_unavailable), color = MaterialTheme.colorScheme.error)
+            Text(stringResource(Res.string.parametric_eq_unavailable), color = MaterialTheme.colorScheme.error)
         }
-        ParametricResponseCurve(profile, stringResource(R.string.parametric_eq_curve_cd))
+        ParametricResponseCurve(profile, stringResource(Res.string.parametric_eq_curve_cd))
         LabeledSlider(
-            label = stringResource(R.string.parametric_eq_preamp),
-            valueText = stringResource(R.string.parametric_eq_db_value, String.format(Locale.US, "%+.1f", profile.preampDb)),
+            label = stringResource(Res.string.parametric_eq_preamp),
+            valueText = stringResource(Res.string.parametric_eq_db_value, String.format(Locale.US, "%+.1f", profile.preampDb)),
             value = profile.preampDb,
             valueRange = -24f..12f,
             onValueChange = { actions.onPreampChange(Math.round(it * 10f) / 10f) },
         )
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
-                stringResource(R.string.parametric_eq_bands_title),
+                stringResource(Res.string.parametric_eq_bands_title),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.weight(1f),
             )
             AnimatedVisibility(profile.bands.isNotEmpty()) {
-                TextButton(onClick = actions.onClear) { Text(stringResource(R.string.parametric_eq_clear)) }
+                TextButton(onClick = actions.onClear) { Text(stringResource(Res.string.parametric_eq_clear)) }
             }
         }
         AnimatedVisibility(profile.bands.isEmpty(), enter = fadeIn(), exit = fadeOut()) {
             Text(
-                stringResource(R.string.parametric_eq_empty),
+                stringResource(Res.string.parametric_eq_empty),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -167,17 +169,17 @@ fun ParametricEqEditor(
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             FilledTonalButton(onClick = actions.onAddBand) {
                 Icon(ImageVector.vectorResource(R.drawable.rounded_add_24), null)
-                Text(stringResource(R.string.parametric_eq_add_band), Modifier.padding(start = 6.dp))
+                Text(stringResource(Res.string.parametric_eq_add_band), Modifier.padding(start = 6.dp))
             }
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick = actions.onImportClick) {
                 Icon(ImageVector.vectorResource(R.drawable.rounded_upload_file_24), null)
-                Text(stringResource(R.string.parametric_eq_import), Modifier.padding(start = 6.dp))
+                Text(stringResource(Res.string.parametric_eq_import), Modifier.padding(start = 6.dp))
             }
             OutlinedButton(onClick = actions.onExportClick, enabled = profile.bands.isNotEmpty()) {
                 Icon(ImageVector.vectorResource(R.drawable.rounded_file_download_24), null)
-                Text(stringResource(R.string.parametric_eq_export), Modifier.padding(start = 6.dp))
+                Text(stringResource(Res.string.parametric_eq_export), Modifier.padding(start = 6.dp))
             }
         }
         AnimatedVisibility(state.message != null) {

@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.history.importer.HistoryImportState
 import io.github.raghavsatyadev.openplayer.data.history.importer.HistorySource
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * The body of the import sheet: pick a source, watch progress, read the summary. Stateless, so
@@ -50,7 +52,7 @@ fun HistoryImportContent(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = stringResource(R.string.history_import_title),
+            text = stringResource(Res.string.history_import_title),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurface
         )
@@ -76,7 +78,7 @@ fun HistoryImportContent(
 private fun IdleBody(onPick: (HistorySource) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
-            text = stringResource(R.string.history_import_intro),
+            text = stringResource(Res.string.history_import_intro),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -139,7 +141,7 @@ private fun WorkingBody(state: HistoryImportState.Working) {
         Text(stringResource(phase), style = MaterialTheme.typography.titleMedium)
         LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
         Text(
-            stringResource(R.string.history_import_plays_read, state.parsed),
+            stringResource(Res.string.history_import_plays_read, state.parsed),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -152,12 +154,12 @@ private fun FailedBody(onRetry: () -> Unit) {
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(stringResource(R.string.history_import_failed_title), style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(Res.string.history_import_failed_title), style = MaterialTheme.typography.titleMedium)
         Text(
-            stringResource(R.string.history_import_failed_desc),
+            stringResource(Res.string.history_import_failed_desc),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        TextButton(onClick = onRetry) { Text(stringResource(R.string.history_import_try_again)) }
+        TextButton(onClick = onRetry) { Text(stringResource(Res.string.history_import_try_again)) }
     }
 }

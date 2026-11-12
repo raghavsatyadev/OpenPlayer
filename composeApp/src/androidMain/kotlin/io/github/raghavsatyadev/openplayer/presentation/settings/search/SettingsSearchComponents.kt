@@ -47,6 +47,8 @@ import io.github.raghavsatyadev.openplayer.presentation.screens.settingsAccentCo
 import io.github.raghavsatyadev.openplayer.presentation.screens.settingsGroupItemShape
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsUiState
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewModel
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun SettingsSearchResultsContent(
@@ -78,7 +80,7 @@ fun SettingsSearchResultsContent(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = stringResource(R.string.settings_search_no_results, query),
+                    text = stringResource(Res.string.settings_search_no_results, query),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Medium

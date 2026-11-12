@@ -86,7 +86,6 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.window.core.layout.WindowSizeClass
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
@@ -164,6 +163,8 @@ import androidx.compose.runtime.Immutable
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 
 @Immutable
@@ -587,7 +588,7 @@ class MainActivity : ComponentActivity() {
                 CircularWavyProgressIndicator()
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    text = stringResource(R.string.setup_gate_preparing),
+                    text = stringResource(Res.string.setup_gate_preparing),
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center
                 )
@@ -1161,7 +1162,7 @@ class MainActivity : ComponentActivity() {
                 CircularWavyProgressIndicator()
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = stringResource(R.string.sync_preparing_library),
+                    text = stringResource(Res.string.sync_preparing_library),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -1174,8 +1175,7 @@ class MainActivity : ComponentActivity() {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = stringResource(
-                            R.string.sync_scanned_count,
+                        text = stringResource(Res.string.sync_scanned_count,
                             syncProgress.currentCount,
                             syncProgress.totalCount
                         ),

@@ -22,7 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.R
@@ -30,6 +29,8 @@ import io.github.raghavsatyadev.openplayer.data.model.Song
 import kotlin.math.floor
 import kotlin.math.sqrt
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun PlaylistArtCollage(
@@ -46,7 +47,7 @@ fun PlaylistArtCollage(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
-                contentDescription = stringResource(R.string.cd_playlist_artwork),
+                contentDescription = stringResource(Res.string.cd_playlist_artwork),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(12.dp),

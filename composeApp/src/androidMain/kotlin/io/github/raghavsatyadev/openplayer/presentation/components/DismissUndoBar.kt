@@ -28,12 +28,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun DismissUndoBar(
@@ -71,7 +72,7 @@ fun DismissUndoBar(
             ) {
                 Text(
                     modifier = Modifier.padding(start = 10.dp),
-                    text = stringResource(R.string.playlist_dismissed_message),
+                    text = stringResource(Res.string.playlist_dismissed_message),
                     style = MaterialTheme.typography.titleSmall
                         .copy(
                             fontFamily = RoundedSans
@@ -86,7 +87,7 @@ fun DismissUndoBar(
                         ),
                         onClick = onUndo
                     ) {
-                        Text(stringResource(R.string.action_undo), color = MaterialTheme.colorScheme.primary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(stringResource(Res.string.action_undo), color = MaterialTheme.colorScheme.primary, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                     FilledIconButton(
                         colors = IconButtonDefaults.filledIconButtonColors(
@@ -97,7 +98,7 @@ fun DismissUndoBar(
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                            contentDescription = stringResource(R.string.cd_close),
+                            contentDescription = stringResource(Res.string.cd_close),
                             tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                         )
                     }

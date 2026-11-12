@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -36,6 +35,8 @@ import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.DuplicateSongsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -45,15 +46,15 @@ fun DuplicateSongsScreen(
     viewModel: DuplicateSongsViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val duplicatesQueueName = stringResource(R.string.duplicates_title)
+    val duplicatesQueueName = stringResource(Res.string.duplicates_title)
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.duplicates_title)) },
+                title = { Text(stringResource(Res.string.duplicates_title)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), stringResource(R.string.auth_cd_back))
+                        Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), stringResource(Res.string.auth_cd_back))
                     }
                 }
             )
@@ -69,7 +70,7 @@ fun DuplicateSongsScreen(
             uiState.groups.isEmpty() -> {
                 Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
                     Text(
-                        stringResource(R.string.duplicates_none),
+                        stringResource(Res.string.duplicates_none),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -84,8 +85,7 @@ fun DuplicateSongsScreen(
                 ) {
                     item {
                         Text(
-                            text = stringResource(
-                                R.string.duplicates_summary,
+                            text = stringResource(Res.string.duplicates_summary,
                                 uiState.groups.size,
                                 uiState.totalDuplicates
                             ),
@@ -115,14 +115,14 @@ private fun DuplicateGroupCard(
 ) {
     Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)) {
         Text(
-            text = stringResource(R.string.duplicates_group_title_format, group.title, group.artist),
+            text = stringResource(Res.string.duplicates_group_title_format, group.title, group.artist),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         Text(
-            text = stringResource(R.string.duplicates_group_count, group.songs.size),
+            text = stringResource(Res.string.duplicates_group_count, group.songs.size),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.primary
         )

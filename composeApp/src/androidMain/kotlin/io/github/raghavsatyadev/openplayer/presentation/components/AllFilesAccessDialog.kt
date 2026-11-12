@@ -4,9 +4,9 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun AllFilesAccessDialog(
@@ -15,16 +15,16 @@ fun AllFilesAccessDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(id = R.string.all_files_access_title)) },
-        text = { Text(text = stringResource(id = R.string.all_files_access_description)) },
+        title = { Text(text = stringResource(Res.string.all_files_access_title)) },
+        text = { Text(text = stringResource(Res.string.all_files_access_description)) },
         confirmButton = {
             TextButton(onClick = onConfirm) {
-                Text(text = stringResource(id = R.string.grant_permission_button), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(text = stringResource(Res.string.grant_permission_button), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(text = stringResource(id = R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(text = stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     )

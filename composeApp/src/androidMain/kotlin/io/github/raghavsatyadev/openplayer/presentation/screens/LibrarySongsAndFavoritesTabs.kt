@@ -40,7 +40,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -73,6 +72,8 @@ import kotlinx.coroutines.launch
 import androidx.compose.ui.text.style.TextOverflow
 import io.github.raghavsatyadev.openplayer.presentation.utils.SegmentedItemShapeDefaults
 import io.github.raghavsatyadev.openplayer.presentation.utils.getSegmentedItemShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @Composable
@@ -357,15 +358,15 @@ fun LibrarySongsTabPaginated(
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(R.string.library_error_loading_songs), style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(Res.string.library_error_loading_songs), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        error.localizedMessage ?: stringResource(R.string.error_unknown),
+                        error.localizedMessage ?: stringResource(Res.string.error_unknown),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Button(onClick = { paginatedSongs.retry() }) {
-                        Text(stringResource(R.string.library_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(stringResource(Res.string.library_retry), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }
@@ -381,14 +382,14 @@ fun LibrarySongsTabPaginated(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
                         painter = painterResource(id = R.drawable.rounded_music_off_24),
-                        contentDescription = stringResource(R.string.cd_no_songs_in_library),
+                        contentDescription = stringResource(Res.string.cd_no_songs_in_library),
                         modifier = Modifier.size(48.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(Modifier.height(8.dp))
-                    Text(stringResource(R.string.library_no_songs_in_library_message), style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(Res.string.library_no_songs_in_library_message), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        stringResource(R.string.library_no_songs_rescan_hint),
+                        stringResource(Res.string.library_no_songs_rescan_hint),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center

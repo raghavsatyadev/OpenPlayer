@@ -29,11 +29,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * A list of strings edited as chips: the chosen values with a remove button each, a text field
@@ -89,7 +90,7 @@ fun ChipInputField(
                             trailingIcon = {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                                    contentDescription = stringResource(R.string.user_meta_cd_remove, value),
+                                    contentDescription = stringResource(Res.string.user_meta_cd_remove, value),
                                     modifier = Modifier.size(18.dp)
                                 )
                             }
@@ -113,7 +114,7 @@ fun ChipInputField(
                         IconButton(onClick = { commit(draft) }) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_add_24),
-                                contentDescription = stringResource(R.string.user_meta_cd_add)
+                                contentDescription = stringResource(Res.string.user_meta_cd_add)
                             )
                         }
                     }

@@ -38,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -49,6 +48,8 @@ import io.github.raghavsatyadev.openplayer.data.offline.OfflineDownload
 import io.github.raghavsatyadev.openplayer.data.offline.OfflineDownloadStatus
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.CloudDownloadsViewModel
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun CloudDownloadsScreen(
@@ -62,7 +63,7 @@ fun CloudDownloadsScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.cloud_downloads_title),
+                        text = stringResource(Res.string.cloud_downloads_title),
                         fontWeight = FontWeight.Bold
                     )
                 },
@@ -75,7 +76,7 @@ fun CloudDownloadsScreen(
                     ) {
                         Icon(
                             ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
-                            contentDescription = stringResource(R.string.auth_cd_back)
+                            contentDescription = stringResource(Res.string.auth_cd_back)
                         )
                     }
                 },
@@ -112,7 +113,7 @@ fun CloudDownloadsScreen(
             if (state.active.isNotEmpty()) {
                 item {
                     SectionHeader(
-                        title = stringResource(R.string.cloud_downloads_active_section),
+                        title = stringResource(Res.string.cloud_downloads_active_section),
                         count = state.active.size
                     )
                 }
@@ -124,7 +125,7 @@ fun CloudDownloadsScreen(
             if (state.failed.isNotEmpty()) {
                 item {
                     SectionHeader(
-                        title = stringResource(R.string.cloud_downloads_failed_section),
+                        title = stringResource(Res.string.cloud_downloads_failed_section),
                         count = state.failed.size
                     )
                 }
@@ -140,7 +141,7 @@ fun CloudDownloadsScreen(
             if (state.completed.isNotEmpty()) {
                 item {
                     SectionHeader(
-                        title = stringResource(R.string.cloud_downloads_completed_section),
+                        title = stringResource(Res.string.cloud_downloads_completed_section),
                         count = state.completed.size
                     )
                 }
@@ -181,7 +182,7 @@ private fun StorageSummaryCard(usedBytes: Long, completedCount: Int, totalCount:
             Spacer(Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(R.string.cloud_downloads_storage_used),
+                    text = stringResource(Res.string.cloud_downloads_storage_used),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
@@ -192,8 +193,7 @@ private fun StorageSummaryCard(usedBytes: Long, completedCount: Int, totalCount:
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Text(
-                    text = stringResource(
-                        R.string.cloud_downloads_storage_summary,
+                    text = stringResource(Res.string.cloud_downloads_storage_summary,
                         completedCount,
                         totalCount
                     ),
@@ -208,7 +208,7 @@ private fun StorageSummaryCard(usedBytes: Long, completedCount: Int, totalCount:
 @Composable
 private fun SectionHeader(title: String, count: Int) {
     Text(
-        text = stringResource(R.string.cloud_downloads_section_count, title, count),
+        text = stringResource(Res.string.cloud_downloads_section_count, title, count),
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.onSurface,
@@ -251,7 +251,7 @@ private fun DownloadItemCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = download.title.ifBlank {
-                        stringResource(R.string.cloud_downloads_unknown_track)
+                        stringResource(Res.string.cloud_downloads_unknown_track)
                     },
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
@@ -293,7 +293,7 @@ private fun DownloadItemCard(
                 IconButton(onClick = it) {
                     Icon(
                         ImageVector.vectorResource(R.drawable.rounded_refresh_24),
-                        contentDescription = stringResource(R.string.cloud_download_retry),
+                        contentDescription = stringResource(Res.string.cloud_download_retry),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -301,7 +301,7 @@ private fun DownloadItemCard(
             IconButton(onClick = onRemove) {
                 Icon(
                     ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
-                    contentDescription = stringResource(R.string.cloud_remove_download),
+                    contentDescription = stringResource(Res.string.cloud_remove_download),
                     tint = MaterialTheme.colorScheme.error
                 )
             }
@@ -325,13 +325,13 @@ private fun DownloadsEmptyState() {
         )
         Spacer(Modifier.height(16.dp))
         Text(
-            stringResource(R.string.cloud_downloads_empty_title),
+            stringResource(Res.string.cloud_downloads_empty_title),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold
         )
         Spacer(Modifier.height(6.dp))
         Text(
-            stringResource(R.string.cloud_downloads_empty_subtitle),
+            stringResource(Res.string.cloud_downloads_empty_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

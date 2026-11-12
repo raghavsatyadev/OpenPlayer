@@ -40,7 +40,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -55,6 +54,8 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioOutputKin
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioOutputViewModel
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import co.touchlab.kermit.Logger
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** Lets the user pick which connected output (speaker, wired, USB, Bluetooth) plays the app's audio. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,7 +93,7 @@ internal fun AudioOutputBottomSheet(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = stringResource(R.string.player_audio_output_title),
+                text = stringResource(Res.string.player_audio_output_title),
                 style = MaterialTheme.typography.headlineMedium,
                 fontFamily = RoundedSans,
                 fontWeight = FontWeight.Bold,
@@ -160,7 +161,7 @@ private fun AudioOutputList(
                 if (output.isActive) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
-                        contentDescription = stringResource(R.string.presentation_batch_g_cd_selected),
+                        contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                         tint = contentColor,
                         modifier = Modifier.size(20.dp)
                     )
@@ -201,11 +202,11 @@ private fun MoreDevicesRow(onClick: () -> Unit) {
             }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(R.string.player_audio_output_more_devices),
+                    text = stringResource(Res.string.player_audio_output_more_devices),
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
                 )
                 Text(
-                    text = stringResource(R.string.player_audio_output_more_devices_subtitle),
+                    text = stringResource(Res.string.player_audio_output_more_devices_subtitle),
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.onSurfaceVariant,
                     maxLines = 2,

@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -41,6 +40,8 @@ import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartCondition
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleField
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleOperator
 import io.github.raghavsatyadev.openplayer.data.repository.SongUserMeta
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** One editable condition: field and operator pickers, the value inputs it needs, and remove. */
 @OptIn(ExperimentalLayoutApi::class)
@@ -81,7 +82,7 @@ fun SmartRuleConditionRow(
                 IconButton(onClick = onRemove) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
-                        contentDescription = stringResource(R.string.smart_rules_remove_condition),
+                        contentDescription = stringResource(Res.string.smart_rules_remove_condition),
                     )
                 }
             }
@@ -98,20 +99,20 @@ fun SmartRuleConditionRow(
                         ValueKind.TEXT -> OutlinedTextField(
                             value = condition.text,
                             onValueChange = { onChange(condition.copy(text = it)) },
-                            label = { Text(stringResource(R.string.smart_rules_value_label)) },
+                            label = { Text(stringResource(Res.string.smart_rules_value_label)) },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
                         )
                         ValueKind.RANGE -> {
                             NumberField(
                                 value = condition.min,
-                                label = stringResource(R.string.smart_rules_range_from),
+                                label = stringResource(Res.string.smart_rules_range_from),
                                 onValueChange = { onChange(condition.copy(min = it)) },
                                 modifier = Modifier.weight(1f),
                             )
                             NumberField(
                                 value = condition.max,
-                                label = stringResource(R.string.smart_rules_range_to),
+                                label = stringResource(Res.string.smart_rules_range_to),
                                 onValueChange = { onChange(condition.copy(max = it)) },
                                 modifier = Modifier.weight(1f),
                             )

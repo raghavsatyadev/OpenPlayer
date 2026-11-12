@@ -13,7 +13,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,6 +21,8 @@ import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
 import io.github.raghavsatyadev.openplayer.data.video.VideoMatchingMode
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.settingHighlight
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.VideoSettingsViewModel
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** Show matching local videos in the player, and how videos are matched to tracks. */
 @Composable
@@ -44,8 +45,8 @@ fun VideoSettingsSection(
 
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         SwitchSettingItem(
-            title = stringResource(R.string.setting_video_show_in_player_title),
-            subtitle = stringResource(R.string.setting_video_show_in_player_subtitle),
+            title = stringResource(Res.string.setting_video_show_in_player_title),
+            subtitle = stringResource(Res.string.setting_video_show_in_player_subtitle),
             checked = settings.showInPlayer && hasPermission,
             onCheckedChange = { checked ->
                 if (checked && !hasPermission) {
@@ -58,13 +59,13 @@ fun VideoSettingsSection(
             modifier = Modifier.settingHighlight("item_playback_videos", highlightKey)
         )
         ThemeSelectorItem(
-            label = stringResource(R.string.setting_video_matching_title),
-            description = stringResource(R.string.setting_video_matching_auto),
+            label = stringResource(Res.string.setting_video_matching_title),
+            description = stringResource(Res.string.setting_video_matching_auto),
             options = mapOf(
-                VideoMatchingMode.AUTO.storageKey to stringResource(R.string.setting_video_matching_auto),
-                VideoMatchingMode.FILENAME.storageKey to stringResource(R.string.setting_video_matching_filename),
+                VideoMatchingMode.AUTO.storageKey to stringResource(Res.string.setting_video_matching_auto),
+                VideoMatchingMode.FILENAME.storageKey to stringResource(Res.string.setting_video_matching_filename),
                 VideoMatchingMode.TITLE_AND_ARTIST.storageKey to
-                    stringResource(R.string.setting_video_matching_title_artist),
+                    stringResource(Res.string.setting_video_matching_title_artist),
             ),
             selectedKey = settings.matchingMode.storageKey,
             onSelectionChanged = { viewModel.setMatchingMode(VideoMatchingMode.fromStorageKey(it)) },
@@ -72,8 +73,8 @@ fun VideoSettingsSection(
             modifier = Modifier.settingHighlight("item_playback_video_matching", highlightKey)
         )
         SwitchSettingItem(
-            title = stringResource(R.string.setting_video_same_folder_title),
-            subtitle = stringResource(R.string.setting_video_same_folder_subtitle),
+            title = stringResource(Res.string.setting_video_same_folder_title),
+            subtitle = stringResource(Res.string.setting_video_same_folder_subtitle),
             checked = settings.sameFolderOnly,
             onCheckedChange = viewModel::setSameFolderOnly,
             leadingIcon = {
@@ -82,8 +83,8 @@ fun VideoSettingsSection(
             modifier = Modifier.settingHighlight("item_playback_video_same_folder", highlightKey)
         )
         SwitchSettingItem(
-            title = stringResource(R.string.setting_video_add_to_library_title),
-            subtitle = stringResource(R.string.setting_video_add_to_library_subtitle),
+            title = stringResource(Res.string.setting_video_add_to_library_title),
+            subtitle = stringResource(Res.string.setting_video_add_to_library_subtitle),
             checked = settings.addToLibrary && hasPermission,
             onCheckedChange = { checked ->
                 if (checked && !hasPermission) {
@@ -98,12 +99,11 @@ fun VideoSettingsSection(
             modifier = Modifier.settingHighlight("item_playback_video_add_to_library", highlightKey)
         )
         SettingsItem(
-            title = stringResource(R.string.setting_video_folders_title),
+            title = stringResource(Res.string.setting_video_folders_title),
             subtitle = if (settings.includedFolders.isEmpty() && settings.excludedFolders.isEmpty()) {
-                stringResource(R.string.setting_video_folders_all)
+                stringResource(Res.string.setting_video_folders_all)
             } else {
-                stringResource(
-                    R.string.setting_video_folders_summary,
+                stringResource(Res.string.setting_video_folders_summary,
                     settings.includedFolders.size,
                     settings.excludedFolders.size,
                 )

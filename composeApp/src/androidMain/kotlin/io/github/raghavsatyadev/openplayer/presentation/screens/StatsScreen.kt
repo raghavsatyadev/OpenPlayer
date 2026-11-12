@@ -111,7 +111,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
@@ -158,6 +157,9 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 private const val PULL_TO_REFRESH_MIN_DURATION_MS = 3500L
 private const val HEAVY_ROTATION_LIMIT = 5
@@ -295,7 +297,7 @@ fun StatsScreen(
         }
     }
 
-    val heavyRotationQueueName = stringResource(R.string.presentation_batch_g_stats_section_heavy_rotation)
+    val heavyRotationQueueName = stringResource(Res.string.presentation_batch_g_stats_section_heavy_rotation)
     // Stats only carry display names for artists, albums and genres, so each tap resolves the
     // library entity first; entries that no longer resolve (deleted songs, the synthetic
     // "unknown" buckets) are silently ignored rather than opening a broken detail screen.
@@ -376,8 +378,8 @@ fun StatsScreen(
                         item(key = "empty", contentType = "empty") {
                             StatsEmptyState(
                                 icon = ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24),
-                                title = stringResource(R.string.presentation_batch_g_stats_empty_no_timeline_title),
-                                subtitle = stringResource(R.string.presentation_batch_g_stats_empty_no_timeline_subtitle),
+                                title = stringResource(Res.string.presentation_batch_g_stats_empty_no_timeline_title),
+                                subtitle = stringResource(Res.string.presentation_batch_g_stats_empty_no_timeline_subtitle),
                                 modifier = Modifier.padding(horizontal = ScreenGutter)
                             )
                         }
@@ -437,7 +439,7 @@ fun StatsScreen(
                         .padding(bottom = 8.dp)
                 ) {
                     CollapsibleCommonTopBar(
-                        title = stringResource(R.string.presentation_batch_g_stats_title),
+                        title = stringResource(Res.string.presentation_batch_g_stats_title),
                         collapseFraction = collapseFraction,
                         headerHeight = currentTopBarHeightDp,
                         onBackClick = { navController.popBackStack() },
@@ -455,7 +457,7 @@ fun StatsScreen(
                             ) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.rounded_refresh_24),
-                                    contentDescription = stringResource(R.string.presentation_batch_g_stats_cd_refresh)
+                                    contentDescription = stringResource(Res.string.presentation_batch_g_stats_cd_refresh)
                                 )
                             }
                         }
@@ -581,10 +583,9 @@ private fun StatsHeroSection(
 ) {
     // A per-day average of a single day is just the total again; sessions say more there.
     val listeningFooter = if (summary.range == StatsTimeRange.DAY) {
-        pluralStringResource(R.plurals.stats_sessions_count, summary.totalSessions, summary.totalSessions)
+        pluralStringResource(Res.plurals.stats_sessions_count, summary.totalSessions, summary.totalSessions)
     } else {
-        stringResource(
-            R.string.presentation_batch_g_stats_hero_per_day,
+        stringResource(Res.string.presentation_batch_g_stats_hero_per_day,
             formatListeningDurationCompact(summary.averageDailyDurationMs)
         )
     }
@@ -597,7 +598,7 @@ private fun StatsHeroSection(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         HeroVitalCard(
-            label = stringResource(R.string.presentation_batch_g_stats_hero_listening),
+            label = stringResource(Res.string.presentation_batch_g_stats_hero_listening),
             value = formatListeningDurationCompact(summary.totalDurationMs),
             footer = listeningFooter,
             icon = ImageVector.vectorResource(R.drawable.rounded_headphones_filled_24),
@@ -609,9 +610,9 @@ private fun StatsHeroSection(
             modifier = Modifier.weight(1f)
         )
         HeroVitalCard(
-            label = stringResource(R.string.presentation_batch_g_stats_hero_plays),
+            label = stringResource(Res.string.presentation_batch_g_stats_hero_plays),
             value = playsValue,
-            footer = pluralStringResource(R.plurals.stats_tracks_count, summary.uniqueSongs, summary.uniqueSongs),
+            footer = pluralStringResource(Res.plurals.stats_tracks_count, summary.uniqueSongs, summary.uniqueSongs),
             icon = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
             iconShape = MaterialShapes.Cookie9Sided.toShape(),
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
@@ -843,7 +844,7 @@ private fun ListeningHabitsGrid(
     summary: PlaybackStatsSummary,
     modifier: Modifier = Modifier
 ) {
-    val emDash = stringResource(R.string.presentation_batch_g_stats_em_dash)
+    val emDash = stringResource(Res.string.presentation_batch_g_stats_em_dash)
     // In the day and week views the timeline above already names the peak slot, so the
     // second tile offers the streak instead of repeating it.
     val timelineShowsPeakDay = summary.range == StatsTimeRange.DAY || summary.range == StatsTimeRange.WEEK
@@ -853,7 +854,7 @@ private fun ListeningHabitsGrid(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         StatsSectionHeader(
-            title = stringResource(R.string.presentation_batch_g_stats_section_listening_habits),
+            title = stringResource(Res.string.presentation_batch_g_stats_section_listening_habits),
             subtitle = null
         )
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -867,8 +868,8 @@ private fun ListeningHabitsGrid(
                     iconContainer = MaterialTheme.colorScheme.primaryContainer,
                     onIconContainer = MaterialTheme.colorScheme.onPrimaryContainer,
                     value = formatListeningDurationCompact(summary.averageSessionDurationMs),
-                    label = stringResource(R.string.presentation_batch_g_stats_habit_avg_session),
-                    supporting = pluralStringResource(R.plurals.stats_sessions_count, summary.totalSessions, summary.totalSessions),
+                    label = stringResource(Res.string.presentation_batch_g_stats_habit_avg_session),
+                    supporting = pluralStringResource(Res.plurals.stats_sessions_count, summary.totalSessions, summary.totalSessions),
                     shape = bentoShape(0),
                     modifier = Modifier
                         .weight(1f)
@@ -880,8 +881,8 @@ private fun ListeningHabitsGrid(
                         iconShape = MaterialShapes.Cookie9Sided.toShape(),
                         iconContainer = MaterialTheme.colorScheme.secondaryContainer,
                         onIconContainer = MaterialTheme.colorScheme.onSecondaryContainer,
-                        value = pluralStringResource(R.plurals.stats_days_count, summary.longestStreakDays, summary.longestStreakDays),
-                        label = stringResource(R.string.presentation_batch_g_stats_habit_longest_streak),
+                        value = pluralStringResource(Res.plurals.stats_days_count, summary.longestStreakDays, summary.longestStreakDays),
+                        label = stringResource(Res.string.presentation_batch_g_stats_habit_longest_streak),
                         supporting = null,
                         shape = bentoShape(1),
                         modifier = Modifier
@@ -895,11 +896,11 @@ private fun ListeningHabitsGrid(
                         iconContainer = MaterialTheme.colorScheme.secondaryContainer,
                         onIconContainer = MaterialTheme.colorScheme.onSecondaryContainer,
                         value = summary.peakDayLabel?.replaceFirstChar { it.titlecase(Locale.getDefault()) } ?: emDash,
-                        label = stringResource(R.string.presentation_batch_g_stats_habit_most_active_day),
+                        label = stringResource(Res.string.presentation_batch_g_stats_habit_most_active_day),
                         supporting = if (summary.peakDayDurationMs > 0L) {
                             formatListeningDurationCompact(summary.peakDayDurationMs)
                         } else {
-                            stringResource(R.string.presentation_batch_g_stats_habit_no_playback_yet)
+                            stringResource(Res.string.presentation_batch_g_stats_habit_no_playback_yet)
                         },
                         shape = bentoShape(1),
                         modifier = Modifier
@@ -922,7 +923,7 @@ private fun ListeningHabitsGrid(
                     } else {
                         emDash
                     },
-                    label = stringResource(R.string.presentation_batch_g_stats_habit_longest_session),
+                    label = stringResource(Res.string.presentation_batch_g_stats_habit_longest_session),
                     supporting = null,
                     shape = bentoShape(2),
                     modifier = Modifier
@@ -935,8 +936,8 @@ private fun ListeningHabitsGrid(
                     iconContainer = MaterialTheme.colorScheme.primaryContainer,
                     onIconContainer = MaterialTheme.colorScheme.onPrimaryContainer,
                     value = String.format(LocalConfiguration.current.locales[0], "%.1f", summary.averageSessionsPerDay),
-                    label = stringResource(R.string.presentation_batch_g_stats_habit_sessions_per_day),
-                    supporting = pluralStringResource(R.plurals.stats_active_days_count, summary.activeDays, summary.activeDays),
+                    label = stringResource(Res.string.presentation_batch_g_stats_habit_sessions_per_day),
+                    supporting = pluralStringResource(Res.plurals.stats_active_days_count, summary.activeDays, summary.activeDays),
                     shape = bentoShape(3),
                     modifier = Modifier
                         .weight(1f)
@@ -1088,7 +1089,7 @@ private enum class TimelineMetric(
 @Composable
 private fun TimelineMetric.formatEntryValue(entry: PlaybackStatsRepository.TimelineEntry): String = when (this) {
     TimelineMetric.ListeningTime -> formatListeningDurationCompact(entry.totalDurationMs)
-    TimelineMetric.PlayCount -> stringResource(R.string.presentation_batch_g_stats_n_plays, entry.playCount)
+    TimelineMetric.PlayCount -> stringResource(Res.string.presentation_batch_g_stats_n_plays, entry.playCount)
     TimelineMetric.AverageSession -> {
         val average = if (entry.playCount > 0) entry.totalDurationMs / entry.playCount else 0L
         formatListeningDurationCompact(average)
@@ -1191,7 +1192,7 @@ private fun ListeningTimelineSection(
     val timeline = remember(summary) { summary?.timeline.orEmpty().toImmutableList() }
     val hasTimeline = timeline.isNotEmpty() && timeline.any { it.totalDurationMs > 0L || it.playCount > 0 }
     val sectionTitleStyle = rememberStatsSectionTitleStyle()
-    val emDash = stringResource(R.string.presentation_batch_g_stats_em_dash)
+    val emDash = stringResource(Res.string.presentation_batch_g_stats_em_dash)
     val use24Hour = AndroidDateFormat.is24HourFormat(LocalContext.current)
 
     Column(
@@ -1203,7 +1204,7 @@ private fun ListeningTimelineSection(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = stringResource(R.string.presentation_batch_g_stats_section_listening_timeline),
+                text = stringResource(Res.string.presentation_batch_g_stats_section_listening_timeline),
                 style = sectionTitleStyle,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -1242,8 +1243,8 @@ private fun ListeningTimelineSection(
         if (!hasTimeline) {
             StatsEmptyState(
                 icon = ImageVector.vectorResource(R.drawable.rounded_play_circle_24),
-                title = stringResource(R.string.presentation_batch_g_stats_empty_no_timeline_title),
-                subtitle = stringResource(R.string.presentation_batch_g_stats_empty_no_timeline_subtitle)
+                title = stringResource(Res.string.presentation_batch_g_stats_empty_no_timeline_title),
+                subtitle = stringResource(Res.string.presentation_batch_g_stats_empty_no_timeline_subtitle)
             )
         } else {
             val cardColor = when (range) {
@@ -1273,11 +1274,11 @@ private fun ListeningTimelineSection(
                         ) {
                             Text(
                                 text = when (range) {
-                                    StatsTimeRange.DAY -> stringResource(R.string.presentation_batch_g_stats_rhythm_daily)
-                                    StatsTimeRange.WEEK -> stringResource(R.string.presentation_batch_g_stats_rhythm_weekly)
-                                    StatsTimeRange.MONTH -> stringResource(R.string.presentation_batch_g_stats_rhythm_monthly)
-                                    StatsTimeRange.YEAR -> stringResource(R.string.presentation_batch_g_stats_rhythm_year)
-                                    StatsTimeRange.ALL -> stringResource(R.string.presentation_batch_g_stats_rhythm_all_time)
+                                    StatsTimeRange.DAY -> stringResource(Res.string.presentation_batch_g_stats_rhythm_daily)
+                                    StatsTimeRange.WEEK -> stringResource(Res.string.presentation_batch_g_stats_rhythm_weekly)
+                                    StatsTimeRange.MONTH -> stringResource(Res.string.presentation_batch_g_stats_rhythm_monthly)
+                                    StatsTimeRange.YEAR -> stringResource(Res.string.presentation_batch_g_stats_rhythm_year)
+                                    StatsTimeRange.ALL -> stringResource(Res.string.presentation_batch_g_stats_rhythm_all_time)
                                 },
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.SemiBold,
@@ -1285,11 +1286,11 @@ private fun ListeningTimelineSection(
                             )
                             Text(
                                 text = when (range) {
-                                    StatsTimeRange.DAY -> stringResource(R.string.presentation_batch_g_stats_grouped_4h)
-                                    StatsTimeRange.WEEK -> stringResource(R.string.presentation_batch_g_stats_grouped_dow)
-                                    StatsTimeRange.MONTH -> stringResource(R.string.presentation_batch_g_stats_grouped_week_of_month)
-                                    StatsTimeRange.YEAR -> stringResource(R.string.presentation_batch_g_stats_grouped_by_month)
-                                    StatsTimeRange.ALL -> stringResource(R.string.presentation_batch_g_stats_grouped_by_year)
+                                    StatsTimeRange.DAY -> stringResource(Res.string.presentation_batch_g_stats_grouped_4h)
+                                    StatsTimeRange.WEEK -> stringResource(Res.string.presentation_batch_g_stats_grouped_dow)
+                                    StatsTimeRange.MONTH -> stringResource(Res.string.presentation_batch_g_stats_grouped_week_of_month)
+                                    StatsTimeRange.YEAR -> stringResource(Res.string.presentation_batch_g_stats_grouped_by_month)
+                                    StatsTimeRange.ALL -> stringResource(Res.string.presentation_batch_g_stats_grouped_by_year)
                                 },
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1310,11 +1311,11 @@ private fun ListeningTimelineSection(
 
             summary?.peakTimeline?.let { peak ->
                 HighlightRow(
-                    title = stringResource(R.string.presentation_batch_g_stats_peak_segment),
+                    title = stringResource(Res.string.presentation_batch_g_stats_peak_segment),
                     value = formatTimelineLabelForRange(peak.label, range, emDash, use24Hour),
                     supporting = when (selectedMetric) {
                         TimelineMetric.ListeningTime -> formatListeningDurationCompact(peak.totalDurationMs)
-                        TimelineMetric.PlayCount -> stringResource(R.string.presentation_batch_g_stats_n_plays, peak.playCount)
+                        TimelineMetric.PlayCount -> stringResource(Res.string.presentation_batch_g_stats_n_plays, peak.playCount)
                         TimelineMetric.AverageSession -> {
                             val average = if (peak.playCount > 0) peak.totalDurationMs / peak.playCount else 0L
                             formatListeningDurationCompact(average)
@@ -1861,8 +1862,8 @@ private fun buildRotationEntries(
 private fun RotationEntry.supportingText(): String? = when (dimension) {
     RotationDimension.Tracks -> artist?.takeIf { it.isNotBlank() }
     RotationDimension.Artists,
-    RotationDimension.Albums -> pluralStringResource(R.plurals.stats_tracks_count, childCount, childCount)
-    RotationDimension.Genres -> pluralStringResource(R.plurals.stats_artists_count, childCount, childCount)
+    RotationDimension.Albums -> pluralStringResource(Res.plurals.stats_tracks_count, childCount, childCount)
+    RotationDimension.Genres -> pluralStringResource(Res.plurals.stats_artists_count, childCount, childCount)
 }
 
 @Composable
@@ -1880,8 +1881,8 @@ private fun HeavyRotationSection(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         StatsSectionHeader(
-            title = stringResource(R.string.presentation_batch_g_stats_section_heavy_rotation),
-            subtitle = stringResource(R.string.presentation_batch_g_stats_heavy_rotation_subtitle)
+            title = stringResource(Res.string.presentation_batch_g_stats_section_heavy_rotation),
+            subtitle = stringResource(Res.string.presentation_batch_g_stats_heavy_rotation_subtitle)
         )
 
         RotationTabSelector(
@@ -2111,7 +2112,7 @@ private fun RotationSpotlightCard(
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Text(
-                text = stringResource(R.string.presentation_batch_g_stats_top_pick),
+                text = stringResource(Res.string.presentation_batch_g_stats_top_pick),
                 style = MaterialTheme.typography.labelMedium,
                 fontFamily = rememberStatsFlexFont(weight = 650, width = 110f),
                 color = content.copy(alpha = 0.76f)
@@ -2140,7 +2141,7 @@ private fun RotationSpotlightCard(
             ) {
                 SpotlightStatChip(text = formatListeningDurationCompact(entry.durationMs), contentColor = content)
                 SpotlightStatChip(
-                    text = pluralStringResource(R.plurals.stats_plays_count, entry.playCount, entry.playCount),
+                    text = pluralStringResource(Res.plurals.stats_plays_count, entry.playCount, entry.playCount),
                     contentColor = content
                 )
             }
@@ -2260,7 +2261,7 @@ private fun RotationRankRow(
                 maxLines = 1
             )
             Text(
-                text = pluralStringResource(R.plurals.stats_plays_count, entry.playCount, entry.playCount),
+                text = pluralStringResource(Res.plurals.stats_plays_count, entry.playCount, entry.playCount),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1
@@ -2309,7 +2310,7 @@ private fun MonogramArtwork(
     large: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val placeholder = stringResource(R.string.presentation_batch_g_stats_avatar_placeholder)
+    val placeholder = stringResource(Res.string.presentation_batch_g_stats_avatar_placeholder)
     val initials = remember(text, placeholder) {
         text.split(" ")
             .filter { it.isNotBlank() }
@@ -2373,15 +2374,15 @@ private fun ListeningVarietyCard(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         StatsSectionHeader(
-            title = stringResource(R.string.presentation_batch_g_stats_section_listening_variety),
-            subtitle = stringResource(R.string.presentation_batch_g_stats_track_concentration_subtitle)
+            title = stringResource(Res.string.presentation_batch_g_stats_section_listening_variety),
+            subtitle = stringResource(Res.string.presentation_batch_g_stats_track_concentration_subtitle)
         )
 
         if (slices.isEmpty()) {
             StatsEmptyState(
                 icon = ImageVector.vectorResource(R.drawable.rounded_auto_graph_24),
-                title = stringResource(R.string.presentation_batch_g_stats_empty_no_concentration_title),
-                subtitle = stringResource(R.string.presentation_batch_g_stats_empty_no_concentration_subtitle)
+                title = stringResource(Res.string.presentation_batch_g_stats_empty_no_concentration_title),
+                subtitle = stringResource(Res.string.presentation_batch_g_stats_empty_no_concentration_subtitle)
             )
             return@Column
         }
@@ -2436,8 +2437,8 @@ private fun ListeningVarietyCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 VarietyMetricPill(
-                    value = stringResource(R.string.presentation_batch_g_stats_percent, (topThreeShare * 100f).roundToInt()),
-                    label = stringResource(R.string.presentation_batch_g_stats_top_three_share_label),
+                    value = stringResource(Res.string.presentation_batch_g_stats_percent, (topThreeShare * 100f).roundToInt()),
+                    label = stringResource(Res.string.presentation_batch_g_stats_top_three_share_label),
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier
@@ -2446,7 +2447,7 @@ private fun ListeningVarietyCard(
                 )
                 VarietyMetricPill(
                     value = String.format(LocalConfiguration.current.locales[0], "%.1f", averagePlaysPerTrack),
-                    label = stringResource(R.string.presentation_batch_g_stats_avg_plays_per_track),
+                    label = stringResource(Res.string.presentation_batch_g_stats_avg_plays_per_track),
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     modifier = Modifier

@@ -30,9 +30,10 @@ import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImageListTargetSize
 import io.github.raghavsatyadev.openplayer.utils.formatDuration
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun ExpressiveSongListItem(
@@ -54,7 +55,7 @@ fun ExpressiveSongListItem(
         ) {
             SmartImage(
                 model = song.albumArtUriString,
-                contentDescription = stringResource(R.string.presentation_batch_g_list_cd_album_art_for, song.title),
+                contentDescription = stringResource(Res.string.presentation_batch_g_list_cd_album_art_for, song.title),
                 targetSize = SmartImageListTargetSize,
                 modifier = Modifier
                     .size(56.dp)
@@ -77,8 +78,7 @@ fun ExpressiveSongListItem(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = stringResource(
-                        R.string.presentation_batch_g_list_song_artist_album,
+                    text = stringResource(Res.string.presentation_batch_g_list_song_artist_album,
                         song.displayArtist,
                         song.album
                     ),
@@ -94,7 +94,7 @@ fun ExpressiveSongListItem(
             if (isPlaying) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24),
-                    contentDescription = stringResource(R.string.presentation_batch_g_list_cd_playing),
+                    contentDescription = stringResource(Res.string.presentation_batch_g_list_cd_playing),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(24.dp)
                 )

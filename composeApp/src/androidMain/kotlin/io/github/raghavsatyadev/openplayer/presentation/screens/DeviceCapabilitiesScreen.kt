@@ -105,6 +105,8 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlin.math.roundToInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @OptIn(UnstableApi::class)
 @kotlin.OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -198,7 +200,7 @@ fun DeviceCapabilitiesScreen(
         }
 
         CollapsibleCommonTopBar(
-            title = stringResource(R.string.settings_category_device_capabilities_title),
+            title = stringResource(Res.string.settings_category_device_capabilities_title),
             collapseFraction = collapseFraction,
             headerHeight = currentTopBarHeightDp,
             onBackClick = { navController.popBackStack() },
@@ -301,17 +303,17 @@ private fun PerformanceReportCard(
 ) {
     val context = LocalContext.current
     val clipboardManager = LocalClipboardManager.current
-    val copiedMessage = stringResource(R.string.device_capabilities_report_copied)
-    val shareTitle = stringResource(R.string.device_capabilities_report_share_title)
-    val lagMarkedMessage = stringResource(R.string.device_capabilities_advanced_diagnostics_marked)
+    val copiedMessage = stringResource(Res.string.device_capabilities_report_copied)
+    val shareTitle = stringResource(Res.string.device_capabilities_report_share_title)
+    val lagMarkedMessage = stringResource(Res.string.device_capabilities_advanced_diagnostics_marked)
 
     CapabilityCard(
-        title = stringResource(R.string.device_capabilities_report_title),
+        title = stringResource(Res.string.device_capabilities_report_title),
         icon = ImageVector.vectorResource(R.drawable.rounded_analytics_filled_24),
         modifier = modifier
     ) {
         Text(
-            text = stringResource(R.string.device_capabilities_report_description),
+            text = stringResource(Res.string.device_capabilities_report_description),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -330,7 +332,7 @@ private fun PerformanceReportCard(
                     Toast.makeText(context, lagMarkedMessage, Toast.LENGTH_SHORT).show()
                 }
             ) {
-                Text(stringResource(R.string.device_capabilities_advanced_diagnostics_mark_lag))
+                Text(stringResource(Res.string.device_capabilities_advanced_diagnostics_mark_lag))
             }
         }
 
@@ -373,7 +375,7 @@ private fun PerformanceReportCard(
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(Modifier.width(6.dp))
-                    Text(stringResource(R.string.device_capabilities_report_copy))
+                    Text(stringResource(Res.string.device_capabilities_report_copy))
                 }
 
                 OutlinedButton(
@@ -393,7 +395,7 @@ private fun PerformanceReportCard(
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(Modifier.width(6.dp))
-                    Text(stringResource(R.string.device_capabilities_report_share))
+                    Text(stringResource(Res.string.device_capabilities_report_share))
                 }
             }
         }
@@ -443,19 +445,18 @@ private fun AdvancedDiagnosticsToggleRow(
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.device_capabilities_advanced_diagnostics_title),
+                    text = stringResource(Res.string.device_capabilities_advanced_diagnostics_title),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = if (enabled && expiresAtEpochMs != null) {
-                        stringResource(
-                            R.string.device_capabilities_advanced_diagnostics_expires,
+                        stringResource(Res.string.device_capabilities_advanced_diagnostics_expires,
                             formatDiagnosticsExpiry(expiresAtEpochMs)
                         )
                     } else {
-                        stringResource(R.string.device_capabilities_advanced_diagnostics_description)
+                        stringResource(Res.string.device_capabilities_advanced_diagnostics_description)
                     },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -514,9 +515,9 @@ private fun PlaybackReadinessCard(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = if (needsReview) {
-                            stringResource(R.string.device_capabilities_review_title)
+                            stringResource(Res.string.device_capabilities_review_title)
                         } else {
-                            stringResource(R.string.device_capabilities_ready_title)
+                            stringResource(Res.string.device_capabilities_ready_title)
                         },
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.SemiBold,
@@ -531,31 +532,31 @@ private fun PlaybackReadinessCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 HeroMetricTile(
-                    label = stringResource(R.string.device_capabilities_metric_formats),
+                    label = stringResource(Res.string.device_capabilities_metric_formats),
                     value = audioCapabilities?.supportedCodecs
                         ?.flatMap { it.supportedTypes }
                         ?.distinct()
                         ?.size
                         ?.toString()
-                        ?: stringResource(R.string.device_capabilities_unknown_short),
+                        ?: stringResource(Res.string.device_capabilities_unknown_short),
                     modifier = Modifier.weight(1f),
                     containerColor = contentColor.copy(alpha = 0.10f),
                     contentColor = contentColor
                 )
                 HeroMetricTile(
-                    label = stringResource(R.string.device_capabilities_metric_hw_decoders),
+                    label = stringResource(Res.string.device_capabilities_metric_hw_decoders),
                     value = audioCapabilities?.supportedCodecs
                         ?.count { it.isHardwareAccelerated }
                         ?.toString()
-                        ?: stringResource(R.string.device_capabilities_unknown_short),
+                        ?: stringResource(Res.string.device_capabilities_unknown_short),
                     modifier = Modifier.weight(1f),
                     containerColor = contentColor.copy(alpha = 0.10f),
                     contentColor = contentColor
                 )
                 HeroMetricTile(
-                    label = stringResource(R.string.device_capabilities_metric_local_music),
+                    label = stringResource(Res.string.device_capabilities_metric_local_music),
                     value = storageSummary?.localSongCount?.toString()
-                        ?: stringResource(R.string.device_capabilities_unknown_short),
+                        ?: stringResource(Res.string.device_capabilities_unknown_short),
                     modifier = Modifier.weight(1f),
                     containerColor = contentColor.copy(alpha = 0.10f),
                     contentColor = contentColor
@@ -584,7 +585,7 @@ private fun LocalMusicStorageCard(
     val usedPercent = storagePercentLabel(storageSummary.deviceUsedFraction)
 
     CapabilityCard(
-        title = stringResource(R.string.device_capabilities_storage_title),
+        title = stringResource(Res.string.device_capabilities_storage_title),
         icon = ImageVector.vectorResource(R.drawable.rounded_storage_24),
         modifier = modifier
     ) {
@@ -593,18 +594,17 @@ private fun LocalMusicStorageCard(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             InfoTile(
-                label = stringResource(R.string.device_capabilities_storage_music_size),
+                label = stringResource(Res.string.device_capabilities_storage_music_size),
                 value = musicSize,
-                supporting = stringResource(
-                    R.string.device_capabilities_storage_music_count,
+                supporting = stringResource(Res.string.device_capabilities_storage_music_count,
                     storageSummary.localSongCount
                 ),
                 modifier = Modifier.weight(1f)
             )
             InfoTile(
-                label = stringResource(R.string.device_capabilities_storage_available),
+                label = stringResource(Res.string.device_capabilities_storage_available),
                 value = availableSize,
-                supporting = stringResource(R.string.device_capabilities_storage_total, totalSize),
+                supporting = stringResource(Res.string.device_capabilities_storage_total, totalSize),
                 modifier = Modifier.weight(1f)
             )
         }
@@ -614,12 +614,12 @@ private fun LocalMusicStorageCard(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             ProgressReadout(
-                label = stringResource(R.string.device_capabilities_storage_music_footprint),
+                label = stringResource(Res.string.device_capabilities_storage_music_footprint),
                 value = musicPercent,
                 progress = storageSummary.localMusicStorageFraction
             )
             ProgressReadout(
-                label = stringResource(R.string.device_capabilities_storage_device_used),
+                label = stringResource(Res.string.device_capabilities_storage_device_used),
                 value = usedPercent,
                 progress = storageSummary.deviceUsedFraction,
                 color = MaterialTheme.colorScheme.secondary
@@ -630,16 +630,14 @@ private fun LocalMusicStorageCard(
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 if (storageSummary.cloudSongCount > 0) {
                     TonalChip(
-                        text = stringResource(
-                            R.string.device_capabilities_storage_cloud_count,
+                        text = stringResource(Res.string.device_capabilities_storage_cloud_count,
                             storageSummary.cloudSongCount
                         )
                     )
                 }
                 if (storageSummary.unavailableLocalFileCount > 0) {
                     TonalChip(
-                        text = stringResource(
-                            R.string.device_capabilities_storage_unavailable_count,
+                        text = stringResource(Res.string.device_capabilities_storage_unavailable_count,
                             storageSummary.unavailableLocalFileCount
                         ),
                         containerColor = MaterialTheme.colorScheme.errorContainer,
@@ -661,13 +659,13 @@ private fun PlaybackPathCard(
     val context = LocalContext.current
     val availableRam = memorySummary?.availableRamBytes?.let {
         Formatter.formatShortFileSize(context, it)
-    } ?: stringResource(R.string.device_capabilities_unknown_short)
+    } ?: stringResource(Res.string.device_capabilities_unknown_short)
     val totalRam = memorySummary?.totalRamBytes?.let {
         Formatter.formatShortFileSize(context, it)
-    } ?: stringResource(R.string.device_capabilities_unknown_short)
+    } ?: stringResource(Res.string.device_capabilities_unknown_short)
 
     CapabilityCard(
-        title = stringResource(R.string.device_capabilities_playback_path_title),
+        title = stringResource(Res.string.device_capabilities_playback_path_title),
         icon = ImageVector.vectorResource(R.drawable.rounded_speaker_filled_24),
         modifier = modifier
     ) {
@@ -676,18 +674,17 @@ private fun PlaybackPathCard(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             InfoTile(
-                label = stringResource(R.string.presentation_batch_g_device_label_sample_rate),
-                value = stringResource(R.string.presentation_batch_g_device_value_hz, audioCapabilities.outputSampleRate),
-                supporting = stringResource(
-                    R.string.device_capabilities_buffer_frames,
+                label = stringResource(Res.string.presentation_batch_g_device_label_sample_rate),
+                value = stringResource(Res.string.presentation_batch_g_device_value_hz, audioCapabilities.outputSampleRate),
+                supporting = stringResource(Res.string.device_capabilities_buffer_frames,
                     audioCapabilities.outputFramesPerBuffer
                 ),
                 modifier = Modifier.weight(1f)
             )
             InfoTile(
-                label = stringResource(R.string.device_capabilities_hifi_pcm_float),
+                label = stringResource(Res.string.device_capabilities_hifi_pcm_float),
                 value = yesNo(audioCapabilities.isPcmFloatSupported),
-                supporting = stringResource(R.string.device_capabilities_hifi_pcm_float_supporting),
+                supporting = stringResource(Res.string.device_capabilities_hifi_pcm_float_supporting),
                 modifier = Modifier.weight(1f)
             )
         }
@@ -697,30 +694,30 @@ private fun PlaybackPathCard(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             InfoTile(
-                label = stringResource(R.string.presentation_batch_g_device_label_low_latency),
+                label = stringResource(Res.string.presentation_batch_g_device_label_low_latency),
                 value = yesNo(audioCapabilities.isLowLatencySupported),
-                supporting = stringResource(R.string.presentation_batch_g_device_label_pro_audio) +
+                supporting = stringResource(Res.string.presentation_batch_g_device_label_pro_audio) +
                     ": " + yesNo(audioCapabilities.isProAudioSupported),
                 modifier = Modifier.weight(1f)
             )
             InfoTile(
-                label = stringResource(R.string.device_capabilities_memory_title),
+                label = stringResource(Res.string.device_capabilities_memory_title),
                 value = availableRam,
-                supporting = stringResource(R.string.device_capabilities_memory_available_of, totalRam),
+                supporting = stringResource(Res.string.device_capabilities_memory_available_of, totalRam),
                 modifier = Modifier.weight(1f)
             )
         }
 
-        SectionLabel(text = stringResource(R.string.device_capabilities_offload_title))
+        SectionLabel(text = stringResource(Res.string.device_capabilities_offload_title))
         ChipRow(
-            emptyText = stringResource(R.string.device_capabilities_offload_empty),
+            emptyText = stringResource(Res.string.device_capabilities_offload_empty),
             chips = remember(audioCapabilities) { audioCapabilities.offloadSupportedFormats.toImmutableList() }
         )
 
-        SectionLabel(text = stringResource(R.string.device_capabilities_outputs_title))
+        SectionLabel(text = stringResource(Res.string.device_capabilities_outputs_title))
         if (audioCapabilities.outputRoutes.isEmpty()) {
             Text(
-                text = stringResource(R.string.device_capabilities_outputs_empty),
+                text = stringResource(Res.string.device_capabilities_outputs_empty),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -742,9 +739,9 @@ private fun PlaybackPathCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 InfoTile(
-                    label = stringResource(R.string.presentation_batch_g_device_section_exoplayer),
+                    label = stringResource(Res.string.presentation_batch_g_device_section_exoplayer),
                     value = exo.version,
-                    supporting = stringResource(R.string.device_capabilities_renderers_count, exo.renderers),
+                    supporting = stringResource(Res.string.device_capabilities_renderers_count, exo.renderers),
                     icon = ImageVector.vectorResource(R.drawable.rounded_memory_filled_24),
                     modifier = Modifier.weight(1f)
                 )
@@ -760,7 +757,7 @@ private fun FormatCompatibilityCard(
     modifier: Modifier = Modifier
 ) {
     CapabilityCard(
-        title = stringResource(R.string.device_capabilities_formats_title),
+        title = stringResource(Res.string.device_capabilities_formats_title),
         icon = ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24),
         verticalSpacing = 0.dp,
         modifier = modifier
@@ -796,16 +793,14 @@ private fun FormatCompatibilityCard(
         playbackCompatibility?.let { compatibility ->
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TonalChip(
-                    text = stringResource(
-                        R.string.device_capabilities_formats_supported_count,
+                    text = stringResource(Res.string.device_capabilities_formats_supported_count,
                         compatibility.supportedLibrarySongCount
                     ),
                     leadingIcon = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24)
                 )
                 if (compatibility.unknownFormatSongCount > 0) {
                     TonalChip(
-                        text = stringResource(
-                            R.string.device_capabilities_formats_unknown_count,
+                        text = stringResource(Res.string.device_capabilities_formats_unknown_count,
                             compatibility.unknownFormatSongCount
                         ),
                         leadingIcon = ImageVector.vectorResource(R.drawable.rounded_info_filled_24)
@@ -826,15 +821,15 @@ private fun PlaybackFindingsCard(
         compatibility.resampledLocalSongCount > 0
 
     CapabilityCard(
-        title = stringResource(R.string.device_capabilities_findings_title),
+        title = stringResource(Res.string.device_capabilities_findings_title),
         icon = if (hasFindings) ImageVector.vectorResource(R.drawable.rounded_warning_filled_24) else ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
         modifier = modifier
     ) {
         if (!hasFindings) {
             FindingRow(
                 icon = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
-                title = stringResource(R.string.device_capabilities_finding_clear_title),
-                body = stringResource(R.string.device_capabilities_finding_clear_body),
+                title = stringResource(Res.string.device_capabilities_finding_clear_title),
+                body = stringResource(Res.string.device_capabilities_finding_clear_body),
                 tone = FindingTone.Success
             )
             return@CapabilityCard
@@ -843,12 +838,10 @@ private fun PlaybackFindingsCard(
         if (compatibility.unsupportedLibrarySongCount > 0) {
             FindingRow(
                 icon = ImageVector.vectorResource(R.drawable.rounded_error_24),
-                title = stringResource(
-                    R.string.device_capabilities_finding_unsupported_title,
+                title = stringResource(Res.string.device_capabilities_finding_unsupported_title,
                     compatibility.unsupportedLibrarySongCount
                 ),
-                body = stringResource(
-                    R.string.device_capabilities_finding_unsupported_body,
+                body = stringResource(Res.string.device_capabilities_finding_unsupported_body,
                     compatibility.unsupportedFormats.take(4).joinToString(", ")
                 ),
                 tone = FindingTone.Error
@@ -859,12 +852,10 @@ private fun PlaybackFindingsCard(
             Spacer(Modifier.height(8.dp))
             FindingRow(
                 icon = ImageVector.vectorResource(R.drawable.rounded_warning_filled_24),
-                title = stringResource(
-                    R.string.device_capabilities_finding_resample_title,
+                title = stringResource(Res.string.device_capabilities_finding_resample_title,
                     compatibility.resampledLocalSongCount
                 ),
-                body = stringResource(
-                    R.string.device_capabilities_finding_resample_body,
+                body = stringResource(Res.string.device_capabilities_finding_resample_body,
                     compatibility.maxLocalSampleRate ?: 0
                 ),
                 tone = FindingTone.Warning
@@ -875,11 +866,10 @@ private fun PlaybackFindingsCard(
             Spacer(Modifier.height(8.dp))
             FindingRow(
                 icon = ImageVector.vectorResource(R.drawable.rounded_info_filled_24),
-                title = stringResource(
-                    R.string.device_capabilities_finding_unknown_title,
+                title = stringResource(Res.string.device_capabilities_finding_unknown_title,
                     compatibility.unknownFormatSongCount
                 ),
-                body = stringResource(R.string.device_capabilities_finding_unknown_body),
+                body = stringResource(Res.string.device_capabilities_finding_unknown_body),
                 tone = FindingTone.Info
             )
         }
@@ -895,7 +885,7 @@ private fun DeviceInfoPanel(
     val localized = localizedDeviceInfoEntries(orderedEntries)
 
     CapabilityCard(
-        title = stringResource(R.string.presentation_batch_g_device_info_title),
+        title = stringResource(Res.string.presentation_batch_g_device_info_title),
         icon = ImageVector.vectorResource(R.drawable.rounded_info_filled_24),
         verticalSpacing = 0.dp,
         enableTopSpacer = true,
@@ -1155,9 +1145,9 @@ private fun FormatSupportTile(
             }
             Text(
                 text = when {
-                    !format.isDecoderAvailable -> stringResource(R.string.device_capabilities_format_unsupported)
-                    format.isHardwareAccelerated -> stringResource(R.string.device_capabilities_format_hardware)
-                    else -> stringResource(R.string.device_capabilities_format_software)
+                    !format.isDecoderAvailable -> stringResource(Res.string.device_capabilities_format_unsupported)
+                    format.isHardwareAccelerated -> stringResource(Res.string.device_capabilities_format_hardware)
+                    else -> stringResource(Res.string.device_capabilities_format_software)
                 },
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1165,13 +1155,13 @@ private fun FormatSupportTile(
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 if (format.isOffloadSupported) {
                     TonalChip(
-                        text = stringResource(R.string.device_capabilities_format_offload),
+                        text = stringResource(Res.string.device_capabilities_format_offload),
                         compact = true
                     )
                 }
                 if (format.librarySongCount > 0) {
                     TonalChip(
-                        text = stringResource(R.string.device_capabilities_format_library_count, format.librarySongCount),
+                        text = stringResource(Res.string.device_capabilities_format_library_count, format.librarySongCount),
                         compact = true
                     )
                 }
@@ -1222,9 +1212,9 @@ private fun ProgressReadout(
 private fun storagePercentLabel(fraction: Float): String {
     val percent = fraction * 100f
     return when {
-        fraction <= 0f -> stringResource(R.string.device_capabilities_storage_percent, 0)
-        percent < 1f -> stringResource(R.string.device_capabilities_storage_less_than_one_percent)
-        else -> stringResource(R.string.device_capabilities_storage_percent, percent.roundToInt())
+        fraction <= 0f -> stringResource(Res.string.device_capabilities_storage_percent, 0)
+        percent < 1f -> stringResource(Res.string.device_capabilities_storage_less_than_one_percent)
+        else -> stringResource(Res.string.device_capabilities_storage_percent, percent.roundToInt())
     }
 }
 
@@ -1400,7 +1390,7 @@ private fun ChipRow(
             TonalChip(text = it)
         }
         if (chips.size > 3) {
-            TonalChip(text = stringResource(R.string.device_capabilities_more_count, chips.size - 3))
+            TonalChip(text = stringResource(Res.string.device_capabilities_more_count, chips.size - 3))
         }
     }
 }
@@ -1419,33 +1409,33 @@ private fun SectionLabel(text: String) {
 @Composable
 private fun yesNo(value: Boolean): String {
     return if (value) {
-        stringResource(R.string.presentation_batch_g_yes)
+        stringResource(Res.string.presentation_batch_g_yes)
     } else {
-        stringResource(R.string.presentation_batch_g_no)
+        stringResource(Res.string.presentation_batch_g_no)
     }
 }
 
 @Composable
 private fun audioOutputCategoryLabel(category: AudioOutputCategory): String {
     return when (category) {
-        AudioOutputCategory.BuiltIn -> stringResource(R.string.device_capabilities_output_builtin)
-        AudioOutputCategory.Bluetooth -> stringResource(R.string.device_capabilities_output_bluetooth)
-        AudioOutputCategory.Usb -> stringResource(R.string.device_capabilities_output_usb)
-        AudioOutputCategory.Wired -> stringResource(R.string.device_capabilities_output_wired)
-        AudioOutputCategory.Digital -> stringResource(R.string.device_capabilities_output_digital)
-        AudioOutputCategory.Other -> stringResource(R.string.device_capabilities_output_other)
+        AudioOutputCategory.BuiltIn -> stringResource(Res.string.device_capabilities_output_builtin)
+        AudioOutputCategory.Bluetooth -> stringResource(Res.string.device_capabilities_output_bluetooth)
+        AudioOutputCategory.Usb -> stringResource(Res.string.device_capabilities_output_usb)
+        AudioOutputCategory.Wired -> stringResource(Res.string.device_capabilities_output_wired)
+        AudioOutputCategory.Digital -> stringResource(Res.string.device_capabilities_output_digital)
+        AudioOutputCategory.Other -> stringResource(Res.string.device_capabilities_output_other)
     }
 }
 
 @Composable
 private fun localizedDeviceInfoEntries(entries: List<Pair<String, String>>): List<Pair<String, String>> {
-    val lManufacturer = stringResource(R.string.presentation_batch_g_device_key_manufacturer)
-    val lModel = stringResource(R.string.presentation_batch_g_device_key_model)
-    val lBrand = stringResource(R.string.presentation_batch_g_device_key_brand)
-    val lDevice = stringResource(R.string.presentation_batch_g_device_key_device)
-    val lAndroid = stringResource(R.string.presentation_batch_g_device_key_android_version)
-    val lSdk = stringResource(R.string.presentation_batch_g_device_key_sdk_version)
-    val lHardware = stringResource(R.string.presentation_batch_g_device_key_hardware)
+    val lManufacturer = stringResource(Res.string.presentation_batch_g_device_key_manufacturer)
+    val lModel = stringResource(Res.string.presentation_batch_g_device_key_model)
+    val lBrand = stringResource(Res.string.presentation_batch_g_device_key_brand)
+    val lDevice = stringResource(Res.string.presentation_batch_g_device_key_device)
+    val lAndroid = stringResource(Res.string.presentation_batch_g_device_key_android_version)
+    val lSdk = stringResource(Res.string.presentation_batch_g_device_key_sdk_version)
+    val lHardware = stringResource(Res.string.presentation_batch_g_device_key_hardware)
 
     return entries.map { (key, value) ->
         val label = when (key) {

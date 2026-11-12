@@ -9,13 +9,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SmartMixTarget
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SmartMixViewModel
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /**
  * The single place the Smart Mix composer is rendered, whichever screen opened it, plus the
@@ -41,8 +41,8 @@ fun SmartMixHost(
     }
 
     val snackbarState = remember { SnackbarHostState() }
-    val dailyMixUpdatedMessage = stringResource(R.string.mix_daily_updated)
-    val undoLabel = stringResource(R.string.mix_undo)
+    val dailyMixUpdatedMessage = stringResource(Res.string.mix_daily_updated)
+    val undoLabel = stringResource(Res.string.mix_undo)
     LaunchedEffect(dailyMixUndoId) {
         val undoId = dailyMixUndoId ?: return@LaunchedEffect
         val result = snackbarState.showSnackbar(

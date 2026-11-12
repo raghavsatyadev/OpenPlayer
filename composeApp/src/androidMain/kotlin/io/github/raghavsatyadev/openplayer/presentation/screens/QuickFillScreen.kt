@@ -39,10 +39,11 @@ import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
 import io.github.raghavsatyadev.openplayer.presentation.utils.GenreIconProvider
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 @Composable
 fun QuickFillDialog(
@@ -95,8 +96,8 @@ fun QuickFillContent(
                 title = {
                     AnimatedContent(targetState = step, label = "Title") { s ->
                         Text(
-                            if (s == 0) stringResource(R.string.presentation_batch_b_quick_fill_select_songs)
-                            else stringResource(R.string.presentation_batch_b_quick_fill_choose_genre),
+                            if (s == 0) stringResource(Res.string.presentation_batch_b_quick_fill_select_songs)
+                            else stringResource(Res.string.presentation_batch_b_quick_fill_choose_genre),
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.Bold,
                                 fontFamily = RoundedSans,
@@ -115,7 +116,7 @@ fun QuickFillContent(
                     ) {
                         Icon(
                             if (step > 0) ImageVector.vectorResource(R.drawable.rounded_arrow_back_24) else ImageVector.vectorResource(R.drawable.rounded_close_24),
-                            contentDescription = stringResource(R.string.auth_cd_back)
+                            contentDescription = stringResource(Res.string.auth_cd_back)
                         )
                     }
                 },
@@ -143,7 +144,7 @@ fun QuickFillContent(
                                modifier = Modifier
                                    .fillMaxWidth()
                                    .padding(16.dp),
-                               label = { Text(stringResource(R.string.presentation_batch_b_search_songs_label)) },
+                               label = { Text(stringResource(Res.string.presentation_batch_b_search_songs_label)) },
                                leadingIcon = { Icon(ImageVector.vectorResource(R.drawable.rounded_search_24), contentDescription = null) },
                                trailingIcon = if (searchQuery.isNotEmpty()) {
                                    { IconButton(onClick = { searchQuery = "" }) { Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), null) } }
@@ -219,7 +220,7 @@ fun QuickFillContent(
                             contentPadding = PaddingValues(horizontal = 16.dp),
                             modifier = Modifier.fillMaxHeight()
                         ) {
-                            Text(stringResource(R.string.presentation_batch_b_select_all), style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(stringResource(Res.string.presentation_batch_b_select_all), style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                         
                         Spacer(modifier = Modifier.width(2.dp))
@@ -233,7 +234,7 @@ fun QuickFillContent(
                             contentPadding = PaddingValues(horizontal = 16.dp),
                             modifier = Modifier.fillMaxHeight()
                         ) {
-                            Text(stringResource(R.string.presentation_batch_b_clear), style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(stringResource(Res.string.presentation_batch_b_clear), style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
                     Spacer(modifier = Modifier.weight(1f))
@@ -243,9 +244,9 @@ fun QuickFillContent(
                         text = run {
                             val genre = selectedGenre
                             if (genre != null) {
-                                stringResource(R.string.presentation_batch_b_genre_label_format, genre)
+                                stringResource(Res.string.presentation_batch_b_genre_label_format, genre)
                             } else {
-                                stringResource(R.string.presentation_batch_b_select_a_genre)
+                                stringResource(Res.string.presentation_batch_b_select_a_genre)
                             }
                         },
                         style = MaterialTheme.typography.bodyMedium,
@@ -278,8 +279,8 @@ fun QuickFillContent(
                         .height(44.dp)
                 ) {
                     Text(
-                        text = if (step == 0) stringResource(R.string.cd_next_step)
-                        else stringResource(R.string.presentation_batch_b_quick_fill),
+                        text = if (step == 0) stringResource(Res.string.cd_next_step)
+                        else stringResource(Res.string.presentation_batch_b_quick_fill),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -305,12 +306,12 @@ fun GenreValidatorContent(
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     var showCustomDialog by remember { mutableStateOf(false) }
-    val addCustomCd = stringResource(R.string.presentation_batch_b_add_custom_genre)
-    val newGenreLabel = stringResource(R.string.presentation_batch_b_new_genre)
-    val addCustomGenreTitle = stringResource(R.string.presentation_batch_b_add_custom_genre_title)
-    val genreNameLabel = stringResource(R.string.presentation_batch_b_genre_name_label)
-    val selectIconLabel = stringResource(R.string.presentation_batch_b_select_icon)
-    val addLabel = stringResource(R.string.presentation_batch_b_add)
+    val addCustomCd = stringResource(Res.string.presentation_batch_b_add_custom_genre)
+    val newGenreLabel = stringResource(Res.string.presentation_batch_b_new_genre)
+    val addCustomGenreTitle = stringResource(Res.string.presentation_batch_b_add_custom_genre_title)
+    val genreNameLabel = stringResource(Res.string.presentation_batch_b_genre_name_label)
+    val selectIconLabel = stringResource(Res.string.presentation_batch_b_select_icon)
+    val addLabel = stringResource(Res.string.presentation_batch_b_add)
 
     val allGenres = remember(customGenres) {
         (GenreIconProvider.DEFAULT_GENRES + customGenres.toList()).sorted()
@@ -452,7 +453,7 @@ fun GenreValidatorContent(
                 ) { Text(addLabel, maxLines = 1, overflow = TextOverflow.Ellipsis) }
             },
             dismissButton = {
-                TextButton(onClick = { showCustomDialog = false }) { Text(stringResource(R.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis) }
+                TextButton(onClick = { showCustomDialog = false }) { Text(stringResource(Res.string.cancel), maxLines = 1, overflow = TextOverflow.Ellipsis) }
             }
         )
     }
