@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name" translatable="false">PixelPlayerOSS</string>
+    <string name="app_name" translatable="false">OpenPlayer</string>
     <string name="app_name_change_title">App Name Change</string>
-    <string name="app_name_change_message">This app is now PixelPlayerOSS. Keep playing!</string>
+    <string name="app_name_change_message">This app is now OpenPlayer. Keep playing!</string>
     <string name="do_not_show_again">Do not show again</string>
     <string name="dismiss">Dismiss</string>
     <string name="all_files_access_title">Special Permission Required</string>
-    <string name="all_files_access_description">To edit song metadata (.mp3 files), PixelPlayerOSS needs special access to all files. This allows us to modify track tags directly. Please grant this permission on the next screen to enable metadata editing.</string>
+    <string name="all_files_access_description">To edit song metadata (.mp3 files), OpenPlayer needs special access to all files. This allows us to modify track tags directly. Please grant this permission on the next screen to enable metadata editing.</string>
     <string name="grant_permission_button">Grant Permission</string>
     <string name="error">Error</string>
     <string name="ok">OK</string>
@@ -126,7 +126,7 @@
     <string name="playlist_share_failed">Share failed: %1$s</string>
     <string name="playlist_none_to_export">No playlists to export</string>
     <string name="playlist_export_failed">Export failed: %1$s</string>
-    <string name="playlist_export_folder_display" translatable="false">Music/PixelPlayerOSS Exports</string>
+    <string name="playlist_export_folder_display" translatable="false">Music/OpenPlayer Exports</string>
     <string name="error_unknown">Unknown error</string>
 
 
@@ -134,6 +134,8 @@
     <string name="backup_invalid_format">Invalid backup: %1$s</string>
     <string name="backup_progress_preparing_restore">Preparing restore</string>
     <string name="backup_progress_starting_task">Starting restore task.</string>
+    <string name="setup_restore_scanning_library">Scanning your music</string>
+    <string name="setup_restore_scanning_library_detail">History, playlists and favorites are restored once your songs are found.</string>
     <string name="backup_progress_preparing_backup">Preparing backup</string>
     <string name="backup_progress_starting_backup_task">Starting backup task.</string>
     <string name="restore_completed_success">Backup restored successfully</string>

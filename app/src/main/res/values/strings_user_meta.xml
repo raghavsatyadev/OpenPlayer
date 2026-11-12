@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_meta_entry_title">Rating, moods and tags</string>
+    <string name="user_meta_entry_summary_empty">Not set</string>
+    <string name="user_meta_entry_summary">%1$s</string>
+    <string name="user_meta_editor_title">Rating, moods and tags</string>
+    <string name="user_meta_rating">Rating</string>
+    <string name="user_meta_rating_none">Not rated</string>
+    <string name="user_meta_rating_value">%1$d of 5 stars</string>
+    <string name="user_meta_cd_star">Set rating to %1$d stars</string>
+    <string name="user_meta_moods">Moods</string>
+    <string name="user_meta_tags">Tags</string>
+    <string name="user_meta_add_mood_hint">Add a mood</string>
+    <string name="user_meta_add_tag_hint">Add a tag</string>
+    <string name="user_meta_cd_add">Add</string>
+    <string name="user_meta_cd_remove">Remove %1$s</string>
+    <string name="user_meta_suggestions">Suggestions</string>
+    <string name="user_meta_save">Save</string>
+    <string name="user_meta_cancel">Cancel</string>
+    <string name="user_meta_summary_moods">%1$d moods</string>
+    <string name="user_meta_summary_tags">%1$d tags</string>
+</resources>

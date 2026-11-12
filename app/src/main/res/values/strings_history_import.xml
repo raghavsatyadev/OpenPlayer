@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_import_title">Import listening history</string>
+    <string name="history_import_subtitle">Bring in plays from Last.fm, Spotify or ListenBrainz</string>
+    <string name="history_import_intro">Plays are matched to songs in your library by title and artist. Plays already in your history are skipped, so importing the same file twice is safe.</string>
+
+    <string name="history_import_lastfm">Last.fm CSV</string>
+    <string name="history_import_lastfm_desc">A scrobble export with artist, album, track and date columns</string>
+    <string name="history_import_spotify">Spotify streaming history</string>
+    <string name="history_import_spotify_desc">Streaming_History_Audio JSON files; pick several at once</string>
+    <string name="history_import_listenbrainz">ListenBrainz export</string>
+    <string name="history_import_listenbrainz_desc">The export zip, or its JSON and JSONL files</string>
+    <string name="history_import_youtube_music">YouTube Music (Google Takeout)</string>
+    <string name="history_import_youtube_music_desc">watch-history.json, watch-history.html or the Takeout zip. Every play counts as one full listen</string>
+
+    <string name="history_import_phase_reading">Reading files</string>
+    <string name="history_import_phase_matching">Matching songs</string>
+    <string name="history_import_phase_saving">Saving to your history</string>
+    <string name="history_import_plays_read">%1$d plays read</string>
+
+    <string name="history_import_done_title">Imported %1$d plays</string>
+    <string name="history_import_done_none">Nothing new to import</string>
+    <string name="history_import_stat_imported">Added to history</string>
+    <string name="history_import_stat_duplicates">Already in history</string>
+    <string name="history_import_stat_unmatched">Not in your library</string>
+    <string name="history_import_stat_below_rule">Too short to count</string>
+    <string name="history_import_stat_unparseable">Unreadable entries</string>
+    <string name="history_import_stat_failed_files">Files that could not be read</string>
+    <string name="history_import_unmatched_header">Most played tracks not found</string>
+    <string name="history_import_unmatched_row">%1$s (%2$d)</string>
+    <string name="history_import_done_button">Done</string>
+
+    <string name="history_import_failed_title">Import failed</string>
+    <string name="history_import_failed_desc">The file could not be read. Check that it is the right export and try again.</string>
+    <string name="history_import_try_again">Try again</string>
+</resources>

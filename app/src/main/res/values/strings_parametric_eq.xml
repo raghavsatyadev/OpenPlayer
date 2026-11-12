@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parametric_eq_mode_graphic">Graphic</string>
+    <string name="parametric_eq_mode_parametric">Parametric</string>
+    <string name="parametric_eq_mode_hint">Only one equaliser runs at a time. Switching mode keeps the other one\'s settings.</string>
+    <string name="parametric_eq_title">Parametric EQ</string>
+    <string name="parametric_eq_unavailable">Parametric EQ is not available on this device.</string>
+    <string name="parametric_eq_curve_cd">Frequency response, 20 Hz to 20 kHz, plus or minus 15 dB</string>
+    <string name="parametric_eq_preamp">Preamp</string>
+    <string name="parametric_eq_db_value">%1$s dB</string>
+    <string name="parametric_eq_bands_title">Bands</string>
+    <string name="parametric_eq_empty">No bands yet. Add one or import an AutoEQ file.</string>
+    <string name="parametric_eq_add_band">Add band</string>
+    <string name="parametric_eq_import">Import AutoEQ file</string>
+    <string name="parametric_eq_export">Export</string>
+    <string name="parametric_eq_clear">Clear</string>
+    <string name="parametric_eq_band_type_peak">Peak</string>
+    <string name="parametric_eq_band_type_low_shelf">Low shelf</string>
+    <string name="parametric_eq_band_type_high_shelf">High shelf</string>
+    <string name="parametric_eq_band_number">Band %1$d</string>
+    <string name="parametric_eq_band_enabled_cd">Band enabled</string>
+    <string name="parametric_eq_band_remove_cd">Remove band</string>
+    <string name="parametric_eq_frequency">Frequency</string>
+    <string name="parametric_eq_gain">Gain</string>
+    <string name="parametric_eq_q">Q</string>
+    <string name="parametric_eq_hz_value">%1$s Hz</string>
+    <string name="parametric_eq_message_no_filters">No valid filters found in that file.</string>
+    <string name="parametric_eq_message_import_failed">Could not read that file.</string>
+    <string name="parametric_eq_message_export_failed">Could not write the file.</string>
+    <string name="parametric_eq_message_exported">Exported.</string>
+    <string name="parametric_eq_export_file_name">ParametricEQ.txt</string>
+</resources>

@@ -20,7 +20,7 @@ val keystoreProperties = Properties().apply {
 val releaseSigningStoreFile = rootProject.file(
     keystoreProperties.getProperty("storeFile") ?: "vz-pixelplay.jks"
 )
-val disableReleaseSigning = providers.gradleProperty("pixelplayer.disableReleaseSigning")
+val disableReleaseSigning = providers.gradleProperty("openplayer.disableReleaseSigning")
     .getOrElse("false")
     .toBoolean()
 val hasReleaseSigningConfig = !disableReleaseSigning &&
@@ -29,17 +29,17 @@ val hasReleaseSigningConfig = !disableReleaseSigning &&
     keystoreProperties.getProperty("keyAlias") != null &&
     keystoreProperties.getProperty("keyPassword") != null
 
-val enableAbiSplits = providers.gradleProperty("pixelplayer.enableAbiSplits")
+val enableAbiSplits = providers.gradleProperty("openplayer.enableAbiSplits")
     .getOrElse("true")
     .toBoolean()
 
-val enableComposeCompilerReports = providers.gradleProperty("pixelplayer.enableComposeCompilerReports")
+val enableComposeCompilerReports = providers.gradleProperty("openplayer.enableComposeCompilerReports")
     .getOrElse("false")
     .toBoolean()
 
 @Suppress("DEPRECATION")
 android {
-    namespace = "com.lostf1sh.pixelplayeross"
+    namespace = "io.github.raghavsatyadev.openplayer"
     compileSdk = 37
 
     sourceSets {
@@ -78,7 +78,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.lostf1sh.pixelplayeross"
+        applicationId = "io.github.raghavsatyadev.openplayer"
         minSdk = 30
         targetSdk = 37
         versionCode = (project.findProperty("APP_VERSION_CODE") as? String)?.toInt() ?: 1
@@ -210,8 +210,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.adaptive)
-    implementation(libs.androidx.material.icons.core)
-    implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.foundation)
     implementation(libs.androidx.animation)

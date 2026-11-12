@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setcat_insert_after_latest_title">Keep play-next order</string>
+    <string name="setcat_insert_after_latest_subtitle">Songs you play next go after the previous play-next song, so they play in the order you added them.</string>
+</resources>

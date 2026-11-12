@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setcat_seekbar_style_label">Seekbar style</string>
+    <string name="setcat_seekbar_style_desc">Wavy line, or the song\'s waveform (falls back to wavy while it loads)</string>
+    <string name="setcat_seekbar_wavy">Wavy</string>
+    <string name="setcat_seekbar_waveform">Waveform</string>
+</resources>

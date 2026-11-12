@@ -24,20 +24,20 @@
 -dontwarn com.jsyn.**
 -dontwarn com.softsynth.**
 
--keepclassmembers class com.lostf1sh.pixelplayeross.data.model.** { *; }
+-keepclassmembers class io.github.raghavsatyadev.openplayer.data.model.** { *; }
 
 -keep class com.google.gson.reflect.TypeToken { *; }
 -keep class * extends com.google.gson.reflect.TypeToken
 
--keep class com.lostf1sh.pixelplayeross.data.preferences.PreferenceBackupEntry { *; }
--keep class com.lostf1sh.pixelplayeross.data.backup.model.** { *; }
--keep class com.lostf1sh.pixelplayeross.data.backup.module.** { *; }
--keep class com.lostf1sh.pixelplayeross.data.database.FavoritesEntity { *; }
--keep class com.lostf1sh.pixelplayeross.data.database.SongEngagementEntity { *; }
--keep class com.lostf1sh.pixelplayeross.data.database.LyricsEntity { *; }
--keep class com.lostf1sh.pixelplayeross.data.database.SearchHistoryEntity { *; }
--keep class com.lostf1sh.pixelplayeross.data.database.TransitionRuleEntity { *; }
--keep class com.lostf1sh.pixelplayeross.data.database.AudioBookmarkEntity { *; }
+-keep class io.github.raghavsatyadev.openplayer.data.preferences.PreferenceBackupEntry { *; }
+-keep class io.github.raghavsatyadev.openplayer.data.backup.model.** { *; }
+-keep class io.github.raghavsatyadev.openplayer.data.backup.module.** { *; }
+-keep class io.github.raghavsatyadev.openplayer.data.database.FavoritesEntity { *; }
+-keep class io.github.raghavsatyadev.openplayer.data.database.SongEngagementEntity { *; }
+-keep class io.github.raghavsatyadev.openplayer.data.database.LyricsEntity { *; }
+-keep class io.github.raghavsatyadev.openplayer.data.database.SearchHistoryEntity { *; }
+-keep class io.github.raghavsatyadev.openplayer.data.database.TransitionRuleEntity { *; }
+-keep class io.github.raghavsatyadev.openplayer.data.database.AudioBookmarkEntity { *; }
 
 -keep class io.ktor.server.engine.** { *; }
 -keep class io.ktor.server.cio.** { *; }
