@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -65,7 +63,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.view.HapticFeedbackConstantsCompat
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.backup.model.ModuleRestoreDetail
 import io.github.raghavsatyadev.openplayer.data.backup.model.RestorePlan
@@ -78,6 +75,8 @@ import java.util.Locale
 import androidx.compose.animation.animateColorAsState
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(
     ExperimentalAnimationApi::class,
@@ -166,7 +165,7 @@ fun BackupModuleSelectionDialog(
                                         )
                                     ) {
                                         Icon(
-                                            imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                                            imageVector = vectorResource(Res.drawable.rounded_arrow_back_24),
                                             contentDescription = stringResource(Res.string.auth_cd_back)
                                         )
                                     }
@@ -201,7 +200,7 @@ fun BackupModuleSelectionDialog(
                                             )
                                         ) {
                                             Icon(
-                                                painter = painterResource(R.drawable.round_select_all_24),
+                                                painter = painterResource(Res.drawable.round_select_all_24),
                                                 contentDescription = stringResource(Res.string.presentation_batch_g_backup_cd_select_all)
                                             )
                                         }
@@ -214,7 +213,7 @@ fun BackupModuleSelectionDialog(
                                             )
                                         ) {
                                             Icon(
-                                                painter = painterResource(R.drawable.baseline_deselect_24),
+                                                painter = painterResource(Res.drawable.baseline_deselect_24),
                                                 contentDescription = stringResource(Res.string.presentation_batch_g_backup_cd_clear_selection)
                                             )
                                         }
@@ -243,7 +242,7 @@ fun BackupModuleSelectionDialog(
                                                 horizontalArrangement = Arrangement.spacedBy(4.dp)
                                             ) {
                                                 Icon(
-                                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_history_24),
+                                                    imageVector = vectorResource(Res.drawable.rounded_history_24),
                                                     contentDescription = null
                                                 )
                                                 Text(
@@ -388,7 +387,7 @@ fun BackupModuleSelectionDialog(
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_warning_24),
+                                                imageVector = vectorResource(Res.drawable.rounded_warning_24),
                                                 contentDescription = null,
                                                 tint = MaterialTheme.colorScheme.error,
                                                 modifier = Modifier.size(18.dp)
@@ -559,7 +558,7 @@ private fun BackupSectionSelectableCardShared(
                             label = "switch_thumb_icon"
                         ) { isSelected ->
                             Icon(
-                                imageVector = if (isSelected) ImageVector.vectorResource(R.drawable.rounded_check_24) else ImageVector.vectorResource(R.drawable.rounded_close_24),
+                                imageVector = if (isSelected) vectorResource(Res.drawable.rounded_check_24) else vectorResource(Res.drawable.rounded_close_24),
                                 contentDescription = null,
                                 modifier = Modifier.size(SwitchDefaults.IconSize)
                             )

@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.recap
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,6 +40,7 @@ import kotlinx.collections.immutable.ImmutableList
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @StringRes
 private fun RecapEntry.titleRes(): Int =
@@ -84,7 +83,7 @@ fun RecapStatsCard(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_auto_awesome_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_auto_awesome_filled_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(26.dp)
@@ -115,7 +114,7 @@ fun RecapStatsCard(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_forward_24),
+                    imageVector = vectorResource(Res.drawable.rounded_arrow_forward_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
@@ -131,7 +130,7 @@ fun RecapStatsCard(
                 Text(text = stringResource(secondary.titleRes(), secondary.year))
                 Spacer(Modifier.size(6.dp))
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_forward_24),
+                    imageVector = vectorResource(Res.drawable.rounded_arrow_forward_24),
                     contentDescription = null,
                     modifier = Modifier.size(16.dp)
                 )
@@ -201,7 +200,7 @@ fun RecapHomeCard(
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_auto_awesome_filled_24), contentDescription = null, modifier = Modifier.size(18.dp))
+                Icon(vectorResource(Res.drawable.rounded_auto_awesome_filled_24), contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.size(8.dp))
                 Text(stringResource(Res.string.recap_home_card_open))
             }
@@ -213,7 +212,7 @@ fun RecapHomeCard(
                 .align(Alignment.TopEnd)
                 .padding(6.dp)
         ) {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), contentDescription = stringResource(Res.string.recap_home_card_dismiss))
+            Icon(vectorResource(Res.drawable.rounded_close_24), contentDescription = stringResource(Res.string.recap_home_card_dismiss))
         }
     }
 }

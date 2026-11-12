@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,11 +35,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.collections.immutable.ImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * One selectable entry in a cloud library picker. Non-selectable entries
@@ -94,7 +93,7 @@ fun CloudLibraryPickerSheet(
             Spacer(modifier = Modifier.height(16.dp))
 
             CloudLibrarySelectorChoice(
-                icon = ImageVector.vectorResource(R.drawable.rounded_select_all_24),
+                icon = vectorResource(Res.drawable.rounded_select_all_24),
                 title = stringResource(Res.string.dash_libraries_all),
                 subtitle = stringResource(Res.string.dash_libraries_all_subtitle),
                 checked = selectedIds.size == selectableIds.size,
@@ -107,7 +106,7 @@ fun CloudLibraryPickerSheet(
             items.forEach { item ->
                 if (item.selectable) {
                     CloudLibrarySelectorChoice(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_library_music_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_library_music_filled_24),
                         title = item.name,
                         subtitle = stringResource(Res.string.dash_libraries_folder_subtitle),
                         checked = item.id in selectedIds,
@@ -122,7 +121,7 @@ fun CloudLibraryPickerSheet(
                     )
                 } else {
                     CloudLibrarySelectorChoice(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_folder_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_folder_filled_24),
                         title = item.name,
                         subtitle = stringResource(Res.string.dash_libraries_not_music),
                         checked = false,
@@ -139,7 +138,7 @@ fun CloudLibraryPickerSheet(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
-                    ImageVector.vectorResource(R.drawable.rounded_cloud_sync_filled_24),
+                    vectorResource(Res.drawable.rounded_cloud_sync_filled_24),
                     contentDescription = null,
                     modifier = Modifier.size(18.dp)
                 )
@@ -238,7 +237,7 @@ fun CloudLibrarySelectorChoice(
             if (enabled) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Icon(
-                    imageVector = if (checked) ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24) else ImageVector.vectorResource(R.drawable.rounded_radio_button_unchecked_filled_24),
+                    imageVector = if (checked) vectorResource(Res.drawable.rounded_check_circle_filled_24) else vectorResource(Res.drawable.rounded_radio_button_unchecked_filled_24),
                     contentDescription = null,
                     modifier = Modifier.size(26.dp),
                     tint = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant

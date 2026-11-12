@@ -2,9 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -41,6 +38,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.data.stats.StatsTimeRange
 import androidx.compose.foundation.lazy.items
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.vectorResource
 
 private val RecentlyPlayedRangeChipHeight = 44.dp
 private val RecentlyPlayedRangeChipHorizontalPadding = 16.dp
@@ -147,7 +146,7 @@ private fun RecentlyPlayedRangeChip(
                 contentAlignment = Alignment.CenterStart
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_history_24),
+                    imageVector = vectorResource(Res.drawable.rounded_history_24),
                     contentDescription = null,
                     modifier = Modifier
                         .size(FilterChipDefaults.IconSize)

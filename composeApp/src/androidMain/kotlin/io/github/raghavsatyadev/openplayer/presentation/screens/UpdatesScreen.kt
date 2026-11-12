@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -65,6 +63,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.UpdatesViewMod
 import co.touchlab.kermit.Logger
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun UpdatesScreen(
@@ -89,7 +88,7 @@ fun UpdatesScreen(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
                         )
                     ) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
+                        Icon(vectorResource(Res.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
@@ -148,7 +147,7 @@ fun UpdatesScreen(
                             UpdateChannel.fromStorageKey(key)?.let(viewModel::setChannel)
                         },
                         leadingIcon = {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_new_releases_filled_24), contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
+                            Icon(vectorResource(Res.drawable.rounded_new_releases_filled_24), contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
                         }
                     )
                     Spacer(Modifier.height(4.dp))
@@ -158,7 +157,7 @@ fun UpdatesScreen(
                         checked = state.autoCheckEnabled,
                         onCheckedChange = viewModel::setAutoCheck,
                         leadingIcon = {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_schedule_filled_24), contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
+                            Icon(vectorResource(Res.drawable.rounded_schedule_filled_24), contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
                         }
                     )
                 }
@@ -206,7 +205,7 @@ private fun UpdateStatusCard(
         Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 Icon(
-                    ImageVector.vectorResource(R.drawable.rounded_system_update_filled_24),
+                    vectorResource(Res.drawable.rounded_system_update_filled_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(32.dp)

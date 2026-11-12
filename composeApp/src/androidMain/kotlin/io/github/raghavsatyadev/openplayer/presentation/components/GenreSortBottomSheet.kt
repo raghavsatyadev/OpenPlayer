@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,12 +30,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.TightWrapText
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SortOption
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,7 +88,7 @@ fun GenreSortBottomSheet(
                     ),
                     shape = AbsoluteSmoothCornerShape(16.dp, 60)
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_shuffle_24), contentDescription = null)
+                    Icon(vectorResource(Res.drawable.rounded_shuffle_24), contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
                     TightWrapText(
                         text = stringResource(Res.string.presentation_batch_g_genre_sort_shuffle),
@@ -121,19 +120,19 @@ fun GenreSortBottomSheet(
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 SortOptionCard(
                     text = stringResource(Res.string.presentation_batch_g_genre_sort_artist),
-                    icon = ImageVector.vectorResource(R.drawable.rounded_person_filled_24),
+                    icon = vectorResource(Res.drawable.rounded_person_filled_24),
                     isSelected = currentSort == SortOption.ARTIST,
                     onClick = { onSortSelected(SortOption.ARTIST) }
                 )
                 SortOptionCard(
                     text = stringResource(Res.string.presentation_batch_g_genre_sort_album),
-                    icon = ImageVector.vectorResource(R.drawable.rounded_album_filled_24),
+                    icon = vectorResource(Res.drawable.rounded_album_filled_24),
                     isSelected = currentSort == SortOption.ALBUM,
                     onClick = { onSortSelected(SortOption.ALBUM) }
                 )
                 SortOptionCard(
                     text = stringResource(Res.string.presentation_batch_g_genre_sort_title_opt),
-                    icon = ImageVector.vectorResource(R.drawable.rounded_sort_by_alpha_24),
+                    icon = vectorResource(Res.drawable.rounded_sort_by_alpha_24),
                     isSelected = currentSort == SortOption.TITLE,
                     onClick = { onSortSelected(SortOption.TITLE) }
                 )
@@ -182,7 +181,7 @@ fun SortOptionCard(
             
             if (isSelected) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
+                    imageVector = vectorResource(Res.drawable.rounded_check_24),
                     contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                     tint = contentColor
                 )

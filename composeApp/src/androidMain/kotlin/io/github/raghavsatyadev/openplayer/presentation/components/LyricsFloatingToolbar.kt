@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -37,7 +35,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextOverflow
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Lyrics
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +46,7 @@ import androidx.compose.ui.util.lerp
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -100,7 +98,7 @@ fun LyricsFloatingToolbar(
             onClick = onNavigateBack
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                imageVector = vectorResource(Res.drawable.rounded_arrow_back_24),
                 contentDescription = stringResource(Res.string.auth_cd_back),
                 tint = onBackgroundColor
             )
@@ -155,7 +153,7 @@ fun LyricsFloatingToolbar(
             onClick = onMoreClick
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_more_vert_24),
+                imageVector = vectorResource(Res.drawable.rounded_more_vert_24),
                 contentDescription = stringResource(Res.string.presentation_batch_g_lyrics_cd_options),
                 tint = onBackgroundColor
             )

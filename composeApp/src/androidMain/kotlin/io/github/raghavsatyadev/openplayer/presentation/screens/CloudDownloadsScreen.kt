@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
 import android.text.format.Formatter
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -50,6 +49,7 @@ import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHei
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.CloudDownloadsViewModel
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun CloudDownloadsScreen(
@@ -75,7 +75,7 @@ fun CloudDownloadsScreen(
                         )
                     ) {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                            vectorResource(Res.drawable.rounded_arrow_back_24),
                             contentDescription = stringResource(Res.string.auth_cd_back)
                         )
                     }
@@ -174,7 +174,7 @@ private fun StorageSummaryCard(usedBytes: Long, completedCount: Int, totalCount:
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    ImageVector.vectorResource(R.drawable.rounded_storage_24),
+                    vectorResource(Res.drawable.rounded_storage_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
@@ -292,7 +292,7 @@ private fun DownloadItemCard(
             onRetry?.let {
                 IconButton(onClick = it) {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_refresh_24),
+                        vectorResource(Res.drawable.rounded_refresh_24),
                         contentDescription = stringResource(Res.string.cloud_download_retry),
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -300,7 +300,7 @@ private fun DownloadItemCard(
             }
             IconButton(onClick = onRemove) {
                 Icon(
-                    ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
+                    vectorResource(Res.drawable.rounded_delete_filled_24),
                     contentDescription = stringResource(Res.string.cloud_remove_download),
                     tint = MaterialTheme.colorScheme.error
                 )
@@ -318,7 +318,7 @@ private fun DownloadsEmptyState() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            ImageVector.vectorResource(R.drawable.rounded_cloud_download_filled_24),
+            vectorResource(Res.drawable.rounded_cloud_download_filled_24),
             contentDescription = null,
             modifier = Modifier.size(64.dp),
             tint = MaterialTheme.colorScheme.primary
@@ -347,22 +347,22 @@ private data class DownloadVisual(
 @Composable
 private fun OfflineDownloadStatus.visual(): DownloadVisual = when (this) {
     OfflineDownloadStatus.COMPLETE -> DownloadVisual(
-        ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+        vectorResource(Res.drawable.rounded_check_circle_filled_24),
         { MaterialTheme.colorScheme.secondaryContainer },
         { MaterialTheme.colorScheme.onSecondaryContainer }
     )
     OfflineDownloadStatus.QUEUED -> DownloadVisual(
-        ImageVector.vectorResource(R.drawable.rounded_hourglass_top_24),
+        vectorResource(Res.drawable.rounded_hourglass_top_24),
         { MaterialTheme.colorScheme.tertiaryContainer },
         { MaterialTheme.colorScheme.onTertiaryContainer }
     )
     OfflineDownloadStatus.DOWNLOADING -> DownloadVisual(
-        ImageVector.vectorResource(R.drawable.rounded_cloud_download_filled_24),
+        vectorResource(Res.drawable.rounded_cloud_download_filled_24),
         { MaterialTheme.colorScheme.primaryContainer },
         { MaterialTheme.colorScheme.onPrimaryContainer }
     )
     OfflineDownloadStatus.FAILED -> DownloadVisual(
-        ImageVector.vectorResource(R.drawable.rounded_error_filled_24),
+        vectorResource(Res.drawable.rounded_error_filled_24),
         { MaterialTheme.colorScheme.errorContainer },
         { MaterialTheme.colorScheme.onErrorContainer }
     )

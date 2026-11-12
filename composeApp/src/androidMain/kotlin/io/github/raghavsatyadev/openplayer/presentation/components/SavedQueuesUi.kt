@@ -28,11 +28,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.repository.SavedQueue
 import io.github.raghavsatyadev.openplayer.utils.formatDuration
 import java.text.DateFormat
@@ -40,6 +37,7 @@ import java.util.Date
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /** Default name for a new saved queue: the current date and time. */
 fun defaultSavedQueueName(nowMs: Long): String =
@@ -163,7 +161,7 @@ private fun SavedQueueRow(
         modifier = modifier.clickable(onClick = onPlay),
         leadingContent = {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
+                imageVector = vectorResource(Res.drawable.rounded_queue_music_24),
                 contentDescription = stringResource(Res.string.saved_queues_cd_play, queue.name)
             )
         },
@@ -187,7 +185,7 @@ private fun SavedQueueRow(
             Row(horizontalArrangement = Arrangement.spacedBy(0.dp)) {
                 IconButton(onClick = onDelete) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_delete_24),
+                        imageVector = vectorResource(Res.drawable.rounded_delete_24),
                         contentDescription = stringResource(Res.string.saved_queues_cd_delete, queue.name)
                     )
                 }

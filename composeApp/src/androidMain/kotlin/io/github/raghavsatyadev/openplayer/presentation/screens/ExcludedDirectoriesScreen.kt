@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,12 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.FileExplorerContent
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewModel
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * Excluded directories as a destination rather than a dialog, so it matches the rest of the
@@ -100,7 +98,7 @@ fun ExcludedDirectoriesScreen(
                 )
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                    imageVector = vectorResource(Res.drawable.rounded_arrow_back_24),
                     contentDescription = stringResource(Res.string.auth_cd_back)
                 )
             }

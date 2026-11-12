@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,12 +29,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.equalizer.EqualizerPreset
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.collections.immutable.ImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -156,21 +154,21 @@ private fun CustomPresetItem(
         Row {
              IconButton(onClick = onPinClick) {
                 Icon(
-                    imageVector = if (isPinned) ImageVector.vectorResource(R.drawable.rounded_star_filled_24) else ImageVector.vectorResource(R.drawable.rounded_star_24),
+                    imageVector = if (isPinned) vectorResource(Res.drawable.rounded_star_filled_24) else vectorResource(Res.drawable.rounded_star_24),
                     contentDescription = if (isPinned) stringResource(Res.string.presentation_batch_g_presets_cd_unpin) else stringResource(Res.string.presentation_batch_g_presets_cd_pin),
                     tint = if (isPinned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             IconButton(onClick = onRenameClick) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_24),
+                    imageVector = vectorResource(Res.drawable.rounded_edit_24),
                     contentDescription = stringResource(Res.string.presentation_batch_g_presets_cd_rename),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             IconButton(onClick = onDeleteClick) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_delete_24),
+                    imageVector = vectorResource(Res.drawable.rounded_delete_24),
                     contentDescription = stringResource(Res.string.presentation_batch_g_presets_cd_delete),
                     tint = MaterialTheme.colorScheme.error
                 )

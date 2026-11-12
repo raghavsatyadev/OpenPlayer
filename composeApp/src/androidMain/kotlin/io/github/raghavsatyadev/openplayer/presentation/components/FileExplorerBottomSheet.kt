@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -105,6 +103,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -304,7 +303,7 @@ fun FileExplorerContent(
                             )
                         ) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                                imageVector = vectorResource(Res.drawable.rounded_close_24),
                                 contentDescription = stringResource(Res.string.presentation_batch_g_file_explorer_cd_close)
                             )
                         }
@@ -322,7 +321,7 @@ fun FileExplorerContent(
                         )
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_refresh_24),
+                            imageVector = vectorResource(Res.drawable.rounded_refresh_24),
                             contentDescription = stringResource(Res.string.presentation_batch_g_file_explorer_cd_refresh)
                         )
                     }
@@ -339,7 +338,7 @@ fun FileExplorerContent(
                 shape = CircleShape,
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_done_24),
+                    imageVector = vectorResource(Res.drawable.rounded_done_24),
                     contentDescription = stringResource(Res.string.presentation_batch_g_file_explorer_cd_done),
                     tint = MaterialTheme.colorScheme.onTertiaryContainer
                 )
@@ -585,7 +584,7 @@ private fun FileExplorerModeSwitcher(
                         text = { Text(label) },
                         shapes = MenuDefaults.itemShape(index = index, count = tabs.size),
                         selectedLeadingIcon = {
-                            Icon(imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24), contentDescription = null)
+                            Icon(imageVector = vectorResource(Res.drawable.rounded_check_24), contentDescription = null)
                         }
                     )
                 }
@@ -651,7 +650,7 @@ private fun ExplorerEmptyState(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_folder_off_filled_24),
+            imageVector = vectorResource(Res.drawable.rounded_folder_off_filled_24),
             contentDescription = null,
             tint = iconColor,
             modifier = Modifier.size(64.dp)
@@ -749,7 +748,7 @@ private fun FileExplorerItem(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_folder_filled_24),
+                imageVector = vectorResource(Res.drawable.rounded_folder_filled_24),
                 contentDescription = null,
                 tint = contentColor
             )
@@ -798,7 +797,7 @@ private fun FileExplorerItem(
 
         if (navigationEnabled) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_chevron_right_24),
+                imageVector = vectorResource(Res.drawable.rounded_chevron_right_24),
                 contentDescription = null,
                 tint = contentColor
             )
@@ -881,7 +880,7 @@ private fun FileExplorerHeader(
                     )
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                        imageVector = vectorResource(Res.drawable.rounded_arrow_back_24),
                         contentDescription = stringResource(Res.string.presentation_batch_g_file_explorer_cd_navigate_up),
                         tint = MaterialTheme.colorScheme.onSurface
                     )
@@ -957,7 +956,7 @@ private fun FileExplorerHeader(
                             ) {
                                 if (isRoot) {
                                     Icon(
-                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_home_filled_24),
+                                        imageVector = vectorResource(Res.drawable.rounded_home_filled_24),
                                         contentDescription = stringResource(Res.string.presentation_batch_g_file_explorer_cd_go_root),
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier
@@ -982,7 +981,7 @@ private fun FileExplorerHeader(
 
                             if (!isLast) {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_chevron_right_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_chevron_right_24),
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(start = 6.dp, end = 2.dp)

@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -41,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil3.size.Size
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Album
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.AutoSizingTextToFill
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.TightWrapText
@@ -51,6 +48,7 @@ import kotlinx.collections.immutable.toImmutableList
 import androidx.compose.runtime.remember
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -143,7 +141,7 @@ fun AlbumMultiSelectionOptionSheet(
                     ),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_play_arrow_filled_24),
                             contentDescription = stringResource(Res.string.cd_play_selected_albums)
                         )
                     },
@@ -164,7 +162,7 @@ fun AlbumMultiSelectionOptionSheet(
                     ),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_playlist_add_24),
+                            imageVector = vectorResource(Res.drawable.rounded_playlist_add_24),
                             contentDescription = stringResource(Res.string.cd_add_to_playlist)
                         )
                     },
@@ -195,7 +193,7 @@ fun AlbumMultiSelectionOptionSheet(
                     ),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
+                            imageVector = vectorResource(Res.drawable.rounded_queue_music_24),
                             contentDescription = stringResource(Res.string.cd_play_selected_albums_next)
                         )
                     },
@@ -216,7 +214,7 @@ fun AlbumMultiSelectionOptionSheet(
                     ),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
+                            imageVector = vectorResource(Res.drawable.rounded_queue_music_24),
                             contentDescription = stringResource(Res.string.cd_add_selected_albums_to_queue)
                         )
                     },

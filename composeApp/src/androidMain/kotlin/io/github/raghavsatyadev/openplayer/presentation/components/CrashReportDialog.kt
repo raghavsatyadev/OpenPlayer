@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -39,6 +37,7 @@ import io.github.raghavsatyadev.openplayer.utils.CrashLogData
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * Material3 Expressive styled dialog that displays crash information
@@ -55,7 +54,7 @@ fun CrashReportDialog(
         onDismissRequest = onDismiss,
         icon = {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_bug_report_24),
+                imageVector = vectorResource(Res.drawable.rounded_bug_report_24),
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
                 tint = MaterialTheme.colorScheme.error
@@ -156,7 +155,7 @@ fun CrashReportDialog(
                         modifier = Modifier.weight(1f)
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_content_copy_24),
+                            imageVector = vectorResource(Res.drawable.rounded_content_copy_24),
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
@@ -178,7 +177,7 @@ fun CrashReportDialog(
                         modifier = Modifier.weight(1f)
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_share_24),
+                            imageVector = vectorResource(Res.drawable.rounded_share_24),
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )

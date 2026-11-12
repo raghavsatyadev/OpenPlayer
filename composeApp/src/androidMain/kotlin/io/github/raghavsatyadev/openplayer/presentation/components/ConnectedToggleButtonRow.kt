@@ -1,8 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -22,6 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * Single-choice row of Material 3 connected toggle buttons: the ends are fully rounded, the inner
@@ -48,7 +47,7 @@ fun ConnectedToggleButtonRow(
                     .height(48.dp)
                     .semantics { role = Role.RadioButton },
                 icon = if (selected) {
-                    { Icon(ImageVector.vectorResource(R.drawable.rounded_check_24), contentDescription = null, modifier = Modifier.size(18.dp)) }
+                    { Icon(vectorResource(Res.drawable.rounded_check_24), contentDescription = null, modifier = Modifier.size(18.dp)) }
                 } else {
                     null
                 },

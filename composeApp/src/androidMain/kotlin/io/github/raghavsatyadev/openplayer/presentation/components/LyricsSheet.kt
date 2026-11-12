@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.animation.ValueAnimator
 import android.content.ClipData
 import android.os.Build
@@ -155,6 +153,7 @@ import kotlin.coroutines.cancellation.CancellationException
 import co.touchlab.kermit.Logger
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 internal data class LyricsSheetColors(
     val container: Color,
@@ -1023,14 +1022,14 @@ fun LyricsSheet(
                             if (playing) {
                                 Icon(
                                     modifier = Modifier.size(32.dp),
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_pause_filled_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_pause_filled_24),
                                     contentDescription = stringResource(Res.string.cd_pause),
                                     tint = onPlayPauseColor
                                 )
                             } else {
                                 Icon(
                                     modifier = Modifier.size(32.dp),
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_play_arrow_filled_24),
                                     contentDescription = stringResource(Res.string.cd_play),
                                     tint = onPlayPauseColor
                                 )
@@ -1184,7 +1183,7 @@ fun LyricsSheet(
                 )
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_keyboard_arrow_up_24),
+                    imageVector = vectorResource(Res.drawable.rounded_keyboard_arrow_up_24),
                     contentDescription = stringResource(Res.string.cd_show_controls)
                 )
             }
@@ -1193,7 +1192,7 @@ fun LyricsSheet(
        if (isSwipeActive || swipeProgress.value > 0f) {
            val isNext = dragOffset < 0
            val overlayAlignment = if (isNext) Alignment.CenterEnd else Alignment.CenterStart
-           val icon = if (isNext) ImageVector.vectorResource(R.drawable.rounded_skip_next_filled_24) else ImageVector.vectorResource(R.drawable.rounded_skip_previous_filled_24)
+           val icon = if (isNext) vectorResource(Res.drawable.rounded_skip_next_filled_24) else vectorResource(Res.drawable.rounded_skip_previous_filled_24)
            
            Box(
                modifier = Modifier

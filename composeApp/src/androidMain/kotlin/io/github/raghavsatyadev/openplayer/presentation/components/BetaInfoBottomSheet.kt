@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -42,7 +41,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -55,6 +53,8 @@ import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -161,7 +161,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     BetaFaqSection(
                         title = stringResource(Res.string.presentation_batch_g_beta_sheet_expect_title),
                         summary = stringResource(Res.string.presentation_batch_g_beta_sheet_expect_summary),
-                        icon = ImageVector.vectorResource(R.drawable.rounded_whatshot_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_whatshot_filled_24),
                         iconTint = MaterialTheme.colorScheme.primary,
                         initiallyExpanded = true
                     ) {
@@ -181,11 +181,11 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                 BetaFaqSection(
                     title = stringResource(Res.string.presentation_batch_g_beta_sheet_report_title),
                     summary = stringResource(Res.string.presentation_batch_g_beta_sheet_report_summary),
-                    icon = ImageVector.vectorResource(R.drawable.rounded_search_24),
+                    icon = vectorResource(Res.drawable.rounded_search_24),
                     iconTint = MaterialTheme.colorScheme.secondary
                 ) {
                     BetaSubsectionHeader(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_search_24),
+                        icon = vectorResource(Res.drawable.rounded_search_24),
                         title = stringResource(Res.string.presentation_batch_g_beta_sheet_before_title)
                     )
                     BetaBulletList(
@@ -198,7 +198,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     )
                     BetaSectionDivider()
                     BetaSubsectionHeader(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_check_circle_filled_24),
                         title = stringResource(Res.string.presentation_batch_g_beta_sheet_issue_type_title)
                     )
                     BetaBulletList(
@@ -215,12 +215,12 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                 BetaFaqSection(
                     title = stringResource(Res.string.presentation_batch_g_beta_sheet_bug_title),
                     summary = stringResource(Res.string.presentation_batch_g_beta_sheet_bug_summary_text),
-                    icon = ImageVector.vectorResource(R.drawable.rounded_bug_report_filled_24),
+                    icon = vectorResource(Res.drawable.rounded_bug_report_filled_24),
                     iconTint = MaterialTheme.colorScheme.error,
                     containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
                 ) {
                     BetaSubsectionHeader(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_bug_report_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_bug_report_filled_24),
                         title = stringResource(Res.string.presentation_batch_g_beta_sheet_bug_template_title)
                     )
                     BetaFieldList(
@@ -236,7 +236,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     )
                     BetaSectionDivider()
                     BetaSubsectionHeader(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_info_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_info_filled_24),
                         title = stringResource(Res.string.presentation_batch_g_beta_sheet_env_title)
                     )
                     BetaFieldList(
@@ -255,7 +255,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                 BetaFaqSection(
                     title = stringResource(Res.string.presentation_batch_g_beta_sheet_feature_title),
                     summary = stringResource(Res.string.presentation_batch_g_beta_sheet_feature_summary),
-                    icon = ImageVector.vectorResource(R.drawable.rounded_highlight_filled_24),
+                    icon = vectorResource(Res.drawable.rounded_highlight_filled_24),
                     iconTint = MaterialTheme.colorScheme.primary
                 ) {
                     BetaFieldList(
@@ -274,12 +274,12 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                 BetaFaqSection(
                     title = stringResource(Res.string.presentation_batch_g_beta_sheet_quality_title),
                     summary = stringResource(Res.string.presentation_batch_g_beta_sheet_quality_summary),
-                    icon = ImageVector.vectorResource(R.drawable.rounded_gavel_24),
+                    icon = vectorResource(Res.drawable.rounded_gavel_24),
                     iconTint = MaterialTheme.colorScheme.tertiary,
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.45f)
                 ) {
                     BetaSubsectionHeader(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_gavel_24),
+                        icon = vectorResource(Res.drawable.rounded_gavel_24),
                         title = stringResource(Res.string.presentation_batch_g_beta_sheet_title_examples_title)
                     )
                     BetaBulletList(
@@ -291,7 +291,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     )
                     BetaSectionDivider()
                     BetaSubsectionHeader(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_warning_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_warning_filled_24),
                         title = stringResource(Res.string.presentation_batch_g_beta_sheet_avoid_title),
                         tint = MaterialTheme.colorScheme.error
                     )
@@ -304,7 +304,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     )
                     BetaSectionDivider()
                     BetaSubsectionHeader(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_shield_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_shield_filled_24),
                         title = stringResource(Res.string.presentation_batch_g_beta_sheet_privacy_title)
                     )
                     Text(
@@ -319,12 +319,12 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                 BetaFaqSection(
                     title = stringResource(Res.string.presentation_batch_g_beta_sheet_nightly_title),
                     summary = stringResource(Res.string.presentation_batch_g_beta_sheet_nightly_summary),
-                    icon = ImageVector.vectorResource(R.drawable.rounded_nights_stay_filled_24),
+                    icon = vectorResource(Res.drawable.rounded_nights_stay_filled_24),
                     iconTint = MaterialTheme.colorScheme.secondary,
                     containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.42f)
                 ) {
                     BetaSubsectionHeader(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_nights_stay_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_nights_stay_filled_24),
                         title = stringResource(Res.string.presentation_batch_g_beta_sheet_nightly_title)
                     )
                     Text(
@@ -339,7 +339,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     )
                     BetaSectionDivider()
                     BetaSubsectionHeader(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_cloud_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_cloud_filled_24),
                         title = stringResource(Res.string.presentation_batch_g_beta_sheet_nightly_report_title)
                     )
                     Text(
@@ -370,7 +370,7 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             icon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.github),
+                    painter = painterResource(Res.drawable.github),
                     contentDescription = null
                 )
             },
@@ -423,7 +423,7 @@ private fun GitHubReportCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.github),
+                        painter = painterResource(Res.drawable.github),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(24.dp)
@@ -542,7 +542,7 @@ private fun BetaFaqSection(
                     )
                 }
                 Icon(
-                    imageVector = if (expanded) ImageVector.vectorResource(R.drawable.rounded_expand_less_24) else ImageVector.vectorResource(R.drawable.rounded_expand_more_24),
+                    imageVector = if (expanded) vectorResource(Res.drawable.rounded_expand_less_24) else vectorResource(Res.drawable.rounded_expand_more_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )

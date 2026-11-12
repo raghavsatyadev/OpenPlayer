@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.subcomps
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,7 +45,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.LyricsSearchResult
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.LyricsSearchUiState
@@ -56,6 +53,7 @@ import io.github.raghavsatyadev.openplayer.utils.shapes.RoundedStarShape
 import kotlinx.collections.immutable.ImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun FetchLyricsDialog(
@@ -152,7 +150,7 @@ private fun IdleContent(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+            imageVector = vectorResource(Res.drawable.rounded_music_note_24),
             contentDescription = null,
             modifier = Modifier.size(40.dp),
             tint = MaterialTheme.colorScheme.onSecondaryContainer
@@ -243,7 +241,7 @@ private fun IdleContent(
             modifier = Modifier.fillMaxWidth().height(52.dp),
             shape = CircleShape
         ) {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_search_24), contentDescription = null, modifier = Modifier.size(20.dp))
+            Icon(vectorResource(Res.drawable.rounded_search_24), contentDescription = null, modifier = Modifier.size(20.dp))
             Spacer(modifier = Modifier.width(8.dp))
             Text(stringResource(Res.string.search), maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
@@ -257,7 +255,7 @@ private fun IdleContent(
                 contentColor = MaterialTheme.colorScheme.onSecondary
             )
         ) {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_cloud_upload_filled_24), contentDescription = null, modifier = Modifier.size(20.dp))
+            Icon(vectorResource(Res.drawable.rounded_cloud_upload_filled_24), contentDescription = null, modifier = Modifier.size(20.dp))
             Spacer(modifier = Modifier.width(8.dp))
             Text(stringResource(Res.string.import_file))
         }
@@ -363,7 +361,7 @@ private fun ResultItemCard(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                    imageVector = vectorResource(Res.drawable.rounded_music_note_24),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp),
                     tint = if (hasSyncedLyrics) MaterialTheme.colorScheme.onPrimaryContainer
@@ -443,7 +441,7 @@ fun NotFoundContent(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_search_off_24),
+            imageVector = vectorResource(Res.drawable.rounded_search_off_24),
             contentDescription = null,
             modifier = Modifier.size(36.dp),
             tint = MaterialTheme.colorScheme.onSecondaryContainer
@@ -523,7 +521,7 @@ fun NotFoundContent(
                 .height(52.dp),
             shape = RoundedCornerShape(18.dp)
         ) {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_search_24), null)
+            Icon(vectorResource(Res.drawable.rounded_search_24), null)
             Spacer(Modifier.width(8.dp))
             Text(stringResource(Res.string.search))
         }
@@ -551,7 +549,7 @@ private fun ErrorContent(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_error_24),
+            imageVector = vectorResource(Res.drawable.rounded_error_24),
             contentDescription = null,
             modifier = Modifier.size(36.dp),
             tint = MaterialTheme.colorScheme.onErrorContainer

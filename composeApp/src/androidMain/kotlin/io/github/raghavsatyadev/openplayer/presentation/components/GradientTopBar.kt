@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -32,15 +30,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.AppBuildInfo
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerStatusBarStyle
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +77,7 @@ fun GenreGradientTopBar(
                 )
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                    imageVector = vectorResource(Res.drawable.rounded_arrow_back_24),
                     contentDescription = stringResource(Res.string.auth_cd_back),
                     tint = startColor
                 )
@@ -133,7 +131,7 @@ fun HomeGradientTopBar(
                     onClick = onMenuClick
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_menu_24),
+                        imageVector = vectorResource(Res.drawable.rounded_menu_24),
                         contentDescription = stringResource(Res.string.sidebar_open)
                     )
                 }
@@ -171,7 +169,7 @@ fun HomeGradientTopBar(
                     onClick = onStreamingClick
                 ) {
                     Icon(
-                          imageVector = ImageVector.vectorResource(R.drawable.rounded_cloud_filled_24),
+                          imageVector = vectorResource(Res.drawable.rounded_cloud_filled_24),
                           contentDescription = stringResource(Res.string.presentation_batch_g_streaming_title)
                     )
                 }
@@ -183,7 +181,7 @@ fun HomeGradientTopBar(
                     onClick = onMoreOptionsClick
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.round_newspaper_24),
+                        painter = painterResource(Res.drawable.round_newspaper_24),
                         contentDescription = stringResource(Res.string.presentation_batch_g_topbar_cd_changelog)
                     )
                 }
@@ -195,7 +193,7 @@ fun HomeGradientTopBar(
                     onClick = onNavigationIconClick
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.rounded_settings_24),
+                        painter = painterResource(Res.drawable.rounded_settings_24),
                         contentDescription = stringResource(Res.string.settings_top_bar_title)
                     )
                 }

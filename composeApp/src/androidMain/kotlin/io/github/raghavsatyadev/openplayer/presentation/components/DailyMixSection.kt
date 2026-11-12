@@ -37,7 +37,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -63,6 +62,7 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlinx.collections.immutable.persistentListOf
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
 
 
 @androidx.annotation.OptIn(UnstableApi::class)
@@ -405,7 +405,7 @@ private fun ViewAllDailyMixButton(
                 fontWeight = FontWeight.Medium
             )
             Icon(
-                painter = painterResource(R.drawable.rounded_arrow_forward_24),
+                painter = painterResource(Res.drawable.rounded_arrow_forward_24),
                 contentDescription = null,
                 modifier = Modifier.size(20.dp)
             )

@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -42,7 +40,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Genre
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.AutoSizingTextToFill
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.TightWrapText
@@ -53,6 +50,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -139,7 +137,7 @@ fun GenreMultiSelectionOptionSheet(
                     ),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_play_arrow_filled_24),
                             contentDescription = stringResource(Res.string.cd_play_all)
                         )
                     },
@@ -160,7 +158,7 @@ fun GenreMultiSelectionOptionSheet(
                     ),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_playlist_add_24),
+                            imageVector = vectorResource(Res.drawable.rounded_playlist_add_24),
                             contentDescription = stringResource(Res.string.cd_add_to_playlist)
                         )
                     },
@@ -191,7 +189,7 @@ fun GenreMultiSelectionOptionSheet(
                     ),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
+                            imageVector = vectorResource(Res.drawable.rounded_queue_music_24),
                             contentDescription = stringResource(Res.string.cd_play_next_in_queue)
                         )
                     },
@@ -212,7 +210,7 @@ fun GenreMultiSelectionOptionSheet(
                     ),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
+                            imageVector = vectorResource(Res.drawable.rounded_queue_music_24),
                             contentDescription = stringResource(Res.string.cd_add_all_to_queue)
                         )
                     },
@@ -295,7 +293,7 @@ private fun StackedGenrePreviews(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_album_filled_24),
+                        imageVector = vectorResource(Res.drawable.rounded_album_filled_24),
                         contentDescription = null,
                         tint = themeColor.onContainer,
                         modifier = Modifier.size(28.dp)

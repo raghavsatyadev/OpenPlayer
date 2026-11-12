@@ -29,9 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricBand
@@ -41,6 +39,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ParametricMess
 import java.util.Locale
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 class ParametricEqActions(
     val onPreampChange: (Float) -> Unit,
@@ -168,17 +167,17 @@ fun ParametricEqEditor(
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             FilledTonalButton(onClick = actions.onAddBand) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_add_24), null)
+                Icon(vectorResource(Res.drawable.rounded_add_24), null)
                 Text(stringResource(Res.string.parametric_eq_add_band), Modifier.padding(start = 6.dp))
             }
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick = actions.onImportClick) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_upload_file_24), null)
+                Icon(vectorResource(Res.drawable.rounded_upload_file_24), null)
                 Text(stringResource(Res.string.parametric_eq_import), Modifier.padding(start = 6.dp))
             }
             OutlinedButton(onClick = actions.onExportClick, enabled = profile.bands.isNotEmpty()) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_file_download_24), null)
+                Icon(vectorResource(Res.drawable.rounded_file_download_24), null)
                 Text(stringResource(Res.string.parametric_eq_export), Modifier.padding(start = 6.dp))
             }
         }

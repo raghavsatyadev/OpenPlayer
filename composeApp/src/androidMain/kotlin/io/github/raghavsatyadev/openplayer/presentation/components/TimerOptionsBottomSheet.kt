@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
@@ -54,11 +52,11 @@ import io.github.raghavsatyadev.openplayer.presentation.utils.performAppCompatHa
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlin.math.roundToInt
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.ui.text.style.TextOverflow
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 val predefinedTimes = listOf(0, 5, 10, 15, 20, 30, 45, 60)
 
@@ -370,7 +368,7 @@ fun TimerOptionsBottomSheet(
                         thumbContent = if (isSwitchEnabled) {
                             {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_check_24),
                                     contentDescription = stringResource(Res.string.cd_switch_on),
                                     tint = MaterialTheme.colorScheme.tertiaryContainer,
                                     modifier = Modifier.size(SwitchDefaults.IconSize),

@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.recap
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
@@ -104,6 +102,7 @@ import kotlinx.coroutines.withContext
 import co.touchlab.kermit.Logger
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /** How long a slide stays before the story moves on by itself. */
 private const val SLIDE_DURATION_MS = 7_000
@@ -433,7 +432,7 @@ private fun RecapChrome(
             if (showPauseButton) {
                 IconButton(onClick = onTogglePause, colors = buttonColors) {
                     Icon(
-                        imageVector = if (isPaused) ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24) else ImageVector.vectorResource(R.drawable.rounded_pause_filled_24),
+                        imageVector = if (isPaused) vectorResource(Res.drawable.rounded_play_arrow_filled_24) else vectorResource(Res.drawable.rounded_pause_filled_24),
                         contentDescription = stringResource(
                             if (isPaused) R.string.recap_cd_resume else R.string.recap_cd_pause
                         )
@@ -442,7 +441,7 @@ private fun RecapChrome(
             }
             IconButton(onClick = onClose, colors = buttonColors) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                    imageVector = vectorResource(Res.drawable.rounded_close_24),
                     contentDescription = stringResource(Res.string.recap_cd_close)
                 )
             }
@@ -465,7 +464,7 @@ private fun RecapStatusPage(onClose: () -> Unit, content: @Composable () -> Unit
                 .align(Alignment.TopEnd)
                 .padding(8.dp)
         ) {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), contentDescription = stringResource(Res.string.recap_cd_close))
+            Icon(vectorResource(Res.drawable.rounded_close_24), contentDescription = stringResource(Res.string.recap_cd_close))
         }
         Box(modifier = Modifier.align(Alignment.Center)) {
             content()
@@ -488,7 +487,7 @@ private fun RecapNotEnoughData(year: Int, onClose: () -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24),
+                imageVector = vectorResource(Res.drawable.rounded_graphic_eq_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.size(40.dp)

@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -45,11 +43,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.size.Size
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 internal val LocalMaterialTheme = staticCompositionLocalOf<ColorScheme> { error("No ColorScheme provided") }
 
@@ -168,7 +166,7 @@ internal fun MiniPlayerContentInternal(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_skip_previous_filled_24),
+                imageVector = vectorResource(Res.drawable.rounded_skip_previous_filled_24),
                 contentDescription = stringResource(Res.string.previous_track),
                 tint = LocalMaterialTheme.current.primary,
                 modifier = Modifier.size(22.dp)
@@ -219,7 +217,7 @@ internal fun MiniPlayerContentInternal(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_skip_next_filled_24),
+                imageVector = vectorResource(Res.drawable.rounded_skip_next_filled_24),
                 contentDescription = stringResource(Res.string.next_track),
                 tint = LocalMaterialTheme.current.primary,
                 modifier = Modifier.size(22.dp)

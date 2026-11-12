@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.jellyfin.dashboard
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -22,12 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.database.JellyfinPlaylistEntity
 import io.github.raghavsatyadev.openplayer.data.jellyfin.model.JellyfinLibrary
 import io.github.raghavsatyadev.openplayer.data.jellyfin.selectedJellyfinLibraryIds
@@ -41,6 +37,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -85,7 +83,7 @@ fun JellyfinDashboardScreen(
                         )
                     ) {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                            vectorResource(Res.drawable.rounded_arrow_back_24),
                             contentDescription = stringResource(Res.string.auth_cd_back)
                         )
                     }
@@ -206,7 +204,7 @@ private fun JellyfinDashboardContent(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_jellyfin),
+                            painter = painterResource(Res.drawable.ic_jellyfin),
                             contentDescription = null,
                             modifier = Modifier.size(28.dp),
                             tint = Color.White
@@ -263,7 +261,7 @@ private fun JellyfinDashboardContent(
             if (playlists.isEmpty()) {
                 TextButton(onClick = onSyncAll) {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_sync_24),
+                        vectorResource(Res.drawable.rounded_sync_24),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
@@ -284,7 +282,7 @@ private fun JellyfinDashboardContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_jellyfin),
+                        painter = painterResource(Res.drawable.ic_jellyfin),
                         contentDescription = null,
                         modifier = Modifier.size(64.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
@@ -428,7 +426,7 @@ private fun JellyfinMenuCard(
                         Text(stringResource(Res.string.dash_status_syncing), fontFamily = RoundedSans)
                     } else {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_cloud_sync_filled_24),
+                            vectorResource(Res.drawable.rounded_cloud_sync_filled_24),
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
@@ -446,7 +444,7 @@ private fun JellyfinMenuCard(
                     )
                 ) {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_logout_mirrored_24),
+                        vectorResource(Res.drawable.rounded_logout_mirrored_24),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
@@ -509,7 +507,7 @@ private fun JellyfinLibrarySummaryPanel(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = if (loadFailed) ImageVector.vectorResource(R.drawable.rounded_warning_filled_24) else ImageVector.vectorResource(R.drawable.rounded_library_music_filled_24),
+                        imageVector = if (loadFailed) vectorResource(Res.drawable.rounded_warning_filled_24) else vectorResource(Res.drawable.rounded_library_music_filled_24),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
                         tint = iconColor
@@ -545,7 +543,7 @@ private fun JellyfinLibrarySummaryPanel(
                         },
                         leadingIcon = {
                             Icon(
-                                ImageVector.vectorResource(R.drawable.rounded_folder_filled_24),
+                                vectorResource(Res.drawable.rounded_folder_filled_24),
                                 contentDescription = null,
                                 modifier = Modifier.size(AssistChipDefaults.IconSize)
                             )
@@ -571,7 +569,7 @@ private fun JellyfinLibrarySummaryPanel(
                             },
                             icon = {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_sync_24),
+                                    vectorResource(Res.drawable.rounded_sync_24),
                                     contentDescription = null,
                                     modifier = Modifier.size(SuggestionChipDefaults.IconSize)
                                 )
@@ -609,7 +607,7 @@ private fun JellyfinLibrarySummaryPanel(
                             },
                             leadingIcon = {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+                                    vectorResource(Res.drawable.rounded_check_circle_filled_24),
                                     contentDescription = null,
                                     modifier = Modifier.size(FilterChipDefaults.IconSize)
                                 )
@@ -672,7 +670,7 @@ private fun JellyfinLibrarySelectorSheet(
             Spacer(modifier = Modifier.height(16.dp))
 
             CloudLibrarySelectorChoice(
-                icon = ImageVector.vectorResource(R.drawable.rounded_select_all_24),
+                icon = vectorResource(Res.drawable.rounded_select_all_24),
                 title = stringResource(Res.string.dash_libraries_all),
                 subtitle = stringResource(Res.string.dash_libraries_all_subtitle),
                 checked = effectiveSelectedIds.size == musicLibraries.size,
@@ -685,7 +683,7 @@ private fun JellyfinLibrarySelectorSheet(
             libraries.forEach { library ->
                 if (library.isMusic) {
                     CloudLibrarySelectorChoice(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_library_music_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_library_music_filled_24),
                         title = library.name,
                         subtitle = stringResource(Res.string.dash_libraries_folder_subtitle),
                         checked = library.id in effectiveSelectedIds,
@@ -701,7 +699,7 @@ private fun JellyfinLibrarySelectorSheet(
                     )
                 } else {
                     CloudLibrarySelectorChoice(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_folder_filled_24),
+                        icon = vectorResource(Res.drawable.rounded_folder_filled_24),
                         title = library.name,
                         subtitle = stringResource(Res.string.dash_libraries_not_music),
                         checked = false,
@@ -746,7 +744,7 @@ private fun JellyfinPlaylistCard(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                    vectorResource(Res.drawable.rounded_music_note_24),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
@@ -781,7 +779,7 @@ private fun JellyfinPlaylistCard(
                 )
             ) {
                 Icon(
-                    ImageVector.vectorResource(R.drawable.rounded_sync_24),
+                    vectorResource(Res.drawable.rounded_sync_24),
                     contentDescription = stringResource(Res.string.cd_sync),
                     modifier = Modifier.size(20.dp)
                 )
@@ -797,7 +795,7 @@ private fun JellyfinPlaylistCard(
                 )
             ) {
                 Icon(
-                    ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
+                    vectorResource(Res.drawable.rounded_delete_filled_24),
                     contentDescription = stringResource(Res.string.delete_action),
                     modifier = Modifier.size(20.dp)
                 )

@@ -33,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,6 +50,7 @@ import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
 
 data class ChangelogSection(
     @StringRes val titleRes: Int,
@@ -158,7 +158,7 @@ fun ChangelogBottomSheet(
             contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
             icon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.github),
+                    painter = painterResource(Res.drawable.github),
                     contentDescription = null
                 )
             },

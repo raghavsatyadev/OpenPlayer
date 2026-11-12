@@ -19,15 +19,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.history.importer.HistorySource
 import io.github.raghavsatyadev.openplayer.presentation.screens.SettingsItem
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
 
 /** Exports often arrive as octet-stream or text, so the picker is not narrowed by type. */
 private val PICKER_TYPES = arrayOf("*/*")
@@ -39,7 +38,7 @@ fun HistoryImportSettingsItem(modifier: Modifier = Modifier) {
     SettingsItem(
         title = stringResource(Res.string.history_import_title),
         subtitle = stringResource(Res.string.history_import_subtitle),
-        leadingIcon = { Icon(painterResource(R.drawable.rounded_history_24), null, tint = MaterialTheme.colorScheme.secondary) },
+        leadingIcon = { Icon(painterResource(Res.drawable.rounded_history_24), null, tint = MaterialTheme.colorScheme.secondary) },
         modifier = modifier,
         onClick = { open = true }
     )

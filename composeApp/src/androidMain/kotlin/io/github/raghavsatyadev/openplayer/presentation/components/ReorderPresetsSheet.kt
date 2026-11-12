@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.MutableTransitionState
@@ -58,14 +56,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.equalizer.EqualizerPreset
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.coroutines.launch
@@ -76,6 +72,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import kotlinx.collections.immutable.ImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -193,7 +191,7 @@ fun ReorderPresetsSheet(
                                     )
                                 ) {
                                     Icon(
-                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                                        imageVector = vectorResource(Res.drawable.rounded_close_24),
                                         contentDescription = stringResource(Res.string.cd_close)
                                     )
                                 }
@@ -208,7 +206,7 @@ fun ReorderPresetsSheet(
                                     )
                                 ) {
                                     Icon(
-                                        painter = painterResource(R.drawable.outline_restart_alt_24),
+                                        painter = painterResource(Res.drawable.outline_restart_alt_24),
                                         contentDescription = stringResource(Res.string.presentation_batch_e_cd_reset_presets_default)
                                     )
                                 }
@@ -231,7 +229,7 @@ fun ReorderPresetsSheet(
                             shape = CircleShape,
                         ) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
+                                imageVector = vectorResource(Res.drawable.rounded_check_24),
                                 contentDescription = stringResource(Res.string.action_done),
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer
                             )
@@ -324,7 +322,7 @@ fun ReorderPresetsSheet(
                                                     contentAlignment = Alignment.Center
                                                 ) {
                                                     Icon(
-                                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_drag_indicator_24),
+                                                        imageVector = vectorResource(Res.drawable.rounded_drag_indicator_24),
                                                         contentDescription = stringResource(Res.string.presentation_batch_b_reorder),
                                                         modifier = if (item.isPinned) Modifier.draggableHandle() else Modifier,
                                                         tint = if (item.isPinned)
@@ -349,9 +347,9 @@ fun ReorderPresetsSheet(
                                                 ) {
                                                     Icon(
                                                         imageVector = if (item.isPinned)
-                                                            ImageVector.vectorResource(R.drawable.rounded_visibility_filled_24)
+                                                            vectorResource(Res.drawable.rounded_visibility_filled_24)
                                                         else
-                                                            ImageVector.vectorResource(R.drawable.rounded_visibility_off_filled_24),
+                                                            vectorResource(Res.drawable.rounded_visibility_off_filled_24),
                                                         contentDescription = if (item.isPinned) {
                                                             stringResource(Res.string.presentation_batch_e_cd_visible)
                                                         } else {

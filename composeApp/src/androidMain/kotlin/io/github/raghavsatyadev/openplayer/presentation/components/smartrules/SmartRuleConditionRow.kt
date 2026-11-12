@@ -31,17 +31,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartCondition
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleField
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleOperator
 import io.github.raghavsatyadev.openplayer.data.repository.SongUserMeta
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /** One editable condition: field and operator pickers, the value inputs it needs, and remove. */
 @OptIn(ExperimentalLayoutApi::class)
@@ -81,7 +79,7 @@ fun SmartRuleConditionRow(
                 }
                 IconButton(onClick = onRemove) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                        imageVector = vectorResource(Res.drawable.rounded_close_24),
                         contentDescription = stringResource(Res.string.smart_rules_remove_condition),
                     )
                 }
@@ -186,7 +184,7 @@ internal fun <T> DropdownPicker(
         TextButton(onClick = { expanded = true }) {
             Text(label(selected), maxLines = 1, style = MaterialTheme.typography.labelLarge)
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_keyboard_arrow_down_24),
+                imageVector = vectorResource(Res.drawable.rounded_keyboard_arrow_down_24),
                 contentDescription = null,
                 modifier = Modifier.padding(start = 2.dp),
             )

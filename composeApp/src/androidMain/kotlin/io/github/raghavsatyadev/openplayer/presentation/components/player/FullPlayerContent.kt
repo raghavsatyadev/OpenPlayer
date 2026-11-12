@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.player
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
@@ -82,7 +80,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -147,6 +144,8 @@ import kotlinx.coroutines.withContext
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 private const val SKIP_COMMAND_GUARD_MS = 96L
 
@@ -717,7 +716,7 @@ fun FullPlayerContent(
 
                                     if (currentSong != null && currentSong.contentUriString.startsWith("http")) {
                                         Icon(
-                                            imageVector = ImageVector.vectorResource(R.drawable.rounded_cloud_filled_24),
+                                            imageVector = vectorResource(Res.drawable.rounded_cloud_filled_24),
                                             contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_cloud_stream),
                                             tint = LocalMaterialTheme.current.onPrimaryContainer.copy(alpha = 0.6f),
                                             modifier = Modifier.padding(start = 8.dp).size(16.dp)
@@ -743,7 +742,7 @@ fun FullPlayerContent(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Icon(
-                                    painter = painterResource(R.drawable.rounded_keyboard_arrow_down_24),
+                                    painter = painterResource(Res.drawable.rounded_keyboard_arrow_down_24),
                                     contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_collapse),
                                     tint = playerAccentColor
                                 )
@@ -768,9 +767,9 @@ fun FullPlayerContent(
                             ) {
                                 Icon(
                                     imageVector = if (bluetoothOutputName != null) {
-                                        ImageVector.vectorResource(R.drawable.rounded_bluetooth_24)
+                                        vectorResource(Res.drawable.rounded_bluetooth_24)
                                     } else {
-                                        ImageVector.vectorResource(R.drawable.rounded_speaker_filled_24)
+                                        vectorResource(Res.drawable.rounded_speaker_filled_24)
                                     },
                                     contentDescription = bluetoothOutputName
                                         ?: stringResource(Res.string.player_audio_output_title),
@@ -786,7 +785,7 @@ fun FullPlayerContent(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_bookmark_filled_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_bookmark_filled_24),
                                     contentDescription = stringResource(Res.string.audio_bookmarks_cd_add),
                                     tint = playerAccentColor
                                 )
@@ -803,7 +802,7 @@ fun FullPlayerContent(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Icon(
-                                    painter = painterResource(R.drawable.rounded_queue_music_24),
+                                    painter = painterResource(Res.drawable.rounded_queue_music_24),
                                     contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_queue),
                                     tint = playerAccentColor
                                 )
@@ -1490,7 +1489,7 @@ private fun SongMetadataDisplaySection(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.rounded_lyrics_24),
+                        painter = painterResource(Res.drawable.rounded_lyrics_24),
                         contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_lyrics),
                         tint = chipContentColor
                     )
@@ -1511,7 +1510,7 @@ private fun SongMetadataDisplaySection(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.rounded_queue_music_24),
+                        painter = painterResource(Res.drawable.rounded_queue_music_24),
                         contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_queue),
                         tint = chipContentColor
                     )
@@ -1528,7 +1527,7 @@ private fun SongMetadataDisplaySection(
                 onClick = onClickLyrics,
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.rounded_lyrics_24),
+                    painter = painterResource(Res.drawable.rounded_lyrics_24),
                     contentDescription = stringResource(Res.string.presentation_batch_g_player_cd_lyrics)
                 )
             }
@@ -2176,7 +2175,7 @@ private fun AlbumPlaceholder(
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
             Icon(
                 modifier = Modifier.size(86.dp),
-                painter = painterResource(R.drawable.openplayer_base_monochrome),
+                painter = painterResource(Res.drawable.openplayer_base_monochrome),
                 contentDescription = null,
                 tint = onColor
             )

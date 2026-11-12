@@ -29,6 +29,7 @@ import io.github.raghavsatyadev.openplayer.R
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
 
 private const val STORAGE_ROOT = "/storage/emulated/0/"
 
@@ -153,7 +154,7 @@ private fun FolderRow(
             }
             FilledIconToggleButton(checked = isIncluded, onCheckedChange = onInclude) {
                 Icon(
-                    painterResource(R.drawable.rounded_check_24),
+                    painterResource(Res.drawable.rounded_check_24),
                     contentDescription = stringResource(Res.string.setting_video_folder_include),
                 )
             }
@@ -166,7 +167,7 @@ private fun FolderRow(
                 ),
             ) {
                 Icon(
-                    painterResource(R.drawable.rounded_block_24),
+                    painterResource(Res.drawable.rounded_block_24),
                     contentDescription = stringResource(Res.string.setting_video_folder_exclude),
                 )
             }

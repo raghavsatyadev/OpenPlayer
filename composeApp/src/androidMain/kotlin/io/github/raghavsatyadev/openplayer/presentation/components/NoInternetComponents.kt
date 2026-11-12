@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,13 +18,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.ui.text.style.TextOverflow
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun NoInternetDialog(
@@ -35,7 +33,7 @@ fun NoInternetDialog(
         onDismissRequest = onDismiss,
         icon = {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_wifi_off_24),
+                imageVector = vectorResource(Res.drawable.rounded_wifi_off_24),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp)
             )
@@ -79,7 +77,7 @@ fun NoInternetScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_wifi_off_24),
+                imageVector = vectorResource(Res.drawable.rounded_wifi_off_24),
                 contentDescription = null,
                 modifier = Modifier
                     .size(64.dp)

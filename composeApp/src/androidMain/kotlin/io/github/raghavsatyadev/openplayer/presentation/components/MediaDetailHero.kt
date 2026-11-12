@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -97,6 +96,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /** How the hero's main button relates to what is playing right now. */
 enum class HeroPlayState {
@@ -653,7 +653,7 @@ private fun HeroActionGroup(
                         .weight(1f)
                         .animateWidth(shuffleInteraction)
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_shuffle_24), contentDescription = null)
+                    Icon(vectorResource(Res.drawable.rounded_shuffle_24), contentDescription = null)
                 }
             },
             menuContent = {}
@@ -705,7 +705,7 @@ private fun HeroActionGroup(
                     ) { state ->
                         val isPause = state == HeroPlayState.Playing
                         HeroPlayLabel(
-                            icon = if (isPause) ImageVector.vectorResource(R.drawable.rounded_pause_filled_24) else ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
+                            icon = if (isPause) vectorResource(Res.drawable.rounded_pause_filled_24) else vectorResource(Res.drawable.rounded_play_arrow_filled_24),
                             glyphInsets = if (isPause) PauseGlyphInsets else PlayGlyphInsets,
                             text = stringResource(
                                 when (state) {
@@ -744,7 +744,7 @@ private fun HeroActionGroup(
                             label = "heroAddRotation"
                         )
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_add_24),
+                            vectorResource(Res.drawable.rounded_add_24),
                             contentDescription = null,
                             modifier = Modifier.graphicsLayer { rotationZ = rotation }
                         )
@@ -771,10 +771,10 @@ private val HeroSegmentHeight = 60.dp
  */
 private class GlyphInsets(val start: Float, val end: Float)
 
-// ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24) spans x = 8 → 18.1 of 24.
+// vectorResource(Res.drawable.rounded_play_arrow_filled_24) spans x = 8 → 18.1 of 24.
 private val PlayGlyphInsets = GlyphInsets(start = 8f, end = 5.9f)
 
-// ImageVector.vectorResource(R.drawable.rounded_pause_filled_24) spans x = 6 → 18 of 24.
+// vectorResource(Res.drawable.rounded_pause_filled_24) spans x = 6 → 18 of 24.
 private val PauseGlyphInsets = GlyphInsets(start = 6f, end = 6f)
 
 private const val IconViewport = 24f
@@ -937,9 +937,9 @@ fun rememberSongCollectionMenuActions(
     val addToPlaylist = stringResource(Res.string.detail_hero_add_to_playlist)
     val playNext = stringResource(Res.string.detail_hero_play_next)
     val addToQueue = stringResource(Res.string.detail_hero_add_to_queue)
-    val addToPlaylistIcon = ImageVector.vectorResource(R.drawable.rounded_playlist_add_24)
-    val playNextIcon = ImageVector.vectorResource(R.drawable.rounded_skip_next_filled_24)
-    val addToQueueIcon = ImageVector.vectorResource(R.drawable.rounded_queue_music_24)
+    val addToPlaylistIcon = vectorResource(Res.drawable.rounded_playlist_add_24)
+    val playNextIcon = vectorResource(Res.drawable.rounded_skip_next_filled_24)
+    val addToQueueIcon = vectorResource(Res.drawable.rounded_queue_music_24)
     return remember(addToPlaylist, playNext, addToQueue, onAddToPlaylist, onPlayNext, onAddToQueue) {
         persistentListOf(
             DetailHeroMenuAction(addToPlaylist, addToPlaylistIcon, onAddToPlaylist),

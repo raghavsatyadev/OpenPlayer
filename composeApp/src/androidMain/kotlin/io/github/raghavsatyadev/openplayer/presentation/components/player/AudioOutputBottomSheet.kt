@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.player
 
-import androidx.compose.ui.res.vectorResource
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -48,7 +47,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioOutputDevice
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioOutputKind
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioOutputViewModel
@@ -56,6 +54,7 @@ import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import co.touchlab.kermit.Logger
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /** Lets the user pick which connected output (speaker, wired, USB, Bluetooth) plays the app's audio. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -160,7 +159,7 @@ private fun AudioOutputList(
                 )
                 if (output.isActive) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
+                        imageVector = vectorResource(Res.drawable.rounded_check_24),
                         contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                         tint = contentColor,
                         modifier = Modifier.size(20.dp)
@@ -194,7 +193,7 @@ private fun MoreDevicesRow(onClick: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_devices_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_devices_filled_24),
                     contentDescription = null,
                     tint = colors.onTertiaryContainer,
                     modifier = Modifier.size(20.dp)
@@ -214,7 +213,7 @@ private fun MoreDevicesRow(onClick: () -> Unit) {
                 )
             }
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_open_in_new_mirrored_24),
+                imageVector = vectorResource(Res.drawable.rounded_open_in_new_mirrored_24),
                 contentDescription = null,
                 tint = colors.onSurfaceVariant,
                 modifier = Modifier.size(18.dp)
@@ -239,10 +238,10 @@ private fun openSystemOutputSwitcher(context: Context) {
 
 @Composable
 private fun AudioOutputKind.icon(): ImageVector = when (this) {
-    AudioOutputKind.PhoneSpeaker -> ImageVector.vectorResource(R.drawable.rounded_phone_android_filled_24)
-    AudioOutputKind.Wired -> ImageVector.vectorResource(R.drawable.rounded_headphones_filled_24)
-    AudioOutputKind.Usb -> ImageVector.vectorResource(R.drawable.rounded_usb_24)
-    AudioOutputKind.Bluetooth -> ImageVector.vectorResource(R.drawable.rounded_bluetooth_24)
-    AudioOutputKind.HearingAid -> ImageVector.vectorResource(R.drawable.rounded_hearing_24)
-    AudioOutputKind.Other -> ImageVector.vectorResource(R.drawable.rounded_speaker_filled_24)
+    AudioOutputKind.PhoneSpeaker -> vectorResource(Res.drawable.rounded_phone_android_filled_24)
+    AudioOutputKind.Wired -> vectorResource(Res.drawable.rounded_headphones_filled_24)
+    AudioOutputKind.Usb -> vectorResource(Res.drawable.rounded_usb_24)
+    AudioOutputKind.Bluetooth -> vectorResource(Res.drawable.rounded_bluetooth_24)
+    AudioOutputKind.HearingAid -> vectorResource(Res.drawable.rounded_hearing_24)
+    AudioOutputKind.Other -> vectorResource(Res.drawable.rounded_speaker_filled_24)
 }

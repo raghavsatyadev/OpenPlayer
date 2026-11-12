@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.annotation.OptIn
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -74,6 +72,7 @@ import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtQuality
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(UnstableApi::class)
 @Composable
@@ -179,7 +178,7 @@ fun ExperimentalSettingsScreen(
                     title = stringResource(Res.string.presentation_batch_f_exp_player_ui_tweaks_section),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_style_24),
+                            imageVector = vectorResource(Res.drawable.rounded_style_24),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )
@@ -213,7 +212,7 @@ fun ExperimentalSettingsScreen(
                                 onCheckedChange = settingsViewModel::setUseAnimatedLyrics,
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                                        imageVector = vectorResource(Res.drawable.rounded_music_note_24),
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.secondary
                                     )
@@ -241,7 +240,7 @@ fun ExperimentalSettingsScreen(
                                 onCheckedChange = settingsViewModel::setDelayAllFullPlayerContent,
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_visibility_filled_24),
+                                        imageVector = vectorResource(Res.drawable.rounded_visibility_filled_24),
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.secondary
                                     )
@@ -261,7 +260,7 @@ fun ExperimentalSettingsScreen(
                                         onCheckedChange = settingsViewModel::setDelayAlbumCarousel,
                                         leadingIcon = {
                                             Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_view_carousel_filled_24),
+                                                imageVector = vectorResource(Res.drawable.rounded_view_carousel_filled_24),
                                                 contentDescription = null,
                                                 tint = MaterialTheme.colorScheme.secondary
                                             )
@@ -275,7 +274,7 @@ fun ExperimentalSettingsScreen(
                                         onCheckedChange = settingsViewModel::setDelaySongMetadata,
                                         leadingIcon = {
                                             Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_linear_scale_24),
+                                                imageVector = vectorResource(Res.drawable.rounded_linear_scale_24),
                                                 contentDescription = null,
                                                 tint = MaterialTheme.colorScheme.secondary
                                             )
@@ -289,7 +288,7 @@ fun ExperimentalSettingsScreen(
                                         onCheckedChange = settingsViewModel::setDelayProgressBar,
                                         leadingIcon = {
                                             Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_linear_scale_24),
+                                                imageVector = vectorResource(Res.drawable.rounded_linear_scale_24),
                                                 contentDescription = null,
                                                 tint = MaterialTheme.colorScheme.secondary
                                             )
@@ -303,7 +302,7 @@ fun ExperimentalSettingsScreen(
                                         onCheckedChange = settingsViewModel::setDelayControls,
                                         leadingIcon = {
                                             Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_play_circle_24),
+                                                imageVector = vectorResource(Res.drawable.rounded_play_circle_24),
                                                 contentDescription = null,
                                                 tint = MaterialTheme.colorScheme.secondary
                                             )
@@ -353,7 +352,7 @@ fun ExperimentalSettingsScreen(
                                 onCheckedChange = settingsViewModel::setFullPlayerPlaceholders,
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_rectangle_filled_24),
+                                        imageVector = vectorResource(Res.drawable.rounded_rectangle_filled_24),
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.secondary
                                     )
@@ -440,7 +439,7 @@ fun ExperimentalSettingsScreen(
                                                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                                                     ) {
                                                         Icon(
-                                                            imageVector = ImageVector.vectorResource(R.drawable.rounded_linear_scale_24),
+                                                            imageVector = vectorResource(Res.drawable.rounded_linear_scale_24),
                                                             contentDescription = null,
                                                             tint = MaterialTheme.colorScheme.secondary
                                                         )
@@ -487,7 +486,7 @@ fun ExperimentalSettingsScreen(
                                                 enabled = isAnyDelayEnabled,
                                                 leadingIcon = {
                                                     Icon(
-                                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_rectangle_filled_24),
+                                                        imageVector = vectorResource(Res.drawable.rounded_rectangle_filled_24),
                                                         contentDescription = null,
                                                         tint = MaterialTheme.colorScheme.secondary
                                                     )
@@ -516,7 +515,7 @@ fun ExperimentalSettingsScreen(
                                                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                                                         ) {
                                                             Icon(
-                                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_linear_scale_24),
+                                                                imageVector = vectorResource(Res.drawable.rounded_linear_scale_24),
                                                                 contentDescription = null,
                                                                 tint = MaterialTheme.colorScheme.secondary
                                                             )
@@ -585,7 +584,7 @@ fun ExperimentalSettingsScreen(
                                         onCheckedChange = settingsViewModel::setTransparentPlaceholders,
                                         leadingIcon = {
                                             Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_visibility_filled_24),
+                                                imageVector = vectorResource(Res.drawable.rounded_visibility_filled_24),
                                                 contentDescription = null,
                                                 tint = MaterialTheme.colorScheme.secondary
                                             )
@@ -626,7 +625,7 @@ fun ExperimentalSettingsScreen(
                     title = stringResource(Res.string.presentation_batch_f_exp_album_art_resolution),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                            imageVector = vectorResource(Res.drawable.rounded_music_note_24),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )
@@ -677,7 +676,7 @@ fun ExperimentalSettingsScreen(
                                        
                                        if (isSelected) {
                                             Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_linear_scale_24),
+                                                imageVector = vectorResource(Res.drawable.rounded_linear_scale_24),
                                                 contentDescription = stringResource(Res.string.presentation_batch_f_cd_selected),
                                                 tint = MaterialTheme.colorScheme.primary
                                             )

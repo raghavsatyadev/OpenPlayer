@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +29,8 @@ import io.github.raghavsatyadev.openplayer.utils.resolvePlaylistCoverContentColo
 import io.github.raghavsatyadev.openplayer.utils.shapes.RoundedStarShape
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun PlaylistCover(
@@ -97,7 +97,7 @@ fun PlaylistCover(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = getIconByName(playlist.coverIconName) ?: ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                    imageVector = getIconByName(playlist.coverIconName) ?: vectorResource(Res.drawable.rounded_music_note_24),
                     contentDescription = null,
                     tint = resolvePlaylistCoverContentColor(
                         playlist.coverColorArgb,
@@ -118,14 +118,14 @@ fun PlaylistCover(
 @Composable
 private fun getIconByName(name: String?): ImageVector? {
     return when (name) {
-        "MusicNote" -> ImageVector.vectorResource(R.drawable.rounded_music_note_24)
-        "Headphones" -> ImageVector.vectorResource(R.drawable.rounded_headphones_filled_24)
-        "Album" -> ImageVector.vectorResource(R.drawable.rounded_album_filled_24)
-        "Mic" -> ImageVector.vectorResource(R.drawable.rounded_mic_external_on_filled_24)
-        "Speaker" -> ImageVector.vectorResource(R.drawable.rounded_speaker_filled_24)
-        "Favorite" -> ImageVector.vectorResource(R.drawable.rounded_favorite_filled_24)
-        "Piano" -> ImageVector.vectorResource(R.drawable.rounded_piano_24)
-        "Queue" -> ImageVector.vectorResource(R.drawable.rounded_queue_music_24)
-        else -> ImageVector.vectorResource(R.drawable.rounded_music_note_24)
+        "MusicNote" -> vectorResource(Res.drawable.rounded_music_note_24)
+        "Headphones" -> vectorResource(Res.drawable.rounded_headphones_filled_24)
+        "Album" -> vectorResource(Res.drawable.rounded_album_filled_24)
+        "Mic" -> vectorResource(Res.drawable.rounded_mic_external_on_filled_24)
+        "Speaker" -> vectorResource(Res.drawable.rounded_speaker_filled_24)
+        "Favorite" -> vectorResource(Res.drawable.rounded_favorite_filled_24)
+        "Piano" -> vectorResource(Res.drawable.rounded_piano_24)
+        "Queue" -> vectorResource(Res.drawable.rounded_queue_music_24)
+        else -> vectorResource(Res.drawable.rounded_music_note_24)
     }
 }

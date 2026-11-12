@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -51,7 +49,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -59,7 +56,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.MAX_NAV_BAR_CORNER_RADIUS
 import io.github.raghavsatyadev.openplayer.data.preferences.MIN_NAV_BAR_CORNER_RADIUS
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewModel
@@ -69,6 +65,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.resolveNavBar
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberSyncedSliderState
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 const val DEFAULT_NAV_BAR_CORNER_RADIUS = 28f
 
@@ -131,7 +129,7 @@ fun NavBarCornerRadiusContent(
                                 containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                             )
                     ) {
-                        Icon(painterResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back), tint = MaterialTheme.colorScheme.onSurface)
+                        Icon(painterResource(Res.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back), tint = MaterialTheme.colorScheme.onSurface)
                     }
                 },
                 actions = {
@@ -147,7 +145,7 @@ fun NavBarCornerRadiusContent(
                         modifier = Modifier.padding(end = 16.dp)
                     ) {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_check_24),
+                            vectorResource(Res.drawable.rounded_check_24),
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
@@ -242,7 +240,7 @@ fun NavBarCornerRadiusContent(
                                     modifier = Modifier.height(32.dp)
                                 ) {
                                     Icon(
-                                        ImageVector.vectorResource(R.drawable.rounded_refresh_24),
+                                        vectorResource(Res.drawable.rounded_refresh_24),
                                         contentDescription = stringResource(Res.string.cd_reset),
                                         modifier = Modifier.size(14.dp)
                                     )
@@ -259,7 +257,7 @@ fun NavBarCornerRadiusContent(
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_rounded_corner_24),
+                                imageVector = vectorResource(Res.drawable.rounded_rounded_corner_24),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )

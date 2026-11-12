@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,7 +27,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.library.DuplicateFinder
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.DuplicateSongsViewModel
@@ -37,6 +34,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -54,7 +52,7 @@ fun DuplicateSongsScreen(
                 title = { Text(stringResource(Res.string.duplicates_title)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), stringResource(Res.string.auth_cd_back))
+                        Icon(vectorResource(Res.drawable.rounded_arrow_back_24), stringResource(Res.string.auth_cd_back))
                     }
                 }
             )

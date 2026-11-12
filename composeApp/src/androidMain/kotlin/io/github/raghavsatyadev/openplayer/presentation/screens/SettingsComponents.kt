@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -54,7 +53,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
@@ -67,13 +65,14 @@ import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.worker.SyncProgress
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.LyricsRefreshProgress
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
-import androidx.compose.ui.res.vectorResource
 import androidx.core.view.HapticFeedbackConstantsCompat
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
 import io.github.raghavsatyadev.openplayer.presentation.utils.performAppCompatHapticFeedback
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberSyncedSliderState
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun SettingsSection(title: String, icon: @Composable () -> Unit, content: @Composable () -> Unit) {
@@ -211,7 +210,7 @@ fun SwitchSettingItem(
                         label = "switch_thumb_icon"
                     ) { isChecked ->
                         Icon(
-                            imageVector = if (isChecked) ImageVector.vectorResource(R.drawable.rounded_check_24) else ImageVector.vectorResource(R.drawable.rounded_close_24),
+                            imageVector = if (isChecked) vectorResource(Res.drawable.rounded_check_24) else vectorResource(Res.drawable.rounded_close_24),
                             contentDescription = null,
                             modifier = Modifier.size(SwitchDefaults.IconSize)
                         )
@@ -402,7 +401,7 @@ fun OptionSelectionSheet(
 
                             if (isSelected) {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_check_24),
                                     contentDescription = null,
                                     tint = resolvedContentColor
                                 )
@@ -500,7 +499,7 @@ fun RefreshLibraryItem(
                         contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_sync_24),
+                            imageVector = vectorResource(Res.drawable.rounded_sync_24),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.secondary
                     )
@@ -536,7 +535,7 @@ fun RefreshLibraryItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_refresh_24),
+                        imageVector = vectorResource(Res.drawable.rounded_refresh_24),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
@@ -562,7 +561,7 @@ fun RefreshLibraryItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_delete_forever_24),
+                        imageVector = vectorResource(Res.drawable.rounded_delete_forever_24),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
@@ -647,7 +646,7 @@ fun RefreshLyricsItem(
                         contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                            painter = painterResource(id = R.drawable.rounded_lyrics_24),
+                            painter = painterResource(Res.drawable.rounded_lyrics_24),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.secondary
                     )
@@ -678,7 +677,7 @@ fun RefreshLyricsItem(
                                 )
                 ) {
                     Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_sync_24),
+                            imageVector = vectorResource(Res.drawable.rounded_sync_24),
                             contentDescription = stringResource(Res.string.presentation_batch_f_cd_refresh_lyrics),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )

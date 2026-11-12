@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
 import io.github.raghavsatyadev.openplayer.utils.traceSection
@@ -94,6 +92,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -361,7 +360,7 @@ fun RecentlyPlayedScreen(
                 .clip(CircleShape)
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                imageVector = vectorResource(Res.drawable.rounded_arrow_back_24),
                 contentDescription = stringResource(Res.string.auth_cd_back)
             )
         }
@@ -487,7 +486,7 @@ private fun RecentlyPlayedActions(
             )
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
+                imageVector = vectorResource(Res.drawable.rounded_play_arrow_filled_24),
                 contentDescription = null,
                 modifier = Modifier.size(ButtonDefaults.IconSize)
             )
@@ -508,7 +507,7 @@ private fun RecentlyPlayedActions(
             )
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_shuffle_24),
+                imageVector = vectorResource(Res.drawable.rounded_shuffle_24),
                 contentDescription = null,
                 modifier = Modifier.size(ButtonDefaults.IconSize)
             )

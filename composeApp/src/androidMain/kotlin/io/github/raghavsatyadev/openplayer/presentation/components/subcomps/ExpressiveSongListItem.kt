@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.subcomps
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,10 +28,10 @@ import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImageListTargetSize
 import io.github.raghavsatyadev.openplayer.utils.formatDuration
-import io.github.raghavsatyadev.openplayer.R
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun ExpressiveSongListItem(
@@ -93,7 +91,7 @@ fun ExpressiveSongListItem(
 
             if (isPlaying) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24),
+                    imageVector = vectorResource(Res.drawable.rounded_graphic_eq_24),
                     contentDescription = stringResource(Res.string.presentation_batch_g_list_cd_playing),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(24.dp)

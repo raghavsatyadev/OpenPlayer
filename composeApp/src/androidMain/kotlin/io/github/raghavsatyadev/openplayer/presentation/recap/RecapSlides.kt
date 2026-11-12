@@ -2,7 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.recap
 
-import androidx.compose.ui.res.vectorResource
 import android.icu.text.ListFormatter
 import android.text.format.DateFormat
 import androidx.compose.foundation.Canvas
@@ -83,6 +82,7 @@ import kotlin.math.sin
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /** Bars on the listening clock, one per hour. */
 private const val HOURS_PER_DAY = 24
@@ -210,7 +210,7 @@ private fun IntroSlide(
                 color = palette.content
             )
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_forward_24),
+                imageVector = vectorResource(Res.drawable.rounded_arrow_forward_24),
                 contentDescription = null,
                 tint = palette.content,
                 modifier = Modifier.size(18.dp)
@@ -581,10 +581,10 @@ private fun ListeningClock(
 
 private val ListeningPersonality.icon: ImageVector
     @Composable get() = when (this) {
-        ListeningPersonality.EARLY_BIRD -> ImageVector.vectorResource(R.drawable.rounded_coffee_filled_24)
-        ListeningPersonality.DAYTIME -> ImageVector.vectorResource(R.drawable.rounded_wb_sunny_filled_24)
-        ListeningPersonality.EVENING -> ImageVector.vectorResource(R.drawable.rounded_wb_twilight_filled_24)
-        ListeningPersonality.NIGHT_OWL -> ImageVector.vectorResource(R.drawable.rounded_bedtime_filled_24)
+        ListeningPersonality.EARLY_BIRD -> vectorResource(Res.drawable.rounded_coffee_filled_24)
+        ListeningPersonality.DAYTIME -> vectorResource(Res.drawable.rounded_wb_sunny_filled_24)
+        ListeningPersonality.EVENING -> vectorResource(Res.drawable.rounded_wb_twilight_filled_24)
+        ListeningPersonality.NIGHT_OWL -> vectorResource(Res.drawable.rounded_bedtime_filled_24)
     }
 
 internal val ListeningPersonality.titleRes: Int

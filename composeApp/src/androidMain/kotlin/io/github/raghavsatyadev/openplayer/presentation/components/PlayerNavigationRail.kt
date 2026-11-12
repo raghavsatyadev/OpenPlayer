@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.os.SystemClock
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -32,6 +30,8 @@ import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateToTop
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * Material 3 wide navigation rail used instead of the bottom bar on medium/expanded
@@ -65,7 +65,7 @@ fun PlayerNavigationRail(
                 modifier = Modifier.padding(start = 24.dp)
             ) {
                 Icon(
-                    imageVector = if (isExpanded) ImageVector.vectorResource(R.drawable.rounded_menu_open_mirrored_24) else ImageVector.vectorResource(R.drawable.rounded_menu_24),
+                    imageVector = if (isExpanded) vectorResource(Res.drawable.rounded_menu_open_mirrored_24) else vectorResource(Res.drawable.rounded_menu_24),
                     contentDescription = stringResource(
                         if (isExpanded) R.string.navigation_rail_collapse else R.string.navigation_rail_expand
                     )

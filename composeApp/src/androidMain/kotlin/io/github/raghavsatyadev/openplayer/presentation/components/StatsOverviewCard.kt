@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +33,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.stats.PlaybackStatsRepository
 import io.github.raghavsatyadev.openplayer.data.stats.StatsTimeRange
 import io.github.raghavsatyadev.openplayer.presentation.stats.displayNameRes
@@ -48,6 +45,7 @@ import kotlinx.collections.immutable.toImmutableList
 import androidx.compose.runtime.remember
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 private enum class OverviewContentKey { Loading, Empty, Ready }
 
@@ -126,7 +124,7 @@ fun StatsOverviewCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_forward_24),
+                            imageVector = vectorResource(Res.drawable.rounded_arrow_forward_24),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -241,7 +239,7 @@ private fun EmptyOverviewContent() {
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_bar_chart_24),
+                    imageVector = vectorResource(Res.drawable.rounded_bar_chart_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSecondaryContainer
                 )

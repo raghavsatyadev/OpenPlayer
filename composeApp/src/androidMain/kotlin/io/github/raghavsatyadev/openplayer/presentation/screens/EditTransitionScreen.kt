@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -66,7 +64,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -85,6 +82,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -142,7 +141,7 @@ fun EditTransitionScreen(
                         onClick = { navController.navigateUp() },
                         colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
                     ) {
-                        Icon(painterResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back), tint = MaterialTheme.colorScheme.onSurface)
+                        Icon(painterResource(Res.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back), tint = MaterialTheme.colorScheme.onSurface)
                     }
                 },
                 actions = {
@@ -152,7 +151,7 @@ fun EditTransitionScreen(
                         enabled = !uiState.isLoading,
                         colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer, contentColor = MaterialTheme.colorScheme.onTertiaryContainer)
                     ){
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_save_filled_24), contentDescription = stringResource(Res.string.presentation_batch_d_transition_save_cd))
+                        Icon(vectorResource(Res.drawable.rounded_save_filled_24), contentDescription = stringResource(Res.string.presentation_batch_d_transition_save_cd))
                     }
                 },
                 scrollBehavior = scrollBehavior,
@@ -264,7 +263,7 @@ private fun TransitionSummaryCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_auto_awesome_motion_filled_24),
+                        vectorResource(Res.drawable.rounded_auto_awesome_motion_filled_24),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSecondaryContainer
                     )
@@ -336,7 +335,7 @@ private fun TransitionModeSection(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+            Icon(vectorResource(Res.drawable.rounded_graphic_eq_24), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
             Column {
                 Text(stringResource(Res.string.presentation_batch_d_transition_style_title), style = MaterialTheme.typography.titleMedium)
                 Text(
@@ -456,7 +455,7 @@ private fun TransitionDurationSection(
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_tune_24), contentDescription = stringResource(Res.string.presentation_batch_d_transition_reset_cd))
+                Icon(vectorResource(Res.drawable.rounded_tune_24), contentDescription = stringResource(Res.string.presentation_batch_d_transition_reset_cd))
             }
         }
 
@@ -590,7 +589,7 @@ private fun CrossfadeVisualizer(durationMs: Int) {
                     )
                 }
                 Icon(
-                    ImageVector.vectorResource(R.drawable.rounded_auto_awesome_motion_filled_24),
+                    vectorResource(Res.drawable.rounded_auto_awesome_motion_filled_24),
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.Center)
@@ -620,7 +619,7 @@ private fun TransitionCurvesSection(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_tune_24), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+            Icon(vectorResource(Res.drawable.rounded_tune_24), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
             Column {
                 Text(stringResource(Res.string.presentation_batch_d_transition_curves_title), style = MaterialTheme.typography.titleMedium)
                 Text(
@@ -699,7 +698,7 @@ private fun CurveSelectionColumn(
                             )
                             if (isSelected) {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_check_24),
+                                    vectorResource(Res.drawable.rounded_check_24),
                                     contentDescription = null,
                                     tint = onActiveColor,
                                     modifier = Modifier.size(16.dp)

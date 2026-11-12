@@ -41,7 +41,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -49,11 +48,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.service.repeatn.RepeatNCounter
 import kotlinx.coroutines.flow.StateFlow
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
 
 /** What the repeat button needs for repeat-N, provided once above the full player. */
 class RepeatNUi(
@@ -124,7 +123,7 @@ fun RepeatNPickerContent(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                painter = painterResource(R.drawable.rounded_repeat_one_24),
+                painter = painterResource(Res.drawable.rounded_repeat_one_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
             )

@@ -156,6 +156,7 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -1132,7 +1133,7 @@ private fun BookmarkKeepSearchTopBar(
                 )
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                    imageVector = vectorResource(Res.drawable.rounded_arrow_back_24),
                     contentDescription = "Back"
                 )
             }
@@ -1155,7 +1156,7 @@ private fun BookmarkKeepSearchTopBar(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_search_24),
+                        imageVector = vectorResource(Res.drawable.rounded_search_24),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(22.dp)
@@ -1229,7 +1230,7 @@ private fun BookmarkKeepSearchTopBar(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = if (query.isNotBlank()) ImageVector.vectorResource(R.drawable.rounded_close_24) else ImageVector.vectorResource(R.drawable.rounded_bookmark_filled_24),
+                        imageVector = if (query.isNotBlank()) vectorResource(Res.drawable.rounded_close_24) else vectorResource(Res.drawable.rounded_bookmark_filled_24),
                         contentDescription = if (query.isNotBlank()) "Clear bookmark search" else "Bookmarks",
                         modifier = Modifier.size(22.dp)
                     )
@@ -1276,7 +1277,7 @@ private fun BookmarkActionFabMenu(
                 )
             ) {
                 Icon(
-                    imageVector = if (expanded) ImageVector.vectorResource(R.drawable.rounded_close_24) else ImageVector.vectorResource(R.drawable.rounded_sort_24),
+                    imageVector = if (expanded) vectorResource(Res.drawable.rounded_close_24) else vectorResource(Res.drawable.rounded_sort_24),
                     contentDescription = if (expanded) "Close bookmark actions" else "Open bookmark actions",
                     tint = lerpColor(fabClosedContent, fabOpenContent, checkedProgress)
                 )
@@ -1288,7 +1289,7 @@ private fun BookmarkActionFabMenu(
             icon = {
                 Icon(
                     imageVector = if (sortMode == BookmarkFolderSortMode.MostMoments) {
-                        ImageVector.vectorResource(R.drawable.rounded_check_24)
+                        vectorResource(Res.drawable.rounded_check_24)
                     } else {
                         ImageVector.vectorResource(BookmarkFolderSortMode.MostMoments.iconRes)
                     },
@@ -1312,7 +1313,7 @@ private fun BookmarkActionFabMenu(
             icon = {
                 Icon(
                     imageVector = if (sortMode == BookmarkFolderSortMode.Recent) {
-                        ImageVector.vectorResource(R.drawable.rounded_check_24)
+                        vectorResource(Res.drawable.rounded_check_24)
                     } else {
                         ImageVector.vectorResource(BookmarkFolderSortMode.Recent.iconRes)
                     },
@@ -1336,7 +1337,7 @@ private fun BookmarkActionFabMenu(
             icon = {
                 Icon(
                     imageVector = if (sortMode == BookmarkFolderSortMode.Title) {
-                        ImageVector.vectorResource(R.drawable.rounded_check_24)
+                        vectorResource(Res.drawable.rounded_check_24)
                     } else {
                         ImageVector.vectorResource(BookmarkFolderSortMode.Title.iconRes)
                     },
@@ -1361,7 +1362,7 @@ private fun BookmarkActionFabMenu(
                     onClearFilter()
                 }
             },
-            icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), contentDescription = null) },
+            icon = { Icon(vectorResource(Res.drawable.rounded_close_24), contentDescription = null) },
             text = { Text(stringResource(Res.string.audio_bookmarks_clear_filter)) },
             containerColor = if (hasQuery) {
                 MaterialTheme.colorScheme.tertiaryContainer
@@ -1380,7 +1381,7 @@ private fun BookmarkActionFabMenu(
                     onScrollToTop()
                 }
             },
-            icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_keyboard_arrow_up_24), contentDescription = null) },
+            icon = { Icon(vectorResource(Res.drawable.rounded_keyboard_arrow_up_24), contentDescription = null) },
             text = { Text(stringResource(Res.string.audio_bookmarks_back_to_top)) },
             containerColor = if (canScrollToTop) {
                 MaterialTheme.colorScheme.secondaryContainer
@@ -1437,7 +1438,7 @@ private fun BookmarkSelectionTopBar(
                 )
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                    imageVector = vectorResource(Res.drawable.rounded_close_24),
                     contentDescription = stringResource(Res.string.cd_clear_selection)
                 )
             }
@@ -1475,7 +1476,7 @@ private fun BookmarkSelectionTopBar(
                 )
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_select_all_24),
+                    imageVector = vectorResource(Res.drawable.rounded_select_all_24),
                     contentDescription = stringResource(
                         if (allSelected) R.string.presentation_batch_e_deselect_all else R.string.cd_select_all
                     )
@@ -1491,7 +1492,7 @@ private fun BookmarkSelectionTopBar(
                 )
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_delete_filled_24),
                     contentDescription = stringResource(Res.string.audio_bookmarks_cd_delete_selected)
                 )
             }
@@ -1704,7 +1705,7 @@ private fun BookmarkFolderCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
+                            imageVector = vectorResource(Res.drawable.rounded_check_24),
                             contentDescription = stringResource(Res.string.audio_bookmarks_cd_selected),
                             tint = songScheme.onPrimary,
                             modifier = Modifier.size(18.dp)
@@ -1775,7 +1776,7 @@ private fun BookmarkFolderArtworkBlock(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_bookmark_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_bookmark_filled_24),
                     tint = songScheme.onPrimary,
                     contentDescription = null
                 )
@@ -1937,7 +1938,7 @@ private fun BookmarkMomentCard(
                     ) {
                         if (selected) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
+                                imageVector = vectorResource(Res.drawable.rounded_check_24),
                                 contentDescription = stringResource(Res.string.audio_bookmarks_cd_selected),
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(16.dp)
@@ -1956,7 +1957,7 @@ private fun BookmarkMomentCard(
                 ) {
                     IconButton(onClick = onMoreClick) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_more_vert_24),
+                            imageVector = vectorResource(Res.drawable.rounded_more_vert_24),
                             contentDescription = stringResource(Res.string.audio_bookmarks_actions)
                         )
                     }
@@ -2016,7 +2017,7 @@ private fun BookmarkMomentActionsBottomSheet(
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_bookmark_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_bookmark_filled_24),
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(14.dp)
@@ -2118,7 +2119,7 @@ private fun BookmarkMomentPrimaryActions(
             modifier = Modifier
                 .weight(renameWeight)
                 .fillMaxHeight(),
-            icon = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
+            icon = vectorResource(Res.drawable.rounded_edit_filled_24),
             label = stringResource(Res.string.action_rename),
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -2139,7 +2140,7 @@ private fun BookmarkMomentPrimaryActions(
             modifier = Modifier
                 .weight(copyWeight)
                 .fillMaxHeight(),
-            icon = ImageVector.vectorResource(R.drawable.rounded_content_copy_filled_24),
+            icon = vectorResource(Res.drawable.rounded_content_copy_filled_24),
             label = "Copy cue",
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -2212,7 +2213,7 @@ private fun BookmarkMomentDeleteAction(
         }
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
+            imageVector = vectorResource(Res.drawable.rounded_delete_filled_24),
             contentDescription = "Delete bookmark"
         )
         Spacer(modifier = Modifier.width(8.dp))
@@ -2345,7 +2346,7 @@ private fun BookmarksEmptyState(
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_bookmark_filled_24),
+                imageVector = vectorResource(Res.drawable.rounded_bookmark_filled_24),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(18.dp)

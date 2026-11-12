@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
 import androidx.compose.animation.animateColorAsState
@@ -74,7 +72,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -83,7 +80,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Playlist
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.model.SortOption
@@ -105,6 +101,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -162,7 +160,7 @@ fun PlaylistContainer(
                     )
                     Spacer(Modifier.height(16.dp))
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_playlist_play_24),
+                        vectorResource(Res.drawable.rounded_playlist_play_24),
                         contentDescription = null,
                         modifier = Modifier.size(48.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -539,7 +537,7 @@ private fun PlaylistGridItem(
                         )
                     } else {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_check_circle_filled_24),
                             contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                             tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(16.dp)
@@ -669,7 +667,7 @@ fun PlaylistItem(
                     if (playlist.source == "NAVIDROME") {
                         Spacer(modifier = Modifier.width(8.dp))
                         Icon(
-                            painter = painterResource(R.drawable.ic_navidrome),
+                            painter = painterResource(Res.drawable.ic_navidrome),
                             contentDescription = stringResource(Res.string.cd_navidrome_logo),
                             tint = Color.Unspecified,
                             modifier = Modifier.size(18.dp)
@@ -703,7 +701,7 @@ fun PlaylistItem(
                         )
                     } else {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_check_circle_filled_24),
                             contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                             tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(16.dp)

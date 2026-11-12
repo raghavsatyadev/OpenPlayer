@@ -24,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,7 +31,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.LibraryTabId
 import io.github.raghavsatyadev.openplayer.data.model.StorageFilter
 import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
@@ -49,6 +47,7 @@ import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
 
 /** Local videos and the tracks they match. Tapping a matched video plays its track with video on. */
 @Composable
@@ -136,7 +135,7 @@ private fun VideoListItem(row: VideoRow, onClick: () -> Unit) {
                     )
                 } else Box(contentAlignment = Alignment.Center) {
                     Icon(
-                        painter = painterResource(R.drawable.rounded_movie_24),
+                        painter = painterResource(Res.drawable.rounded_movie_24),
                         contentDescription = null,
                         tint = if (matched) {
                             MaterialTheme.colorScheme.onPrimaryContainer

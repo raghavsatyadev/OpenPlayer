@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,7 +27,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -99,6 +97,7 @@ import kotlin.math.roundToInt
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -517,7 +516,7 @@ fun GenreDetailScreen(
                         shape = AbsoluteSmoothCornerShape(24.dp, 60)
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_more_vert_24),
+                            imageVector = vectorResource(Res.drawable.rounded_more_vert_24),
                             contentDescription = stringResource(Res.string.cd_options),
                             modifier = Modifier.size(28.dp)
                         )
@@ -553,7 +552,7 @@ fun GenreDetailScreen(
                                 ),
                                 shape = racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape(16.dp, 60)
                             ) {
-                                Icon(ImageVector.vectorResource(R.drawable.rounded_auto_fix_high_filled_24), contentDescription = null)
+                                Icon(vectorResource(Res.drawable.rounded_auto_fix_high_filled_24), contentDescription = null)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = stringResource(Res.string.genre_quick_fill),
@@ -880,7 +879,7 @@ fun GenreCollapsibleTopBar(
                     contentColor = animatedContentColor
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back), tint = animatedContentColor)
+                Icon(vectorResource(Res.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back), tint = animatedContentColor)
             }
 
             ExpressiveTopBarContent(
@@ -950,7 +949,7 @@ fun GenreArtistHeader(
                         )
                     } else {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_person_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_person_filled_24),
                             contentDescription = stringResource(Res.string.cd_generic_artist),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier
@@ -1048,7 +1047,7 @@ fun GenreAlbumHeader(
                     containerColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_album))
+                Icon(vectorResource(Res.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_album))
             }
         }
     }

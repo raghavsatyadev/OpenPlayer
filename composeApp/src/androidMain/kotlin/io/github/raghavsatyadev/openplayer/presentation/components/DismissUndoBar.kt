@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -29,12 +27,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import androidx.compose.ui.text.style.TextOverflow
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun DismissUndoBar(
@@ -97,7 +95,7 @@ fun DismissUndoBar(
                         onClick = onClose
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                            imageVector = vectorResource(Res.drawable.rounded_close_24),
                             contentDescription = stringResource(Res.string.cd_close),
                             tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                         )

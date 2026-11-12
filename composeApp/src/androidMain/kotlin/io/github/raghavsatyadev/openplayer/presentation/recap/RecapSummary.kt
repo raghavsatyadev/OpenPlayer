@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.recap
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -48,6 +46,7 @@ import io.github.raghavsatyadev.openplayer.R
 import java.text.NumberFormat
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /** Closing slide: a shareable card of the year's highlights, plus what to do next. */
 @Composable
@@ -102,7 +101,7 @@ internal fun RecapSummarySlide(
                     .fillMaxWidth()
                     .height(52.dp)
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_share_filled_24), contentDescription = null, modifier = Modifier.size(20.dp))
+                Icon(vectorResource(Res.drawable.rounded_share_filled_24), contentDescription = null, modifier = Modifier.size(20.dp))
                 Spacer(Modifier.size(8.dp))
                 Text(
                     text = stringResource(Res.string.recap_share),
@@ -121,7 +120,7 @@ internal fun RecapSummarySlide(
                         .fillMaxWidth()
                         .height(52.dp)
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = null, modifier = Modifier.size(20.dp))
+                    Icon(vectorResource(Res.drawable.rounded_play_arrow_filled_24), contentDescription = null, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.size(8.dp))
                     Text(
                         text = stringResource(Res.string.recap_play_top_songs),
@@ -137,7 +136,7 @@ internal fun RecapSummarySlide(
             colors = ButtonDefaults.textButtonColors(contentColor = palette.content),
             modifier = Modifier.recapReveal(reveal, order = 4)
         ) {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_replay_24), contentDescription = null, modifier = Modifier.size(18.dp))
+            Icon(vectorResource(Res.drawable.rounded_replay_24), contentDescription = null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.size(6.dp))
             Text(stringResource(Res.string.recap_replay))
         }

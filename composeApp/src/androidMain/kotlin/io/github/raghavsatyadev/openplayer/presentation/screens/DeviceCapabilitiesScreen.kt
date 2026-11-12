@@ -2,7 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
 import android.content.Intent
 import android.text.format.Formatter
 import android.widget.Toast
@@ -107,6 +106,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(UnstableApi::class)
 @kotlin.OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -309,7 +309,7 @@ private fun PerformanceReportCard(
 
     CapabilityCard(
         title = stringResource(Res.string.device_capabilities_report_title),
-        icon = ImageVector.vectorResource(R.drawable.rounded_analytics_filled_24),
+        icon = vectorResource(Res.drawable.rounded_analytics_filled_24),
         modifier = modifier
     ) {
         Text(
@@ -370,7 +370,7 @@ private fun PerformanceReportCard(
                     }
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_content_copy_filled_24),
+                        imageVector = vectorResource(Res.drawable.rounded_content_copy_filled_24),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
@@ -390,7 +390,7 @@ private fun PerformanceReportCard(
                     }
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_share_filled_24),
+                        imageVector = vectorResource(Res.drawable.rounded_share_filled_24),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
@@ -508,7 +508,7 @@ private fun PlaybackReadinessCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 StatusIcon(
-                    icon = if (needsReview) ImageVector.vectorResource(R.drawable.rounded_warning_filled_24) else ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+                    icon = if (needsReview) vectorResource(Res.drawable.rounded_warning_filled_24) else vectorResource(Res.drawable.rounded_check_circle_filled_24),
                     containerColor = contentColor.copy(alpha = 0.12f),
                     contentColor = contentColor
                 )
@@ -586,7 +586,7 @@ private fun LocalMusicStorageCard(
 
     CapabilityCard(
         title = stringResource(Res.string.device_capabilities_storage_title),
-        icon = ImageVector.vectorResource(R.drawable.rounded_storage_24),
+        icon = vectorResource(Res.drawable.rounded_storage_24),
         modifier = modifier
     ) {
         Row(
@@ -666,7 +666,7 @@ private fun PlaybackPathCard(
 
     CapabilityCard(
         title = stringResource(Res.string.device_capabilities_playback_path_title),
-        icon = ImageVector.vectorResource(R.drawable.rounded_speaker_filled_24),
+        icon = vectorResource(Res.drawable.rounded_speaker_filled_24),
         modifier = modifier
     ) {
         Row(
@@ -742,7 +742,7 @@ private fun PlaybackPathCard(
                     label = stringResource(Res.string.presentation_batch_g_device_section_exoplayer),
                     value = exo.version,
                     supporting = stringResource(Res.string.device_capabilities_renderers_count, exo.renderers),
-                    icon = ImageVector.vectorResource(R.drawable.rounded_memory_filled_24),
+                    icon = vectorResource(Res.drawable.rounded_memory_filled_24),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -758,7 +758,7 @@ private fun FormatCompatibilityCard(
 ) {
     CapabilityCard(
         title = stringResource(Res.string.device_capabilities_formats_title),
-        icon = ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24),
+        icon = vectorResource(Res.drawable.rounded_graphic_eq_24),
         verticalSpacing = 0.dp,
         modifier = modifier
     ) {
@@ -796,14 +796,14 @@ private fun FormatCompatibilityCard(
                     text = stringResource(Res.string.device_capabilities_formats_supported_count,
                         compatibility.supportedLibrarySongCount
                     ),
-                    leadingIcon = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24)
+                    leadingIcon = vectorResource(Res.drawable.rounded_check_circle_filled_24)
                 )
                 if (compatibility.unknownFormatSongCount > 0) {
                     TonalChip(
                         text = stringResource(Res.string.device_capabilities_formats_unknown_count,
                             compatibility.unknownFormatSongCount
                         ),
-                        leadingIcon = ImageVector.vectorResource(R.drawable.rounded_info_filled_24)
+                        leadingIcon = vectorResource(Res.drawable.rounded_info_filled_24)
                     )
                 }
             }
@@ -822,12 +822,12 @@ private fun PlaybackFindingsCard(
 
     CapabilityCard(
         title = stringResource(Res.string.device_capabilities_findings_title),
-        icon = if (hasFindings) ImageVector.vectorResource(R.drawable.rounded_warning_filled_24) else ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+        icon = if (hasFindings) vectorResource(Res.drawable.rounded_warning_filled_24) else vectorResource(Res.drawable.rounded_check_circle_filled_24),
         modifier = modifier
     ) {
         if (!hasFindings) {
             FindingRow(
-                icon = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+                icon = vectorResource(Res.drawable.rounded_check_circle_filled_24),
                 title = stringResource(Res.string.device_capabilities_finding_clear_title),
                 body = stringResource(Res.string.device_capabilities_finding_clear_body),
                 tone = FindingTone.Success
@@ -837,7 +837,7 @@ private fun PlaybackFindingsCard(
 
         if (compatibility.unsupportedLibrarySongCount > 0) {
             FindingRow(
-                icon = ImageVector.vectorResource(R.drawable.rounded_error_24),
+                icon = vectorResource(Res.drawable.rounded_error_24),
                 title = stringResource(Res.string.device_capabilities_finding_unsupported_title,
                     compatibility.unsupportedLibrarySongCount
                 ),
@@ -851,7 +851,7 @@ private fun PlaybackFindingsCard(
         if (compatibility.resampledLocalSongCount > 0) {
             Spacer(Modifier.height(8.dp))
             FindingRow(
-                icon = ImageVector.vectorResource(R.drawable.rounded_warning_filled_24),
+                icon = vectorResource(Res.drawable.rounded_warning_filled_24),
                 title = stringResource(Res.string.device_capabilities_finding_resample_title,
                     compatibility.resampledLocalSongCount
                 ),
@@ -865,7 +865,7 @@ private fun PlaybackFindingsCard(
         if (compatibility.unknownFormatSongCount > 0) {
             Spacer(Modifier.height(8.dp))
             FindingRow(
-                icon = ImageVector.vectorResource(R.drawable.rounded_info_filled_24),
+                icon = vectorResource(Res.drawable.rounded_info_filled_24),
                 title = stringResource(Res.string.device_capabilities_finding_unknown_title,
                     compatibility.unknownFormatSongCount
                 ),
@@ -886,7 +886,7 @@ private fun DeviceInfoPanel(
 
     CapabilityCard(
         title = stringResource(Res.string.presentation_batch_g_device_info_title),
-        icon = ImageVector.vectorResource(R.drawable.rounded_info_filled_24),
+        icon = vectorResource(Res.drawable.rounded_info_filled_24),
         verticalSpacing = 0.dp,
         enableTopSpacer = true,
         modifier = modifier
@@ -1134,7 +1134,7 @@ private fun FormatSupportTile(
                     color = statusColor
                 ) {
                     Icon(
-                        imageVector = if (format.isDecoderAvailable) ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24) else ImageVector.vectorResource(R.drawable.rounded_error_24),
+                        imageVector = if (format.isDecoderAvailable) vectorResource(Res.drawable.rounded_check_circle_filled_24) else vectorResource(Res.drawable.rounded_error_24),
                         contentDescription = null,
                         tint = statusContentColor,
                         modifier = Modifier
@@ -1240,7 +1240,7 @@ private fun OutputRouteRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = if (category == AudioOutputCategory.BuiltIn) ImageVector.vectorResource(R.drawable.rounded_speaker_filled_24) else ImageVector.vectorResource(R.drawable.rounded_headphones_filled_24),
+                imageVector = if (category == AudioOutputCategory.BuiltIn) vectorResource(Res.drawable.rounded_speaker_filled_24) else vectorResource(Res.drawable.rounded_headphones_filled_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp)

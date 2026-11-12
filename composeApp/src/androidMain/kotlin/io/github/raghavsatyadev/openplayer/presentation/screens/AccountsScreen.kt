@@ -77,9 +77,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -106,6 +104,8 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlinx.collections.immutable.ImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun AccountsScreen(
@@ -246,9 +246,9 @@ fun AccountsScreen(
                         },
                         onLogout = { viewModel.logout(account.service) },
                         painter = if (account.service == ExternalServiceAccount.JELLYFIN) {
-                            painterResource(R.drawable.ic_jellyfin)
+                            painterResource(Res.drawable.ic_jellyfin)
                         } else if (account.service == ExternalServiceAccount.NAVIDROME) {
-                            painterResource(R.drawable.ic_navidrome_md3)
+                            painterResource(Res.drawable.ic_navidrome_md3)
                         } else null,
                         extraContent = if (account.service == ExternalServiceAccount.LISTENBRAINZ) {
                             {
@@ -452,7 +452,7 @@ private fun ConnectedAccountCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_sync_24),
+                        imageVector = vectorResource(Res.drawable.rounded_sync_24),
                         contentDescription = null,
                         tint = palette.iconTint,
                         modifier = Modifier.size(16.dp)
@@ -483,7 +483,7 @@ private fun ConnectedAccountCard(
                 modifier = Modifier.fillMaxWidth().height(48.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_open_in_new_mirrored_24),
+                    imageVector = vectorResource(Res.drawable.rounded_open_in_new_mirrored_24),
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.size(8.dp))
@@ -506,7 +506,7 @@ private fun ConnectedAccountCard(
                     )
                 } else {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_logout_mirrored_24),
+                        imageVector = vectorResource(Res.drawable.rounded_logout_mirrored_24),
                         contentDescription = null
                     )
                 }
@@ -597,9 +597,9 @@ private fun servicePalette(service: ExternalServiceAccount): ServicePalette {
 @Composable
 private fun accountIcon(service: ExternalServiceAccount): ImageVector {
     return when (service) {
-        ExternalServiceAccount.NAVIDROME -> ImageVector.vectorResource(R.drawable.rounded_cloud_queue_filled_24)
-        ExternalServiceAccount.JELLYFIN -> ImageVector.vectorResource(R.drawable.rounded_cloud_queue_filled_24)
-        ExternalServiceAccount.LISTENBRAINZ -> ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24)
+        ExternalServiceAccount.NAVIDROME -> vectorResource(Res.drawable.rounded_cloud_queue_filled_24)
+        ExternalServiceAccount.JELLYFIN -> vectorResource(Res.drawable.rounded_cloud_queue_filled_24)
+        ExternalServiceAccount.LISTENBRAINZ -> vectorResource(Res.drawable.rounded_graphic_eq_24)
     }
 }
 
@@ -611,7 +611,7 @@ private fun ServiceIcon(service: ExternalServiceAccount, tint: Color, modifier: 
             contentAlignment = Alignment.CenterStart
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_subsonic),
+                imageVector = vectorResource(Res.drawable.ic_subsonic),
                 contentDescription = null,
                 tint = Color.Unspecified,
                 modifier = Modifier
@@ -619,7 +619,7 @@ private fun ServiceIcon(service: ExternalServiceAccount, tint: Color, modifier: 
             )
             
             Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_navidrome),
+                imageVector = vectorResource(Res.drawable.ic_navidrome),
                 contentDescription = null,
                 tint = Color.Unspecified,
                 modifier = Modifier
@@ -629,7 +629,7 @@ private fun ServiceIcon(service: ExternalServiceAccount, tint: Color, modifier: 
         }
     } else if (service == ExternalServiceAccount.JELLYFIN) {
         Icon(
-            painter = painterResource(R.drawable.ic_jellyfin),
+            painter = painterResource(Res.drawable.ic_jellyfin),
             contentDescription = null,
             tint = tint,
             modifier = modifier
@@ -739,17 +739,17 @@ private fun ConnectServiceButton(
     ) {
         when (service) {
             ExternalServiceAccount.JELLYFIN -> Icon(
-                painter = painterResource(R.drawable.ic_jellyfin),
+                painter = painterResource(Res.drawable.ic_jellyfin),
                 contentDescription = null,
                 modifier = Modifier.size(18.dp)
             )
             ExternalServiceAccount.NAVIDROME -> Icon(
-                painter = painterResource(R.drawable.ic_navidrome_md3),
+                painter = painterResource(Res.drawable.ic_navidrome_md3),
                 contentDescription = null,
                 modifier = Modifier.size(18.dp)
             )
             ExternalServiceAccount.LISTENBRAINZ -> Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24),
+                imageVector = vectorResource(Res.drawable.rounded_graphic_eq_24),
                 contentDescription = null,
                 modifier = Modifier.size(18.dp)
             )
@@ -962,7 +962,7 @@ private fun ListenBrainzNowPlayingRow(
                 Modifier.size(16.dp)
             }
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24),
+                imageVector = vectorResource(Res.drawable.rounded_graphic_eq_24),
                 contentDescription = null,
                 tint = contentColor,
                 modifier = iconModifier

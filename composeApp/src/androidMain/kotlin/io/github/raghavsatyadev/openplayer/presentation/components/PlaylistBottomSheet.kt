@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -52,6 +50,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -152,7 +151,7 @@ fun PlaylistBottomSheet(
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) IconButton(onClick = {
                             searchQuery = ""
-                        }) { Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), null) }
+                        }) { Icon(vectorResource(Res.drawable.rounded_close_24), null) }
                     }
                 )
 
@@ -241,7 +240,7 @@ fun PlaylistBottomSheet(
                     playerViewModel.sendToast(if (songs.size > 1) songsAddedToast else savedToast)
                     playerViewModel.multiSelectionStateHolder.clearSelection()
                 },
-                icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_save_filled_24), stringResource(Res.string.action_save)) },
+                icon = { Icon(vectorResource(Res.drawable.rounded_save_filled_24), stringResource(Res.string.action_save)) },
                 text = { Text(stringResource(if (songs.size > 1) R.string.song_picker_action_add else R.string.action_save)) },
             )
         }

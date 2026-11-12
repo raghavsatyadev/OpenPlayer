@@ -80,6 +80,7 @@ import kotlin.math.roundToInt
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 private enum class MixComposerPage { Request, Refine, Preview }
 
@@ -239,7 +240,7 @@ fun MixComposerSheet(
                 ) {
                     if (currentPage != MixComposerPage.Request) {
                         IconButton({ haptics.perform(MixHapticLevel.Light); back() }, enabled = !isSaving, modifier = Modifier.background(palette.panel, RoundedCornerShape(50))) {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), stringResource(Res.string.mix_back), Modifier.size(22.dp))
+                            Icon(vectorResource(Res.drawable.rounded_arrow_back_24), stringResource(Res.string.mix_back), Modifier.size(22.dp))
                         }
                     } else NeuralMixEmblem()
                     Text(
@@ -248,7 +249,7 @@ fun MixComposerSheet(
                         fontFamily = RoundedSans, fontWeight = FontWeight.Medium,
                     )
                     IconButton(close, enabled = !isSaving, modifier = Modifier.background(palette.panel, RoundedCornerShape(50))) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), stringResource(Res.string.mix_close), Modifier.size(22.dp))
+                        Icon(vectorResource(Res.drawable.rounded_close_24), stringResource(Res.string.mix_close), Modifier.size(22.dp))
                     }
                 }
 
@@ -322,7 +323,7 @@ fun MixComposerSheet(
                                             PlayingEqIcon(Modifier.size(28.dp), color = LocalContentColor.current,
                                                 bars = 4, minHeightFraction = 0.3f, phaseDurationMillis = 1800)
                                         } else {
-                                            Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_forward_24), null, Modifier.size(28.dp))
+                                            Icon(vectorResource(Res.drawable.rounded_arrow_forward_24), null, Modifier.size(28.dp))
                                         }
                                     }
                                 }
@@ -469,18 +470,18 @@ private fun MixRefineRow(selectedCount: Int?, selectedEnergy: Int?, enabled: Boo
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
         Box(Modifier.size(44.dp).clip(remember { MixPolygonShape(MaterialShapes.Cookie4Sided) }).background(colors.tertiaryContainer),
             contentAlignment = Alignment.Center) {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_tune_24), null, Modifier.size(22.dp), tint = colors.onTertiaryContainer)
+            Icon(vectorResource(Res.drawable.rounded_tune_24), null, Modifier.size(22.dp), tint = colors.onTertiaryContainer)
         }
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(stringResource(Res.string.mix_refine), style = MaterialTheme.typography.titleSmall,
                 fontFamily = RoundedSans, fontWeight = FontWeight.Medium, color = colors.onSurface,
                 maxLines = 1, overflow = TextOverflow.Ellipsis)
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                RefineValue(ImageVector.vectorResource(R.drawable.rounded_format_list_numbered_24), length)
-                RefineValue(ImageVector.vectorResource(R.drawable.rounded_bolt_filled_24), energy)
+                RefineValue(vectorResource(Res.drawable.rounded_format_list_numbered_24), length)
+                RefineValue(vectorResource(Res.drawable.rounded_bolt_filled_24), energy)
             }
         }
-        Icon(ImageVector.vectorResource(R.drawable.rounded_chevron_right_24), null, Modifier.padding(end = 8.dp).size(22.dp), tint = colors.onSurface)
+        Icon(vectorResource(Res.drawable.rounded_chevron_right_24), null, Modifier.padding(end = 8.dp).size(22.dp), tint = colors.onSurface)
     }
 }
 
@@ -587,7 +588,7 @@ private fun MixPreviewActionBar(
                         disabledContainerColor = colors.onSecondaryContainer.copy(alpha = .06f),
                         disabledContentColor = colors.onSecondaryContainer.copy(alpha = .38f),
                     )) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_edit_filled_24), stringResource(Res.string.mix_edit_request), Modifier.size(22.dp))
+                    Icon(vectorResource(Res.drawable.rounded_edit_filled_24), stringResource(Res.string.mix_edit_request), Modifier.size(22.dp))
                 }
                 Button(onSave, enabled = saveEnabled, modifier = Modifier.weight(1f).fillMaxHeight(),
                     shape = CircleShape,
@@ -603,8 +604,8 @@ private fun MixPreviewActionBar(
                     }, label = "mix_save_icon") { stage ->
                         when (stage) {
                             0 -> LoadingIndicator(Modifier.size(18.dp), color = colors.onSecondary)
-                            1 -> Icon(ImageVector.vectorResource(R.drawable.rounded_check_24), null, Modifier.size(20.dp))
-                            else -> Icon(ImageVector.vectorResource(R.drawable.rounded_playlist_add_24), null, Modifier.size(20.dp))
+                            1 -> Icon(vectorResource(Res.drawable.rounded_check_24), null, Modifier.size(20.dp))
+                            else -> Icon(vectorResource(Res.drawable.rounded_playlist_add_24), null, Modifier.size(20.dp))
                         }
                     }
                     Spacer(Modifier.width(8.dp))
@@ -619,7 +620,7 @@ private fun MixPreviewActionBar(
                 .shadow(10.dp, fabShape, ambientColor = palette.lights[0], spotColor = palette.lights[1])
                 .semantics { contentDescription = primaryLabel },
             shape = fabShape, contentPadding = PaddingValues(0.dp)) {
-            Icon(if (isDailyMix) ImageVector.vectorResource(R.drawable.rounded_event_available_filled_24) else ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), null, Modifier.size(32.dp))
+            Icon(if (isDailyMix) vectorResource(Res.drawable.rounded_event_available_filled_24) else vectorResource(Res.drawable.rounded_play_arrow_filled_24), null, Modifier.size(32.dp))
         }
     }
 }

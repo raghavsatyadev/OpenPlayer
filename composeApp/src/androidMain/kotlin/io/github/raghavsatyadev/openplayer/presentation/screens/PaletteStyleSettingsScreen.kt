@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -74,6 +72,7 @@ import io.github.raghavsatyadev.openplayer.ui.theme.generateColorSchemeFromSeed
 import kotlin.math.roundToInt
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -300,7 +299,7 @@ private fun PaletteStyleHeader(
                 )
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                    imageVector = vectorResource(Res.drawable.rounded_close_24),
                     contentDescription = stringResource(Res.string.presentation_batch_f_cd_close)
                 )
             }

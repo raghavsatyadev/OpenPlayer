@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.brickbreaker
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.content.Context
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -66,7 +64,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
 import io.github.raghavsatyadev.openplayer.presentation.utils.performAppHapticFeedback
@@ -80,6 +77,7 @@ import kotlin.math.sqrt
 import kotlin.random.Random
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 enum class BrickType {
     Normal,
@@ -501,7 +499,7 @@ fun BrickBreakerOverlay(
             ) {
                  Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_star_filled_24),
+                        vectorResource(Res.drawable.rounded_star_filled_24),
                         contentDescription = null,
                         tint = colorScheme.primary,
                         modifier = Modifier.size(20.dp)
@@ -540,7 +538,7 @@ fun BrickBreakerOverlay(
                         modifier = Modifier.size(32.dp)
                     ) {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_close_24),
+                            vectorResource(Res.drawable.rounded_close_24),
                             contentDescription = stringResource(Res.string.presentation_batch_g_brick_cd_close),
                             modifier = Modifier.size(18.dp)
                         )
@@ -689,7 +687,7 @@ fun BrickBreakerOverlay(
                             } else {
                                 stringResource(Res.string.presentation_batch_g_brick_try_again)
                             }
-                            val icon = if (hasWon) ImageVector.vectorResource(R.drawable.rounded_star_filled_24) else ImageVector.vectorResource(R.drawable.rounded_refresh_24)
+                            val icon = if (hasWon) vectorResource(Res.drawable.rounded_star_filled_24) else vectorResource(Res.drawable.rounded_refresh_24)
 
                             Icon(
                                 imageVector = icon,
@@ -778,7 +776,7 @@ fun BrickBreakerOverlay(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_shuffle_24),
+                            imageVector = vectorResource(Res.drawable.rounded_shuffle_24),
                             contentDescription = null,
                             tint = colorScheme.onPrimaryContainer
                         )
@@ -808,7 +806,7 @@ private fun GameStat(label: String, value: String, isLives: Boolean = false) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (isLives) {
                 Icon(
-                    ImageVector.vectorResource(R.drawable.rounded_favorite_filled_24),
+                    vectorResource(Res.drawable.rounded_favorite_filled_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(16.dp)
@@ -846,7 +844,7 @@ private fun PreLaunchMenu(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_star_filled_24),
+                imageVector = vectorResource(Res.drawable.rounded_star_filled_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(28.dp)

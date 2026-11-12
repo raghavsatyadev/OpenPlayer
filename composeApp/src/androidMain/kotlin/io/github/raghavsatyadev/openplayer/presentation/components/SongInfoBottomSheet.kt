@@ -2,7 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -46,7 +45,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -75,6 +73,8 @@ import io.github.raghavsatyadev.openplayer.utils.AudioMetaUtils
 import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -375,7 +375,7 @@ fun SongInfoBottomSheet(
                                 ) {
                                     Icon(
                                         modifier = Modifier.padding(horizontal = 8.dp),
-                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
+                                        imageVector = vectorResource(Res.drawable.rounded_edit_filled_24),
                                         contentDescription = stringResource(Res.string.cd_edit_song_metadata)
                                     )
                                 }
@@ -430,7 +430,7 @@ fun SongInfoBottomSheet(
                                                     elevation = FloatingActionButtonDefaults.elevation(0.dp),
                                                     shape = playButtonShape,
                                                     icon = {
-                                                        Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_song_action))
+                                                        Icon(vectorResource(Res.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_song_action))
                                                     },
                                                     text = {
                                                         Text(
@@ -453,7 +453,7 @@ fun SongInfoBottomSheet(
                                                 ) {
                                                     Icon(
                                                         modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize),
-                                                        imageVector = if (isFavorite) ImageVector.vectorResource(R.drawable.rounded_favorite_filled_24) else ImageVector.vectorResource(R.drawable.rounded_favorite_24),
+                                                        imageVector = if (isFavorite) vectorResource(Res.drawable.rounded_favorite_filled_24) else vectorResource(Res.drawable.rounded_favorite_24),
                                                         contentDescription = stringResource(
                                                             if (isFavorite) R.string.cd_remove_from_favorites else R.string.cd_add_to_favorites
                                                         )
@@ -489,7 +489,7 @@ fun SongInfoBottomSheet(
                                                 ) {
                                                     Icon(
                                                         modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize),
-                                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_share_filled_24),
+                                                        imageVector = vectorResource(Res.drawable.rounded_share_filled_24),
                                                         contentDescription = stringResource(Res.string.cd_share_song_file)
                                                     )
                                                 }
@@ -516,7 +516,7 @@ fun SongInfoBottomSheet(
                                                     onClick = onAddToQueue
                                                 ) {
                                                     Icon(
-                                                        ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
+                                                        vectorResource(Res.drawable.rounded_queue_music_24),
                                                         contentDescription = stringResource(Res.string.cd_add_to_queue)
                                                     )
                                                     Spacer(Modifier.width(14.dp))
@@ -535,7 +535,7 @@ fun SongInfoBottomSheet(
                                                     onClick = onAddNextToQueue
                                                 ) {
                                                     Icon(
-                                                        ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
+                                                        vectorResource(Res.drawable.rounded_queue_music_24),
                                                         contentDescription = stringResource(Res.string.cd_play_next_in_queue)
                                                     )
                                                     Spacer(Modifier.width(8.dp))
@@ -564,7 +564,7 @@ fun SongInfoBottomSheet(
                                                     onClick = onAddToPlayList
                                                 ) {
                                                     Icon(
-                                                        ImageVector.vectorResource(R.drawable.rounded_playlist_add_24),
+                                                        vectorResource(Res.drawable.rounded_playlist_add_24),
                                                         contentDescription = stringResource(Res.string.cd_add_to_playlist)
                                                     )
                                                     Spacer(Modifier.width(8.dp))
@@ -608,8 +608,8 @@ fun SongInfoBottomSheet(
                                                 ) {
                                                     Icon(
                                                         when (offlineDownload?.status) {
-                                                            OfflineDownloadStatus.COMPLETE -> ImageVector.vectorResource(R.drawable.rounded_cloud_done_filled_24)
-                                                            else -> if (isCloudSong) ImageVector.vectorResource(R.drawable.rounded_cloud_download_filled_24) else ImageVector.vectorResource(R.drawable.rounded_delete_forever_filled_24)
+                                                            OfflineDownloadStatus.COMPLETE -> vectorResource(Res.drawable.rounded_cloud_done_filled_24)
+                                                            else -> if (isCloudSong) vectorResource(Res.drawable.rounded_cloud_download_filled_24) else vectorResource(Res.drawable.rounded_delete_forever_filled_24)
                                                         },
                                                         contentDescription = stringResource(
                                                             if (isCloudSong) R.string.cloud_download_action else R.string.delete_action
@@ -658,7 +658,7 @@ fun SongInfoBottomSheet(
                                                 onClick = { songInfoViewModel.searchMusicBrainz(song) }
                                             ) {
                                                 Icon(
-                                                    ImageVector.vectorResource(R.drawable.rounded_travel_explore_24),
+                                                    vectorResource(Res.drawable.rounded_travel_explore_24),
                                                     contentDescription = stringResource(Res.string.musicbrainz_lookup)
                                                 )
                                                 Spacer(Modifier.width(10.dp))
@@ -692,7 +692,7 @@ fun SongInfoBottomSheet(
                                                 SongInfoSegmentedListItem(
                                                     headline = stringResource(Res.string.song_info_label_duration),
                                                     supporting = formatDuration(song.duration),
-                                                    icon = ImageVector.vectorResource(R.drawable.rounded_schedule_filled_24),
+                                                    icon = vectorResource(Res.drawable.rounded_schedule_filled_24),
                                                     iconDescription = stringResource(Res.string.cd_duration_icon),
                                                     shape = infoSegmentItemShape,
                                                 )
@@ -701,7 +701,7 @@ fun SongInfoBottomSheet(
                                                     SongInfoSegmentedListItem(
                                                         headline = stringResource(Res.string.song_field_genre),
                                                         supporting = song.genre,
-                                                        icon = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                                                        icon = vectorResource(Res.drawable.rounded_music_note_24),
                                                         iconDescription = stringResource(Res.string.cd_genre_icon),
                                                         shape = infoSegmentItemShape,
                                                         onClick = onNavigateToGenre,
@@ -711,7 +711,7 @@ fun SongInfoBottomSheet(
                                                 SongInfoSegmentedListItem(
                                                     headline = stringResource(Res.string.song_field_album),
                                                     supporting = song.album,
-                                                    icon = ImageVector.vectorResource(R.drawable.rounded_album_filled_24),
+                                                    icon = vectorResource(Res.drawable.rounded_album_filled_24),
                                                     iconDescription = stringResource(Res.string.cd_album_icon),
                                                     shape = infoSegmentItemShape,
                                                     onClick = onNavigateToAlbum,
@@ -720,7 +720,7 @@ fun SongInfoBottomSheet(
                                                 SongInfoSegmentedListItem(
                                                     headline = stringResource(Res.string.song_field_artist),
                                                     supporting = song.displayArtist,
-                                                    icon = ImageVector.vectorResource(R.drawable.rounded_person_filled_24),
+                                                    icon = vectorResource(Res.drawable.rounded_person_filled_24),
                                                     iconDescription = stringResource(Res.string.cd_artist_icon),
                                                     shape = infoSegmentItemShape,
                                                     onClick = {
@@ -736,7 +736,7 @@ fun SongInfoBottomSheet(
                                                     SongInfoSegmentedListItem(
                                                         headline = stringResource(Res.string.song_info_label_song_metadata),
                                                         supporting = audioMetaLabel,
-                                                        icon = ImageVector.vectorResource(R.drawable.rounded_info_filled_24),
+                                                        icon = vectorResource(Res.drawable.rounded_info_filled_24),
                                                         iconDescription = stringResource(Res.string.cd_audio_format_icon),
                                                         shape = infoSegmentItemShape,
                                                     )
@@ -745,7 +745,7 @@ fun SongInfoBottomSheet(
                                                 SongInfoSegmentedListItem(
                                                     headline = stringResource(songLocationInfo.labelRes),
                                                     supporting = songLocationInfo.value,
-                                                    icon = if (songLocationInfo.isCloud) ImageVector.vectorResource(R.drawable.rounded_cloud_filled_24) else ImageVector.vectorResource(R.drawable.rounded_audio_file_filled_24),
+                                                    icon = if (songLocationInfo.isCloud) vectorResource(Res.drawable.rounded_cloud_filled_24) else vectorResource(Res.drawable.rounded_audio_file_filled_24),
                                                     iconDescription = stringResource(
                                                         if (songLocationInfo.isCloud) {
                                                             R.string.cd_provider_icon
@@ -794,7 +794,7 @@ fun SongInfoBottomSheet(
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                ImageVector.vectorResource(R.drawable.rounded_menu_24),
+                                vectorResource(Res.drawable.rounded_menu_24),
                                 contentDescription = stringResource(Res.string.cd_options),
                                 modifier = Modifier.padding(horizontal = 4.dp)
                             )
@@ -820,7 +820,7 @@ fun SongInfoBottomSheet(
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                ImageVector.vectorResource(R.drawable.rounded_info_filled_24),
+                                vectorResource(Res.drawable.rounded_info_filled_24),
                                 contentDescription = stringResource(Res.string.cd_details_tab),
                                 modifier = Modifier.padding(horizontal = 4.dp)
                             )
@@ -1168,25 +1168,25 @@ private fun ToneDialogIcon(
     ) {
         when (target) {
             ToneTarget.Ringtone -> Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                imageVector = vectorResource(Res.drawable.rounded_music_note_24),
                 contentDescription = null,
                 modifier = iconModifier,
                 tint = MaterialTheme.colorScheme.onSecondaryContainer,
             )
             ToneTarget.Notification -> Icon(
-                painter = painterResource(R.drawable.rounded_notifications_active_24),
+                painter = painterResource(Res.drawable.rounded_notifications_active_24),
                 contentDescription = null,
                 modifier = iconModifier,
                 tint = MaterialTheme.colorScheme.onSecondaryContainer,
             )
             ToneTarget.Alarm -> Icon(
-                painter = painterResource(R.drawable.rounded_alarm_24),
+                painter = painterResource(Res.drawable.rounded_alarm_24),
                 contentDescription = null,
                 modifier = iconModifier,
                 tint = MaterialTheme.colorScheme.onSecondaryContainer,
             )
             null -> Icon(
-                painter = painterResource(R.drawable.rounded_notifications_active_24),
+                painter = painterResource(Res.drawable.rounded_notifications_active_24),
                 contentDescription = null,
                 modifier = iconModifier,
                 tint = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -1217,7 +1217,7 @@ private fun RingtoneActionButton(
         ) {
             Icon(
                 modifier = Modifier.size(if (compactText) 20.dp else 24.dp),
-                painter = painterResource(R.drawable.rounded_notifications_active_24),
+                painter = painterResource(Res.drawable.rounded_notifications_active_24),
                 contentDescription = stringResource(Res.string.cd_choose_song_tone),
             )
             Spacer(Modifier.width(if (compactText) 6.dp else 8.dp))
@@ -1241,7 +1241,7 @@ private fun RingtoneActionButton(
         ) {
             Icon(
                 modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize),
-                painter = painterResource(R.drawable.rounded_notifications_active_24),
+                painter = painterResource(Res.drawable.rounded_notifications_active_24),
                 contentDescription = stringResource(Res.string.cd_choose_song_tone),
             )
         }

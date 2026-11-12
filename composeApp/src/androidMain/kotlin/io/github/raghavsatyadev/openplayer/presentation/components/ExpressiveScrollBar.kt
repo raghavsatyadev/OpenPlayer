@@ -1,8 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.Animatable
@@ -47,6 +44,8 @@ import io.github.raghavsatyadev.openplayer.ui.theme.LocalShowScrollbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlin.math.abs
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.vectorResource
 
 private data class ScrollMetrics(
     val progress: Float,
@@ -273,7 +272,7 @@ fun ExpressiveScrollBar(
 
         val primaryColor = MaterialTheme.colorScheme.primary
         val surfaceVariantColor = MaterialTheme.colorScheme.secondaryContainer
-        val innerIcon = ImageVector.vectorResource(R.drawable.rounded_unfold_more_24)
+        val innerIcon = vectorResource(Res.drawable.rounded_unfold_more_24)
         val indicatorRightCornerRadiusPx = with(LocalDensity.current) { indicatorRightCornerRadius.toPx() }
 
         val isInteracting = isPressed || isDragging

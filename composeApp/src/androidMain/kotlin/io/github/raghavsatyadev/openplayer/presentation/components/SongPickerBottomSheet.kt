@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.annotation.OptIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -93,6 +91,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(UnstableApi::class)
 @ExperimentalMaterial3Api
@@ -199,13 +199,13 @@ fun SongPickerContent(
                                 ) {
                                     if (filter == StorageFilter.OFFLINE) {
                                         Icon(
-                                            painter = painterResource(R.drawable.ic_phonef),
+                                            painter = painterResource(Res.drawable.ic_phonef),
                                             contentDescription = null,
                                             modifier = Modifier.size(18.dp)
                                         )
                                     } else {
                                         Icon(
-                                            imageVector = ImageVector.vectorResource(R.drawable.rounded_cloud_filled_24),
+                                            imageVector = vectorResource(Res.drawable.rounded_cloud_filled_24),
                                             contentDescription = null,
                                             modifier = Modifier.size(18.dp)
                                         )
@@ -232,7 +232,7 @@ fun SongPickerContent(
                         )
                     ) {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_check_24),
+                            vectorResource(Res.drawable.rounded_check_24),
                             contentDescription = stringResource(Res.string.cd_confirm_add_songs),
                             modifier = Modifier.size(28.dp)
                         )
@@ -253,7 +253,7 @@ fun SongPickerContent(
                         contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                     ) {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_check_24),
+                            vectorResource(Res.drawable.rounded_check_24),
                             contentDescription = null,
                             modifier = Modifier.size(28.dp)
                         )
@@ -454,12 +454,12 @@ private fun SongPickerSearchField(
         shape = CircleShape,
         singleLine = true,
         leadingIcon = {
-            Icon(ImageVector.vectorResource(R.drawable.rounded_search_24), contentDescription = null)
+            Icon(vectorResource(Res.drawable.rounded_search_24), contentDescription = null)
         },
         trailingIcon = {
             if (searchQuery.isNotEmpty()) {
                 IconButton(onClick = { onSearchQueryChange("") }) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), null)
+                    Icon(vectorResource(Res.drawable.rounded_close_24), null)
                 }
             }
         }
@@ -817,7 +817,7 @@ fun SongPickerList(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.rounded_search_24),
+                            painter = painterResource(Res.drawable.rounded_search_24),
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
                             tint = MaterialTheme.colorScheme.onSecondaryContainer

@@ -85,7 +85,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.ExpressiveTopBarContent
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
@@ -103,6 +102,7 @@ import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.data.preferences.LaunchTab
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -276,7 +276,7 @@ fun SettingsScreen(
                             .padding(horizontal = 20.dp)
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_search_24),
+                            imageVector = vectorResource(Res.drawable.rounded_search_24),
                             contentDescription = stringResource(Res.string.search),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(24.dp)
@@ -363,7 +363,7 @@ fun SettingsScreen(
                                 searchFieldValue = TextFieldValue("")
                             }) {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_arrow_back_24),
                                     contentDescription = stringResource(Res.string.auth_cd_back),
                                     tint = MaterialTheme.colorScheme.onSurface
                                 )
@@ -394,7 +394,7 @@ fun SettingsScreen(
                             if (searchQuery.isNotEmpty()) {
                                 IconButton(onClick = { searchFieldValue = TextFieldValue("") }) {
                                     Icon(
-                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                                        imageVector = vectorResource(Res.drawable.rounded_close_24),
                                         contentDescription = stringResource(Res.string.cd_clear_search_query),
                                         tint = MaterialTheme.colorScheme.onSurface
                                     )

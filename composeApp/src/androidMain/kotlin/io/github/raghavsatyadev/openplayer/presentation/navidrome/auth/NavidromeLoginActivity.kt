@@ -70,7 +70,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.navidrome.model.NavidromeCredentials
 import io.github.raghavsatyadev.openplayer.presentation.components.CloudLibraryPickerItem
@@ -81,6 +80,7 @@ import kotlinx.collections.immutable.toImmutableList
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 class NavidromeLoginActivity : ComponentActivity() {
 
     override fun attachBaseContext(newBase: android.content.Context) {
@@ -215,7 +215,7 @@ fun NavidromeLoginScreen(
                         )
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                            imageVector = vectorResource(Res.drawable.rounded_arrow_back_24),
                             contentDescription = stringResource(Res.string.auth_cd_back)
                         )
                     }
@@ -251,7 +251,7 @@ fun NavidromeLoginScreen(
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
-                            imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = R.drawable.ic_navidrome),
+                            imageVector = vectorResource(Res.drawable.ic_navidrome),
                             contentDescription = stringResource(Res.string.cd_navidrome_logo),
                             tint = androidx.compose.ui.graphics.Color.Unspecified,
                             modifier = Modifier.size(42.dp)
@@ -270,7 +270,7 @@ fun NavidromeLoginScreen(
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
-                            imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = R.drawable.ic_subsonic),
+                            imageVector = vectorResource(Res.drawable.ic_subsonic),
                             contentDescription = stringResource(Res.string.cd_subsonic_logo),
                             tint = androidx.compose.ui.graphics.Color.Unspecified,
                             modifier = Modifier.size(42.dp)
@@ -349,7 +349,7 @@ fun NavidromeLoginScreen(
                         label = stringResource(Res.string.auth_server_url),
                         placeholder = stringResource(Res.string.auth_navidrome_server_placeholder),
                         supportingText = stringResource(Res.string.auth_navidrome_server_url_hint),
-                        leadingIcon = ImageVector.vectorResource(R.drawable.rounded_cloud_queue_filled_24),
+                        leadingIcon = vectorResource(Res.drawable.rounded_cloud_queue_filled_24),
                         enabled = !isLoading,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Uri,
@@ -369,7 +369,7 @@ fun NavidromeLoginScreen(
                         label = stringResource(Res.string.auth_username),
                         placeholder = stringResource(Res.string.auth_username_placeholder_admin),
                         supportingText = stringResource(Res.string.auth_navidrome_username_hint),
-                        leadingIcon = ImageVector.vectorResource(R.drawable.rounded_person_filled_24),
+                        leadingIcon = vectorResource(Res.drawable.rounded_person_filled_24),
                         enabled = !isLoading,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
@@ -389,7 +389,7 @@ fun NavidromeLoginScreen(
                         label = stringResource(Res.string.auth_password),
                         placeholder = stringResource(Res.string.auth_password_placeholder),
                         supportingText = stringResource(Res.string.auth_navidrome_password_hint),
-                        leadingIcon = ImageVector.vectorResource(R.drawable.rounded_lock_filled_24),
+                        leadingIcon = vectorResource(Res.drawable.rounded_lock_filled_24),
                         enabled = !isLoading,
                         visualTransformation = if (passwordVisible) {
                             VisualTransformation.None
@@ -413,7 +413,7 @@ fun NavidromeLoginScreen(
                                 enabled = !isLoading
                             ) {
                                 Icon(
-                                    imageVector = if (passwordVisible) ImageVector.vectorResource(R.drawable.rounded_visibility_off_filled_24) else ImageVector.vectorResource(R.drawable.rounded_visibility_filled_24),
+                                    imageVector = if (passwordVisible) vectorResource(Res.drawable.rounded_visibility_off_filled_24) else vectorResource(Res.drawable.rounded_visibility_filled_24),
                                     contentDescription = stringResource(
                                         if (passwordVisible) R.string.auth_hide_password else R.string.auth_show_password
                                     )

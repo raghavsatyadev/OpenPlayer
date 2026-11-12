@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
 import androidx.compose.foundation.background
@@ -48,7 +46,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import io.github.raghavsatyadev.openplayer.utils.traceSection
 import androidx.compose.foundation.layout.WindowInsets
@@ -91,6 +88,8 @@ import kotlinx.collections.immutable.persistentListOf
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -267,7 +266,7 @@ fun DailyMixScreen(
                                 bottomEnd = 14.dp
                             )
                         ) {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play), modifier = Modifier.size(
+                            Icon(vectorResource(Res.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play), modifier = Modifier.size(
                                 ButtonDefaults.IconSize))
                             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                             Text(playItLabel)
@@ -293,7 +292,7 @@ fun DailyMixScreen(
                                 bottomEnd = 60.dp
                             )
                         ) {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_shuffle_24), contentDescription = shuffleLabel, modifier = Modifier.size(
+                            Icon(vectorResource(Res.drawable.rounded_shuffle_24), contentDescription = shuffleLabel, modifier = Modifier.size(
                                 ButtonDefaults.IconSize))
                             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                             Text(shuffleLabel)
@@ -335,7 +334,7 @@ fun DailyMixScreen(
                 .clip(CircleShape)
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                imageVector = vectorResource(Res.drawable.rounded_arrow_back_24),
                 contentDescription = stringResource(Res.string.auth_cd_back)
             )
         }
@@ -531,7 +530,7 @@ private fun ExpressiveDailyMixHeader(
             ) {
                 Icon(
                     modifier = Modifier.size(20.dp),
-                    painter = painterResource(R.drawable.ic_smart_mix),
+                    painter = painterResource(Res.drawable.ic_smart_mix),
                     contentDescription = stringResource(Res.string.mix_tune_today)
                 )
             }

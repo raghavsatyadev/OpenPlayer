@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.subcomps
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -61,10 +59,10 @@ import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.AutoScrollingText
 import io.github.raghavsatyadev.openplayer.presentation.components.ShimmerBox
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Immutable
 private data class EnhancedSongAnimationTarget(
@@ -363,7 +361,7 @@ fun EnhancedSongListItem(
                                     )
                                 } else {
                                     Icon(
-                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+                                        imageVector = vectorResource(Res.drawable.rounded_check_circle_filled_24),
                                         contentDescription = stringResource(Res.string.presentation_batch_g_list_cd_selected),
                                         tint = selectionOverlayContentColor,
                                         modifier = Modifier.size(28.dp)
@@ -437,7 +435,7 @@ fun EnhancedSongListItem(
                             .padding(end = 4.dp)
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_more_vert_24),
+                            imageVector = vectorResource(Res.drawable.rounded_more_vert_24),
                             contentDescription = stringResource(Res.string.presentation_batch_g_list_cd_more_for_title, song.title),
                             modifier = Modifier.size(24.dp)
                         )

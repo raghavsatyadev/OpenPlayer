@@ -34,16 +34,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartMatchMode
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartSortField
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * The rule playlist editor with all its state passed in: name, match mode, condition rows
@@ -127,7 +125,7 @@ fun SmartRuleEditorContent(
                     onClick = { onStateChange(state.addCondition()) },
                     modifier = Modifier.animateItem(),
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_add_24), contentDescription = null)
+                    Icon(vectorResource(Res.drawable.rounded_add_24), contentDescription = null)
                     Text(
                         text = stringResource(Res.string.smart_rules_add_condition),
                         modifier = Modifier.padding(start = 8.dp),
@@ -175,7 +173,7 @@ private fun SortAndLimit(
                 )
                 IconButton(onClick = { onStateChange(state.toggleSortDirection()) }) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_downward_24),
+                        imageVector = vectorResource(Res.drawable.rounded_arrow_downward_24),
                         contentDescription = stringResource(Res.string.smart_rules_sort_direction),
                         modifier = Modifier.rotate(rotation),
                     )

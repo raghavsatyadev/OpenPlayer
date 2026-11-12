@@ -1,5 +1,3 @@
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -80,6 +78,7 @@ import kotlin.math.roundToInt
 import androidx.compose.ui.text.style.TextOverflow
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -313,7 +312,7 @@ fun DelimiterConfigScreen(
                                 modifier = Modifier.size(48.dp)
                             ) {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_add_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_add_24),
                                     contentDescription = stringResource(Res.string.cd_add_path_delimiter)
                                 )
                             }
@@ -374,7 +373,7 @@ fun DelimiterConfigScreen(
                         shape = androidx.compose.foundation.shape.CircleShape
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_restart_alt_24),
+                            imageVector = vectorResource(Res.drawable.rounded_restart_alt_24),
                             contentDescription = stringResource(Res.string.cd_reset_defaults),
                             modifier = Modifier.size(20.dp)
                         )
@@ -402,7 +401,7 @@ fun DelimiterConfigScreen(
                 },
                 icon = {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_restart_alt_24),
+                        imageVector = vectorResource(Res.drawable.rounded_restart_alt_24),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.error
                     )
@@ -456,7 +455,7 @@ private fun DelimiterChip(
         trailingIcon = if (canRemove) {
             {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                    imageVector = vectorResource(Res.drawable.rounded_close_24),
                     contentDescription = stringResource(Res.string.cd_remove),
                     modifier = Modifier.size(18.dp)
                 )

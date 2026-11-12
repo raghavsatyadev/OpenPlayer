@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.graphics.vector.ImageVector
 import android.app.Activity
 import androidx.compose.animation.animateContentSize
@@ -51,12 +50,12 @@ import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.Tigh
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.utils.resolvePlaylistCoverContentColor
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-import io.github.raghavsatyadev.openplayer.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import androidx.compose.runtime.remember
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * Bottom sheet for batch operations on multiple selected playlists.
@@ -178,7 +177,7 @@ fun PlaylistMultiSelectionBottomSheet(
                                 }
                             ) {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
+                                    vectorResource(Res.drawable.rounded_delete_filled_24),
                                     contentDescription = stringResource(Res.string.cd_delete_all_songs)
                                 )
                                 Spacer(Modifier.width(6.dp))
@@ -207,7 +206,7 @@ fun PlaylistMultiSelectionBottomSheet(
                                 }
                             ) {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_file_download_24),
+                                    vectorResource(Res.drawable.rounded_file_download_24),
                                     contentDescription = stringResource(Res.string.cd_export_all)
                                 )
                                 Spacer(Modifier.width(6.dp))
@@ -246,7 +245,7 @@ fun PlaylistMultiSelectionBottomSheet(
                                 }
                             ) {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_merge_24),
+                                    vectorResource(Res.drawable.rounded_merge_24),
                                     contentDescription = stringResource(Res.string.cd_merge_all)
                                 )
                                 Spacer(Modifier.width(6.dp))
@@ -275,7 +274,7 @@ fun PlaylistMultiSelectionBottomSheet(
                                 }
                             ) {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_share_filled_24),
+                                    vectorResource(Res.drawable.rounded_share_filled_24),
                                     contentDescription = stringResource(Res.string.cd_share_all)
                                 )
                                 Spacer(Modifier.width(6.dp))
@@ -351,7 +350,7 @@ private fun StackedPlaylistCovers(
                             
                             if (playlist.coverIconName != null) {
                                 Icon(
-                                    imageVector = getPlaylistIconByName(playlist.coverIconName) ?: ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                                    imageVector = getPlaylistIconByName(playlist.coverIconName) ?: vectorResource(Res.drawable.rounded_music_note_24),
                                     contentDescription = null,
                                     tint = contentColor,
                                     modifier = Modifier.size(24.dp)
@@ -389,14 +388,14 @@ private fun StackedPlaylistCovers(
 @Composable
 private fun getPlaylistIconByName(name: String?): androidx.compose.ui.graphics.vector.ImageVector? {
     return when (name) {
-        "MusicNote" -> ImageVector.vectorResource(R.drawable.rounded_music_note_24)
-        "Headphones" -> ImageVector.vectorResource(R.drawable.rounded_headphones_filled_24)
-        "Album" -> ImageVector.vectorResource(R.drawable.rounded_album_filled_24)
-        "Mic" -> ImageVector.vectorResource(R.drawable.rounded_mic_external_on_filled_24)
-        "Speaker" -> ImageVector.vectorResource(R.drawable.rounded_speaker_filled_24)
-        "Favorite" -> ImageVector.vectorResource(R.drawable.rounded_favorite_filled_24)
-        "Piano" -> ImageVector.vectorResource(R.drawable.rounded_piano_24)
-        "Queue" -> ImageVector.vectorResource(R.drawable.rounded_queue_music_24)
-        else -> ImageVector.vectorResource(R.drawable.rounded_music_note_24)
+        "MusicNote" -> vectorResource(Res.drawable.rounded_music_note_24)
+        "Headphones" -> vectorResource(Res.drawable.rounded_headphones_filled_24)
+        "Album" -> vectorResource(Res.drawable.rounded_album_filled_24)
+        "Mic" -> vectorResource(Res.drawable.rounded_mic_external_on_filled_24)
+        "Speaker" -> vectorResource(Res.drawable.rounded_speaker_filled_24)
+        "Favorite" -> vectorResource(Res.drawable.rounded_favorite_filled_24)
+        "Piano" -> vectorResource(Res.drawable.rounded_piano_24)
+        "Queue" -> vectorResource(Res.drawable.rounded_queue_music_24)
+        else -> vectorResource(Res.drawable.rounded_music_note_24)
     }
 }

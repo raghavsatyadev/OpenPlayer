@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 
@@ -60,7 +58,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -125,6 +122,8 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 private const val HomeLoadingPlaceholderMinDurationMillis = 1200L
 private const val HomeScrollRestoreGraceMillis = 1_500L
@@ -703,7 +702,7 @@ private fun YourMixEmptyPlaceholder(
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                        imageVector = vectorResource(Res.drawable.rounded_music_note_24),
                         contentDescription = null,
                         modifier = Modifier.size(34.dp)
                     )
@@ -743,7 +742,7 @@ private fun YourMixEmptyPlaceholder(
                 )
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_refresh_24),
+                    imageVector = vectorResource(Res.drawable.rounded_refresh_24),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
@@ -810,7 +809,7 @@ fun YourMixHeader(
             )
         ) {
             Icon(
-                painter = painterResource(R.drawable.rounded_shuffle_24),
+                painter = painterResource(Res.drawable.rounded_shuffle_24),
                 contentDescription = stringResource(Res.string.cd_shuffle_play),
                 modifier = Modifier.size(36.dp)
             )

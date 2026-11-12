@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,17 +15,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.jellyfin.auth.JellyfinLoginActivity
 import io.github.raghavsatyadev.openplayer.presentation.navidrome.auth.NavidromeLoginActivity
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * Bottom sheet that lets the user choose between streaming providers.
@@ -98,7 +96,7 @@ fun StreamingProviderSheet(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     ProviderRow(
-                        iconPainter = painterResource(R.drawable.ic_navidrome_md3),
+                        iconPainter = painterResource(Res.drawable.ic_navidrome_md3),
                         iconTint = Color(0xFFE8A54B),
                         title = "Subsonic",
                         subtitle = if (isNavidromeLoggedIn) "Connected · Navidrome/Airsonic" else "Connect Navidrome & others",
@@ -115,7 +113,7 @@ fun StreamingProviderSheet(
                     )
 
                     ProviderRow(
-                        iconPainter = painterResource(R.drawable.ic_jellyfin),
+                        iconPainter = painterResource(Res.drawable.ic_jellyfin),
                         iconTint = Color(0xFF00A4DC),
                         title = "Jellyfin",
                         subtitle = if (isJellyfinLoggedIn) "Connected" else "Connect your Jellyfin server",
@@ -228,7 +226,7 @@ private fun ProviderRow(
                     color = arrowContainerColor
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_keyboard_arrow_right_mirrored_24),
+                        imageVector = vectorResource(Res.drawable.rounded_keyboard_arrow_right_mirrored_24),
                         contentDescription = null,
                         modifier = Modifier
                             .padding(horizontal = 6.dp, vertical = 6.dp)

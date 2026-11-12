@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -68,6 +66,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * The stored order *is* the list of visible tabs, so every known tab missing from it is hidden.
@@ -254,7 +254,7 @@ fun ReorderTabsSheet(
                                             )
                                         ) {
                                             Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_drag_indicator_24),
+                                                imageVector = vectorResource(Res.drawable.rounded_drag_indicator_24),
                                                 contentDescription = stringResource(Res.string.cd_drag_handle)
                                             )
                                         }
@@ -371,7 +371,7 @@ private fun VisibleTabRow(
                     disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .38f)
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_remove_24), stringResource(Res.string.reorder_tabs_hide_action))
+                Icon(vectorResource(Res.drawable.rounded_remove_24), stringResource(Res.string.reorder_tabs_hide_action))
             }
         }
     }
@@ -421,7 +421,7 @@ private fun HiddenTabRow(
                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_add_24), stringResource(Res.string.reorder_tabs_show_action))
+                Icon(vectorResource(Res.drawable.rounded_add_24), stringResource(Res.string.reorder_tabs_show_action))
             }
         }
     }
@@ -476,7 +476,7 @@ fun FloatingToolBar(
                 onClick = onReset
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.outline_restart_alt_24),
+                    painter = painterResource(Res.drawable.outline_restart_alt_24),
                     contentDescription = stringResource(Res.string.cd_reset),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -487,7 +487,7 @@ fun FloatingToolBar(
                     .align(Alignment.CenterVertically),
                 shape = CircleShape,
                 onClick = onClick,
-                icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_check_24), contentDescription = stringResource(Res.string.action_done)) },
+                icon = { Icon(vectorResource(Res.drawable.rounded_check_24), contentDescription = stringResource(Res.string.action_done)) },
                 text = { Text(stringResource(Res.string.action_done)) }
             )
         }

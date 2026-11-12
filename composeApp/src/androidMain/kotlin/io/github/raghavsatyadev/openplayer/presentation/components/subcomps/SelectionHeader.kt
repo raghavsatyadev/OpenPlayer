@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.subcomps
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
@@ -48,13 +46,13 @@ import androidx.compose.ui.zIndex
 import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import androidx.compose.runtime.remember
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * Header component displayed during multi-selection mode.
@@ -136,7 +134,7 @@ fun SelectionHeader(
                 modifier = Modifier.size(48.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_share_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_share_filled_24),
                     contentDescription = stringResource(Res.string.presentation_batch_g_selection_cd_share),
                     modifier = Modifier.size(22.dp)
                 )
@@ -151,7 +149,7 @@ fun SelectionHeader(
                 modifier = Modifier.size(48.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_favorite_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_favorite_filled_24),
                     contentDescription = stringResource(Res.string.presentation_batch_g_selection_cd_like),
                     modifier = Modifier.size(22.dp)
                 )
@@ -164,7 +162,7 @@ fun SelectionHeader(
                 modifier = Modifier.height(48.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_play_arrow_filled_24),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )

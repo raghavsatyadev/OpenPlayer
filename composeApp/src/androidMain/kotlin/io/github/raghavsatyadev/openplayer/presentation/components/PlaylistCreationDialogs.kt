@@ -6,8 +6,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
@@ -79,10 +77,10 @@ import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlin.math.max
 import kotlin.math.min
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-import androidx.compose.ui.res.painterResource
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun PlaylistCreationTypeDialog(
@@ -147,7 +145,7 @@ fun PlaylistCreationTypeDialog(
                     subtitle = stringResource(Res.string.presentation_batch_e_creation_mode_manual_subtitle),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_playlist_add_24),
+                            imageVector = vectorResource(Res.drawable.rounded_playlist_add_24),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -164,7 +162,7 @@ fun PlaylistCreationTypeDialog(
                     subtitle = stringResource(Res.string.mix_library_subtitle),
                     icon = {
                         Icon(
-                            painter = painterResource(R.drawable.ic_smart_mix),
+                            painter = painterResource(Res.drawable.ic_smart_mix),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onTertiaryContainer
                         )
@@ -181,7 +179,7 @@ fun PlaylistCreationTypeDialog(
                         subtitle = stringResource(Res.string.smart_rules_create_subtitle),
                         icon = {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_tune_24),
+                                imageVector = vectorResource(Res.drawable.rounded_tune_24),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSecondaryContainer
                             )

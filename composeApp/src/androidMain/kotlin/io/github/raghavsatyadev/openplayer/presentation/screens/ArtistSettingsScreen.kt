@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
 import androidx.compose.animation.AnimatedVisibility
@@ -77,7 +75,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.ExpressiveTopBarContent
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.LocalSettingsHighlightTarget
@@ -90,6 +87,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 // LazyColumn indices of the sections below that settings search can point into.
 private const val ARTIST_SETTINGS_LIBRARY_ORG_ITEM_INDEX = 2
@@ -209,7 +207,7 @@ fun ArtistSettingsScreen(
                     title = stringResource(Res.string.presentation_batch_g_artist_section_multi_parsing),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_person_24),
+                            imageVector = vectorResource(Res.drawable.rounded_person_24),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )
@@ -226,14 +224,14 @@ fun ArtistSettingsScreen(
                             ),
                             leadingIcon = {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_settings_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_settings_24),
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.secondary
                                 )
                             },
                             trailingIcon = {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_chevron_right_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_chevron_right_24),
                                     contentDescription = stringResource(Res.string.presentation_batch_g_artist_cd_configure),
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -257,14 +255,14 @@ fun ArtistSettingsScreen(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_settings_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_settings_24),
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.secondary
                                 )
                             },
                             trailingIcon = {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_chevron_right_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_chevron_right_24),
                                     contentDescription = stringResource(Res.string.presentation_batch_g_artist_cd_configure),
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -282,7 +280,7 @@ fun ArtistSettingsScreen(
                             onCheckedChange = { viewModel.setExtractArtistsFromTitle(it) },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_library_music_filled_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_library_music_filled_24),
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.secondary
                                 )
@@ -298,7 +296,7 @@ fun ArtistSettingsScreen(
                     title = stringResource(Res.string.presentation_batch_g_artist_section_library_org),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_library_music_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_library_music_filled_24),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )
@@ -312,7 +310,7 @@ fun ArtistSettingsScreen(
                             onCheckedChange = { viewModel.setGroupByAlbumArtist(it) },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_album_filled_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_album_filled_24),
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.secondary
                                 )
@@ -328,7 +326,7 @@ fun ArtistSettingsScreen(
                     title = stringResource(Res.string.artist_page_settings_section),
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_view_agenda_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_view_agenda_filled_24),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )
@@ -343,7 +341,7 @@ fun ArtistSettingsScreen(
                             onCheckedChange = { viewModel.setAlbumsCollapsedByDefault(it) },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_unfold_less_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_unfold_less_24),
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.secondary
                                 )
@@ -403,7 +401,7 @@ private fun RescanRequiredBanner(
             modifier = Modifier.padding(16.dp)
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_warning_24),
+                imageVector = vectorResource(Res.drawable.rounded_warning_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier.size(24.dp)
@@ -443,7 +441,7 @@ private fun RescanRequiredBanner(
                     )
                 } else {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_refresh_24),
+                        imageVector = vectorResource(Res.drawable.rounded_refresh_24),
                         contentDescription = null,
                         modifier = Modifier.size(16.dp)
                     )
@@ -478,7 +476,7 @@ private fun InfoCard(
             modifier = Modifier.padding(16.dp)
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_info_24),
+                imageVector = vectorResource(Res.drawable.rounded_info_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.size(24.dp)
@@ -522,7 +520,7 @@ private fun ExamplesCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_lightbulb_24),
+                    imageVector = vectorResource(Res.drawable.rounded_lightbulb_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier.size(24.dp)

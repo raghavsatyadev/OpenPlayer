@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.subcomps
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
@@ -39,10 +37,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
-import io.github.raghavsatyadev.openplayer.R
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 private val buttonHeight = 44.dp
 private val segmentedOuterCornerRadius = 26.dp
@@ -118,7 +116,7 @@ fun SelectionActionRow(
                 modifier = Modifier.height(buttonHeight)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_select_all_24),
+                    imageVector = vectorResource(Res.drawable.rounded_select_all_24),
                     contentDescription = null,
                     modifier = Modifier.size(18.dp)
                 )
@@ -142,7 +140,7 @@ fun SelectionActionRow(
                 modifier = Modifier.height(buttonHeight)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_deselect_24),
+                    imageVector = vectorResource(Res.drawable.rounded_deselect_24),
                     contentDescription = null,
                     modifier = Modifier.size(18.dp)
                 )
@@ -167,7 +165,7 @@ fun SelectionActionRow(
             modifier = Modifier.height(buttonHeight).width(36.dp)
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_more_vert_24),
+                imageVector = vectorResource(Res.drawable.rounded_more_vert_24),
                 contentDescription = stringResource(Res.string.presentation_batch_g_selection_cd_more),
                 modifier = Modifier.size(20.dp)
             )
@@ -215,7 +213,7 @@ fun SelectionCountPill(
                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_check_circle_filled_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.size(18.dp)

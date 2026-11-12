@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,7 +43,6 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -79,6 +76,8 @@ import java.util.Locale
 import androidx.compose.ui.text.style.TextOverflow
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 private fun formatReplayGainForInput(gainDb: Float?): String {
     return gainDb?.let { String.format(Locale.US, "%.2f", it) }.orEmpty()
@@ -287,7 +286,7 @@ private fun EditSongContent(
     if (showInfoDialog) {
         AlertDialog(
             onDismissRequest = { showInfoDialog = false },
-            icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_info_filled_24), contentDescription = stringResource(Res.string.cd_info_icon)) },
+            icon = { Icon(vectorResource(Res.drawable.rounded_info_filled_24), contentDescription = stringResource(Res.string.cd_info_icon)) },
             title = { Text(stringResource(Res.string.edit_song_info_dialog_title)) },
             text = { Text(stringResource(Res.string.edit_song_info_dialog_body)) },
             confirmButton = {
@@ -319,7 +318,7 @@ private fun EditSongContent(
                         onClick = { showInfoDialog = true },
                         shape = CircleShape
                     ) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_info_filled_24), contentDescription = stringResource(Res.string.cd_show_metadata_info))
+                        Icon(vectorResource(Res.drawable.rounded_info_filled_24), contentDescription = stringResource(Res.string.cd_show_metadata_info))
                     }
                 }
             )
@@ -381,7 +380,7 @@ private fun EditSongContent(
                         colors = textFieldColors,
                         onValueChange = { title = it },
                         placeholder = { Text(stringResource(Res.string.song_field_title)) },
-                        leadingIcon = { Icon(ImageVector.vectorResource(R.drawable.rounded_music_note_24), tint = MaterialTheme.colorScheme.tertiary, contentDescription = stringResource(Res.string.cd_song_title_icon)) },
+                        leadingIcon = { Icon(vectorResource(Res.drawable.rounded_music_note_24), tint = MaterialTheme.colorScheme.tertiary, contentDescription = stringResource(Res.string.cd_song_title_icon)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -490,7 +489,7 @@ private fun EditSongContent(
                                         modifier = Modifier.align(Alignment.End)
                                     ) {
                                         Icon(
-                                            ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
+                                            vectorResource(Res.drawable.rounded_delete_filled_24),
                                             contentDescription = null,
                                             modifier = Modifier.size(18.dp)
                                         )
@@ -510,7 +509,7 @@ private fun EditSongContent(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Icon(
-                                ImageVector.vectorResource(R.drawable.rounded_add_24),
+                                vectorResource(Res.drawable.rounded_add_24),
                                 contentDescription = null,
                                 modifier = Modifier.size(18.dp)
                             )
@@ -548,7 +547,7 @@ private fun EditSongContent(
                         shape = textFieldShape,
                         onValueChange = { artist = it },
                         placeholder = { Text(stringResource(Res.string.song_field_artist)) },
-                        leadingIcon = { Icon(ImageVector.vectorResource(R.drawable.rounded_person_filled_24), tint = MaterialTheme.colorScheme.primary, contentDescription = stringResource(Res.string.song_field_artist)) },
+                        leadingIcon = { Icon(vectorResource(Res.drawable.rounded_person_filled_24), tint = MaterialTheme.colorScheme.primary, contentDescription = stringResource(Res.string.song_field_artist)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -569,7 +568,7 @@ private fun EditSongContent(
                         shape = textFieldShape,
                         onValueChange = { album = it },
                         placeholder = { Text(stringResource(Res.string.song_field_album)) },
-                        leadingIcon = { Icon(ImageVector.vectorResource(R.drawable.rounded_album_filled_24), tint = MaterialTheme.colorScheme.tertiary, contentDescription = stringResource(Res.string.song_field_album)) },
+                        leadingIcon = { Icon(vectorResource(Res.drawable.rounded_album_filled_24), tint = MaterialTheme.colorScheme.tertiary, contentDescription = stringResource(Res.string.song_field_album)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -590,7 +589,7 @@ private fun EditSongContent(
                         shape = textFieldShape,
                         onValueChange = { albumArtist = it },
                         placeholder = { Text(stringResource(Res.string.song_field_album_artist)) },
-                        leadingIcon = { Icon(ImageVector.vectorResource(R.drawable.rounded_person_filled_24), tint = MaterialTheme.colorScheme.secondary, contentDescription = stringResource(Res.string.song_field_album_artist)) },
+                        leadingIcon = { Icon(vectorResource(Res.drawable.rounded_person_filled_24), tint = MaterialTheme.colorScheme.secondary, contentDescription = stringResource(Res.string.song_field_album_artist)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -611,7 +610,7 @@ private fun EditSongContent(
                         shape = textFieldShape,
                         onValueChange = { genre = it },
                         placeholder = { Text(stringResource(Res.string.song_field_genre)) },
-                        leadingIcon = { Icon(ImageVector.vectorResource(R.drawable.rounded_category_filled_24), tint = MaterialTheme.colorScheme.secondary, contentDescription = stringResource(Res.string.song_field_genre)) },
+                        leadingIcon = { Icon(vectorResource(Res.drawable.rounded_category_filled_24), tint = MaterialTheme.colorScheme.secondary, contentDescription = stringResource(Res.string.song_field_genre)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -632,7 +631,7 @@ private fun EditSongContent(
                         shape = textFieldShape,
                         onValueChange = { composer = it },
                         placeholder = { Text(stringResource(Res.string.song_field_composer)) },
-                        leadingIcon = { Icon(ImageVector.vectorResource(R.drawable.rounded_music_note_24), tint = MaterialTheme.colorScheme.tertiary, contentDescription = stringResource(Res.string.song_field_composer)) },
+                        leadingIcon = { Icon(vectorResource(Res.drawable.rounded_music_note_24), tint = MaterialTheme.colorScheme.tertiary, contentDescription = stringResource(Res.string.song_field_composer)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -653,7 +652,7 @@ private fun EditSongContent(
                         colors = textFieldColors,
                         onValueChange = { trackNumber = it },
                         placeholder = { Text(stringResource(Res.string.song_field_track_number)) },
-                        leadingIcon = { Icon(ImageVector.vectorResource(R.drawable.rounded_format_list_numbered_24), tint = MaterialTheme.colorScheme.secondary, contentDescription = stringResource(Res.string.cd_track_number_icon)) },
+                        leadingIcon = { Icon(vectorResource(Res.drawable.rounded_format_list_numbered_24), tint = MaterialTheme.colorScheme.secondary, contentDescription = stringResource(Res.string.cd_track_number_icon)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -675,7 +674,7 @@ private fun EditSongContent(
                         colors = textFieldColors,
                         onValueChange = { discNumber = it },
                         placeholder = { Text(stringResource(Res.string.song_field_disc_number)) },
-                        leadingIcon = { Icon(ImageVector.vectorResource(R.drawable.rounded_format_list_numbered_24), tint = MaterialTheme.colorScheme.secondary, contentDescription = stringResource(Res.string.cd_disc_number_icon)) },
+                        leadingIcon = { Icon(vectorResource(Res.drawable.rounded_format_list_numbered_24), tint = MaterialTheme.colorScheme.secondary, contentDescription = stringResource(Res.string.cd_disc_number_icon)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -699,7 +698,7 @@ private fun EditSongContent(
                         placeholder = { Text(stringResource(Res.string.placeholder_replaygain_track_example)) },
                         leadingIcon = {
                             Icon(
-                                ImageVector.vectorResource(R.drawable.rounded_repeat_one_24),
+                                vectorResource(Res.drawable.rounded_repeat_one_24),
                                 tint = MaterialTheme.colorScheme.primary,
                                 contentDescription = stringResource(Res.string.cd_replaygain_track)
                             )
@@ -727,7 +726,7 @@ private fun EditSongContent(
                         placeholder = { Text(stringResource(Res.string.placeholder_replaygain_album_example)) },
                         leadingIcon = {
                             Icon(
-                                ImageVector.vectorResource(R.drawable.rounded_repeat_24),
+                                vectorResource(Res.drawable.rounded_repeat_24),
                                 tint = MaterialTheme.colorScheme.tertiary,
                                 contentDescription = stringResource(Res.string.cd_replaygain_album)
                             )
@@ -757,7 +756,7 @@ private fun EditSongContent(
                             shape = textFieldShape,
                             onValueChange = { lyrics = it },
                             placeholder = { Text(stringResource(Res.string.lyrics)) },
-                            leadingIcon = { Icon(ImageVector.vectorResource(R.drawable.rounded_notes_mirrored_24), tint = MaterialTheme.colorScheme.primary, contentDescription = stringResource(Res.string.lyrics)) },
+                            leadingIcon = { Icon(vectorResource(Res.drawable.rounded_notes_mirrored_24), tint = MaterialTheme.colorScheme.primary, contentDescription = stringResource(Res.string.lyrics)) },
                             modifier = Modifier
                                 .weight(1f)
                                 .height(150.dp)
@@ -773,7 +772,7 @@ private fun EditSongContent(
                             },
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.rounded_search_24),
+                                painter = painterResource(Res.drawable.rounded_search_24),
                                 contentDescription = stringResource(Res.string.cd_search_lyrics_lrclib)
                             )
                         }
@@ -908,7 +907,7 @@ private fun CoverArtEditorCard(
                     when {
                         isDeleted -> {
                             Icon(
-                                painter = painterResource(id = R.drawable.rounded_music_note_24),
+                                painter = painterResource(Res.drawable.rounded_music_note_24),
                                 contentDescription = null,
                                 modifier = Modifier.size(72.dp),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -940,7 +939,7 @@ private fun CoverArtEditorCard(
 
                         else -> {
                             Icon(
-                                painter = painterResource(id = R.drawable.rounded_music_note_24),
+                                painter = painterResource(Res.drawable.rounded_music_note_24),
                                 contentDescription = null,
                                 modifier = Modifier.size(72.dp),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -975,14 +974,14 @@ private fun CoverArtEditorCard(
                 verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
             ) {
                 FilledTonalButton(onClick = onPickNewArt) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_image_filled_24), contentDescription = null)
+                    Icon(vectorResource(Res.drawable.rounded_image_filled_24), contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(stringResource(Res.string.edit_song_change_cover_art), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
 
                 if (preview != null || isDeleted) {
                     TextButton(onClick = onReset) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_history_24), contentDescription = null)
+                        Icon(vectorResource(Res.drawable.rounded_history_24), contentDescription = null)
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(stringResource(Res.string.action_reset), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
@@ -994,7 +993,7 @@ private fun CoverArtEditorCard(
                             contentColor = MaterialTheme.colorScheme.onErrorContainer
                         )
                     ) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_delete_filled_24), contentDescription = null)
+                        Icon(vectorResource(Res.drawable.rounded_delete_filled_24), contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(Res.string.edit_song_delete_cover_art), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }

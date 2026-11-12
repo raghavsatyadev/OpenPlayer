@@ -104,6 +104,7 @@ import co.touchlab.kermit.Logger
 import kotlin.math.roundToInt
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 private const val NoticesAssetPath = "licenses/THIRD_PARTY_NOTICES.md"
 
@@ -130,10 +131,10 @@ private data class LicensesContent(
 
 @Composable
 private fun LicenseCategory.icon(): ImageVector = when (this) {
-    LicenseCategory.CONTRIBUTORS -> ImageVector.vectorResource(R.drawable.rounded_groups_filled_24)
-    LicenseCategory.LIBRARIES -> ImageVector.vectorResource(R.drawable.rounded_code_24)
-    LicenseCategory.FONTS -> ImageVector.vectorResource(R.drawable.rounded_font_download_filled_24)
-    LicenseCategory.DATA -> ImageVector.vectorResource(R.drawable.rounded_dataset_filled_24)
+    LicenseCategory.CONTRIBUTORS -> vectorResource(Res.drawable.rounded_groups_filled_24)
+    LicenseCategory.LIBRARIES -> vectorResource(Res.drawable.rounded_code_24)
+    LicenseCategory.FONTS -> vectorResource(Res.drawable.rounded_font_download_filled_24)
+    LicenseCategory.DATA -> vectorResource(Res.drawable.rounded_dataset_filled_24)
 }
 
 private fun Context.readAssetText(path: String): String =
@@ -395,7 +396,7 @@ fun LicensesScreen(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_search_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_search_24),
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
@@ -404,7 +405,7 @@ fun LicensesScreen(
                                 if (searchQuery.isNotEmpty()) {
                                     IconButton(onClick = { searchQuery = "" }) {
                                         Icon(
-                                            imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                                            imageVector = vectorResource(Res.drawable.rounded_close_24),
                                             contentDescription = stringResource(Res.string.licenses_cd_clear_search),
                                         )
                                     }
@@ -572,7 +573,7 @@ private fun LicenseCardRow(
             Spacer(modifier = Modifier.width(6.dp))
 
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_chevron_right_24),
+                imageVector = vectorResource(Res.drawable.rounded_chevron_right_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 modifier = Modifier.size(20.dp),
@@ -668,7 +669,7 @@ private fun LicenseDetailDialog(
                     ) {
                         IconButton(onClick = onDismiss) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                                imageVector = vectorResource(Res.drawable.rounded_close_24),
                                 contentDescription = stringResource(Res.string.licenses_cd_close),
                                 tint = MaterialTheme.colorScheme.onSurface,
                             )
@@ -706,7 +707,7 @@ private fun LicenseDetailDialog(
                             },
                         ) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_content_copy_filled_24),
+                                imageVector = vectorResource(Res.drawable.rounded_content_copy_filled_24),
                                 contentDescription = stringResource(Res.string.licenses_cd_copy),
                                 tint = MaterialTheme.colorScheme.primary,
                             )

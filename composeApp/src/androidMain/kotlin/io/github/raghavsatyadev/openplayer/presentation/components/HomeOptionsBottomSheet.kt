@@ -10,11 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun HomeOptionsBottomSheet(
@@ -26,7 +25,7 @@ fun HomeOptionsBottomSheet(
             content = { Text(stringResource(Res.string.home_option_dj_mashup)) },
             leadingContent = {
                 Icon(
-                    painter = painterResource(id = R.drawable.rounded_instant_mix_24),
+                    painter = painterResource(Res.drawable.rounded_instant_mix_24),
                     contentDescription = stringResource(Res.string.home_option_dj_mashup)
                 )
             },

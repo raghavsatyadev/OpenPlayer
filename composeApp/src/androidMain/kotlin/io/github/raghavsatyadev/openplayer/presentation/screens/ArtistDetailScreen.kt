@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 import io.github.raghavsatyadev.openplayer.presentation.components.DetailHeroFloatingLayer
@@ -110,6 +108,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.ImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 private const val UseSharedCollapsibleTopBarProbe = true
 
@@ -744,7 +743,7 @@ private fun ArtistAlbumsExpandAllButton(
         contentPadding = ButtonDefaults.contentPaddingFor(height, hasStartIcon = true)
     ) {
         Icon(
-            imageVector = if (anyExpanded) ImageVector.vectorResource(R.drawable.rounded_unfold_less_24) else ImageVector.vectorResource(R.drawable.rounded_unfold_more_24),
+            imageVector = if (anyExpanded) vectorResource(Res.drawable.rounded_unfold_less_24) else vectorResource(Res.drawable.rounded_unfold_more_24),
             contentDescription = null,
             modifier = Modifier.size(ButtonDefaults.iconSizeFor(height))
         )
@@ -848,10 +847,10 @@ private fun CollapsibleAlbumSectionHeader(
                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.presentation_batch_d_cd_play_title, section.title))
+                Icon(vectorResource(Res.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.presentation_batch_d_cd_play_title, section.title))
             }
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_expand_more_24),
+                imageVector = vectorResource(Res.drawable.rounded_expand_more_24),
                 contentDescription = if (isExpanded) {
                     stringResource(Res.string.presentation_batch_d_cd_collapse_title, section.title)
                 } else {
@@ -1072,7 +1071,7 @@ private fun SharedArtistTopBarProbe(
                         )
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_edit_filled_24),
                             contentDescription = stringResource(Res.string.presentation_batch_d_edit_artist_image_cd)
                         )
                     }
@@ -1208,7 +1207,7 @@ private fun CustomCollapsingTopBar(
                     onClick = onBackPressed,
                     colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
                 ) {
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
+                    Icon(imageVector = vectorResource(Res.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
                 }
 
                 if (collapseFraction < 0.5f) {
@@ -1224,7 +1223,7 @@ private fun CustomCollapsingTopBar(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                             contentColor = MaterialTheme.colorScheme.onSurface
                         ) {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_edit_filled_24), contentDescription = stringResource(Res.string.presentation_batch_d_edit_artist_image_cd))
+                            Icon(vectorResource(Res.drawable.rounded_edit_filled_24), contentDescription = stringResource(Res.string.presentation_batch_d_edit_artist_image_cd))
                         }
                         ExpressiveDropdownMenu(
                             expanded = showImageMenu,
@@ -1289,7 +1288,7 @@ private fun CustomCollapsingTopBar(
                             alpha = fabScale
                         }
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_shuffle_24), contentDescription = stringResource(Res.string.cd_shuffle_play_album))
+                    Icon(vectorResource(Res.drawable.rounded_shuffle_24), contentDescription = stringResource(Res.string.cd_shuffle_play_album))
                 }
             }
         }
@@ -1303,7 +1302,7 @@ private fun MusicIconPattern(modifier: Modifier = Modifier) {
 
     Box(modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)) {
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+            imageVector = vectorResource(Res.drawable.rounded_music_note_24),
             contentDescription = null, tint = color1,
             modifier = Modifier
                 .align(Alignment.TopStart)
@@ -1312,7 +1311,7 @@ private fun MusicIconPattern(modifier: Modifier = Modifier) {
                 .graphicsLayer { rotationZ = -12f }
         )
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24),
+            imageVector = vectorResource(Res.drawable.rounded_graphic_eq_24),
             contentDescription = null, tint = color1,
             modifier = Modifier
                 .align(Alignment.CenterStart)
@@ -1321,7 +1320,7 @@ private fun MusicIconPattern(modifier: Modifier = Modifier) {
                 .graphicsLayer { rotationZ = 18f }
         )
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_album_filled_24),
+            imageVector = vectorResource(Res.drawable.rounded_album_filled_24),
             contentDescription = null, tint = color2,
             modifier = Modifier
                 .align(Alignment.CenterEnd)
@@ -1330,7 +1329,7 @@ private fun MusicIconPattern(modifier: Modifier = Modifier) {
                 .graphicsLayer { rotationZ = 12f }
         )
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_mic_filled_24),
+            imageVector = vectorResource(Res.drawable.rounded_mic_filled_24),
             contentDescription = null, tint = color1,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -1339,7 +1338,7 @@ private fun MusicIconPattern(modifier: Modifier = Modifier) {
                 .graphicsLayer { rotationZ = 14f }
         )
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_surround_sound_filled_24),
+            imageVector = vectorResource(Res.drawable.rounded_surround_sound_filled_24),
             contentDescription = null, tint = color2,
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -1348,7 +1347,7 @@ private fun MusicIconPattern(modifier: Modifier = Modifier) {
                 .graphicsLayer { rotationZ = 10f }
         )
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+            imageVector = vectorResource(Res.drawable.rounded_music_note_24),
             contentDescription = null, tint = color1,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -1357,7 +1356,7 @@ private fun MusicIconPattern(modifier: Modifier = Modifier) {
                 .graphicsLayer { rotationZ = -18f }
         )
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_headphones_filled_24),
+            imageVector = vectorResource(Res.drawable.rounded_headphones_filled_24),
             contentDescription = null, tint = color2,
             modifier = Modifier
                 .align(Alignment.Center)
@@ -1376,8 +1375,8 @@ private fun artistImageMenuActions(
 ): ImmutableList<DetailHeroMenuAction> {
     val changePhoto = stringResource(Res.string.presentation_batch_d_change_photo)
     val resetToDefault = stringResource(Res.string.presentation_batch_d_reset_to_default)
-    val changePhotoIcon = ImageVector.vectorResource(R.drawable.rounded_add_a_photo_filled_24)
-    val resetIcon = ImageVector.vectorResource(R.drawable.rounded_delete_filled_24)
+    val changePhotoIcon = vectorResource(Res.drawable.rounded_add_a_photo_filled_24)
+    val resetIcon = vectorResource(Res.drawable.rounded_delete_filled_24)
     return remember(hasCustomImage, changePhoto, resetToDefault, onChangeImage, onClearCustomImage) {
         val changePhotoAction = DetailHeroMenuAction(changePhoto, changePhotoIcon, onChangeImage)
         if (hasCustomImage) {

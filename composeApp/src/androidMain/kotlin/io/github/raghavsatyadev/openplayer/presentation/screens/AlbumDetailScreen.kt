@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 import io.github.raghavsatyadev.openplayer.presentation.components.DetailHeroArtistChip
@@ -119,6 +117,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 private const val UseSharedCollapsibleTopBarProbe = true
 
@@ -845,7 +844,7 @@ private fun SharedAlbumTopBarProbe(
                             )
                         ) {
                             Icon(
-                                imageVector = if (allDownloaded) ImageVector.vectorResource(R.drawable.rounded_cloud_done_filled_24) else ImageVector.vectorResource(R.drawable.rounded_cloud_download_filled_24),
+                                imageVector = if (allDownloaded) vectorResource(Res.drawable.rounded_cloud_done_filled_24) else vectorResource(Res.drawable.rounded_cloud_download_filled_24),
                                 contentDescription = stringResource(
                                     if (allDownloaded) R.string.cloud_album_remove_downloads else R.string.cloud_album_download
                                 )
@@ -970,7 +969,7 @@ private fun CollapsingAlbumTopBar(
                     onClick = onBackPressed,
                     colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
                 ) {
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
+                    Icon(imageVector = vectorResource(Res.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
                 }
 
                 if (showDownloadAction) {
@@ -984,7 +983,7 @@ private fun CollapsingAlbumTopBar(
                         )
                     ) {
                         Icon(
-                            imageVector = if (allDownloaded) ImageVector.vectorResource(R.drawable.rounded_cloud_done_filled_24) else ImageVector.vectorResource(R.drawable.rounded_cloud_download_filled_24),
+                            imageVector = if (allDownloaded) vectorResource(Res.drawable.rounded_cloud_done_filled_24) else vectorResource(Res.drawable.rounded_cloud_download_filled_24),
                             contentDescription = stringResource(
                                 if (allDownloaded) R.string.cloud_album_remove_downloads else R.string.cloud_album_download
                             )
@@ -1045,7 +1044,7 @@ private fun CollapsingAlbumTopBar(
                             alpha = fabScale
                         }
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_shuffle_24), contentDescription = stringResource(Res.string.cd_shuffle_play_album))
+                    Icon(vectorResource(Res.drawable.rounded_shuffle_24), contentDescription = stringResource(Res.string.cd_shuffle_play_album))
                 }
             }
         }

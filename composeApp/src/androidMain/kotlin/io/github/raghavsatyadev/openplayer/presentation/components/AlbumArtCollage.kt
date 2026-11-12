@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.request.ImageRequest
@@ -31,6 +30,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.painterResource
 
 @Stable
 data class Config(val size: Dp, val width: Dp, val height: Dp, val align: Alignment, val rot: Float, val shape: Shape, val offsetX: Dp, val offsetY: Dp)
@@ -136,7 +137,7 @@ fun AlbumArtCollage(
         if (songs.isEmpty()) {
             Box(Modifier.matchParentSize(), contentAlignment = Alignment.Center) {
                 Icon(
-                    painter = painterResource(R.drawable.rounded_music_note_24),
+                    painter = painterResource(Res.drawable.rounded_music_note_24),
                     contentDescription = null,
                     modifier = Modifier.size(100.dp),
                     tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)

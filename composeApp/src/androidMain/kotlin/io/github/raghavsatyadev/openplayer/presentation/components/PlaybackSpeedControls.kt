@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -53,10 +51,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.utils.PlaybackSpeedUtils
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 const val PLAYBACK_SPEED_SLIDER_TEST_TAG = "playback_speed_slider"
 
@@ -141,7 +139,7 @@ fun PlaybackSpeedControls(
                 }
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_edit_filled_24),
                     contentDescription = null,
                     modifier = Modifier.size(16.dp)
                 )
@@ -166,7 +164,7 @@ fun PlaybackSpeedControls(
                 enabled = PlaybackSpeedUtils.canStep(draft, -1)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_remove_24),
+                    imageVector = vectorResource(Res.drawable.rounded_remove_24),
                     contentDescription = stringResource(Res.string.playback_speed_decrease)
                 )
             }
@@ -202,7 +200,7 @@ fun PlaybackSpeedControls(
                 enabled = PlaybackSpeedUtils.canStep(draft, 1)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_add_24),
+                    imageVector = vectorResource(Res.drawable.rounded_add_24),
                     contentDescription = stringResource(Res.string.playback_speed_increase)
                 )
             }

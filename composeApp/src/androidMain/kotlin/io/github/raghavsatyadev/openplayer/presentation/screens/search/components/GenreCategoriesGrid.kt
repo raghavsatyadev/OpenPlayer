@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens.search.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.annotation.OptIn
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.animation.core.animateDpAsState
@@ -56,11 +54,11 @@ import io.github.raghavsatyadev.openplayer.presentation.utils.GenreIconProvider
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.ui.theme.LocalOpenPlayerDarkTheme
 import io.github.raghavsatyadev.openplayer.utils.formatSongCount
-import io.github.raghavsatyadev.openplayer.R
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlinx.collections.immutable.ImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * The genre tiles shown by Search and by the Library's Genres tab.
@@ -156,7 +154,7 @@ fun GenreCategoriesGrid(
                     shape = RoundedCornerShape(shape.value.dp)
                 ) {
                 androidx.compose.material3.Icon(
-                        imageVector = if (isGridView) ImageVector.vectorResource(R.drawable.rounded_view_list_filled_mirrored_24) else ImageVector.vectorResource(R.drawable.rounded_grid_view_filled_24),
+                        imageVector = if (isGridView) vectorResource(Res.drawable.rounded_view_list_filled_mirrored_24) else vectorResource(Res.drawable.rounded_grid_view_filled_24),
                         contentDescription = stringResource(Res.string.cd_toggle_grid_list)
                     )
                 }
@@ -328,7 +326,7 @@ private fun GenreCard(
                         )
                     } else {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_check_circle_filled_24),
                             contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                             tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(28.dp)

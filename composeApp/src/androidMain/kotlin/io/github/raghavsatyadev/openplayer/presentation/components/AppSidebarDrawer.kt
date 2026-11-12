@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.PredictiveBackHandler
@@ -50,16 +48,16 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.SidebarShortcutKeys
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.launch
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 /** How far the sheet slides toward its screen edge at full predictive-back progress. */
 private val PredictiveBackMaxOffset = 16.dp
@@ -263,7 +261,7 @@ private fun DrawerContent(
                     .background(MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.5f))
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_edit_filled_24),
                     contentDescription = stringResource(Res.string.sidebar_edit_shortcuts),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(18.dp)
@@ -280,7 +278,7 @@ private fun DrawerContent(
 
         if (SidebarShortcutKeys.HOME in enabledShortcuts) {
             DrawerItem(
-                icon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.rounded_home_filled_24)),
+                icon = rememberVectorPainter(vectorResource(Res.drawable.rounded_home_filled_24)),
                 label = shortcutLabel(SidebarShortcutKeys.HOME),
                 selected = selectedRoute == DrawerDestination.Home.route,
                 onClick = { onDestinationSelected(DrawerDestination.Home) }
@@ -289,7 +287,7 @@ private fun DrawerContent(
 
         if (SidebarShortcutKeys.STATS in enabledShortcuts) {
             DrawerItem(
-                icon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.rounded_bar_chart_24)),
+                icon = rememberVectorPainter(vectorResource(Res.drawable.rounded_bar_chart_24)),
                 label = shortcutLabel(SidebarShortcutKeys.STATS),
                 selected = selectedRoute == DrawerDestination.Stats.route,
                 onClick = { onDestinationSelected(DrawerDestination.Stats) }
@@ -298,7 +296,7 @@ private fun DrawerContent(
 
         if (SidebarShortcutKeys.EQUALIZER in enabledShortcuts) {
             DrawerItem(
-                icon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24)),
+                icon = rememberVectorPainter(vectorResource(Res.drawable.rounded_graphic_eq_24)),
                 label = shortcutLabel(SidebarShortcutKeys.EQUALIZER),
                 selected = selectedRoute == DrawerDestination.Equalizer.route,
                 onClick = { onDestinationSelected(DrawerDestination.Equalizer) }
@@ -307,7 +305,7 @@ private fun DrawerContent(
 
         if (SidebarShortcutKeys.AUDIO_BOOKMARKS in enabledShortcuts) {
             DrawerItem(
-                icon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.rounded_bookmark_filled_24)),
+                icon = rememberVectorPainter(vectorResource(Res.drawable.rounded_bookmark_filled_24)),
                 label = shortcutLabel(SidebarShortcutKeys.AUDIO_BOOKMARKS),
                 selected = selectedRoute == DrawerDestination.Bookmarks.route,
                 onClick = { onDestinationSelected(DrawerDestination.Bookmarks) }
@@ -322,7 +320,7 @@ private fun DrawerContent(
         )
 
         DrawerItem(
-            icon = painterResource(R.drawable.rounded_settings_24),
+            icon = painterResource(Res.drawable.rounded_settings_24),
             label = stringResource(Res.string.settings_top_bar_title),
             selected = selectedRoute == DrawerDestination.Settings.route,
             onClick = { onDestinationSelected(DrawerDestination.Settings) }

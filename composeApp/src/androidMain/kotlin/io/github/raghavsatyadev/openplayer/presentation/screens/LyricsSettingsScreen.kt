@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -50,13 +49,11 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.LyricsSourcePreference
 import io.github.raghavsatyadev.openplayer.data.preferences.LyricsWordHighlightStyle
 import io.github.raghavsatyadev.openplayer.data.preferences.MAX_LYRICS_FONT_SIZE_SP
@@ -73,6 +70,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 private const val MIN_LYRICS_BLUR_STRENGTH = 0.1f
 private const val MAX_LYRICS_BLUR_STRENGTH = 2f
@@ -177,7 +176,7 @@ fun LyricsSettingsScreen(
                         title = stringResource(Res.string.setcat_lyrics_font_size_title),
                         subtitle = stringResource(Res.string.setcat_lyrics_font_size_subtitle),
                         valueText = stringResource(Res.string.setcat_lyrics_font_size_value, fontSizeDraft),
-                        icon = ImageVector.vectorResource(R.drawable.rounded_format_size_24),
+                        icon = vectorResource(Res.drawable.rounded_format_size_24),
                         value = fontSizeDraft,
                         valueRange = MIN_LYRICS_FONT_SIZE_SP..MAX_LYRICS_FONT_SIZE_SP,
                         steps = (MAX_LYRICS_FONT_SIZE_SP - MIN_LYRICS_FONT_SIZE_SP).toInt() - 1,
@@ -210,7 +209,7 @@ fun LyricsSettingsScreen(
                             settingsViewModel.setLyricsWordHighlightStyle(LyricsWordHighlightStyle.fromStorage(key))
                         },
                         leadingIcon = {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_gradient_filled_24), null, tint = MaterialTheme.colorScheme.secondary)
+                            Icon(vectorResource(Res.drawable.rounded_gradient_filled_24), null, tint = MaterialTheme.colorScheme.secondary)
                         },
                         modifier = Modifier.settingHighlight("item_lyrics_word_highlight", highlightKey)
                     )
@@ -221,7 +220,7 @@ fun LyricsSettingsScreen(
                         checked = uiState.lyricsDuetLayoutEnabled,
                         onCheckedChange = settingsViewModel::setLyricsDuetLayoutEnabled,
                         leadingIcon = {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_groups_filled_24), null, tint = MaterialTheme.colorScheme.secondary)
+                            Icon(vectorResource(Res.drawable.rounded_groups_filled_24), null, tint = MaterialTheme.colorScheme.secondary)
                         },
                         modifier = Modifier.settingHighlight("item_lyrics_duet_layout", highlightKey)
                     )
@@ -232,7 +231,7 @@ fun LyricsSettingsScreen(
                         checked = uiState.showLyricsBackgroundVocals,
                         onCheckedChange = settingsViewModel::setShowLyricsBackgroundVocals,
                         leadingIcon = {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_mic_filled_24), null, tint = MaterialTheme.colorScheme.secondary)
+                            Icon(vectorResource(Res.drawable.rounded_mic_filled_24), null, tint = MaterialTheme.colorScheme.secondary)
                         },
                         modifier = Modifier.settingHighlight("item_lyrics_background_vocals", highlightKey)
                     )
@@ -249,7 +248,7 @@ fun LyricsSettingsScreen(
                         onCheckedChange = settingsViewModel::setAnimatedLyricsBlurEnabled,
                         enabled = blurAvailable,
                         leadingIcon = {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_blur_on_24), null, tint = MaterialTheme.colorScheme.secondary)
+                            Icon(vectorResource(Res.drawable.rounded_blur_on_24), null, tint = MaterialTheme.colorScheme.secondary)
                         },
                         modifier = Modifier.settingHighlight("item_lyrics_animated_blur", highlightKey)
                     )
@@ -265,7 +264,7 @@ fun LyricsSettingsScreen(
                             valueText = stringResource(Res.string.presentation_batch_f_exp_blur_strength_value,
                                 blurStrengthDraft
                             ),
-                            icon = ImageVector.vectorResource(R.drawable.rounded_linear_scale_24),
+                            icon = vectorResource(Res.drawable.rounded_linear_scale_24),
                             value = blurStrengthDraft,
                             valueRange = MIN_LYRICS_BLUR_STRENGTH..MAX_LYRICS_BLUR_STRENGTH,
                             steps = 18,
@@ -297,7 +296,7 @@ fun LyricsSettingsScreen(
                         },
                         leadingIcon = {
                             Icon(
-                                painterResource(R.drawable.rounded_lyrics_24),
+                                painterResource(Res.drawable.rounded_lyrics_24),
                                 null,
                                 tint = MaterialTheme.colorScheme.secondary
                             )
@@ -308,7 +307,7 @@ fun LyricsSettingsScreen(
                         title = stringResource(Res.string.setcat_reset_imported_lyrics_title),
                         subtitle = stringResource(Res.string.setcat_reset_imported_lyrics_subtitle),
                         leadingIcon = {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_clear_all_24), null, tint = MaterialTheme.colorScheme.secondary)
+                            Icon(vectorResource(Res.drawable.rounded_clear_all_24), null, tint = MaterialTheme.colorScheme.secondary)
                         },
                         modifier = Modifier.settingHighlight("item_lyrics_reset_imported", highlightKey),
                         onClick = { showClearLyricsDialog = true }
@@ -327,7 +326,7 @@ fun LyricsSettingsScreen(
 
     if (showClearLyricsDialog) {
         AlertDialog(
-            icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_warning_24), null) },
+            icon = { Icon(vectorResource(Res.drawable.rounded_warning_24), null) },
             title = { Text(stringResource(Res.string.dialog_reset_lyrics_title)) },
             text = { Text(stringResource(Res.string.dialog_cannot_undo)) },
             onDismissRequest = { showClearLyricsDialog = false },

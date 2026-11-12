@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 
@@ -269,6 +267,8 @@ import kotlin.math.abs
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 val ListExtraBottomGap = 30.dp
 val PlayerSheetCollapsedCornerRadius = 32.dp
@@ -880,7 +880,7 @@ fun LibraryScreen(
                             }
                         ) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_bookmark_filled_24),
+                                imageVector = vectorResource(Res.drawable.rounded_bookmark_filled_24),
                                 contentDescription = stringResource(Res.string.audio_bookmarks_cd_open)
                             )
                         }
@@ -895,7 +895,7 @@ fun LibraryScreen(
                             }
                         ) {
                             Icon(
-                                painter = painterResource(R.drawable.rounded_settings_24),
+                                painter = painterResource(Res.drawable.rounded_settings_24),
                                 contentDescription = stringResource(Res.string.presentation_batch_d_open_settings_cd)
                             )
                         }
@@ -955,7 +955,7 @@ fun LibraryScreen(
                             onClick = { showReorderTabsSheet = true }
                         ) {
                             Icon(
-                                ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
+                                vectorResource(Res.drawable.rounded_edit_filled_24),
                                 contentDescription = stringResource(Res.string.presentation_batch_d_reorder_tabs_cd),
                                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
                             )
@@ -1326,7 +1326,7 @@ fun LibraryScreen(
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setAlbumsListView(false) },
                                                 text = stringResource(Res.string.presentation_batch_d_view_grid),
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_view_module_filled_24)
+                                                imageVector = vectorResource(Res.drawable.rounded_view_module_filled_24)
                                             )
 
                                             ToggleSegmentButton(
@@ -1339,7 +1339,7 @@ fun LibraryScreen(
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setAlbumsListView(true) },
                                                 text = stringResource(Res.string.presentation_batch_d_view_list),
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_view_list_filled_mirrored_24)
+                                                imageVector = vectorResource(Res.drawable.rounded_view_list_filled_mirrored_24)
                                             )
                                         }
                                     }
@@ -1360,7 +1360,7 @@ fun LibraryScreen(
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setGenreGridView(true) },
                                                 text = stringResource(Res.string.presentation_batch_d_view_grid),
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_view_module_filled_24)
+                                                imageVector = vectorResource(Res.drawable.rounded_view_module_filled_24)
                                             )
 
                                             ToggleSegmentButton(
@@ -1373,7 +1373,7 @@ fun LibraryScreen(
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setGenreGridView(false) },
                                                 text = stringResource(Res.string.presentation_batch_d_view_list),
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_view_list_filled_mirrored_24)
+                                                imageVector = vectorResource(Res.drawable.rounded_view_list_filled_mirrored_24)
                                             )
                                         }
                                     }
@@ -1450,7 +1450,7 @@ fun LibraryScreen(
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setPlaylistsGridView(false) },
                                                 text = stringResource(Res.string.presentation_batch_d_view_list),
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_view_list_filled_mirrored_24)
+                                                imageVector = vectorResource(Res.drawable.rounded_view_list_filled_mirrored_24)
                                             )
                                             ToggleSegmentButton(
                                                 modifier = Modifier.weight(1f),
@@ -1462,7 +1462,7 @@ fun LibraryScreen(
                                                 activeCornerRadius = 32.dp,
                                                 onClick = { playerViewModel.setPlaylistsGridView(true) },
                                                 text = stringResource(Res.string.presentation_batch_d_view_grid),
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_view_module_filled_24)
+                                                imageVector = vectorResource(Res.drawable.rounded_view_module_filled_24)
                                             )
                                         }
                                     }
@@ -2698,7 +2698,7 @@ private fun LibraryTabSwitcherSheet(
                                 .align(Alignment.CenterEnd)
                         ) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
+                                imageVector = vectorResource(Res.drawable.rounded_edit_filled_24),
                                 contentDescription = null
                             )
                             Spacer(modifier = Modifier.width(10.dp))
@@ -3361,7 +3361,7 @@ fun FolderListItem(
     ) {
         Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_folder),
+                painter = painterResource(Res.drawable.ic_folder),
                 contentDescription = stringResource(Res.string.presentation_batch_d_cd_folder),
                 modifier = Modifier
                     .size(48.dp)
@@ -3736,7 +3736,7 @@ fun ArtistListItem(
                             )
                         } else {
                             Icon(
-                                painter = painterResource(R.drawable.rounded_artist_24),
+                                painter = painterResource(Res.drawable.rounded_artist_24),
                                 contentDescription = stringResource(Res.string.presentation_batch_d_cd_artist),
                                 modifier = Modifier.padding(8.dp),
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer

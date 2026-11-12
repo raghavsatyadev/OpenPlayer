@@ -4,8 +4,6 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.SearchT
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.execute
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.planSearchTap
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.searchTapActions
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 
@@ -103,7 +101,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavHostController
 import io.github.raghavsatyadev.openplayer.R
@@ -158,6 +155,8 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.unit.Dp
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 private data class SearchUiSlice(
     val selectedSearchFilter: SearchFilterType = SearchFilterType.ALL,
@@ -397,7 +396,7 @@ fun SearchScreen(
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = ImageVector.vectorResource(R.drawable.rounded_search_24),
+                                        imageVector = vectorResource(Res.drawable.rounded_search_24),
                                         contentDescription = stringResource(Res.string.cd_search_icon),
                                         tint = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.size(24.dp)
@@ -418,7 +417,7 @@ fun SearchScreen(
                                                 )
                                         ) {
                                             Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                                                imageVector = vectorResource(Res.drawable.rounded_close_24),
                                                 contentDescription = stringResource(Res.string.cd_clear_search_query),
                                                 tint = MaterialTheme.colorScheme.primary
                                             )
@@ -450,7 +449,7 @@ fun SearchScreen(
                     onClick = { navController.navigateSafely(Screen.Settings.route) }
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.rounded_settings_24),
+                        painter = painterResource(Res.drawable.rounded_settings_24),
                         contentDescription = stringResource(Res.string.presentation_batch_d_open_settings_cd)
                     )
                 }
@@ -1054,7 +1053,7 @@ fun SearchHistoryListItem(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_history_24),
+                imageVector = vectorResource(Res.drawable.rounded_history_24),
                 contentDescription = stringResource(Res.string.cd_search_history_icon),
                 modifier = Modifier.size(20.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1069,7 +1068,7 @@ fun SearchHistoryListItem(
         }
         IconButton(onClick = { onHistoryDelete(item.query) }) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_delete_forever_filled_24),
+                imageVector = vectorResource(Res.drawable.rounded_delete_forever_filled_24),
                 contentDescription = stringResource(Res.string.cd_delete_search_history_item),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
@@ -1087,7 +1086,7 @@ fun EmptySearchResults(searchQuery: String, colorScheme: ColorScheme) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.rounded_search_24),
+            imageVector = vectorResource(Res.drawable.rounded_search_24),
             contentDescription = stringResource(Res.string.cd_no_search_results),
             modifier = Modifier
                 .size(80.dp)
@@ -1517,7 +1516,7 @@ fun SearchResultAlbumItem(
                         contentColor = MaterialTheme.colorScheme.onSecondary
                     )
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_album), modifier = Modifier.size(24.dp))
+                    Icon(vectorResource(Res.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_album), modifier = Modifier.size(24.dp))
                 }
             }
             if (isSelectionMode && isSelected) {
@@ -1575,7 +1574,7 @@ fun SearchResultArtistItem(
                 )
             } else {
                 Icon(
-                    painter = painterResource(id = R.drawable.rounded_artist_24),
+                    painter = painterResource(Res.drawable.rounded_artist_24),
                     contentDescription = stringResource(Res.string.cd_artist_icon),
                     modifier = Modifier
                         .size(56.dp)
@@ -1608,7 +1607,7 @@ fun SearchResultArtistItem(
                     contentColor = MaterialTheme.colorScheme.onTertiary
                 )
             ) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_artist), modifier = Modifier.size(24.dp))
+                Icon(vectorResource(Res.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_artist), modifier = Modifier.size(24.dp))
             }
         }
     }
@@ -1698,7 +1697,7 @@ fun SearchResultPlaylistItem(
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
-                    Icon(ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_playlist), modifier = Modifier.size(24.dp))
+                    Icon(vectorResource(Res.drawable.rounded_play_arrow_filled_24), contentDescription = stringResource(Res.string.cd_play_playlist), modifier = Modifier.size(24.dp))
                 }
             }
             if (isSelectionMode && isSelected) {
@@ -1792,7 +1791,7 @@ fun SearchFilterChip(
     ) {
         if (selected) {
             Icon(
-                painter = painterResource(R.drawable.rounded_check_circle_24),
+                painter = painterResource(Res.drawable.rounded_check_circle_24),
                 contentDescription = stringResource(Res.string.presentation_batch_g_cd_selected),
                 modifier = Modifier.size(FilterChipDefaults.IconSize)
             )

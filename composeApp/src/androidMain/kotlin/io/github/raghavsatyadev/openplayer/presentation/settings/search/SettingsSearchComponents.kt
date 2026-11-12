@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.settings.search
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -38,7 +36,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.model.SettingsCategory
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.screens.ExpressiveSettingsGroup
@@ -49,6 +46,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsUiStat
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewModel
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun SettingsSearchResultsContent(
@@ -73,7 +71,7 @@ fun SettingsSearchResultsContent(
                 modifier = Modifier.padding(32.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_search_off_24),
+                    imageVector = vectorResource(Res.drawable.rounded_search_off_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                     modifier = Modifier.size(48.dp)
@@ -237,7 +235,7 @@ fun SearchResultSwitchItem(
                         label = "search_switch_thumb_icon"
                     ) { isChecked ->
                         Icon(
-                            imageVector = if (isChecked) ImageVector.vectorResource(R.drawable.rounded_check_24) else ImageVector.vectorResource(R.drawable.rounded_close_24),
+                            imageVector = if (isChecked) vectorResource(Res.drawable.rounded_check_24) else vectorResource(Res.drawable.rounded_close_24),
                             contentDescription = null,
                             modifier = Modifier.size(SwitchDefaults.IconSize)
                         )
@@ -303,7 +301,7 @@ fun SearchResultNavigableItem(
             }
 
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_chevron_right_24),
+                imageVector = vectorResource(Res.drawable.rounded_chevron_right_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp)

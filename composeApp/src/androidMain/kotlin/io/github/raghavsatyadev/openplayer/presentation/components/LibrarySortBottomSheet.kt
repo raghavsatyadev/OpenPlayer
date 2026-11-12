@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
@@ -61,7 +59,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.SortDirection
 import io.github.raghavsatyadev.openplayer.data.model.SortOption
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
@@ -70,6 +67,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 /**
  * Sort sheet for a library list.
@@ -477,7 +475,7 @@ private fun LibrarySheetSortDirectionCard(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_arrow_downward_24),
+                    imageVector = vectorResource(Res.drawable.rounded_arrow_downward_24),
                     contentDescription = null,
                     tint = contentColor,
                     modifier = Modifier
@@ -562,7 +560,7 @@ internal fun LibrarySheetToggleCard(
                 thumbContent = if (checked) {
                     {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
+                            imageVector = vectorResource(Res.drawable.rounded_check_24),
                             contentDescription = stringResource(Res.string.presentation_batch_g_cd_switch_on),
                             modifier = Modifier.size(SwitchDefaults.IconSize),
                         )

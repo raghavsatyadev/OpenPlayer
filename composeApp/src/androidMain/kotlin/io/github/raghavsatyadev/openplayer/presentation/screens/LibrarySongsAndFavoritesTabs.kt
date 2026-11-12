@@ -39,7 +39,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -51,7 +50,6 @@ import androidx.media3.common.util.UnstableApi
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemContentType
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.LibraryTabId
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.model.SortOption
@@ -74,6 +72,7 @@ import io.github.raghavsatyadev.openplayer.presentation.utils.SegmentedItemShape
 import io.github.raghavsatyadev.openplayer.presentation.utils.getSegmentedItemShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @Composable
@@ -381,7 +380,7 @@ fun LibrarySongsTabPaginated(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
-                        painter = painterResource(id = R.drawable.rounded_music_off_24),
+                        painter = painterResource(Res.drawable.rounded_music_off_24),
                         contentDescription = stringResource(Res.string.cd_no_songs_in_library),
                         modifier = Modifier.size(48.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant

@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.app.Activity
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
@@ -86,6 +84,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -221,7 +220,7 @@ fun MultiSelectionBottomSheet(
                     ) {
                         Icon(
                             modifier = Modifier.padding(horizontal = 8.dp),
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_edit_filled_24),
                             contentDescription = stringResource(Res.string.cd_edit_song_metadata)
                         )
                     }
@@ -258,7 +257,7 @@ fun MultiSelectionBottomSheet(
                                 }
                             ) {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
+                                    vectorResource(Res.drawable.rounded_play_arrow_filled_24),
                                     contentDescription = stringResource(Res.string.cd_play_all)
                                 )
                                 Spacer(Modifier.width(6.dp))
@@ -288,9 +287,9 @@ fun MultiSelectionBottomSheet(
                                 Icon(
                                     modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize),
                                     imageVector = if (allAreLiked) 
-                                        ImageVector.vectorResource(R.drawable.rounded_heart_broken_filled_24) 
+                                        vectorResource(Res.drawable.rounded_heart_broken_filled_24) 
                                     else
-                                        ImageVector.vectorResource(R.drawable.rounded_favorite_24),
+                                        vectorResource(Res.drawable.rounded_favorite_24),
                                     contentDescription = stringResource(
                                         if (allAreLiked) R.string.cd_unlike_all else R.string.cd_like_all
                                     )
@@ -313,7 +312,7 @@ fun MultiSelectionBottomSheet(
                             ) {
                                 Icon(
                                     modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize),
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_share_filled_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_share_filled_24),
                                     contentDescription = stringResource(Res.string.cd_share_all_as_zip)
                                 )
                             }
@@ -337,7 +336,7 @@ fun MultiSelectionBottomSheet(
                                 }
                             ) {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_cloud_download_filled_24),
+                                    vectorResource(Res.drawable.rounded_cloud_download_filled_24),
                                     contentDescription = stringResource(Res.string.cloud_download_selected)
                                 )
                                 Spacer(Modifier.width(10.dp))
@@ -378,7 +377,7 @@ fun MultiSelectionBottomSheet(
                                 }
                             ) {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
+                                    vectorResource(Res.drawable.rounded_queue_music_24),
                                     contentDescription = stringResource(Res.string.cd_add_all_to_queue)
                                 )
                                 Spacer(Modifier.width(6.dp))
@@ -407,7 +406,7 @@ fun MultiSelectionBottomSheet(
                                 }
                             ) {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
+                                    vectorResource(Res.drawable.rounded_queue_music_24),
                                     contentDescription = stringResource(Res.string.cd_play_next_in_queue)
                                 )
                                 Spacer(Modifier.width(6.dp))
@@ -446,7 +445,7 @@ fun MultiSelectionBottomSheet(
                                 }
                             ) {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_playlist_add_24),
+                                    vectorResource(Res.drawable.rounded_playlist_add_24),
                                     contentDescription = stringResource(Res.string.cd_add_to_playlist)
                                 )
                                 Spacer(Modifier.width(6.dp))
@@ -479,7 +478,7 @@ fun MultiSelectionBottomSheet(
                                 }
                             ) {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
+                                    vectorResource(Res.drawable.rounded_delete_filled_24),
                                     contentDescription = stringResource(Res.string.cd_delete_all_songs)
                                 )
                                 Spacer(Modifier.width(6.dp))

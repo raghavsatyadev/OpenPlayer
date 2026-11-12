@@ -1,7 +1,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
 import android.Manifest
 import android.app.Activity
 import android.content.Context
@@ -166,6 +165,8 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.text.style.TextOverflow
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalPermissionsApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
@@ -803,7 +804,7 @@ private fun SetupLanguagePill() {
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_language_24),
+                imageVector = vectorResource(Res.drawable.rounded_language_24),
                 contentDescription = null,
                 modifier = Modifier.size(18.dp)
             )
@@ -1108,20 +1109,20 @@ fun ThemeSelectionPage(
             mode = AppThemeMode.DARK,
             title = stringResource(Res.string.setup_theme_dark_title),
             description = stringResource(Res.string.setup_theme_dark_description),
-            icon = ImageVector.vectorResource(R.drawable.rounded_dark_mode_filled_24),
+            icon = vectorResource(Res.drawable.rounded_dark_mode_filled_24),
             recommended = true
         ),
         ThemeOptionItem(
             mode = AppThemeMode.LIGHT,
             title = stringResource(Res.string.setup_theme_light_title),
             description = stringResource(Res.string.setup_theme_light_description),
-            icon = ImageVector.vectorResource(R.drawable.rounded_light_mode_24)
+            icon = vectorResource(Res.drawable.rounded_light_mode_24)
         ),
         ThemeOptionItem(
             mode = AppThemeMode.FOLLOW_SYSTEM,
             title = stringResource(Res.string.setup_theme_follow_title),
             description = stringResource(Res.string.setup_theme_follow_description),
-            icon = ImageVector.vectorResource(R.drawable.rounded_phone_android_filled_24)
+            icon = vectorResource(Res.drawable.rounded_phone_android_filled_24)
         )
     )
 
@@ -1287,7 +1288,7 @@ private fun ThemeModeOptionCard(
                 ) {
                     if (selected) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
+                            imageVector = vectorResource(Res.drawable.rounded_check_24),
                             contentDescription = null,
                             modifier = Modifier.size(16.dp)
                         )
@@ -1349,14 +1350,14 @@ fun ExternalServicesPage(
                 description = stringResource(Res.string.setup_external_lyrics_description),
                 checked = uiState.externalLyricsEnabled,
                 onCheckedChange = onExternalLyricsChanged,
-                icon = { Icon(painterResource(R.drawable.rounded_lyrics_24), null) }
+                icon = { Icon(painterResource(Res.drawable.rounded_lyrics_24), null) }
             )
             ExternalServiceToggleCard(
                 title = stringResource(Res.string.setup_external_artist_images_title),
                 description = stringResource(Res.string.setup_external_artist_images_description),
                 checked = uiState.externalArtistImagesEnabled,
                 onCheckedChange = onExternalArtistImagesChanged,
-                icon = { Icon(painterResource(R.drawable.rounded_artist_24), null) }
+                icon = { Icon(painterResource(Res.drawable.rounded_artist_24), null) }
             )
 
             Text(
@@ -1830,7 +1831,7 @@ fun PermissionPageLayout(
                         AnimatedContent(targetState = granted, label = "ButtonAnim") { isGranted ->
                             if (isGranted) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Icon(ImageVector.vectorResource(R.drawable.rounded_check_24), null)
+                                    Icon(vectorResource(Res.drawable.rounded_check_24), null)
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(buttonText, textAlign = TextAlign.Center)
                                 }
@@ -1961,7 +1962,7 @@ private fun SetupRestoreDialog(
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(stringResource(Res.string.restoring))
                                 } else {
-                                    Icon(ImageVector.vectorResource(R.drawable.rounded_history_24), contentDescription = null)
+                                    Icon(vectorResource(Res.drawable.rounded_history_24), contentDescription = null)
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(stringResource(Res.string.restore_selected))
                                 }
@@ -2281,7 +2282,7 @@ fun LibraryNavigationPillSetupShow(
             ) {
                 Icon(
                     modifier = Modifier.rotate(arrowRotation),
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_keyboard_arrow_down_24),
+                    imageVector = vectorResource(Res.drawable.rounded_keyboard_arrow_down_24),
                     contentDescription = stringResource(Res.string.cd_expand_menu),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
@@ -2446,12 +2447,12 @@ fun SetupBottomBar(
                         label = "AnimatedFabIcon"
                     ) { isNextPage ->
                         if (isNextPage) {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_forward_24), contentDescription = stringResource(Res.string.cd_next_step))
+                            Icon(vectorResource(Res.drawable.rounded_arrow_forward_24), contentDescription = stringResource(Res.string.cd_next_step))
                         } else {
                             if (isFinishButtonEnabled) {
-                                Icon(ImageVector.vectorResource(R.drawable.rounded_check_24), contentDescription = stringResource(Res.string.cd_finish))
+                                Icon(vectorResource(Res.drawable.rounded_check_24), contentDescription = stringResource(Res.string.cd_finish))
                             } else {
-                                Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), contentDescription = stringResource(Res.string.cd_close))
+                                Icon(vectorResource(Res.drawable.rounded_close_24), contentDescription = stringResource(Res.string.cd_close))
                             }
                         }
                     }
@@ -2577,7 +2578,7 @@ fun NavBarLayoutPage(
                                          contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                                      )
                                  ) {
-                                     Icon(ImageVector.vectorResource(R.drawable.rounded_rounded_corner_24), contentDescription = null, modifier = Modifier.size(18.dp))
+                                     Icon(vectorResource(Res.drawable.rounded_rounded_corner_24), contentDescription = null, modifier = Modifier.size(18.dp))
                                      Spacer(modifier = Modifier.width(8.dp))
                                      Text(stringResource(Res.string.customize_corner_radius))
                                  }
@@ -2675,9 +2676,9 @@ fun NavBarPreview(isDefault: Boolean, previewHeight: Dp = 200.dp) {
                                 horizontalArrangement = Arrangement.SpaceEvenly,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Icon(painterResource(R.drawable.rounded_home_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Icon(painterResource(R.drawable.rounded_search_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Icon(painterResource(R.drawable.rounded_library_music_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Icon(painterResource(Res.drawable.rounded_home_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Icon(painterResource(Res.drawable.rounded_search_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Icon(painterResource(Res.drawable.rounded_library_music_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
                     } else {
@@ -2703,9 +2704,9 @@ fun NavBarPreview(isDefault: Boolean, previewHeight: Dp = 200.dp) {
                                 horizontalArrangement = Arrangement.SpaceEvenly,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Icon(painterResource(R.drawable.rounded_home_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Icon(painterResource(R.drawable.rounded_search_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Icon(painterResource(R.drawable.rounded_library_music_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Icon(painterResource(Res.drawable.rounded_home_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Icon(painterResource(Res.drawable.rounded_search_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Icon(painterResource(Res.drawable.rounded_library_music_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
                     }

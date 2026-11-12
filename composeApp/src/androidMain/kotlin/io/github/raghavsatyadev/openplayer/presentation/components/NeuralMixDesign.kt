@@ -38,8 +38,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.res.painterResource
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -94,6 +92,8 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.sin
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.painterResource
 
 /** Artwork uses the same three palette hues as the rest of the app, at luminous tonal values. */
 @Immutable
@@ -434,7 +434,7 @@ internal fun NeuralMixEmblem(modifier: Modifier = Modifier) {
     val colors = MaterialTheme.colorScheme
     val shape = remember { MixPolygonShape(MaterialShapes.PuffyDiamond) }
     Box(modifier.size(40.dp).clip(shape).background(colors.primaryContainer), contentAlignment = Alignment.Center) {
-        Icon(painterResource(R.drawable.ic_smart_mix), null, Modifier.size(22.dp), tint = colors.onPrimaryContainer)
+        Icon(painterResource(Res.drawable.ic_smart_mix), null, Modifier.size(22.dp), tint = colors.onPrimaryContainer)
     }
 }
 

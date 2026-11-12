@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.graphics.vector.ImageVector
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
@@ -138,6 +137,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -387,9 +387,9 @@ fun EqualizerScreen(
                 ) {
                     Icon(
                         imageVector = when(uiState.viewMode) {
-                            EqualizerViewMode.SLIDERS -> ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24)
-                            EqualizerViewMode.GRAPH -> ImageVector.vectorResource(R.drawable.rounded_show_chart_mirrored_24)
-                            EqualizerViewMode.HYBRID -> ImageVector.vectorResource(R.drawable.rounded_view_quilt_filled_mirrored_24)
+                            EqualizerViewMode.SLIDERS -> vectorResource(Res.drawable.rounded_graphic_eq_24)
+                            EqualizerViewMode.GRAPH -> vectorResource(Res.drawable.rounded_show_chart_mirrored_24)
+                            EqualizerViewMode.HYBRID -> vectorResource(Res.drawable.rounded_view_quilt_filled_mirrored_24)
                         },
                         contentDescription = stringResource(Res.string.presentation_batch_d_eq_change_view_mode_cd)
                     )
@@ -415,7 +415,7 @@ fun EqualizerScreen(
                     )
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_power_settings_new_filled_24),
+                        imageVector = vectorResource(Res.drawable.rounded_power_settings_new_filled_24),
                         contentDescription = if (isEnabled) {
                             stringResource(Res.string.presentation_batch_d_eq_disable_cd)
                         } else {
@@ -484,7 +484,7 @@ private fun PresetTabsRow(
                     if (isPinnedCustom) {
                         Spacer(modifier = Modifier.width(4.dp))
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_star_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_star_filled_24),
                             contentDescription = stringResource(Res.string.presentation_batch_d_eq_custom_preset_cd),
                             modifier = Modifier.size(10.dp),
                             tint = if (selectedIndex == index) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary 
@@ -502,7 +502,7 @@ private fun PresetTabsRow(
             onClick = onEditClick 
         ) {
              Icon(
-                ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
+                vectorResource(Res.drawable.rounded_edit_filled_24),
                 contentDescription = stringResource(Res.string.presentation_batch_d_eq_edit_presets_cd),
                 modifier = Modifier.size(18.dp)
             )
@@ -570,7 +570,7 @@ private fun BandSlidersSection(
                         if (isCustomOrSaved) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_expand_more_24),
+                                imageVector = vectorResource(Res.drawable.rounded_expand_more_24),
                                 contentDescription = stringResource(Res.string.presentation_batch_d_eq_presets_cd),
                                 tint = MaterialTheme.colorScheme.onSecondaryContainer
                             )
@@ -589,7 +589,7 @@ private fun BandSlidersSection(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                              Icon(
-                                 imageVector = ImageVector.vectorResource(R.drawable.rounded_save_filled_24),
+                                 imageVector = vectorResource(Res.drawable.rounded_save_filled_24),
                                  contentDescription = null,
                                  modifier = Modifier.size(20.dp),
                                  tint = MaterialTheme.colorScheme.onTertiaryContainer
@@ -615,7 +615,7 @@ private fun BandSlidersSection(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_save_filled_24),
+                                imageVector = vectorResource(Res.drawable.rounded_save_filled_24),
                                 contentDescription = null,
                                 modifier = Modifier.size(20.dp),
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer
@@ -639,7 +639,7 @@ private fun BandSlidersSection(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_save_filled_24),
+                                imageVector = vectorResource(Res.drawable.rounded_save_filled_24),
                                 contentDescription = null,
                                 modifier = Modifier.size(20.dp),
                                 tint = MaterialTheme.colorScheme.onTertiaryContainer
@@ -1302,7 +1302,7 @@ private fun UnsupportedEffectCard(
                 modifier = Modifier.align(Alignment.TopEnd)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                    imageVector = vectorResource(Res.drawable.rounded_close_24),
                     contentDescription = stringResource(Res.string.dismiss),
                     tint = MaterialTheme.colorScheme.error
                 )
@@ -1316,7 +1316,7 @@ private fun UnsupportedEffectCard(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_block_24),
+                    imageVector = vectorResource(Res.drawable.rounded_block_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(32.dp)
@@ -1362,7 +1362,7 @@ private fun UnsupportedEffectRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_block_24),
+                imageVector = vectorResource(Res.drawable.rounded_block_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.error,
                 modifier = Modifier.size(24.dp)
@@ -1382,7 +1382,7 @@ private fun UnsupportedEffectRow(
             }
             IconButton(onClick = onDismiss) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_close_24),
+                    imageVector = vectorResource(Res.drawable.rounded_close_24),
                     contentDescription = stringResource(Res.string.dismiss),
                     tint = MaterialTheme.colorScheme.onErrorContainer
                 )
@@ -1428,7 +1428,7 @@ private fun IndividualEffectRow(
                 thumbContent = if (isEnabled) {
                     {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_check_24),
+                            imageVector = vectorResource(Res.drawable.rounded_check_24),
                             contentDescription = null,
                             modifier = Modifier.size(SwitchDefaults.IconSize),
                         )
@@ -1491,7 +1491,7 @@ private fun VolumeControlCard(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_volume_up_filled_mirrored_24),
+                    imageVector = vectorResource(Res.drawable.rounded_volume_up_filled_mirrored_24),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )

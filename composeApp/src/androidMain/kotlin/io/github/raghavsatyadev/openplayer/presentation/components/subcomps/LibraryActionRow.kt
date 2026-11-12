@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.subcomps
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SizeTransform
@@ -72,17 +70,17 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.MusicFolder
 import io.github.raghavsatyadev.openplayer.data.model.StorageFilter
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import java.io.File
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 val defaultShape = RoundedCornerShape(26.dp)
 val genHeight = 42.dp
@@ -243,7 +241,7 @@ private fun LibraryActionRowContent(
                         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                         modifier = Modifier.height(genHeight)
                     ) {
-                        val icon = if (isPlaylistTab) ImageVector.vectorResource(R.drawable.rounded_playlist_add_24) else ImageVector.vectorResource(R.drawable.rounded_shuffle_24)
+                        val icon = if (isPlaylistTab) vectorResource(Res.drawable.rounded_playlist_add_24) else vectorResource(Res.drawable.rounded_shuffle_24)
                         val text = if (isPlaylistTab) {
                             stringResource(Res.string.library_action_new)
                         } else {
@@ -323,7 +321,7 @@ private fun LibraryActionRowContent(
                                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
                                     Icon(
-                                        painter = painterResource(R.drawable.rounded_upload_file_24),
+                                        painter = painterResource(Res.drawable.rounded_upload_file_24),
                                         contentDescription = stringResource(Res.string.cd_import_m3u_playlist),
                                         modifier = Modifier.size(20.dp)
                                     )
@@ -387,7 +385,7 @@ private fun LibraryActionRowContent(
                         modifier = Modifier.size(genHeight)
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_my_location_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_my_location_filled_24),
                             contentDescription = stringResource(Res.string.cd_locate_current_song)
                         )
                     }
@@ -401,9 +399,9 @@ private fun LibraryActionRowContent(
                     exit = slideOutHorizontally(targetOffsetX = { it / 2 }) + fadeOut()
                 ) {
                      val finalIcon = when(currentStorageFilter) {
-                         StorageFilter.ALL -> ImageVector.vectorResource(R.drawable.rounded_dataset_filled_24)
-                         StorageFilter.ONLINE -> ImageVector.vectorResource(R.drawable.rounded_cloud_filled_24)
-                         StorageFilter.OFFLINE -> ImageVector.vectorResource(R.drawable.rounded_phone_android_filled_24)
+                         StorageFilter.ALL -> vectorResource(Res.drawable.rounded_dataset_filled_24)
+                         StorageFilter.ONLINE -> vectorResource(Res.drawable.rounded_cloud_filled_24)
+                         StorageFilter.OFFLINE -> vectorResource(Res.drawable.rounded_phone_android_filled_24)
                      }
                      val tooltipText = when(currentStorageFilter) {
                          StorageFilter.ALL -> stringResource(Res.string.library_storage_filter_all_songs)
@@ -510,7 +508,7 @@ private fun LibraryActionRowContent(
                     modifier = Modifier.size(genHeight)
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_sort_24),
+                        imageVector = vectorResource(Res.drawable.rounded_sort_24),
                         contentDescription = stringResource(Res.string.cd_sort_options),
                     )
                 }
@@ -572,9 +570,9 @@ fun Breadcrumbs(
             enabled = !isAtRoot
         ) {
             if (isAtRoot) {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_home_filled_24), contentDescription = stringResource(Res.string.tab_home))
+                Icon(vectorResource(Res.drawable.rounded_home_filled_24), contentDescription = stringResource(Res.string.tab_home))
             } else {
-                Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
+                Icon(vectorResource(Res.drawable.rounded_arrow_back_24), contentDescription = stringResource(Res.string.auth_cd_back))
             }
         }
         Spacer(Modifier.width(8.dp))
@@ -629,7 +627,7 @@ fun Breadcrumbs(
                 )
                 if (!isLast) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.rounded_chevron_right_24),
+                        imageVector = vectorResource(Res.drawable.rounded_chevron_right_24),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                         modifier = Modifier.size(20.dp)

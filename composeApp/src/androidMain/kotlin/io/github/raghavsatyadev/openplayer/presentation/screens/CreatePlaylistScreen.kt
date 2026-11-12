@@ -2,7 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
 import android.net.Uri
 import java.util.Locale
 import androidx.activity.compose.BackHandler
@@ -86,7 +85,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -150,6 +148,8 @@ import io.github.raghavsatyadev.openplayer.presentation.screens.TabAnimation
 import kotlinx.collections.immutable.persistentListOf
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 data class Quadruple<A, B, C, D>(val first: A, val second: B, val third: C, val fourth: D)
 
@@ -382,9 +382,9 @@ private fun CreatePlaylistContent(
                     ) {
                         Icon(
                             if (showCropUi || (currentStep == 1 && creationMode == PlaylistCreationMode.MANUAL)) {
-                                ImageVector.vectorResource(R.drawable.rounded_arrow_back_24)
+                                vectorResource(Res.drawable.rounded_arrow_back_24)
                             } else {
-                                ImageVector.vectorResource(R.drawable.rounded_close_24)
+                                vectorResource(Res.drawable.rounded_close_24)
                             },
                             contentDescription = stringResource(Res.string.presentation_batch_f_cd_back_or_cancel)
                         )
@@ -410,9 +410,9 @@ private fun CreatePlaylistContent(
                     icon = { 
                         Icon(
                             if (currentStep == 0 && creationMode == PlaylistCreationMode.MANUAL) {
-                                ImageVector.vectorResource(R.drawable.rounded_arrow_forward_24)
+                                vectorResource(Res.drawable.rounded_arrow_forward_24)
                             } else {
-                                ImageVector.vectorResource(R.drawable.rounded_check_24)
+                                vectorResource(Res.drawable.rounded_check_24)
                             }, 
                             contentDescription = null
                         ) 
@@ -540,13 +540,13 @@ private fun CreatePlaylistContent(
                                 ) {
                                     if (filter == StorageFilter.OFFLINE) {
                                         Icon(
-                                            painter = painterResource(id = R.drawable.ic_phonef),
+                                            painter = painterResource(Res.drawable.ic_phonef),
                                             contentDescription = null,
                                             modifier = Modifier.size(18.dp)
                                         )
                                     } else {
                                         Icon(
-                                            imageVector = ImageVector.vectorResource(R.drawable.rounded_cloud_filled_24),
+                                            imageVector = vectorResource(Res.drawable.rounded_cloud_filled_24),
                                             contentDescription = null,
                                             modifier = Modifier.size(18.dp)
                                         )
@@ -604,7 +604,7 @@ private fun CreatePlaylistContent(
                         )
                     ) {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_check_24),
+                            vectorResource(Res.drawable.rounded_check_24),
                             contentDescription = stringResource(Res.string.presentation_batch_f_create),
                             modifier = Modifier.size(28.dp)
                         )
@@ -793,7 +793,7 @@ fun EditPlaylistContent(
                         }
                     ) {
                         Icon(
-                            if (showCropUi) ImageVector.vectorResource(R.drawable.rounded_arrow_back_24) else ImageVector.vectorResource(R.drawable.rounded_close_24),
+                            if (showCropUi) vectorResource(Res.drawable.rounded_arrow_back_24) else vectorResource(Res.drawable.rounded_close_24),
                             contentDescription = stringResource(if (showCropUi) R.string.presentation_batch_f_cd_back_or_cancel else R.string.presentation_batch_f_cd_close)
                         )
                     }
@@ -807,7 +807,7 @@ fun EditPlaylistContent(
             if (!showCropUi) {
                 MediumExtendedFloatingActionButton(
                     text = { Text(stringResource(Res.string.presentation_batch_f_save)) },
-                    icon = { Icon(ImageVector.vectorResource(R.drawable.rounded_check_24), contentDescription = null) },
+                    icon = { Icon(vectorResource(Res.drawable.rounded_check_24), contentDescription = null) },
                     onClick = {
                         val imageUriString = if(selectedTab == 1) selectedImageUri?.toString() else null
                         val color = if(selectedTab == 2) selectedColor else null
@@ -993,7 +993,7 @@ private fun PlaylistFormContent(
                             .height(56.dp),
                         shape = CircleShape
                     ) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_check_24), contentDescription = null)
+                        Icon(vectorResource(Res.drawable.rounded_check_24), contentDescription = null)
                         Spacer(Modifier.width(8.dp))
                         Text(stringResource(Res.string.presentation_batch_f_done))
                     }
@@ -1036,7 +1036,7 @@ private fun PlaylistFormContent(
                                 contentAlignment = Alignment.Center
                             ) {
                                  Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_grid_view_filled_24),
+                                    vectorResource(Res.drawable.rounded_grid_view_filled_24),
                                     contentDescription = null,
                                     modifier = Modifier.size(80.dp),
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
@@ -1078,7 +1078,7 @@ private fun PlaylistFormContent(
                                          contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                                          modifier = Modifier.height(40.dp).weight(1f)
                                      ) {
-                                         Icon(ImageVector.vectorResource(R.drawable.rounded_add_photo_alternate_filled_24), contentDescription = null, modifier = Modifier.size(18.dp))
+                                         Icon(vectorResource(Res.drawable.rounded_add_photo_alternate_filled_24), contentDescription = null, modifier = Modifier.size(18.dp))
                                          Spacer(Modifier.width(8.dp))
                                          Text(stringResource(Res.string.presentation_batch_f_change), style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                      }
@@ -1091,7 +1091,7 @@ private fun PlaylistFormContent(
                                              contentColor = MaterialTheme.colorScheme.onError
                                          )
                                      ) {
-                                         Icon(ImageVector.vectorResource(R.drawable.rounded_delete_filled_24), contentDescription = null, modifier = Modifier.size(18.dp))
+                                         Icon(vectorResource(Res.drawable.rounded_delete_filled_24), contentDescription = null, modifier = Modifier.size(18.dp))
                                          Spacer(Modifier.width(8.dp))
                                          Text(stringResource(Res.string.presentation_batch_f_remove), style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                      }
@@ -1108,7 +1108,7 @@ private fun PlaylistFormContent(
                              ) {
                                  Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                      Icon(
-                                         ImageVector.vectorResource(R.drawable.rounded_add_photo_alternate_filled_24),
+                                         vectorResource(Res.drawable.rounded_add_photo_alternate_filled_24),
                                          contentDescription = stringResource(Res.string.presentation_batch_f_cd_add_photo),
                                          modifier = Modifier.size(56.dp),
                                          tint = MaterialTheme.colorScheme.primary
@@ -1171,7 +1171,7 @@ private fun PlaylistFormContent(
                                  contentAlignment = Alignment.Center
                              ) {
                                  if (selectedIconName != null) {
-                                     val icon = getIconByName(selectedIconName) ?: ImageVector.vectorResource(R.drawable.rounded_music_note_24)
+                                     val icon = getIconByName(selectedIconName) ?: vectorResource(Res.drawable.rounded_music_note_24)
                                      Icon(
                                          imageVector = icon,
                                          contentDescription = null,
@@ -1379,7 +1379,7 @@ private fun PlaylistFormContent(
                                  contentAlignment = Alignment.Center
                              ) {
                                  Icon(
-                                     imageVector = getIconByName(iconName) ?: ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                                     imageVector = getIconByName(iconName) ?: vectorResource(Res.drawable.rounded_music_note_24),
                                      contentDescription = null,
                                      tint = if(isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
                                  )
@@ -1481,14 +1481,14 @@ private fun PlaylistFormContent(
 @Composable
 fun getIconByName(name: String?): ImageVector? {
     return when (name) {
-        "MusicNote" -> ImageVector.vectorResource(R.drawable.rounded_music_note_24)
-        "Headphones" -> ImageVector.vectorResource(R.drawable.rounded_headphones_filled_24)
-        "Album" -> ImageVector.vectorResource(R.drawable.rounded_album_filled_24)
-        "Mic" -> ImageVector.vectorResource(R.drawable.rounded_mic_external_on_filled_24) 
-        "Speaker" -> ImageVector.vectorResource(R.drawable.rounded_speaker_filled_24)
-        "Favorite" -> ImageVector.vectorResource(R.drawable.rounded_favorite_filled_24)
-        "Piano" -> ImageVector.vectorResource(R.drawable.rounded_piano_24)
-        "Queue" -> ImageVector.vectorResource(R.drawable.rounded_queue_music_24)
+        "MusicNote" -> vectorResource(Res.drawable.rounded_music_note_24)
+        "Headphones" -> vectorResource(Res.drawable.rounded_headphones_filled_24)
+        "Album" -> vectorResource(Res.drawable.rounded_album_filled_24)
+        "Mic" -> vectorResource(Res.drawable.rounded_mic_external_on_filled_24) 
+        "Speaker" -> vectorResource(Res.drawable.rounded_speaker_filled_24)
+        "Favorite" -> vectorResource(Res.drawable.rounded_favorite_filled_24)
+        "Piano" -> vectorResource(Res.drawable.rounded_piano_24)
+        "Queue" -> vectorResource(Res.drawable.rounded_queue_music_24)
         else -> null
     }
 }

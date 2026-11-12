@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
 import android.widget.Toast
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
@@ -86,12 +85,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
@@ -147,6 +144,8 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(
@@ -351,7 +350,7 @@ fun PlaylistDetailScreen(
                         ),
                         onClick = onBackClick
                     ) {
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_arrow_back_24), stringResource(Res.string.auth_cd_back))
+                        Icon(vectorResource(Res.drawable.rounded_arrow_back_24), stringResource(Res.string.auth_cd_back))
                     }
                 },
                 actions = {
@@ -361,7 +360,7 @@ fun PlaylistDetailScreen(
                         }
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_sort_24),
+                            imageVector = vectorResource(Res.drawable.rounded_sort_24),
                             contentDescription = sortSongsLabel
                         )
                     }
@@ -373,7 +372,7 @@ fun PlaylistDetailScreen(
                                 contentColor = MaterialTheme.colorScheme.onSurface
                             ),
                             onClick = { showPlaylistOptionsSheet = true }
-                        ) { Icon(ImageVector.vectorResource(R.drawable.rounded_more_vert_24), moreOptionsLabel) }
+                        ) { Icon(vectorResource(Res.drawable.rounded_more_vert_24), moreOptionsLabel) }
                     }
                 },
                 scrollBehavior = scrollBehavior
@@ -443,7 +442,7 @@ fun PlaylistDetailScreen(
                         contentPadding = PaddingValues(horizontal = 10.dp)
                     ) {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_play_arrow_filled_24),
+                            vectorResource(Res.drawable.rounded_play_arrow_filled_24),
                             contentDescription = stringResource(Res.string.cd_play),
                             modifier = Modifier.size(20.dp)
                         )
@@ -484,7 +483,7 @@ fun PlaylistDetailScreen(
                         contentPadding = PaddingValues(horizontal = 10.dp)
                     ) {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_shuffle_24),
+                            vectorResource(Res.drawable.rounded_shuffle_24),
                             contentDescription = shuffleLabel,
                             modifier = Modifier.size(ButtonDefaults.IconSize)
                         )
@@ -546,7 +545,7 @@ fun PlaylistDetailScreen(
                                 .animateContentSize()
                         ) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.rounded_add_24),
+                                imageVector = vectorResource(Res.drawable.rounded_add_24),
                                 contentDescription = addSongsCd,
                                 modifier = Modifier.size(20.dp)
                             )
@@ -617,7 +616,7 @@ fun PlaylistDetailScreen(
                                     ) {
                                         Icon(
                                             modifier = Modifier.size(18.dp),
-                                            imageVector = ImageVector.vectorResource(R.drawable.rounded_do_not_disturb_on_24),
+                                            imageVector = vectorResource(Res.drawable.rounded_do_not_disturb_on_24),
                                             contentDescription = removeSongsCd,
                                             tint = removeIconColor
                                         )
@@ -647,7 +646,7 @@ fun PlaylistDetailScreen(
                                     ) {
                                         Icon(
                                             modifier = Modifier.size(22.dp),
-                                            painter = painterResource(R.drawable.drag_order_icon),
+                                            painter = painterResource(Res.drawable.drag_order_icon),
                                             contentDescription = reorderSongsCd,
                                             tint = reorderIconColor
                                         )
@@ -716,7 +715,7 @@ fun PlaylistDetailScreen(
                         .fillMaxSize()
                         .weight(1f), Alignment.Center) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(ImageVector.vectorResource(R.drawable.rounded_music_off_24), null, Modifier.size(48.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Icon(vectorResource(Res.drawable.rounded_music_off_24), null, Modifier.size(48.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                             Spacer(Modifier.height(8.dp))
                             Text(playlistEmptyTitle, style = MaterialTheme.typography.titleMedium)
                             val emptyMessage = when {
@@ -840,7 +839,7 @@ fun PlaylistDetailScreen(
                                                     .size(40.dp)
                                             ) {
                                                 Icon(
-                                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_drag_indicator_24),
+                                                    imageVector = vectorResource(Res.drawable.rounded_drag_indicator_24),
                                                     contentDescription = reorderSongCd,
                                                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                                                 )
@@ -924,7 +923,7 @@ fun PlaylistDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     PlaylistActionItem(
-                        icon = painterResource(R.drawable.rounded_edit_24),
+                        icon = painterResource(Res.drawable.rounded_edit_24),
                         label = editPlaylistLabel,
                         shape = getSegmentedItemShape(0, optionCount),
                         onClick = {
@@ -934,7 +933,7 @@ fun PlaylistDetailScreen(
                     )
                     if (isRulePlaylist) {
                         PlaylistActionItem(
-                            icon = painterResource(R.drawable.rounded_tune_24),
+                            icon = painterResource(Res.drawable.rounded_tune_24),
                             label = stringResource(Res.string.smart_rules_edit_menu),
                             shape = getSegmentedItemShape(1, optionCount),
                             onClick = {
@@ -944,7 +943,7 @@ fun PlaylistDetailScreen(
                         )
                     }
                     PlaylistActionItem(
-                        icon = painterResource(R.drawable.rounded_delete_24),
+                        icon = painterResource(Res.drawable.rounded_delete_24),
                         label = deletePlaylistLabel,
                         shape = getSegmentedItemShape(1 + ruleShift, optionCount),
                         onClick = {
@@ -953,7 +952,7 @@ fun PlaylistDetailScreen(
                         }
                     )
                     PlaylistActionItem(
-                        icon = painterResource(R.drawable.outline_graph_1_24),
+                        icon = painterResource(Res.drawable.outline_graph_1_24),
                         label = setDefaultTransitionLabel,
                         shape = getSegmentedItemShape(2 + ruleShift, optionCount),
                         onClick = {
@@ -963,7 +962,7 @@ fun PlaylistDetailScreen(
                     )
                     if (cloudSongsInPlaylist.isNotEmpty()) {
                         PlaylistActionItem(
-                            icon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.rounded_cloud_download_filled_24)),
+                            icon = rememberVectorPainter(vectorResource(Res.drawable.rounded_cloud_download_filled_24)),
                             label = downloadPlaylistLabel,
                             shape = getSegmentedItemShape(3 + ruleShift, optionCount),
                             onClick = {
@@ -982,7 +981,7 @@ fun PlaylistDetailScreen(
                         )
                     }
                     PlaylistActionItem(
-                        icon = painterResource(R.drawable.rounded_attach_file_24),
+                        icon = painterResource(Res.drawable.rounded_attach_file_24),
                         label = exportPlaylistLabel,
                         shape = getSegmentedItemShape(optionCount - 1, optionCount),
                         onClick = {

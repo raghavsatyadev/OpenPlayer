@@ -23,9 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricBand
@@ -35,6 +33,7 @@ import kotlin.math.log10
 import kotlin.math.pow
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 internal fun bandTypeLabel(type: ParametricBandType): String = stringResource(
@@ -70,7 +69,7 @@ fun ParametricBandRow(
                 Column(Modifier.weight(1f)) {
                     TextButton(onClick = { menuOpen = true }) {
                         Text(bandTypeLabel(band.type))
-                        Icon(ImageVector.vectorResource(R.drawable.rounded_expand_more_24), null)
+                        Icon(vectorResource(Res.drawable.rounded_expand_more_24), null)
                     }
                     DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                         ParametricBandType.entries.forEach { type ->
@@ -91,7 +90,7 @@ fun ParametricBandRow(
                 )
                 IconButton(onClick = onRemove) {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_delete_24),
+                        vectorResource(Res.drawable.rounded_delete_24),
                         stringResource(Res.string.parametric_eq_band_remove_cd),
                     )
                 }

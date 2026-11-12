@@ -1,9 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.player
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.clickable
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,6 +36,7 @@ import io.github.raghavsatyadev.openplayer.data.model.Lyrics
 import java.util.Locale
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 private val BookmarkTitleWhitespaceRegex = Regex("\\s+")
 
@@ -82,7 +80,7 @@ fun AddBookmarkDialog(
                 tonalElevation = 2.dp
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_bookmark_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_bookmark_filled_24),
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
@@ -114,7 +112,7 @@ fun AddBookmarkDialog(
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_bookmark_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_bookmark_filled_24),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
@@ -199,7 +197,7 @@ fun AddBookmarkDialog(
                     singleLine = true,
                     leadingIcon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.rounded_edit_filled_24),
+                            imageVector = vectorResource(Res.drawable.rounded_edit_filled_24),
                             contentDescription = null
                         )
                     },

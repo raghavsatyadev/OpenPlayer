@@ -61,6 +61,7 @@ import io.github.raghavsatyadev.openplayer.presentation.components.rememberModal
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberSyncedSliderState
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -204,7 +205,7 @@ private fun DeckUi(
                                 modifier = Modifier.fillMaxSize()
                             )
                         } else {
-                            Icon(painterResource(id = R.drawable.rounded_playlist_add_24), stringResource(Res.string.presentation_batch_d_mashup_load_song_cd), modifier = Modifier.size(40.dp))
+                            Icon(painterResource(Res.drawable.rounded_playlist_add_24), stringResource(Res.string.presentation_batch_d_mashup_load_song_cd), modifier = Modifier.size(40.dp))
                         }
                     }
                     Column(modifier = Modifier.weight(1f)) {

@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.player
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -35,13 +33,13 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.LocalMaterialTheme
 import kotlinx.coroutines.delay
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlin.math.roundToInt
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 private enum class PlaybackButtonType { NONE, PREVIOUS, PLAY_PAUSE, NEXT }
 
@@ -162,7 +160,7 @@ fun AnimatedPlaybackControls(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_skip_previous_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_skip_previous_filled_24),
                     contentDescription = stringResource(Res.string.previous_track),
                     tint = tintPreviousIcon,
                     modifier = Modifier.size(iconSize)
@@ -221,7 +219,7 @@ fun AnimatedPlaybackControls(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.rounded_skip_next_filled_24),
+                    imageVector = vectorResource(Res.drawable.rounded_skip_next_filled_24),
                     contentDescription = stringResource(Res.string.next_track),
                     tint = tintNextIcon,
                     modifier = Modifier.size(iconSize)

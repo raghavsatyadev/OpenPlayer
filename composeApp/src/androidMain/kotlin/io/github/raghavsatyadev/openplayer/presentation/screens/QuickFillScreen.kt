@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
@@ -39,11 +37,11 @@ import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
 import io.github.raghavsatyadev.openplayer.presentation.utils.GenreIconProvider
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-import io.github.raghavsatyadev.openplayer.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun QuickFillDialog(
@@ -115,7 +113,7 @@ fun QuickFillContent(
                         )
                     ) {
                         Icon(
-                            if (step > 0) ImageVector.vectorResource(R.drawable.rounded_arrow_back_24) else ImageVector.vectorResource(R.drawable.rounded_close_24),
+                            if (step > 0) vectorResource(Res.drawable.rounded_arrow_back_24) else vectorResource(Res.drawable.rounded_close_24),
                             contentDescription = stringResource(Res.string.auth_cd_back)
                         )
                     }
@@ -145,9 +143,9 @@ fun QuickFillContent(
                                    .fillMaxWidth()
                                    .padding(16.dp),
                                label = { Text(stringResource(Res.string.presentation_batch_b_search_songs_label)) },
-                               leadingIcon = { Icon(ImageVector.vectorResource(R.drawable.rounded_search_24), contentDescription = null) },
+                               leadingIcon = { Icon(vectorResource(Res.drawable.rounded_search_24), contentDescription = null) },
                                trailingIcon = if (searchQuery.isNotEmpty()) {
-                                   { IconButton(onClick = { searchQuery = "" }) { Icon(ImageVector.vectorResource(R.drawable.rounded_close_24), null) } }
+                                   { IconButton(onClick = { searchQuery = "" }) { Icon(vectorResource(Res.drawable.rounded_close_24), null) } }
                                } else null,
                                singleLine = true,
                                shape = RoundedCornerShape(16.dp),
@@ -286,7 +284,7 @@ fun QuickFillContent(
                     )
                     Spacer(Modifier.width(8.dp))
                     Icon(
-                        if (step == 0) ImageVector.vectorResource(R.drawable.rounded_arrow_forward_24) else ImageVector.vectorResource(R.drawable.rounded_auto_fix_high_filled_24),
+                        if (step == 0) vectorResource(Res.drawable.rounded_arrow_forward_24) else vectorResource(Res.drawable.rounded_auto_fix_high_filled_24),
                         contentDescription = null,
                         modifier = Modifier.size(20.dp)
                     )
@@ -340,7 +338,7 @@ fun GenreValidatorContent(
             ) {
                  Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                      Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                         Icon(ImageVector.vectorResource(R.drawable.rounded_add_24), addCustomCd, tint = MaterialTheme.colorScheme.primary)
+                         Icon(vectorResource(Res.drawable.rounded_add_24), addCustomCd, tint = MaterialTheme.colorScheme.primary)
                          Text(newGenreLabel, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
                      }
                  }

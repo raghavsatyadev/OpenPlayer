@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,13 +22,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.dp
 import coil3.size.Size
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import kotlin.math.floor
 import kotlin.math.sqrt
 import kotlinx.collections.immutable.ImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun PlaylistArtCollage(
@@ -46,7 +44,7 @@ fun PlaylistArtCollage(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.rounded_queue_music_24),
+                imageVector = vectorResource(Res.drawable.rounded_queue_music_24),
                 contentDescription = stringResource(Res.string.cd_playlist_artwork),
                 modifier = Modifier
                     .fillMaxSize()

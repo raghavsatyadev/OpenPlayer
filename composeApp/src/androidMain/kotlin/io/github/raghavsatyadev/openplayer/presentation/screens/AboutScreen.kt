@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -109,6 +107,8 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlin.math.roundToInt
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 private data class Contributor(
     val id: String,
@@ -182,14 +182,14 @@ fun AboutScreen(
             id = "source",
             title = stringResource(Res.string.about_link_source_title),
             subtitle = stringResource(Res.string.about_link_source_subtitle),
-            icon = painterResource(R.drawable.github),
+            icon = painterResource(Res.drawable.github),
             onClick = { openUrl(context, SourceRepoUrl) },
         ),
         ProjectLink(
             id = "licenses",
             title = stringResource(Res.string.about_licenses_title),
             subtitle = stringResource(Res.string.about_licenses_subtitle),
-            icon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.rounded_balance_24)),
+            icon = rememberVectorPainter(vectorResource(Res.drawable.rounded_balance_24)),
             onClick = { navController.navigateSafely(Screen.Licenses.route) },
         ),
     )
@@ -416,7 +416,7 @@ private fun AboutHeroCard(
                         color = MaterialTheme.colorScheme.primaryContainer,
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.openplayer_base_monochrome),
+                            painter = painterResource(Res.drawable.openplayer_base_monochrome),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier.padding(10.dp).size(28.dp),
@@ -482,9 +482,9 @@ private fun AboutHeroCard(
 @Composable
 private fun CommunitySignalsRow() {
     val labels = listOf(
-        stringResource(Res.string.about_signal_open_source) to ImageVector.vectorResource(R.drawable.rounded_public_24),
-        stringResource(Res.string.about_signal_community_first) to ImageVector.vectorResource(R.drawable.rounded_auto_awesome_filled_24),
-        stringResource(Res.string.about_signal_material3) to ImageVector.vectorResource(R.drawable.rounded_palette_filled_24),
+        stringResource(Res.string.about_signal_open_source) to vectorResource(Res.drawable.rounded_public_24),
+        stringResource(Res.string.about_signal_community_first) to vectorResource(Res.drawable.rounded_auto_awesome_filled_24),
+        stringResource(Res.string.about_signal_material3) to vectorResource(Res.drawable.rounded_palette_filled_24),
     )
 
     FlowRow(
@@ -546,7 +546,7 @@ private fun AboutSupportCard(
                     color = MaterialTheme.colorScheme.primary,
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.rounded_favorite_24),
+                        painter = painterResource(Res.drawable.rounded_favorite_24),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(12.dp).size(24.dp),
@@ -611,7 +611,7 @@ private fun AboutSupportCard(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.github),
+                    painter = painterResource(Res.drawable.github),
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
                 )
@@ -718,7 +718,7 @@ private fun AboutLinkCard(
             }
 
             Icon(
-                painter = painterResource(R.drawable.rounded_chevron_right_24),
+                painter = painterResource(Res.drawable.rounded_chevron_right_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(22.dp),

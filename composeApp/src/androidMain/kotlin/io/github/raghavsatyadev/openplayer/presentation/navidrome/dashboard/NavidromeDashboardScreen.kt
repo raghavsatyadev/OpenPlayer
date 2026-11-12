@@ -21,12 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.database.NavidromePlaylistEntity
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
@@ -41,6 +39,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -88,7 +87,7 @@ fun NavidromeDashboardScreen(
                         )
                     ) {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
+                            vectorResource(Res.drawable.rounded_arrow_back_24),
                             contentDescription = stringResource(Res.string.auth_cd_back)
                         )
                     }
@@ -238,7 +237,7 @@ private fun DashboardContent(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = R.drawable.ic_navidrome),
+                            imageVector = vectorResource(Res.drawable.ic_navidrome),
                             contentDescription = null,
                             modifier = Modifier.size(32.dp),
                             tint = Color.Unspecified
@@ -301,7 +300,7 @@ private fun DashboardContent(
             if (playlists.isEmpty()) {
                 TextButton(onClick = onSyncAll) {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_sync_24),
+                        vectorResource(Res.drawable.rounded_sync_24),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
@@ -322,7 +321,7 @@ private fun DashboardContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_cloud_queue_filled_24),
+                        vectorResource(Res.drawable.rounded_cloud_queue_filled_24),
                         contentDescription = null,
                         modifier = Modifier.size(64.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
@@ -487,7 +486,7 @@ private fun SubsonicMenuCard(
                         Text(stringResource(Res.string.dash_status_syncing), fontFamily = RoundedSans)
                     } else {
                         Icon(
-                            ImageVector.vectorResource(R.drawable.rounded_cloud_sync_filled_24),
+                            vectorResource(Res.drawable.rounded_cloud_sync_filled_24),
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
@@ -505,7 +504,7 @@ private fun SubsonicMenuCard(
                     )
                 ) {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_logout_mirrored_24),
+                        vectorResource(Res.drawable.rounded_logout_mirrored_24),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
@@ -568,7 +567,7 @@ private fun NavidromeLibrarySummaryPanel(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = if (loadFailed) ImageVector.vectorResource(R.drawable.rounded_warning_filled_24) else ImageVector.vectorResource(R.drawable.rounded_library_music_filled_24),
+                        imageVector = if (loadFailed) vectorResource(Res.drawable.rounded_warning_filled_24) else vectorResource(Res.drawable.rounded_library_music_filled_24),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
                         tint = iconColor
@@ -604,7 +603,7 @@ private fun NavidromeLibrarySummaryPanel(
                         },
                         leadingIcon = {
                             Icon(
-                                ImageVector.vectorResource(R.drawable.rounded_folder_filled_24),
+                                vectorResource(Res.drawable.rounded_folder_filled_24),
                                 contentDescription = null,
                                 modifier = Modifier.size(AssistChipDefaults.IconSize)
                             )
@@ -630,7 +629,7 @@ private fun NavidromeLibrarySummaryPanel(
                             },
                             icon = {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_sync_24),
+                                    vectorResource(Res.drawable.rounded_sync_24),
                                     contentDescription = null,
                                     modifier = Modifier.size(SuggestionChipDefaults.IconSize)
                                 )
@@ -668,7 +667,7 @@ private fun NavidromeLibrarySummaryPanel(
                             },
                             leadingIcon = {
                                 Icon(
-                                    ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24),
+                                    vectorResource(Res.drawable.rounded_check_circle_filled_24),
                                     contentDescription = null,
                                     modifier = Modifier.size(FilterChipDefaults.IconSize)
                                 )
@@ -730,7 +729,7 @@ private fun LibrarySelectorSheet(
             Spacer(modifier = Modifier.height(16.dp))
 
             LibrarySelectorChoice(
-                icon = ImageVector.vectorResource(R.drawable.rounded_select_all_24),
+                icon = vectorResource(Res.drawable.rounded_select_all_24),
                 title = stringResource(Res.string.dash_libraries_all),
                 subtitle = stringResource(Res.string.dash_libraries_all_subtitle),
                 checked = effectiveSelectedIds.size == musicFolders.size,
@@ -741,7 +740,7 @@ private fun LibrarySelectorSheet(
 
             musicFolders.forEach { folder ->
                 LibrarySelectorChoice(
-                    icon = ImageVector.vectorResource(R.drawable.rounded_folder_filled_24),
+                    icon = vectorResource(Res.drawable.rounded_folder_filled_24),
                     title = folder.name,
                     subtitle = stringResource(Res.string.dash_libraries_folder_subtitle),
                     checked = folder.id in effectiveSelectedIds,
@@ -838,7 +837,7 @@ private fun LibrarySelectorChoice(
             }
             Spacer(modifier = Modifier.width(12.dp))
             Icon(
-                imageVector = if (checked) ImageVector.vectorResource(R.drawable.rounded_check_circle_filled_24) else ImageVector.vectorResource(R.drawable.rounded_radio_button_unchecked_filled_24),
+                imageVector = if (checked) vectorResource(Res.drawable.rounded_check_circle_filled_24) else vectorResource(Res.drawable.rounded_radio_button_unchecked_filled_24),
                 contentDescription = null,
                 modifier = Modifier.size(26.dp),
                 tint = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
@@ -882,7 +881,7 @@ private fun SongCard(
                     )
                 } else {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                        vectorResource(Res.drawable.rounded_music_note_24),
                         contentDescription = null,
                         modifier = Modifier.size(20.dp),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer
@@ -956,7 +955,7 @@ private fun PlaylistCard(
                     )
                 } else {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+                        vectorResource(Res.drawable.rounded_music_note_24),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer
@@ -992,7 +991,7 @@ private fun PlaylistCard(
                 )
             ) {
                 Icon(
-                    ImageVector.vectorResource(R.drawable.rounded_sync_24),
+                    vectorResource(Res.drawable.rounded_sync_24),
                     contentDescription = stringResource(Res.string.cd_sync),
                     modifier = Modifier.size(20.dp)
                 )
@@ -1009,7 +1008,7 @@ private fun PlaylistCard(
                     )
                 ) {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.rounded_delete_filled_24),
+                        vectorResource(Res.drawable.rounded_delete_filled_24),
                         contentDescription = stringResource(Res.string.cd_remove),
                         modifier = Modifier.size(20.dp)
                     )

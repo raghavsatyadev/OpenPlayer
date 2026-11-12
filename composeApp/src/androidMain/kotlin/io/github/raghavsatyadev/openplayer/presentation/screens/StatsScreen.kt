@@ -2,7 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
 import android.text.format.DateFormat as AndroidDateFormat
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
@@ -160,6 +159,7 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 private const val PULL_TO_REFRESH_MIN_DURATION_MS = 3500L
 private const val HEAVY_ROTATION_LIMIT = 5
@@ -377,7 +377,7 @@ fun StatsScreen(
                     if (summary == null || !summary.hasListeningActivity()) {
                         item(key = "empty", contentType = "empty") {
                             StatsEmptyState(
-                                icon = ImageVector.vectorResource(R.drawable.rounded_graphic_eq_24),
+                                icon = vectorResource(Res.drawable.rounded_graphic_eq_24),
                                 title = stringResource(Res.string.presentation_batch_g_stats_empty_no_timeline_title),
                                 subtitle = stringResource(Res.string.presentation_batch_g_stats_empty_no_timeline_subtitle),
                                 modifier = Modifier.padding(horizontal = ScreenGutter)
@@ -456,7 +456,7 @@ fun StatsScreen(
                                 )
                             ) {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.rounded_refresh_24),
+                                    imageVector = vectorResource(Res.drawable.rounded_refresh_24),
                                     contentDescription = stringResource(Res.string.presentation_batch_g_stats_cd_refresh)
                                 )
                             }
@@ -601,7 +601,7 @@ private fun StatsHeroSection(
             label = stringResource(Res.string.presentation_batch_g_stats_hero_listening),
             value = formatListeningDurationCompact(summary.totalDurationMs),
             footer = listeningFooter,
-            icon = ImageVector.vectorResource(R.drawable.rounded_headphones_filled_24),
+            icon = vectorResource(Res.drawable.rounded_headphones_filled_24),
             iconShape = RoundedStarShape(sides = 8, curve = 0.1, rotation = 0f),
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -613,7 +613,7 @@ private fun StatsHeroSection(
             label = stringResource(Res.string.presentation_batch_g_stats_hero_plays),
             value = playsValue,
             footer = pluralStringResource(Res.plurals.stats_tracks_count, summary.uniqueSongs, summary.uniqueSongs),
-            icon = ImageVector.vectorResource(R.drawable.rounded_music_note_24),
+            icon = vectorResource(Res.drawable.rounded_music_note_24),
             iconShape = MaterialShapes.Cookie9Sided.toShape(),
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
             contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
@@ -863,7 +863,7 @@ private fun ListeningHabitsGrid(
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 HabitTile(
-                    icon = ImageVector.vectorResource(R.drawable.rounded_hearing_24),
+                    icon = vectorResource(Res.drawable.rounded_hearing_24),
                     iconShape = CircleShape,
                     iconContainer = MaterialTheme.colorScheme.primaryContainer,
                     onIconContainer = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -877,7 +877,7 @@ private fun ListeningHabitsGrid(
                 )
                 if (timelineShowsPeakDay) {
                     HabitTile(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_calendar_month_24),
+                        icon = vectorResource(Res.drawable.rounded_calendar_month_24),
                         iconShape = MaterialShapes.Cookie9Sided.toShape(),
                         iconContainer = MaterialTheme.colorScheme.secondaryContainer,
                         onIconContainer = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -891,7 +891,7 @@ private fun ListeningHabitsGrid(
                     )
                 } else {
                     HabitTile(
-                        icon = ImageVector.vectorResource(R.drawable.rounded_calendar_month_24),
+                        icon = vectorResource(Res.drawable.rounded_calendar_month_24),
                         iconShape = MaterialShapes.Cookie9Sided.toShape(),
                         iconContainer = MaterialTheme.colorScheme.secondaryContainer,
                         onIconContainer = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -914,7 +914,7 @@ private fun ListeningHabitsGrid(
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 HabitTile(
-                    icon = ImageVector.vectorResource(R.drawable.rounded_bolt_24),
+                    icon = vectorResource(Res.drawable.rounded_bolt_24),
                     iconShape = RoundedStarShape(sides = 8, curve = 0.1, rotation = 0f),
                     iconContainer = MaterialTheme.colorScheme.tertiaryContainer,
                     onIconContainer = MaterialTheme.colorScheme.onTertiaryContainer,
@@ -931,7 +931,7 @@ private fun ListeningHabitsGrid(
                         .fillMaxHeight()
                 )
                 HabitTile(
-                    icon = ImageVector.vectorResource(R.drawable.rounded_auto_graph_24),
+                    icon = vectorResource(Res.drawable.rounded_auto_graph_24),
                     iconShape = RoundedCornerShape(12.dp),
                     iconContainer = MaterialTheme.colorScheme.primaryContainer,
                     onIconContainer = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -1242,7 +1242,7 @@ private fun ListeningTimelineSection(
 
         if (!hasTimeline) {
             StatsEmptyState(
-                icon = ImageVector.vectorResource(R.drawable.rounded_play_circle_24),
+                icon = vectorResource(Res.drawable.rounded_play_circle_24),
                 title = stringResource(Res.string.presentation_batch_g_stats_empty_no_timeline_title),
                 subtitle = stringResource(Res.string.presentation_batch_g_stats_empty_no_timeline_subtitle)
             )
@@ -1321,7 +1321,7 @@ private fun ListeningTimelineSection(
                             formatListeningDurationCompact(average)
                         }
                     },
-                    icon = ImageVector.vectorResource(R.drawable.rounded_auto_graph_24)
+                    icon = vectorResource(Res.drawable.rounded_auto_graph_24)
                 )
             }
         }
@@ -1764,10 +1764,10 @@ private enum class RotationDimension(
 
     val emptyIcon: ImageVector
         @Composable get() = when (this) {
-            Tracks -> ImageVector.vectorResource(R.drawable.rounded_music_note_24)
-            Artists -> ImageVector.vectorResource(R.drawable.rounded_person_24)
-            Albums -> ImageVector.vectorResource(R.drawable.rounded_album_24)
-            Genres -> ImageVector.vectorResource(R.drawable.rounded_category_24)
+            Tracks -> vectorResource(Res.drawable.rounded_music_note_24)
+            Artists -> vectorResource(Res.drawable.rounded_person_24)
+            Albums -> vectorResource(Res.drawable.rounded_album_24)
+            Genres -> vectorResource(Res.drawable.rounded_category_24)
         }
 }
 
@@ -2380,7 +2380,7 @@ private fun ListeningVarietyCard(
 
         if (slices.isEmpty()) {
             StatsEmptyState(
-                icon = ImageVector.vectorResource(R.drawable.rounded_auto_graph_24),
+                icon = vectorResource(Res.drawable.rounded_auto_graph_24),
                 title = stringResource(Res.string.presentation_batch_g_stats_empty_no_concentration_title),
                 subtitle = stringResource(Res.string.presentation_batch_g_stats_empty_no_concentration_subtitle)
             )
