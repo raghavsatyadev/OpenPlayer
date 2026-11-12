@@ -929,11 +929,11 @@ private fun CoverArtEditorCard(
                                 contentDescription = stringResource(Res.string.cd_current_song_cover_art),
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Crop,
-                                placeholderResId = R.drawable.rounded_music_note_24,
+                                placeholder = Res.drawable.rounded_music_note_24,
                                 // Songs without embedded art can still carry a stale MediaStore
                                 // album-art URI. Show the same neutral note as the other no-art
                                 // branches instead of an error icon when it fails to load.
-                                errorResId = R.drawable.rounded_music_note_24
+                                error = Res.drawable.rounded_music_note_24
                             )
                         }
 

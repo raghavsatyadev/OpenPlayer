@@ -107,6 +107,7 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlin.math.roundToInt
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -889,8 +890,8 @@ private fun ContributorAvatar(
                     modifier = Modifier.fillMaxSize(),
                     shape = CircleShape,
                     contentScale = ContentScale.Crop,
-                    placeholderResId = iconRes ?: R.drawable.ic_music_placeholder,
-                    errorResId = R.drawable.rounded_broken_image_24,
+                    placeholder = contributorPlaceholderResource(iconRes),
+                    error = Res.drawable.rounded_broken_image_24,
                     targetSize = Size(96, 96),
                     onState = { state ->
                         if (state is AsyncImagePainter.State.Success) {
@@ -931,6 +932,13 @@ private fun ContributorAvatar(
         }
     }
 }
+
+private fun contributorPlaceholderResource(iconRes: Int?): DrawableResource =
+    when (iconRes) {
+        null -> Res.drawable.ic_music_placeholder
+        R.drawable.round_developer_board_24 -> Res.drawable.round_developer_board_24
+        else -> Res.drawable.rounded_person_24
+    }
 
 @Composable
 private fun SocialIconButton(

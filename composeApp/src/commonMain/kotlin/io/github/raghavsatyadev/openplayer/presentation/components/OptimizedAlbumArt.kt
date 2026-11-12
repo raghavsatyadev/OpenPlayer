@@ -1,12 +1,10 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import android.graphics.Bitmap
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,28 +14,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.LocalPlatformContext
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
-import coil3.memory.MemoryCache
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import coil3.request.error
 import coil3.size.Dimension
 import coil3.size.Size
-import io.github.raghavsatyadev.openplayer.R
-import io.github.raghavsatyadev.openplayer.utils.LocalArtworkUri
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import io.github.raghavsatyadev.openplayer.utils.LocalArtworkUri
+import org.jetbrains.compose.resources.painterResource
 
 internal const val MaxSafeAlbumArtDimensionPx = 2048
 internal val SafeOriginalAlbumArtSize = Size(MaxSafeAlbumArtDimensionPx, MaxSafeAlbumArtDimensionPx)
@@ -52,20 +47,19 @@ fun OptimizedAlbumArt(
     placeholderModel: Any? = null
 ) {
     val artworkModel = rememberArtworkModelWithCacheVersion(uri)
-    val context = LocalContext.current
+    val context = LocalPlatformContext.current
     val requestTargetSize = remember(targetSize) {
         safeAlbumArtTargetSize(targetSize)
     }
     val isStableLocalArtwork = remember(artworkModel) {
         when (artworkModel) {
             is String -> LocalArtworkUri.isLocalArtworkUri(artworkModel)
-            is Uri -> LocalArtworkUri.isLocalArtworkUri(artworkModel)
             is ImageRequest -> {
                 val data = artworkModel.data
                 (data as? String)?.let(LocalArtworkUri::isLocalArtworkUri) == true ||
-                    LocalArtworkUri.isLocalArtworkUri(data as? Uri)
+                    platformUriString(data)?.let(LocalArtworkUri::isLocalArtworkUri) == true
             }
-            else -> false
+            else -> platformUriString(artworkModel)?.let(LocalArtworkUri::isLocalArtworkUri) == true
         }
     }
 
@@ -101,7 +95,6 @@ fun OptimizedAlbumArt(
             else -> ImageRequest.Builder(context)
                 .data(artworkModel)
                 .crossfade(350)
-                .error(R.drawable.ic_music_placeholder)
                 .size(requestTargetSize)
                 .memoryCachePolicy(CachePolicy.ENABLED)
                 .diskCachePolicy(if (isStableLocalArtwork) CachePolicy.DISABLED else CachePolicy.ENABLED)
@@ -131,7 +124,7 @@ fun OptimizedAlbumArt(
             if (cachedPainter != null) {
                 SubcomposeAsyncImageContent(painter = cachedPainter)
             } else if (placeholderModel != null) {
-                 SubcomposeAsyncImage(
+                SubcomposeAsyncImage(
                     model = placeholderModel,
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
@@ -166,11 +159,11 @@ private fun PlaceholderContent(title: String) {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_music_placeholder),
+            painter = painterResource(Res.drawable.ic_music_placeholder),
             contentDescription = stringResource(Res.string.cd_album_art_placeholder, title),
             contentScale = ContentScale.Fit,
             modifier = Modifier.size(96.dp),
-            colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
+            colorFilter = ColorFilter.tint(
                 MaterialTheme.colorScheme.onSurfaceVariant
             ),
         )
@@ -212,16 +205,20 @@ private fun renderDirectAlbumArt(
             )
             true
         }
-        is Bitmap -> {
-            Image(
-                bitmap = model.asImageBitmap(),
-                contentDescription = stringResource(Res.string.cd_album_art_of, title),
-                contentScale = ContentScale.Crop,
-                modifier = modifier.fillMaxSize()
-            )
-            true
+        else -> {
+            val bitmap = platformBitmapAsImageBitmap(model)
+            if (bitmap != null) {
+                Image(
+                    bitmap = bitmap,
+                    contentDescription = stringResource(Res.string.cd_album_art_of, title),
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier.fillMaxSize()
+                )
+                true
+            } else {
+                false
+            }
         }
-        else -> false
     }
 }
 
@@ -241,8 +238,7 @@ internal fun albumArtMemoryCacheKey(model: Any?, targetSize: Size): String? {
 
     val baseKey = when (data) {
         is String -> data.takeIf { it.isNotBlank() }
-        is Uri -> data.toString().takeIf { it.isNotBlank() }
-        else -> null
+        else -> platformUriString(data)?.takeIf { it.isNotBlank() }
     } ?: return null
 
     if (targetSize == Size.ORIGINAL) return baseKey

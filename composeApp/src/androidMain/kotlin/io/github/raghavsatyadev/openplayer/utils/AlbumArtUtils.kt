@@ -74,12 +74,11 @@ object AlbumArtUtils {
     private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val artworkCacheWriteLock = Any()
     private val artworkCacheGeneration = AtomicLong()
-    private val _artworkCacheVersion = MutableStateFlow(0L)
-    val artworkCacheVersion = _artworkCacheVersion.asStateFlow()
+    val artworkCacheVersion = ArtworkCacheVersion.version
 
     /** Publish only after file and Coil caches are cleared, so mounted images can reload safely. */
     internal fun notifyArtworkCacheInvalidated() {
-        _artworkCacheVersion.update { it + 1L }
+        ArtworkCacheVersion.bump()
     }
 
     /** Prevent in-flight reads from restoring covers or miss markers after settings invalidate them. */

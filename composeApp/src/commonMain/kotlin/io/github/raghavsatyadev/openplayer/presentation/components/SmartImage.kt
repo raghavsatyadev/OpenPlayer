@@ -1,46 +1,44 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import android.graphics.Bitmap
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.Alignment
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
+import coil3.compose.LocalPlatformContext
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
-import coil3.request.allowHardware
 import coil3.request.crossfade
 import coil3.size.Size
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.Res
+import io.github.raghavsatyadev.openplayer.resources.ic_music_placeholder
 import io.github.raghavsatyadev.openplayer.utils.LocalArtworkUri
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 val SmartImageCompactListTargetSize = Size(96, 96)
 val SmartImageListTargetSize = Size(128, 128)
@@ -51,8 +49,8 @@ fun SmartImage(
     model: Any?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
-    placeholderResId: Int = R.drawable.ic_music_placeholder,
-    errorResId: Int = R.drawable.ic_music_placeholder,
+    placeholder: DrawableResource = Res.drawable.ic_music_placeholder,
+    error: DrawableResource = Res.drawable.ic_music_placeholder,
     shape: Shape = RectangleShape,
     contentScale: ContentScale = ContentScale.Crop,
     crossfadeDurationMillis: Int = 300,
@@ -66,17 +64,18 @@ fun SmartImage(
     placeHolderBackgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     onState: ((AsyncImagePainter.State) -> Unit)? = null
 ) {
-    val context = LocalContext.current
+    val context = LocalPlatformContext.current
     val clippedModifier = modifier.clip(shape)
     val requestTargetSize = remember(targetSize) {
         safeAlbumArtTargetSize(targetSize)
     }
 
-    if (model == null || model is ImageVector || model is Painter || model is ImageBitmap || model is Bitmap) {
+    val isDirectBitmap = platformBitmapAsImageBitmap(model) != null
+    if (model == null || model is ImageVector || model is Painter || model is ImageBitmap || isDirectBitmap) {
         if (model == null) {
             Placeholder(
                 modifier = clippedModifier,
-                drawableResId = placeholderResId,
+                drawable = placeholder,
                 contentDescription = contentDescription,
                 containerColor = placeHolderBackgroundColor,
                 iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -121,7 +120,7 @@ fun SmartImage(
                     }
                 )
                 .memoryCachePolicy(if (useMemoryCache) CachePolicy.ENABLED else CachePolicy.DISABLED)
-                .allowHardware(allowHardware)
+                .allowHardwareCompat(allowHardware)
                 .size(requestTargetSize)
                 .build()
         }
@@ -158,7 +157,7 @@ fun SmartImage(
                     } else {
                         Placeholder(
                             modifier = Modifier.fillMaxSize(),
-                            drawableResId = placeholderResId,
+                            drawable = placeholder,
                             contentDescription = contentDescription,
                             containerColor = placeHolderBackgroundColor,
                             iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -169,7 +168,7 @@ fun SmartImage(
                 else -> {
                     Placeholder(
                         modifier = Modifier.fillMaxSize(),
-                        drawableResId = if (state is AsyncImagePainter.State.Error) errorResId else placeholderResId,
+                        drawable = if (state is AsyncImagePainter.State.Error) error else placeholder,
                         contentDescription = contentDescription,
                         containerColor = placeHolderBackgroundColor,
                         iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -186,8 +185,8 @@ fun SmartImage(
             contentScale = contentScale,
             colorFilter = colorFilter,
             alpha = alpha,
-            placeholder = painterResource(placeholderResId),
-            error = painterResource(errorResId)
+            placeholder = rememberTintedPainter(painterResource(placeholder), MaterialTheme.colorScheme.outline),
+            error = rememberTintedPainter(painterResource(error), MaterialTheme.colorScheme.outline)
         )
     }
 }
@@ -235,25 +234,29 @@ private fun handleDirectModel(
             )
             data
         }
-        is Bitmap -> {
-            Image(
-                bitmap = data.asImageBitmap(),
-                contentDescription = contentDescription,
-                modifier = modifier,
-                contentScale = contentScale,
-                colorFilter = colorFilter,
-                alpha = alpha
-            )
-            data
+        else -> {
+            val bitmap = platformBitmapAsImageBitmap(data)
+            if (bitmap != null) {
+                Image(
+                    bitmap = bitmap,
+                    contentDescription = contentDescription,
+                    modifier = modifier,
+                    contentScale = contentScale,
+                    colorFilter = colorFilter,
+                    alpha = alpha
+                )
+                data
+            } else {
+                null
+            }
         }
-        else -> null
     }
 }
 
 @Composable
 private fun Placeholder(
     modifier: Modifier,
-    @DrawableRes drawableResId: Int,
+    drawable: DrawableResource,
     contentDescription: String?,
     containerColor: Color,
     iconColor: Color,
@@ -266,7 +269,7 @@ private fun Placeholder(
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(drawableResId),
+            painter = painterResource(drawable),
             contentDescription = contentDescription,
             colorFilter = ColorFilter.tint(iconColor),
             modifier = Modifier.size(32.dp),
