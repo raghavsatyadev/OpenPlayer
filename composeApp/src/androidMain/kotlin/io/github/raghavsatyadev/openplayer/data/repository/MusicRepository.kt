@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.data.repository
 
-import android.net.Uri
 import androidx.paging.PagingData
 import io.github.raghavsatyadev.openplayer.data.model.Album
 import io.github.raghavsatyadev.openplayer.data.model.Artist
@@ -235,7 +234,7 @@ interface MusicRepository {
      */
     suspend fun getAllUniqueAudioDirectories(): Set<String>
 
-    fun getAllUniqueAlbumArtUris(): Flow<List<Uri>>
+    fun getAllUniqueAlbumArtUris(): Flow<List<String>>
 
     suspend fun invalidateCachesDependentOnAllowedDirectories()
 

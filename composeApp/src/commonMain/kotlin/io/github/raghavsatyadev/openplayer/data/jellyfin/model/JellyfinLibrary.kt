@@ -1,8 +1,8 @@
 package io.github.raghavsatyadev.openplayer.data.jellyfin.model
 
-import android.os.Parcelable
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelable
 import androidx.compose.runtime.Immutable
-import kotlinx.parcelize.Parcelize
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelize
 
 /**
  * Represents a media library (user view) on a Jellyfin server.
@@ -16,12 +16,12 @@ import kotlinx.parcelize.Parcelize
  * @property collectionType Jellyfin collection type ("music", "movies", ...), null for mixed folders
  */
 @Immutable
-@Parcelize
+@CommonParcelize
 data class JellyfinLibrary(
     val id: String,
     val name: String,
     val collectionType: String?
-) : Parcelable {
+) : CommonParcelable {
     val isMusic: Boolean
         get() = collectionType == COLLECTION_TYPE_MUSIC
 

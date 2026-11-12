@@ -1,8 +1,8 @@
 package io.github.raghavsatyadev.openplayer.data.navidrome.model
 
-import android.os.Parcelable
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelable
 import androidx.compose.runtime.Immutable
-import kotlinx.parcelize.Parcelize
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelize
 
 /**
  * Represents a music folder (library) from a Navidrome/Subsonic server.
@@ -13,11 +13,11 @@ import kotlinx.parcelize.Parcelize
  * @property name The display name of the music folder
  */
 @Immutable
-@Parcelize
+@CommonParcelize
 data class NavidromeMusicFolder(
     val id: String,
     val name: String
-) : Parcelable {
+) : CommonParcelable {
     companion object {
         fun empty() = NavidromeMusicFolder(
             id = "",

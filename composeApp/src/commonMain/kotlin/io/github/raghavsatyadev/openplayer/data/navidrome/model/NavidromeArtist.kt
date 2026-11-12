@@ -1,8 +1,8 @@
 package io.github.raghavsatyadev.openplayer.data.navidrome.model
 
-import android.os.Parcelable
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelable
 import androidx.compose.runtime.Immutable
-import kotlinx.parcelize.Parcelize
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelize
 
 /**
  * Represents an artist from a Navidrome/Subsonic server.
@@ -16,14 +16,14 @@ import kotlinx.parcelize.Parcelize
  * @property artistImageUrl Direct URL to the artist image (optional)
  */
 @Immutable
-@Parcelize
+@CommonParcelize
 data class NavidromeArtist(
     val id: String,
     val name: String,
     val coverArt: String? = null,
     val albumCount: Int = 0,
     val artistImageUrl: String? = null
-) : Parcelable {
+) : CommonParcelable {
     companion object {
         fun empty() = NavidromeArtist(
             id = "",

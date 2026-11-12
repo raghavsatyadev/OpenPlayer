@@ -1,11 +1,11 @@
 package io.github.raghavsatyadev.openplayer.data.jellyfin.model
 
-import android.os.Parcelable
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelable
 import androidx.compose.runtime.Immutable
-import kotlinx.parcelize.Parcelize
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelize
 
 @Immutable
-@Parcelize
+@CommonParcelize
 data class JellyfinSong(
     val id: String,
     val title: String,
@@ -24,7 +24,7 @@ data class JellyfinSong(
     val path: String = "",
     val size: Long? = null,
     val playCount: Int = 0
-) : Parcelable {
+) : CommonParcelable {
     companion object {
         fun empty() = JellyfinSong(
             id = "",

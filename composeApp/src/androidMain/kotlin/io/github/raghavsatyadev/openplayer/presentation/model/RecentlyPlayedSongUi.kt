@@ -3,16 +3,16 @@ package io.github.raghavsatyadev.openplayer.presentation.model
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.stats.PlaybackStatsRepository
 import io.github.raghavsatyadev.openplayer.data.stats.StatsTimeRange
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelable
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelize
 import java.time.ZoneId
 import java.time.temporal.TemporalAdjusters
 
-@Parcelize
+@CommonParcelize
 data class RecentlyPlayedSongUiModel(
     val song: Song,
     val lastPlayedTimestamp: Long
-) : Parcelable
+) : CommonParcelable
 
 fun mapRecentlyPlayedSongs(
     playbackHistory: List<PlaybackStatsRepository.PlaybackHistoryEntry>,

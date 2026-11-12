@@ -1,7 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.navigation
 
-import android.net.Uri
 import androidx.compose.runtime.Immutable
+import io.github.raghavsatyadev.openplayer.utils.encodeUriComponent
 
 
 @Immutable
@@ -91,7 +91,7 @@ sealed class Screen(val route: String) {
 
     object AudioBookmarks : Screen("audio_bookmarks")
     object AudioBookmarkFolder : Screen("audio_bookmarks/{songId}") {
-        fun createRoute(songId: String) = "audio_bookmarks/${Uri.encode(songId)}"
+        fun createRoute(songId: String) = "audio_bookmarks/${encodeUriComponent(songId)}"
     }
 
 }

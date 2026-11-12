@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import androidx.core.net.toUri
 import io.github.raghavsatyadev.openplayer.data.database.FavoritesDao
 import io.github.raghavsatyadev.openplayer.data.database.GenreSongCountRow
 import io.github.raghavsatyadev.openplayer.data.database.MusicDao
@@ -527,10 +526,8 @@ class MusicRepositoryImpl(
         }
     }
 
-    override fun getAllUniqueAlbumArtUris(): Flow<List<Uri>> {
-        return musicDao.getAllUniqueAlbumArtUrisFromSongs().map { uriStrings ->
-            uriStrings.mapNotNull { it.toUri() }
-        }.flowOn(Dispatchers.IO)
+    override fun getAllUniqueAlbumArtUris(): Flow<List<String>> {
+        return musicDao.getAllUniqueAlbumArtUrisFromSongs().flowOn(Dispatchers.IO)
     }
 
     override fun searchSongs(query: String): Flow<List<Song>> {

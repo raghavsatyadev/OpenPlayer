@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.utils
 
-import android.net.Uri
 
 object LocalArtworkUri {
     const val SCHEME = "openplayer_local_art"
@@ -18,8 +17,9 @@ object LocalArtworkUri {
         return uriString?.let { it.startsWith("$SCHEME://") || it.startsWith("$LEGACY_SCHEME://") } == true
     }
 
-    fun isLocalArtworkUri(uri: Uri?): Boolean {
-        return uri?.toString()?.let(::isLocalArtworkUri) == true
+    /** For platform URI objects (android.net.Uri, java.net.URI): checks their string form. */
+    fun isLocalArtworkUri(uri: Any?): Boolean {
+        return uri?.toString()?.let { isLocalArtworkUri(it) } == true
     }
 
     fun parseSongId(uriString: String): Long? {

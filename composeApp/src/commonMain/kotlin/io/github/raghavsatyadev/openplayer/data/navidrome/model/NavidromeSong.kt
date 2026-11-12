@@ -1,8 +1,8 @@
 package io.github.raghavsatyadev.openplayer.data.navidrome.model
 
-import android.os.Parcelable
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelable
 import androidx.compose.runtime.Immutable
-import kotlinx.parcelize.Parcelize
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelize
 
 /**
  * Represents a song from a Navidrome/Subsonic server.
@@ -30,7 +30,7 @@ import kotlinx.parcelize.Parcelize
  * @property created When the song was added to the server library, in epoch milliseconds (0 if unknown)
  */
 @Immutable
-@Parcelize
+@CommonParcelize
 data class NavidromeSong(
     val id: String,
     val title: String,
@@ -52,7 +52,7 @@ data class NavidromeSong(
     val size: Long? = null,
     val playCount: Int = 0,
     val created: Long = 0L
-) : Parcelable {
+) : CommonParcelable {
     companion object {
         fun empty() = NavidromeSong(
             id = "",

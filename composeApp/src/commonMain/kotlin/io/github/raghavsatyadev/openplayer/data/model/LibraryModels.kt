@@ -1,11 +1,11 @@
 package io.github.raghavsatyadev.openplayer.data.model
 
-import android.os.Parcelable
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelable
 import androidx.compose.runtime.Immutable
-import kotlinx.parcelize.Parcelize
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelize
 
 @Immutable
-@Parcelize
+@CommonParcelize
 data class Album(
     val id: Long,
     val title: String,
@@ -15,7 +15,7 @@ data class Album(
     val albumArtUriString: String?,
     val songCount: Int,
     val albumArtist: String? = null
-) : Parcelable {
+) : CommonParcelable {
     companion object {
         fun empty() = Album(
             id = -1,
@@ -31,14 +31,14 @@ data class Album(
 }
 
 @Immutable
-@Parcelize
+@CommonParcelize
 data class Artist(
     val id: Long,
     val name: String,
     val songCount: Int,
     val imageUrl: String? = null,
     val customImageUri: String? = null
-) : Parcelable {
+) : CommonParcelable {
     companion object {
         fun empty() = Artist(
             id = -1,
@@ -59,9 +59,9 @@ data class Artist(
  * Used when displaying multiple artists for a song.
  */
 @Immutable
-@Parcelize
+@CommonParcelize
 data class ArtistRef(
     val id: Long,
     val name: String,
     val isPrimary: Boolean = false
-) : Parcelable
+) : CommonParcelable

@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.utils
 
-import android.os.Build
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -221,13 +220,7 @@ object MultiLangRomanizer {
 
             val katakanaText = kataBuf.toString().replace("\\s+".toRegex(), " ").trim()
 
-            val latin = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                android.icu.text.Transliterator
-                    .getInstance("Katakana-Latin; Lower")
-                    .transliterate(katakanaText)
-            } else {
-                katakanaText
-            }
+            val latin = katakanaToLatinLower(katakanaText)
 
             latin
                 .replace(Regex("n(?=[bp])"), "m")

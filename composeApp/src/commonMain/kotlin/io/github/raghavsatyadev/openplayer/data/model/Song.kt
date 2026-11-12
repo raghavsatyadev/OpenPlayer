@@ -1,11 +1,11 @@
 package io.github.raghavsatyadev.openplayer.data.model
 
-import android.os.Parcelable
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelable
 import androidx.compose.runtime.Immutable
-import kotlinx.parcelize.Parcelize
+import io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelize
 
 @Immutable
-@Parcelize
+@CommonParcelize
 data class Song(
     val id: String,
     val title: String,
@@ -37,7 +37,7 @@ data class Song(
     val sampleRate: Int?,
     val navidromeId: String? = null,
     val jellyfinId: String? = null,
-) : Parcelable {
+) : CommonParcelable {
     /**
      * Returns the display string for artists.
      * If multiple artists exist (populated during sync), joins them with ", ".

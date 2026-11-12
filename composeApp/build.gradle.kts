@@ -32,7 +32,14 @@ kotlin {
         }
         minSdk = 30
         androidResources.enable = true
-        compilerOptions { jvmTarget.set(JvmTarget.JVM_21) }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+            freeCompilerArgs.addAll(
+                "-P",
+                "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=" +
+                    "io.github.raghavsatyadev.openplayer.utils.parcel.CommonParcelize",
+            )
+        }
     }
 
     jvm { compilerOptions { jvmTarget.set(JvmTarget.JVM_21) } }
@@ -101,6 +108,8 @@ kotlin {
             implementation(libs.kermit)
             implementation(libs.kuromoji.ipadic)
             implementation(libs.pinyin4j.core)
+            // Android has org.json in the platform; jvmMain ships the jar.
+            compileOnly(libs.org.json)
         }
         androidMain.dependencies {
             implementation(libs.androidx.core.ktx)
