@@ -13,7 +13,7 @@ import io.github.raghavsatyadev.openplayer.data.database.GenreFillDao
 import io.github.raghavsatyadev.openplayer.data.database.GenreLookupCacheEntity
 import io.github.raghavsatyadev.openplayer.data.preferences.OnlineGenrePreferences
 import kotlinx.coroutines.delay
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.util.concurrent.TimeUnit
 
 /**
@@ -66,13 +66,13 @@ class GenreLookupWorker(
                 GenreLookupResult.NotFound ->
                     dao.putCachedLookup(GenreLookupCacheEntity(key, null, System.currentTimeMillis()))
                 GenreLookupResult.TryLater -> {
-                    Timber.tag(TAG).d("Genre lookup paused after $looked albums; retrying later")
+                    Logger.withTag(TAG).d { "Genre lookup paused after $looked albums; retrying later" }
                     return Result.retry()
                 }
             }
             looked++
         }
-        Timber.tag(TAG).d("Genre lookup done: $looked albums looked up, ${known.size} songs from cache")
+        Logger.withTag(TAG).d { "Genre lookup done: $looked albums looked up, ${known.size} songs from cache" }
         return Result.success()
     }
 

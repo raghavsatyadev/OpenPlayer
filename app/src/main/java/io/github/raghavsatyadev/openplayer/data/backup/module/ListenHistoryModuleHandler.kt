@@ -11,7 +11,7 @@ import io.github.raghavsatyadev.openplayer.data.database.ListenHistoryEntity
 import io.github.raghavsatyadev.openplayer.data.preferences.ListenHistoryPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Counted listen history, as an array of
@@ -61,7 +61,7 @@ class ListenHistoryModuleHandler(
         val listens = json.asJsonArray
             .filter { it.isJsonObject }
             .flatMap { parseSong(it.asJsonObject, library) { count -> dropped += count } }
-        if (dropped > 0) Timber.tag(TAG).i("Listen history restore: $dropped listens dropped, not found")
+        if (dropped > 0) Logger.withTag(TAG).i { "Listen history restore: $dropped listens dropped, not found" }
         dao.replaceAll(listens)
         preferences.markImported()
     }

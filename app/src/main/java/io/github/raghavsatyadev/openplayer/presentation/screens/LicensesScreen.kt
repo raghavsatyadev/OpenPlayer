@@ -100,7 +100,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlin.math.roundToInt
 
 private const val NoticesAssetPath = "licenses/THIRD_PARTY_NOTICES.md"
@@ -136,7 +136,7 @@ private fun LicenseCategory.icon(): ImageVector = when (this) {
 
 private fun Context.readAssetText(path: String): String =
     runCatching { assets.open(path).bufferedReader().use { it.readText() } }
-        .onFailure { Timber.w(it, "Could not read license asset %s", path) }
+        .onFailure { Logger.w(it) { String.format("Could not read license asset %s", path) } }
         .getOrDefault("")
 
 /** Searchable, categorized third-party notices parsed from the bundled license assets. */

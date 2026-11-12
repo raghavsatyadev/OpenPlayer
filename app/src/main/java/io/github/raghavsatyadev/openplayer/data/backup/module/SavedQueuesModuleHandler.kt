@@ -11,7 +11,7 @@ import io.github.raghavsatyadev.openplayer.data.database.SavedQueueDao
 import io.github.raghavsatyadev.openplayer.data.database.SavedQueueEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Saved queues, as an array of
@@ -59,7 +59,7 @@ class SavedQueuesModuleHandler(
         val queues = JsonParser.parseString(payload).asJsonArray
             .filter { it.isJsonObject }
             .mapNotNull { parseQueue(it.asJsonObject, library) { dropped++ } }
-        if (dropped > 0) Timber.tag(TAG).i("Saved queue restore: $dropped songs dropped, not found")
+        if (dropped > 0) Logger.withTag(TAG).i { "Saved queue restore: $dropped songs dropped, not found" }
         dao.replaceAll(queues)
     }
 

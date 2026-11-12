@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /** The composer's thinking animation stays on screen at least this long before a preview. */
 internal const val MIX_MIN_THINKING_MS = 4_000L
@@ -132,7 +132,7 @@ class SmartMixStateHolder(
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
-                Timber.tag(TAG).w(error, "Mix suggestions failed")
+                Logger.withTag(TAG).w(error) { "Mix suggestions failed" }
             }
         }
     }
@@ -180,7 +180,7 @@ class SmartMixStateHolder(
                     } catch (cancelled: CancellationException) {
                         throw cancelled
                     } catch (error: Exception) {
-                        Timber.tag(TAG).w(error, "Recording mix request failed")
+                        Logger.withTag(TAG).w(error) { "Recording mix request failed" }
                     }
                 }
                 _mixPreview.value = MixPreview(
@@ -197,7 +197,7 @@ class SmartMixStateHolder(
             } catch (error: Exception) {
                 thinkingWindow.join()
                 if (requestId == mixRequestId) {
-                    Timber.tag(TAG).e(error, "Mix preview failed")
+                    Logger.withTag(TAG).e(error) { "Mix preview failed" }
                     _error.value = context.getString(R.string.mix_no_matches)
                 }
             } finally {
@@ -225,7 +225,7 @@ class SmartMixStateHolder(
                 } catch (cancelled: CancellationException) {
                     throw cancelled
                 } catch (error: Exception) {
-                    Timber.tag(TAG).w(error, "Marking Smart Mix playlist failed")
+                    Logger.withTag(TAG).w(error) { "Marking Smart Mix playlist failed" }
                 }
                 if (_mixPreview.value?.requestId == preview.requestId) {
                     _mixPreview.value = preview.copy(savedName = resolvedName)
@@ -234,7 +234,7 @@ class SmartMixStateHolder(
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
-                Timber.tag(TAG).e(error, "Saving mix failed")
+                Logger.withTag(TAG).e(error) { "Saving mix failed" }
                 _error.value = context.getString(R.string.mix_save_failed)
             } finally {
                 _mixActionInProgress.value = false

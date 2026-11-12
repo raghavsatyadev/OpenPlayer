@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.util.concurrent.atomic.AtomicLong
 import kotlinx.coroutines.FlowPreview
 
@@ -120,7 +120,7 @@ class SearchStateHolder(
                     } catch (_: CancellationException) {
                     } catch (e: Exception) {
                         if (request.requestId == latestSearchRequestId.get()) {
-                            Timber.e(e, "Error performing search for query: $normalizedQuery")
+                            Logger.e(e) { "Error performing search for query: $normalizedQuery" }
                             _searchResults.value = persistentListOf()
                         }
                     }
@@ -151,7 +151,7 @@ class SearchStateHolder(
                 }
                 _searchHistory.value = history.toImmutableList()
             } catch (e: Exception) {
-                Timber.e(e, "Error loading search history")
+                Logger.e(e) { "Error loading search history" }
             }
         }
     }
@@ -165,7 +165,7 @@ class SearchStateHolder(
                     }
                     loadSearchHistory()
                 } catch (e: Exception) {
-                    Timber.e(e, "Error adding search history item")
+                    Logger.e(e) { "Error adding search history item" }
                 }
             }
         }
@@ -204,7 +204,7 @@ class SearchStateHolder(
                 }
                 loadSearchHistory()
             } catch (e: Exception) {
-                Timber.e(e, "Error deleting search history item")
+                Logger.e(e) { "Error deleting search history item" }
             }
         }
     }
@@ -217,7 +217,7 @@ class SearchStateHolder(
                 }
                 _searchHistory.value = persistentListOf()
             } catch (e: Exception) {
-                Timber.e(e, "Error clearing search history")
+                Logger.e(e) { "Error clearing search history" }
             }
         }
     }

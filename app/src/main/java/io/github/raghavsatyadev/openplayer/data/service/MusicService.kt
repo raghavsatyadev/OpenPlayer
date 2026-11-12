@@ -76,7 +76,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import io.github.raghavsatyadev.openplayer.data.equalizer.EqualizerManager
 import io.github.raghavsatyadev.openplayer.data.equalizer.ExternalAudioEffectSession
 import io.github.raghavsatyadev.openplayer.data.model.WidgetThemeColors
@@ -100,10 +100,12 @@ import java.io.ByteArrayOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.atomic.AtomicInteger
-import coil.imageLoader
-import coil.request.CachePolicy
-import coil.request.ImageRequest
-import coil.size.Precision
+import coil3.imageLoader
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
+import coil3.size.Precision
+import coil3.toBitmap
 
 import androidx.core.net.toUri
 
@@ -155,13 +157,8 @@ suspend fun loadArtworkBytesViaCoil(context: Context, uri: Uri): ByteArray? {
         .build()
 
     return runCatching {
-        val drawable = appContext.imageLoader.execute(request).drawable ?: return@runCatching null
-        val fallbackSizePx = ArtworkTransportSanitizer.WIDGET_CONFIG.maxDimensionPx
-        val bitmap = drawable.toBitmap(
-            width = drawable.intrinsicWidth.takeIf { it > 0 } ?: fallbackSizePx,
-            height = drawable.intrinsicHeight.takeIf { it > 0 } ?: fallbackSizePx,
-            config = Bitmap.Config.ARGB_8888,
-        )
+        val image = appContext.imageLoader.execute(request).image ?: return@runCatching null
+        val bitmap = image.toBitmap()
         val encodedBytes = ByteArrayOutputStream().use { output ->
             bitmap.compress(Bitmap.CompressFormat.JPEG, 92, output)
             output.toByteArray()
@@ -171,7 +168,7 @@ suspend fun loadArtworkBytesViaCoil(context: Context, uri: Uri): ByteArray? {
             config = ArtworkTransportSanitizer.WIDGET_CONFIG,
         )
     }.getOrElse { error ->
-        Timber.tag("MusicService_OpenPlayer").w(error, "Artwork read failed via Coil for uri=%s", uri)
+        Logger.withTag("MusicService_OpenPlayer").w(error) { String.format("Artwork read failed via Coil for uri=%s", uri) }
         null
     }
 }
@@ -359,7 +356,7 @@ class MusicService : MediaSessionService() {
             wrappedPlayer.addListener(playerListener)
         }
 
-        Timber.tag("MusicService").d(logMessage)
+        Logger.withTag("MusicService").d { logMessage }
         syncLocalListeningStatsFromPlayer(player)
         requestWidgetFullUpdate(force = true)
         refreshMediaSessionUi(session)
@@ -414,7 +411,7 @@ class MusicService : MediaSessionService() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 throwable is ForegroundServiceStartNotAllowedException
             ) {
-                Timber.tag(TAG).w(throwable, "Suppressed ForegroundServiceStartNotAllowedException from Media3 internal path")
+                Logger.withTag(TAG).w(throwable) { "Suppressed ForegroundServiceStartNotAllowedException from Media3 internal path" }
             } else {
                 existingHandler?.uncaughtException(thread, throwable)
             }
@@ -558,14 +555,7 @@ class MusicService : MediaSessionService() {
             ): MediaSession.ConnectionResult {
                 val controllerPackage = controller.packageName
                 val hintKeys = controller.connectionHints.keySet().joinToString(",")
-                Timber.tag(TAG).d(
-                    "onConnect from package=%s uid=%s trusted=%s version=%s hints=[%s]",
-                    controllerPackage,
-                    controller.uid,
-                    controller.isTrusted,
-                    controller.controllerVersion,
-                    hintKeys
-                )
+                Logger.withTag(TAG).d { String.format("onConnect from package=%s uid=%s trusted=%s version=%s hints=[%s]", controllerPackage, controller.uid, controller.isTrusted, controller.controllerVersion, hintKeys) }
                 val defaultResult = super.onConnect(session, controller)
                 val sessionCommandsBuilder = SessionCommands.Builder()
                     .addSessionCommands(defaultResult.availableSessionCommands.commands)
@@ -606,14 +596,9 @@ class MusicService : MediaSessionService() {
                 customCommand: SessionCommand,
                 args: Bundle
             ): ListenableFuture<SessionResult> {
-                Timber.tag("MusicService")
-                    .d("onCustomCommand received: ${customCommand.customAction}")
+                Logger.withTag("MusicService").d { "onCustomCommand received: ${customCommand.customAction}" }
                 if (!isPrivilegedController(controller)) {
-                    Timber.tag(TAG).w(
-                        "Rejected custom command %s from untrusted package=%s",
-                        customCommand.customAction,
-                        controller.packageName
-                    )
+                    Logger.withTag(TAG).w { String.format("Rejected custom command %s from untrusted package=%s", customCommand.customAction, controller.packageName) }
                     return Futures.immediateFuture(
                         SessionResult(SessionError.ERROR_PERMISSION_DENIED)
                     )
@@ -661,13 +646,11 @@ class MusicService : MediaSessionService() {
                         updateManualShuffleState(session, enabled = enabled, broadcast = true)
                     }
                     MusicNotificationProvider.CUSTOM_COMMAND_SHUFFLE_ON -> {
-                        Timber.tag("MusicService")
-                            .d("Executing SHUFFLE_ON. Current shuffleMode: ${session.player.shuffleModeEnabled}")
+                        Logger.withTag("MusicService").d { "Executing SHUFFLE_ON. Current shuffleMode: ${session.player.shuffleModeEnabled}" }
                         updateManualShuffleState(session, enabled = true, broadcast = true)
                     }
                     MusicNotificationProvider.CUSTOM_COMMAND_SHUFFLE_OFF -> {
-                        Timber.tag("MusicService")
-                            .d("Executing SHUFFLE_OFF. Current shuffleMode: ${session.player.shuffleModeEnabled}")
+                        Logger.withTag("MusicService").d { "Executing SHUFFLE_OFF. Current shuffleMode: ${session.player.shuffleModeEnabled}" }
                         updateManualShuffleState(session, enabled = false, broadcast = true)
                     }
                     MusicNotificationProvider.CUSTOM_COMMAND_SET_SHUFFLE_STATE -> {
@@ -787,8 +770,7 @@ class MusicService : MediaSessionService() {
 
         serviceScope.launch {
             musicRepository.getFavoriteSongIdsFlow().collect { ids ->
-                Timber.tag("MusicService")
-                    .d("favoriteSongIdsFlow(Room) collected. New ids size: ${ids.size}")
+                Logger.withTag("MusicService").d { "favoriteSongIdsFlow(Room) collected. New ids size: ${ids.size}" }
                 val oldIds = favoriteSongIds
                 favoriteSongIds = ids
                 val currentSongId = mediaSession?.player?.currentMediaItem?.mediaId
@@ -796,8 +778,7 @@ class MusicService : MediaSessionService() {
                     val wasFavorite = oldIds.contains(currentSongId)
                     val isFavorite = ids.contains(currentSongId)
                     if (wasFavorite != isFavorite) {
-                        Timber.tag("MusicService")
-                            .d("Favorite status changed for current song. Updating notification.")
+                        Logger.withTag("MusicService").d { "Favorite status changed for current song. Updating notification." }
                         mediaSession?.let { refreshMediaSessionUi(it) }
                         requestWidgetFullUpdate(force = true)
                     }
@@ -828,7 +809,7 @@ class MusicService : MediaSessionService() {
             )
             temporaryForegroundNotificationVisible = true
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Failed to promote service to foreground for external command")
+            Logger.withTag(TAG).w(e) { "Failed to promote service to foreground for external command" }
         }
     }
 
@@ -844,7 +825,7 @@ class MusicService : MediaSessionService() {
         runCatching {
             NotificationManagerCompat.from(this).cancel(NOTIFICATION_ID)
         }.onFailure { e ->
-            Timber.tag(TAG).w(e, "Failed to cancel temporary foreground notification")
+            Logger.withTag(TAG).w(e) { "Failed to cancel temporary foreground notification" }
         }
     }
 
@@ -879,7 +860,7 @@ class MusicService : MediaSessionService() {
         }
 
         intent?.action?.let { action ->
-            Timber.tag(TAG).d("onStartCommand widget action: %s", action)
+            Logger.withTag(TAG).d { String.format("onStartCommand widget action: %s", action) }
             val player = mediaSession?.player ?: engine.masterPlayer
             when (action) {
                 PlayerActions.PLAY_PAUSE -> {
@@ -949,7 +930,7 @@ class MusicService : MediaSessionService() {
                     requestWidgetFullUpdate(force = true)
                 }
                 ACTION_SLEEP_TIMER_EXPIRED -> {
-                    Timber.tag(TAG).d("Sleep timer backstop alarm received.")
+                    Logger.withTag(TAG).d { "Sleep timer backstop alarm received." }
                     sleepTimerController.onDurationExpired()
                 }
             }
@@ -962,7 +943,7 @@ class MusicService : MediaSessionService() {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
                 e !is ForegroundServiceStartNotAllowedException
             ) throw e
-            Timber.tag(TAG).w(e, "Media3 start command could not go foreground; stopping")
+            Logger.withTag(TAG).w(e) { "Media3 start command could not go foreground; stopping" }
             clearTemporaryForegroundNotification()
             stopSelf()
             return START_NOT_STICKY
@@ -992,9 +973,7 @@ class MusicService : MediaSessionService() {
             // whenever it is not in foreground state, and OEMs freeze cached processes
             // that have no foreground service — either way playback dies with the task.
             if (!isPlaybackOngoing()) {
-                Timber.tag(TAG).w(
-                    "Task removed while playing without foreground state; re-promoting."
-                )
+                Logger.withTag(TAG).w { "Task removed while playing without foreground state; re-promoting." }
                 onUpdateNotification(session, startInForegroundRequired = true)
             }
             return
@@ -1103,7 +1082,7 @@ class MusicService : MediaSessionService() {
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             val player = mediaSession?.player ?: engine.masterPlayer
-            Timber.tag(TAG).d("onIsPlayingChanged: $isPlaying. Duration: ${player.duration}, Seekable: ${player.isCurrentMediaItemSeekable}")
+            Logger.withTag(TAG).d { "onIsPlayingChanged: $isPlaying. Duration: ${player.duration}, Seekable: ${player.isCurrentMediaItemSeekable}" }
             PlaybackActivityTracker.setPlaybackActive(isPlaying)
             syncLocalListeningStatsFromPlayer(player)
 
@@ -1131,7 +1110,7 @@ class MusicService : MediaSessionService() {
                 reason == Player.PLAY_WHEN_READY_CHANGE_REASON_AUDIO_BECOMING_NOISY -> {
                     shouldResumeAfterHeadsetReconnect = true
                     lastNoisyPauseRealtimeMs = SystemClock.elapsedRealtime()
-                    Timber.tag(TAG).d("Marked playback for headset reconnect resume")
+                    Logger.withTag(TAG).d { "Marked playback for headset reconnect resume" }
                 }
                 else -> clearHeadsetReconnectResume()
             }
@@ -1143,11 +1122,11 @@ class MusicService : MediaSessionService() {
         override fun onAvailableCommandsChanged(availableCommands: Player.Commands) {
             val canSeek = availableCommands.contains(Player.COMMAND_SEEK_IN_CURRENT_MEDIA_ITEM)
             val player = engine.masterPlayer
-            Timber.tag(TAG).w("onAvailableCommandsChanged. Can Seek Command? $canSeek. IsSeekable? ${player.isCurrentMediaItemSeekable}. Duration: ${player.duration}")
+            Logger.withTag(TAG).w { "onAvailableCommandsChanged. Can Seek Command? $canSeek. IsSeekable? ${player.isCurrentMediaItemSeekable}. Duration: ${player.duration}" }
         }
 
         override fun onPlaybackStateChanged(playbackState: Int) {
-            Timber.tag(TAG).d("Playback state changed: $playbackState")
+            Logger.withTag(TAG).d { "Playback state changed: $playbackState" }
             if (playbackState == Player.STATE_READY) {
                 consecutivePlaybackErrors = 0
             }
@@ -1275,8 +1254,7 @@ class MusicService : MediaSessionService() {
         }
 
         override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
-            Timber.tag("MusicService")
-                .d("playerListener.onShuffleModeEnabledChanged: $shuffleModeEnabled")
+            Logger.withTag("MusicService").d { "playerListener.onShuffleModeEnabledChanged: $shuffleModeEnabled" }
             requestWidgetFullUpdate(force = true)
             mediaSession?.let { refreshMediaSessionUi(it) }
             schedulePlaybackSnapshotPersist()
@@ -1292,7 +1270,7 @@ class MusicService : MediaSessionService() {
 
         override fun onPlayerError(error: PlaybackException) {
             val player = mediaSession?.player ?: engine.masterPlayer
-            Timber.tag(TAG).e(error, "Player error on item %s", player.currentMediaItem?.mediaId)
+            Logger.withTag(TAG).e(error) { String.format("Player error on item %s", player.currentMediaItem?.mediaId) }
             AdvancedPerformanceDiagnostics.recordEventIfEnabled(
                 type = AdvancedPerformanceDiagnostics.EventTypes.PLAYBACK,
                 name = "player_error"
@@ -1334,10 +1312,7 @@ class MusicService : MediaSessionService() {
             }
         val trackTitle = mediaItem.mediaMetadata.title?.toString()?.takeIf(String::isNotBlank)
             ?: getString(R.string.unknown_song_title)
-        Timber.tag(TAG).e(
-            "No renderer can decode the audio track of '%s' (format=%s); playback paused",
-            trackTitle, format
-        )
+        Logger.withTag(TAG).e { String.format("No renderer can decode the audio track of '%s' (format=%s); playback paused", trackTitle, format) }
         Toast.makeText(
             this,
             getString(
@@ -1400,7 +1375,7 @@ class MusicService : MediaSessionService() {
             return
         }
 
-        Timber.tag(TAG).d("Resuming playback after headset reconnect")
+        Logger.withTag(TAG).d { "Resuming playback after headset reconnect" }
         clearHeadsetReconnectResume()
         player.play()
     }
@@ -1447,7 +1422,7 @@ class MusicService : MediaSessionService() {
         runCatching {
             userPreferencesRepository.setPlaybackQueueSnapshot(snapshot)
         }.onFailure { e ->
-            Timber.tag(TAG).w(e, "Failed to persist playback snapshot")
+            Logger.withTag(TAG).w(e) { "Failed to persist playback snapshot" }
         }
     }
 
@@ -1622,12 +1597,7 @@ class MusicService : MediaSessionService() {
             }
         }
 
-        Timber.tag(TAG).i(
-            "Restored playback snapshot: items=%d index=%d playWhenReady=%s",
-            restoredItems.size,
-            snapshot.currentIndex,
-            shouldRestorePlaying
-        )
+        Logger.withTag(TAG).i { String.format("Restored playback snapshot: items=%d index=%d playWhenReady=%s", restoredItems.size, snapshot.currentIndex, shouldRestorePlaying) }
         schedulePlaybackSnapshotPersist(immediate = true)
     }
 
@@ -2112,7 +2082,7 @@ class MusicService : MediaSessionService() {
                             }
                     }
                 }.getOrElse { error ->
-                    Timber.tag(TAG).w(error, "Widget artwork read failed for local uri=%s", uri)
+                    Logger.withTag(TAG).w(error) { String.format("Widget artwork read failed for local uri=%s", uri) }
                     null
                 }
             }
@@ -2135,7 +2105,7 @@ class MusicService : MediaSessionService() {
                             }
                     }
                 } catch (error: Exception) {
-                    Timber.tag(TAG).w(error, "Widget artwork read failed for remote uri=%s", uri)
+                    Logger.withTag(TAG).w(error) { String.format("Widget artwork read failed for remote uri=%s", uri) }
                     null
                 } finally {
                     connection?.disconnect()
@@ -2189,13 +2159,12 @@ class MusicService : MediaSessionService() {
             }
             
             if (glanceIds.isNotEmpty() || barGlanceIds.isNotEmpty() || controlGlanceIds.isNotEmpty() || gridGlanceIds.isNotEmpty()) {
-                Timber.tag(TAG)
-                    .d("Widgets updated: ${playerInfo.songTitle} (Original: ${glanceIds.size}, Bar: ${barGlanceIds.size}, Control: ${controlGlanceIds.size})")
+                Logger.withTag(TAG).d { "Widgets updated: ${playerInfo.songTitle} (Original: ${glanceIds.size}, Bar: ${barGlanceIds.size}, Control: ${controlGlanceIds.size})" }
             } else {
-                Timber.tag(TAG).w("No widgets found to update")
+                Logger.withTag(TAG).w { "No widgets found to update" }
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Error updating the widget")
+            Logger.withTag(TAG).e(e) { "Error updating the widget" }
         }
     }
 
@@ -2226,7 +2195,7 @@ class MusicService : MediaSessionService() {
                 clearTemporaryForegroundNotification()
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "onUpdateNotification suppressed: ${e.message}")
+            Logger.withTag(TAG).w(e) { "onUpdateNotification suppressed: ${e.message}" }
         }
     }
 
@@ -2235,16 +2204,10 @@ class MusicService : MediaSessionService() {
             return try {
                 super.startForegroundService(serviceIntent)
             } catch (e: ForegroundServiceStartNotAllowedException) {
-                Timber.tag(TAG).w(
-                    e,
-                    "startForegroundService not allowed; ignoring redundant self-start request"
-                )
+                Logger.withTag(TAG).w(e) { "startForegroundService not allowed; ignoring redundant self-start request" }
                 serviceIntent?.component ?: ComponentName(this, javaClass)
             } catch (e: BackgroundServiceStartNotAllowedException) {
-                Timber.tag(TAG).w(
-                    e,
-                    "startForegroundService blocked (app in background); ignoring self-start request"
-                )
+                Logger.withTag(TAG).w(e) { "startForegroundService blocked (app in background); ignoring self-start request" }
                 serviceIntent?.component ?: ComponentName(this, javaClass)
             }
         }
@@ -2288,10 +2251,7 @@ class MusicService : MediaSessionService() {
         reason: String,
         preservePlaybackSnapshot: Boolean = true,
     ) {
-        Timber.tag(TAG).d(
-            "Stopping playback and unloading service. reason=%s",
-            reason
-        )
+        Logger.withTag(TAG).d { String.format("Stopping playback and unloading service. reason=%s", reason) }
         isPlaybackUnloadInProgress = true
         followUpMediaSessionUiRefreshJob?.cancel()
         mediaSessionButtonRefreshJob?.cancel()
@@ -2340,7 +2300,7 @@ class MusicService : MediaSessionService() {
             runCatching {
                 userPreferencesRepository.setPlaybackQueueSnapshot(snapshot)
             }.onFailure { e ->
-                Timber.tag(TAG).w(e, "Failed to persist playback snapshot during unload")
+                Logger.withTag(TAG).w(e) { "Failed to persist playback snapshot during unload" }
             }
         }
     }
@@ -2427,8 +2387,7 @@ class MusicService : MediaSessionService() {
         requestWidgetFullUpdate(force = true)
 
         serviceScope.launch {
-            Timber.tag("MusicService")
-                .d("Applying favorite=$targetFavoriteState for songId: $songId")
+            Logger.withTag("MusicService").d { "Applying favorite=$targetFavoriteState for songId: $songId" }
             musicRepository.setFavoriteStatus(songId, targetFavoriteState)
             refreshMediaSessionUi(session)
             requestWidgetFullUpdate(force = true)
@@ -2519,12 +2478,7 @@ class MusicService : MediaSessionService() {
             runCatching {
                 grantUriPermission(targetPackage, artworkUri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }.onFailure { error ->
-                Timber.tag(TAG).w(
-                    error,
-                    "Failed to grant artwork URI permission to package=%s uri=%s",
-                    targetPackage,
-                    artworkUri
-                )
+                Logger.withTag(TAG).w(error) { String.format("Failed to grant artwork URI permission to package=%s uri=%s", targetPackage, artworkUri) }
             }
         }
     }

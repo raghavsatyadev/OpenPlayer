@@ -54,7 +54,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioOutputDev
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioOutputKind
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioOutputViewModel
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /** Lets the user pick which connected output (speaker, wired, USB, Bluetooth) plays the app's audio. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -232,7 +232,7 @@ private fun openSystemOutputSwitcher(context: Context) {
             Intent(Settings.ACTION_BLUETOOTH_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         )
     } catch (e: ActivityNotFoundException) {
-        Timber.w(e, "No activity to pick an audio output")
+        Logger.w(e) { "No activity to pick an audio output" }
     }
 }
 

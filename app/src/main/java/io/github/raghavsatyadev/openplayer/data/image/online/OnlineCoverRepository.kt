@@ -17,7 +17,7 @@ import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -138,11 +138,11 @@ class OnlineCoverRepository(
         val deezerException = deezerResult.exceptionOrNull()
         val deezerError = deezerResult.getOrNull()?.error
         if (deezerException is IOException) {
-            Timber.tag(TAG).d(deezerException, "Deezer search failed with network error")
+            Logger.withTag(TAG).d(deezerException) { "Deezer search failed with network error" }
             networkErrorOccurred = true
         } else if (deezerError != null && (deezerError.code == 4 || deezerError.code == 700)) {
             // Quota or busy: try again later rather than record a miss.
-            Timber.tag(TAG).d("Deezer throttled: ${deezerError.code}")
+            Logger.withTag(TAG).d { "Deezer throttled: ${deezerError.code}" }
             networkErrorOccurred = true
         } else {
             val tracks = deezerResult.getOrNull()?.data.orEmpty()
@@ -165,7 +165,7 @@ class OnlineCoverRepository(
             }
             val itunesException = itunesResult.exceptionOrNull()
             if (itunesException is IOException) {
-                Timber.tag(TAG).d(itunesException, "iTunes search failed or was throttled")
+                Logger.withTag(TAG).d(itunesException) { "iTunes search failed or was throttled" }
                 networkErrorOccurred = true
             } else {
                 val songs = itunesResult.getOrNull().orEmpty()
@@ -183,7 +183,7 @@ class OnlineCoverRepository(
 
         // When both searches ran fine and found nothing, write .none
         if (imageUrl == null) {
-            Timber.tag(TAG).d("No online cover found for song id $songId")
+            Logger.withTag(TAG).d { "No online cover found for song id $songId" }
             writeNoneMarker(songId)
             return@withContext null
         }
@@ -205,7 +205,7 @@ class OnlineCoverRepository(
                 }
                 val body = response.body ?: return null
                 if (body.contentLength() > MAX_DOWNLOAD_BYTES) {
-                    Timber.tag(TAG).d("Online cover size exceeds 5 MB limit")
+                    Logger.withTag(TAG).d { "Online cover size exceeds 5 MB limit" }
                     return null
                 }
 
@@ -217,7 +217,7 @@ class OnlineCoverRepository(
                         while (input.read(buffer).also { read = it } != -1) {
                             totalRead += read
                             if (totalRead > MAX_DOWNLOAD_BYTES) {
-                                Timber.tag(TAG).d("Online cover stream exceeded 5 MB limit")
+                                Logger.withTag(TAG).d { "Online cover stream exceeded 5 MB limit" }
                                 return null
                             }
                             output.write(buffer, 0, read)
@@ -228,7 +228,7 @@ class OnlineCoverRepository(
                 val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
                 BitmapFactory.decodeFile(tmpFile.absolutePath, options)
                 if (options.outWidth <= 0 || options.outHeight <= 0) {
-                    Timber.tag(TAG).d("Downloaded file could not be decoded as bitmap")
+                    Logger.withTag(TAG).d { "Downloaded file could not be decoded as bitmap" }
                     return null
                 }
 
@@ -237,17 +237,17 @@ class OnlineCoverRepository(
                 }
                 if (tmpFile.renameTo(targetFile)) {
                     noneFile.delete()
-                    Timber.tag(TAG).d("Successfully cached online cover for song id $songId")
+                    Logger.withTag(TAG).d { "Successfully cached online cover for song id $songId" }
                     targetFile
                 } else {
                     null
                 }
             }
         } catch (e: IOException) {
-            Timber.tag(TAG).d(e, "Network error downloading cover for song id $songId")
+            Logger.withTag(TAG).d(e) { "Network error downloading cover for song id $songId" }
             null
         } catch (e: Exception) {
-            Timber.tag(TAG).d(e, "Error downloading cover for song id $songId")
+            Logger.withTag(TAG).d(e) { "Error downloading cover for song id $songId" }
             null
         } finally {
             if (tmpFile.exists()) {

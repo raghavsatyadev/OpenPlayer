@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 enum class ParametricMessage { IMPORT_NO_FILTERS, IMPORT_FAILED, EXPORT_FAILED, EXPORTED }
 
@@ -92,7 +92,7 @@ class ParametricEqViewModel(
         viewModelScope.launch {
             val text = withContext(Dispatchers.IO) {
                 runCatching { context.contentResolver.openInputStream(uri)?.use { it.readBytes().toString(Charsets.UTF_8) } }
-                    .onFailure { Timber.w(it, "Parametric EQ import read failed") }
+                    .onFailure { Logger.w(it) { "Parametric EQ import read failed" } }
                     .getOrNull()
             }
             if (text == null) {
@@ -115,7 +115,7 @@ class ParametricEqViewModel(
             val ok = withContext(Dispatchers.IO) {
                 runCatching {
                     context.contentResolver.openOutputStream(uri, "wt")?.use { it.write(text.toByteArray(Charsets.UTF_8)) } != null
-                }.onFailure { Timber.w(it, "Parametric EQ export failed") }.getOrDefault(false)
+                }.onFailure { Logger.w(it) { "Parametric EQ export failed" } }.getOrDefault(false)
             }
             message.value = if (ok) ParametricMessage.EXPORTED else ParametricMessage.EXPORT_FAILED
         }

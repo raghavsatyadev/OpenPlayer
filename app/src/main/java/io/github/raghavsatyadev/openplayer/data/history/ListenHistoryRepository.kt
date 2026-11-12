@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Per-listen history: one row per play that met the [ListenCountRule].
@@ -41,7 +41,7 @@ class ListenHistoryRepository(
         appScope.launch { preferences.ruleFlow.collect { rule = it } }
         appScope.launch {
             runCatching { importIfNeeded() }
-                .onFailure { Timber.tag(TAG).e(it, "Listen history import failed") }
+                .onFailure { Logger.withTag(TAG).e(it) { "Listen history import failed" } }
         }
     }
 
@@ -102,7 +102,7 @@ class ListenHistoryRepository(
             rows.chunked(INSERT_CHUNK).forEach { listenHistoryDao.insertAll(it) }
             preferences.markImported()
             imported = true
-            Timber.tag(TAG).i("Imported %d listens (%d play events, %d play counts)", rows.size, events.size, playCounts.size)
+            Logger.withTag(TAG).i { String.format("Imported %d listens (%d play events, %d play counts)", rows.size, events.size, playCounts.size) }
         }
     }
 

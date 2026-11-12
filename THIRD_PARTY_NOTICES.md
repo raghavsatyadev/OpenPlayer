@@ -41,13 +41,14 @@ The Jellyfin FFmpeg decoder bundled in the APK is GPL-3.0, consistent with the O
 
 | Family | Examples | Typical license/source |
 | --- | --- | --- |
-| AndroidX and Jetpack Compose | Activity, AppCompat, Benchmark, Compose, Glance, Hilt extensions, Lifecycle, Media3, Navigation, Paging, Room, Security, WorkManager | Apache-2.0, AOSP/AndroidX source |
+| AndroidX and Jetpack Compose | Activity, AppCompat, Benchmark, Compose, Glance, Lifecycle, Media3, Navigation, Paging, Room 3, SQLite (bundled), Security, WorkManager | Apache-2.0, AOSP/AndroidX source |
 | Google libraries | Material Components, Gson, Guava transitive pieces, KSP/Gradle plugin ecosystem pieces where applicable | Apache-2.0 or compatible Google-published licenses |
 | JetBrains/Kotlin libraries | Kotlin stdlib, coroutines, serialization, immutable collections | Apache-2.0 |
-| Square libraries | OkHttp, Retrofit | Apache-2.0 |
+| Square libraries | OkHttp, Okio, Retrofit | Apache-2.0 |
+| Multiplatform libraries | Koin (dependency injection), Kermit (logging, Touchlab), Coil 3 | Apache-2.0 |
 | Ktor/Netty | Ktor server CIO/core, Netty transitive libraries | Apache-2.0 |
 | Audio/metadata libraries | JAudioTagger, Vorbis Java | LGPL/MPL/BSD-family upstream licenses; verify current POMs when versions change |
-| UI utilities | Accompanist, Coil, Capturable, CodeView, Reorderable, Wavy Slider | Apache-2.0/MIT or compatible licenses; verify current POMs when versions change |
+| UI utilities | Accompanist, Capturable, CodeView, Reorderable, Wavy Slider | Apache-2.0/MIT or compatible licenses; verify current POMs when versions change |
 | Text/search utilities | Kuromoji, pinyin4j | Apache-2.0/BSD-style licenses; verify current POMs when versions change |
 | Security/compatibility transitive constraints | Bouncy Castle, Commons Lang, HttpClient, JDOM2, jose4j | MIT/Apache-2.0/Bouncy Castle/JDOM-style licenses; verify current POMs when versions change |
 

@@ -62,7 +62,7 @@ import io.github.raghavsatyadev.openplayer.data.update.UpdateStatus
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.UpdatesUiState
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.UpdatesViewModel
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 @Composable
 fun UpdatesScreen(
@@ -363,6 +363,6 @@ private fun Context.startActivitySafely(intent: Intent) {
     try {
         startActivity(intent)
     } catch (error: ActivityNotFoundException) {
-        Timber.w(error, "No activity for $intent")
+        Logger.w(error) { "No activity for $intent" }
     }
 }

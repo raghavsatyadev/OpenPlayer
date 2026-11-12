@@ -8,7 +8,7 @@ import android.os.Build
 import android.provider.BaseColumns
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Helper for requesting MediaStore write/delete permissions on Android 11+
@@ -238,7 +238,7 @@ object MediaStorePermissionHelper {
         return try {
             MediaStore.createWriteRequest(context.contentResolver, validUris).intentSender
         } catch (e: Exception) {
-            Timber.tag("MediaStorePermissionHelper").e(e, "Failed to create write request for URIs: %s", validUris)
+            Logger.withTag("MediaStorePermissionHelper").e(e) { String.format("Failed to create write request for URIs: %s", validUris) }
             null
         }
     }

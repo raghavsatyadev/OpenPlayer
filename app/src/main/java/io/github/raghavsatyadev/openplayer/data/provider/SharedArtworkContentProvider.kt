@@ -12,10 +12,11 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Binder
 import android.os.ParcelFileDescriptor
-import coil.imageLoader
-import coil.request.CachePolicy
-import coil.request.ImageRequest
-import coil.size.Precision
+import coil3.imageLoader
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
+import coil3.size.Precision
 import io.github.raghavsatyadev.openplayer.data.image.RemoteArtworkCache
 import io.github.raghavsatyadev.openplayer.utils.AlbumArtUtils
 import java.io.File

@@ -5,7 +5,7 @@ import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /** Matches no artists row, so lookups fall through to the by-name queries. */
 private const val UNKNOWN_ARTIST_ID = -1L
@@ -25,7 +25,7 @@ internal suspend fun resolveStatsArtistImages(
             val artistId = musicRepository.getArtistIdByName(name) ?: UNKNOWN_ARTIST_ID
             val url = runCatching {
                 artistImageRepository.getEffectiveArtistImageUrl(artistId, name)
-            }.onFailure { Timber.w(it, "Failed to resolve artist image for %s", name) }
+            }.onFailure { Logger.w(it) { String.format("Failed to resolve artist image for %s", name) } }
                 .getOrNull()
             url?.takeIf { it.isNotBlank() }?.let { name to it }
         }

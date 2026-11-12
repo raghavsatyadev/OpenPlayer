@@ -4,7 +4,7 @@ import android.media.audiofx.DynamicsProcessing
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Applies a [ParametricEqProfile] with [DynamicsProcessing].
@@ -67,7 +67,7 @@ class ParametricEqEngine {
                 dp.getInputGainByChannelIndex(0),
             )
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Could not read back DynamicsProcessing state")
+            Logger.withTag(TAG).w(e) { "Could not read back DynamicsProcessing state" }
             null
         }
     }
@@ -94,14 +94,14 @@ class ParametricEqEngine {
                 cutoffs = ParametricResponse.bandCutoffs(count)
                 break
             } catch (e: Exception) {
-                Timber.tag(TAG).w(e, "DynamicsProcessing with %d bands failed", count)
+                Logger.withTag(TAG).w(e) { String.format("DynamicsProcessing with %d bands failed", count) }
                 releaseEffect()
             }
         }
         if (processor == null) {
             _available.value = false
             _enabled.value = false
-            Timber.tag(TAG).w("Parametric EQ unavailable for this process")
+            Logger.withTag(TAG).w { "Parametric EQ unavailable for this process" }
             return
         }
         apply()
@@ -120,7 +120,7 @@ class ParametricEqEngine {
             dp.setInputGainAllChannelsTo(profile.preampDb)
             dp.enabled = _enabled.value
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Failed applying parametric EQ")
+            Logger.withTag(TAG).e(e) { "Failed applying parametric EQ" }
         }
     }
 

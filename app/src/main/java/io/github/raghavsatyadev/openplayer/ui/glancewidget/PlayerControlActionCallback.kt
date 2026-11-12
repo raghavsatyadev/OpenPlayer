@@ -9,7 +9,7 @@ import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.service.MusicService
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 class PlayerControlActionCallback : ActionCallback {
     private val TAG = "PlayerControlCallback"
@@ -21,10 +21,10 @@ class PlayerControlActionCallback : ActionCallback {
         parameters: ActionParameters
     ) {
         val action = parameters[PlayerActions.key]
-        Timber.tag(TAG).d("onAction received: $action for glanceId: $glanceId")
+        Logger.withTag(TAG).d { "onAction received: $action for glanceId: $glanceId" }
 
         if (action == null) {
-            Timber.tag(TAG).w("Action key not found in parameters.")
+            Logger.withTag(TAG).w { "Action key not found in parameters." }
             return
         }
 
@@ -35,7 +35,7 @@ class PlayerControlActionCallback : ActionCallback {
                 if (songId != null) {
                     putExtra("song_id", songId)
                 } else {
-                    Timber.tag(TAG).w("PLAY_FROM_QUEUE action received but no songId found.")
+                    Logger.withTag(TAG).w { "PLAY_FROM_QUEUE action received but no songId found." }
                     return
                 }
             }
@@ -46,11 +46,7 @@ class PlayerControlActionCallback : ActionCallback {
                 try {
                     context.startService(serviceIntent)
                 } catch (e: IllegalStateException) {
-                    Timber.tag(TAG).w(
-                        e,
-                        "startService denied in background for action %s; retrying as foreground service",
-                        action
-                    )
+                    Logger.withTag(TAG).w(e) { String.format("startService denied in background for action %s; retrying as foreground service", action) }
                     serviceIntent.putExtra(MusicService.EXTRA_FORCE_FOREGROUND_ON_START, true)
                     // Marking the start lets a cold MusicService promote itself in
                     // onCreate, before its setup can use up the FGS deadline.
@@ -65,14 +61,14 @@ class PlayerControlActionCallback : ActionCallback {
             } else {
                 context.startService(serviceIntent)
             }
-            Timber.tag(TAG).d("Service intent sent for action: $action")
+            Logger.withTag(TAG).d { "Service intent sent for action: $action" }
         } catch (e: Exception) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 e.javaClass.name == "android.app.ForegroundServiceStartNotAllowedException"
             ) {
-                Timber.tag(TAG).w(e, "Cannot start foreground service from background for action $action")
+                Logger.withTag(TAG).w(e) { "Cannot start foreground service from background for action $action" }
             } else {
-                Timber.tag(TAG).e(e, "Error starting service for action $action: ${e.message}")
+                Logger.withTag(TAG).e(e) { "Error starting service for action $action: ${e.message}" }
             }
         }
     }

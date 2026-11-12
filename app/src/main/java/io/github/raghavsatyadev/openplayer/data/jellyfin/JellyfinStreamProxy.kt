@@ -6,7 +6,7 @@ import io.github.raghavsatyadev.openplayer.data.stream.CloudStreamSecurity
 import kotlinx.coroutines.CancellationException
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 class JellyfinStreamProxy(
     private val repository: JellyfinRepository,
@@ -37,7 +37,7 @@ class JellyfinStreamProxy(
             repository.getStreamUrl(id)
         } catch (e: Exception) {
             if (e is CancellationException) throw e
-            Timber.w(e, "JellyfinStreamProxy: Failed to resolve stream URL for item $id")
+            Logger.w(e) { "JellyfinStreamProxy: Failed to resolve stream URL for item $id" }
             null
         }
     }
@@ -59,7 +59,7 @@ class JellyfinStreamProxy(
             getOrFetchStreamUrl(itemId)
         } catch (e: Exception) {
             if (e is CancellationException) throw e
-            Timber.w(e, "warmUpStreamUrl failed for $itemId")
+            Logger.w(e) { "warmUpStreamUrl failed for $itemId" }
         }
     }
 }

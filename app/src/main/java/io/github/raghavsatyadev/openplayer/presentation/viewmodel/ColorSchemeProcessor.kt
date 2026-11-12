@@ -8,10 +8,13 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.graphics.createBitmap
-import coil.imageLoader
-import coil.request.CachePolicy
-import coil.request.ImageRequest
-import coil.size.Size
+import coil3.imageLoader
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
+import coil3.request.bitmapConfig
+import coil3.size.Size
+import coil3.toBitmap
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtColorAccuracy
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtPaletteStyle
 import io.github.raghavsatyadev.openplayer.data.database.AlbumArtThemeDao
@@ -199,17 +202,8 @@ class ColorSchemeProcessor(
                 .diskCachePolicy(diskCachePolicy)
                 .build()
             
-            val drawable = context.imageLoader.execute(request).drawable ?: return null
-            
-            createBitmap(
-                drawable.intrinsicWidth.coerceAtLeast(1),
-                drawable.intrinsicHeight.coerceAtLeast(1)
-            ).also { bmp ->
-                Canvas(bmp).let { canvas ->
-                    drawable.setBounds(0, 0, canvas.width, canvas.height)
-                    drawable.draw(canvas)
-                }
-            }
+            val image = context.imageLoader.execute(request).image ?: return null
+            image.toBitmap()
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {

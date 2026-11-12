@@ -27,7 +27,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Call
 import okhttp3.Request
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -136,7 +136,7 @@ class AppUpdateManager(
             findUpdate()
         } catch (error: Exception) {
             if (error is CancellationException) throw error
-            Timber.w(error, "Update check failed")
+            Logger.w(error) { "Update check failed" }
             UpdateStatus.Failed(UpdateError.CHECK_FAILED, release = null)
         }
     }
@@ -174,7 +174,7 @@ class AppUpdateManager(
                 if (error is CancellationException) throw error
                 // cancel() aborts the call, which surfaces here as an IOException; Idle stands.
                 ensureActive()
-                Timber.w(error, "Update download failed")
+                Logger.w(error) { "Update download failed" }
                 _status.value = UpdateStatus.Failed(UpdateError.DOWNLOAD_FAILED, release)
                 return@launch
             }
@@ -244,7 +244,7 @@ class AppUpdateManager(
                 release?.let { UpdateStatus.Available(it, requiresReinstall = true) }
                     ?: UpdateStatus.Failed(UpdateError.INSTALL_FAILED, null)
             else -> {
-                Timber.w("Update install failed: status=$status message=$message")
+                Logger.w { "Update install failed: status=$status message=$message" }
                 UpdateStatus.Failed(UpdateError.INSTALL_FAILED, release)
             }
         }
@@ -342,7 +342,7 @@ class AppUpdateManager(
             withContext(Dispatchers.IO) { commitSession(apk) }
         } catch (error: Exception) {
             if (error is CancellationException) throw error
-            Timber.w(error, "Could not start the update install session")
+            Logger.w(error) { "Could not start the update install session" }
             _status.value = UpdateStatus.Failed(UpdateError.INSTALL_FAILED, release)
         }
     }

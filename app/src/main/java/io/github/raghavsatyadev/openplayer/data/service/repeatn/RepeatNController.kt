@@ -2,7 +2,7 @@ package io.github.raghavsatyadev.openplayer.data.service.repeatn
 
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Applies [RepeatNCounter] to the session player inside MusicService. Hooks are the player
@@ -26,7 +26,7 @@ internal class RepeatNController(
         session.setRemaining(counter.remaining)
         onActiveChanged()
         player.repeatMode = mode
-        Timber.tag(TAG).d("Repeat-N started: %d more plays of %s", counter.remaining, songId)
+        Logger.withTag(TAG).d { String.format("Repeat-N started: %d more plays of %s", counter.remaining, songId) }
     }
 
     fun cancel(restoreRepeatMode: Boolean = true) {
@@ -44,7 +44,7 @@ internal class RepeatNController(
                 session.setRemaining(0)
                 onActiveChanged()
                 sessionPlayer().repeatMode = action.mode
-                Timber.tag(TAG).d("Repeat-N ended (finished=%s)", action.finished)
+                Logger.withTag(TAG).d { String.format("Repeat-N ended (finished=%s)", action.finished) }
             }
         }
     }

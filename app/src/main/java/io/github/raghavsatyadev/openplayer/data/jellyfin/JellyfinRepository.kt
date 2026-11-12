@@ -39,7 +39,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlin.math.absoluteValue
 
 @Suppress("DEPRECATION")
@@ -89,12 +89,12 @@ class JellyfinRepository(
     private fun createCredentialPrefs(): SharedPreferences = try {
         createEncryptedPrefs()
     } catch (e: Exception) {
-        Timber.e(e, "$TAG: EncryptedSharedPreferences unreadable, deleting and recreating")
+        Logger.e(e) { "$TAG: EncryptedSharedPreferences unreadable, deleting and recreating" }
         context.deleteSharedPreferences(PREFS_NAME)
         try {
             createEncryptedPrefs()
         } catch (e2: Exception) {
-            Timber.e(e2, "$TAG: Encrypted prefs unavailable, falling back to plain")
+            Logger.e(e2) { "$TAG: Encrypted prefs unavailable, falling back to plain" }
             context.getSharedPreferences("${PREFS_NAME}_plain", Context.MODE_PRIVATE)
         }
     }
@@ -117,14 +117,14 @@ class JellyfinRepository(
             val credentials = JellyfinCredentials(serverUrl, username, "", accessToken, userId)
             val validationError = credentials.connectionValidationError()
             if (validationError != null) {
-                Timber.w("$TAG: Ignoring invalid saved Jellyfin server URL: $validationError")
+                Logger.w { "$TAG: Ignoring invalid saved Jellyfin server URL: $validationError" }
                 api.clearCredentials()
                 _isLoggedInFlow.value = false
                 return
             }
             api.setCredentials(credentials)
             _isLoggedInFlow.value = true
-            Timber.d("$TAG: Restored credentials for $username@${credentials.normalizedServerUrl}")
+            Logger.d { "$TAG: Restored credentials for $username@${credentials.normalizedServerUrl}" }
         }
     }
 
@@ -170,7 +170,7 @@ class JellyfinRepository(
     suspend fun login(serverUrl: String, username: String, password: String): Result<String> {
         return withContext(Dispatchers.IO) {
             try {
-                Timber.d("$TAG: Attempting login to $serverUrl as $username")
+                Logger.d { "$TAG: Attempting login to $serverUrl as $username" }
 
                 val credentials = JellyfinCredentials(serverUrl, username, password)
                 val validationError = credentials.connectionValidationError()
@@ -201,11 +201,11 @@ class JellyfinRepository(
                     .apply()
 
                 _isLoggedInFlow.value = true
-                Timber.d("$TAG: Login successful for $username@$serverUrl")
+                Logger.d { "$TAG: Login successful for $username@$serverUrl" }
                 Result.success(username)
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
-                Timber.e(e, "$TAG: Login failed")
+                Logger.e(e) { "$TAG: Login failed" }
                 api.clearCredentials()
                 _isLoggedInFlow.value = false
                 Result.failure(e)
@@ -214,7 +214,7 @@ class JellyfinRepository(
     }
 
     suspend fun logout() {
-        Timber.d("$TAG: Logging out")
+        Logger.d { "$TAG: Logging out" }
         api.clearCredentials()
         prefs.edit().clear().apply()
         userPreferencesRepository.clearJellyfinSelectedLibraryIds()
@@ -258,7 +258,7 @@ class JellyfinRepository(
 
         return withContext(Dispatchers.IO) {
             try {
-                Timber.d("$TAG: Syncing playlists")
+                Logger.d { "$TAG: Syncing playlists" }
                 val result = api.getPlaylists()
                 if (result.isFailure) {
                     return@withContext Result.failure(
@@ -270,17 +270,17 @@ class JellyfinRepository(
                 val playlists = JellyfinResponseParser.parsePlaylists(jsonObjects)
 
                 if (playlists.isEmpty() && jsonObjects.isNotEmpty()) {
-                    Timber.w("$TAG: Parser returned empty playlists but JSON had items. Aborting.")
+                    Logger.w { "$TAG: Parser returned empty playlists but JSON had items. Aborting." }
                     return@withContext Result.failure(Exception("Playlist parsing error"))
                 }
 
                 if (playlists.isEmpty()) {
                     val localCount = dao.getPlaylistCount()
                     if (localCount > 0) {
-                        Timber.w("$TAG: Server returned empty playlists but we have $localCount locally. Aborting sync.")
+                        Logger.w { "$TAG: Server returned empty playlists but we have $localCount locally. Aborting sync." }
                         return@withContext Result.success(emptyList())
                     }
-                    Timber.w("$TAG: Server reported no audio playlists for this user")
+                    Logger.w { "$TAG: Server reported no audio playlists for this user" }
                 }
 
                 val entities = playlists.map { playlist ->
@@ -302,7 +302,7 @@ class JellyfinRepository(
                 }
 
                 if (stalePlaylists.isNotEmpty()) {
-                    Timber.d("$TAG: Removing ${stalePlaylists.size} stale playlists")
+                    Logger.d { "$TAG: Removing ${stalePlaylists.size} stale playlists" }
                     stalePlaylists.forEach { stale ->
                         writeSongCache { dao.deleteSongsByPlaylist(stale.id) }
                         dao.deletePlaylist(stale.id)
@@ -316,11 +316,11 @@ class JellyfinRepository(
                     syncUnifiedLibrarySongsFromJellyfin()
                 }
 
-                Timber.d("$TAG: Synced ${entities.size} playlists")
+                Logger.d { "$TAG: Synced ${entities.size} playlists" }
                 Result.success(entities)
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
-                Timber.e(e, "$TAG: Failed to sync playlists")
+                Logger.e(e) { "$TAG: Failed to sync playlists" }
                 Result.failure(e)
             }
         }
@@ -329,7 +329,7 @@ class JellyfinRepository(
     suspend fun syncPlaylistSongs(playlistId: String): Result<Int> {
         return withContext(Dispatchers.IO) {
             try {
-                Timber.d("$TAG: Syncing songs for playlist $playlistId")
+                Logger.d { "$TAG: Syncing songs for playlist $playlistId" }
                 val result = api.getPlaylistItems(playlistId)
                 if (result.isFailure) {
                     return@withContext Result.failure(
@@ -341,7 +341,7 @@ class JellyfinRepository(
                 val songs = JellyfinResponseParser.parseSongs(songJsons)
 
                 if (songs.isEmpty() && songJsons.isNotEmpty()) {
-                    Timber.w("$TAG: FAILED to parse songs for playlist $playlistId. Aborting.")
+                    Logger.w { "$TAG: FAILED to parse songs for playlist $playlistId. Aborting." }
                     return@withContext Result.failure(Exception("Parsing error"))
                 }
 
@@ -362,11 +362,11 @@ class JellyfinRepository(
                     updateAppPlaylistForJellyfinPlaylist(playlistId, playlistName, emptyList())
                 }
 
-                Timber.d("$TAG: Synced ${entities.size} songs for playlist $playlistId")
+                Logger.d { "$TAG: Synced ${entities.size} songs for playlist $playlistId" }
                 Result.success(entities.size)
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
-                Timber.e(e, "$TAG: Failed to sync playlist songs")
+                Logger.e(e) { "$TAG: Failed to sync playlist songs" }
                 Result.failure(e)
             }
         }
@@ -377,14 +377,14 @@ class JellyfinRepository(
 
         return withContext(Dispatchers.IO) {
             try {
-                Timber.d("$TAG: Syncing library songs from server")
+                Logger.d { "$TAG: Syncing library songs from server" }
                 val allSongs = mutableListOf<JellyfinSong>()
                 val pageSize = 500
 
                 val musicLibraries = getLibraries()
                     .map { libraries -> libraries.filter { it.isMusic } }
                     .getOrElse { error ->
-                        Timber.w(error, "$TAG: Failed to load libraries; falling back to all-library sync")
+                        Logger.w(error) { "$TAG: Failed to load libraries; falling back to all-library sync" }
                         emptyList()
                     }
                 val selectedLibraryIds = selectedJellyfinLibraryIds(
@@ -413,7 +413,7 @@ class JellyfinRepository(
                             parentId = parentId
                         )
                         val (_, items) = result.getOrElse { error ->
-                            Timber.w(error, "$TAG: Song fetch failed, keeping cached library")
+                            Logger.w(error) { "$TAG: Song fetch failed, keeping cached library" }
                             return@withContext Result.failure(error)
                         }
                         if (items.isEmpty()) break
@@ -426,7 +426,7 @@ class JellyfinRepository(
                 }
 
                 if (allSongs.isEmpty()) {
-                    Timber.d("$TAG: No library songs found on server")
+                    Logger.d { "$TAG: No library songs found on server" }
                     return@withContext Result.success(0)
                 }
 
@@ -435,11 +435,11 @@ class JellyfinRepository(
 
                 writeSongCache { dao.replaceLibrarySongs(entities) }
 
-                Timber.d("$TAG: Synced ${entities.size} library songs")
+                Logger.d { "$TAG: Synced ${entities.size} library songs" }
                 Result.success(entities.size)
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
-                Timber.e(e, "$TAG: Failed to sync library songs")
+                Logger.e(e) { "$TAG: Failed to sync library songs" }
                 Result.failure(e)
             }
         }
@@ -453,7 +453,7 @@ class JellyfinRepository(
             val libResult = syncLibrarySongs()
             libResult.fold(
                 onSuccess = { count -> syncedSongCount += count },
-                onFailure = { Timber.w(it, "$TAG: Failed syncing library songs") }
+                onFailure = { Logger.w(it) { "$TAG: Failed syncing library songs" } }
             )
 
             val playlistResult = syncPlaylists().getOrElse {
@@ -461,7 +461,7 @@ class JellyfinRepository(
                     syncUnifiedLibrarySongsFromJellyfin()
                 } catch (e: Exception) {
                     if (e is CancellationException) throw e
-                    Timber.e(e, "$TAG: Failed to sync unified library after playlist fetch failure")
+                    Logger.e(e) { "$TAG: Failed to sync unified library after playlist fetch failure" }
                 }
                 return@withContext Result.success(
                     BulkSyncResult(playlistCount = 0, syncedSongCount = syncedSongCount, failedPlaylistCount = 0)
@@ -474,7 +474,7 @@ class JellyfinRepository(
                     onSuccess = { count -> syncedSongCount += count },
                     onFailure = {
                         failedPlaylistCount += 1
-                        Timber.w(it, "$TAG: Failed syncing playlist ${playlist.id}")
+                        Logger.w(it) { "$TAG: Failed syncing playlist ${playlist.id}" }
                     }
                 )
             }
@@ -484,7 +484,7 @@ class JellyfinRepository(
                 true
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
-                Timber.e(e, "$TAG: Failed to sync unified library")
+                Logger.e(e) { "$TAG: Failed to sync unified library" }
                 false
             }
 
@@ -539,7 +539,7 @@ class JellyfinRepository(
                 Result.success(jellyfinSongs.map { it.toDisplaySong() })
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
-                Timber.e(e, "$TAG: Search failed")
+                Logger.e(e) { "$TAG: Search failed" }
                 Result.failure(e)
             }
         }
@@ -579,7 +579,7 @@ class JellyfinRepository(
                 Result.failure(Exception("No lyrics found"))
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
-                Timber.e(e, "$TAG: Failed to get lyrics for song $songId")
+                Logger.e(e) { "$TAG: Failed to get lyrics for song $songId" }
                 Result.failure(e)
             }
         }
@@ -600,7 +600,7 @@ class JellyfinRepository(
             unifiedSongCount = musicDao.getJellyfinSongCount()
         )
         if (prefs.getString(KEY_UNIFIED_LIBRARY_STATE, null) == currentState) {
-            Timber.d("$TAG: Cached songs unchanged since the last unified library rebuild")
+            Logger.d { "$TAG: Cached songs unchanged since the last unified library rebuild" }
             return@withLock
         }
         rebuildAndSaveState()

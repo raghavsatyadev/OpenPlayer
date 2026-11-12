@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Tracks listening statistics for songs.
@@ -326,7 +326,7 @@ class ListeningStatsTracker(
             runCatching {
                 persistPlaybackInternal(songId = songId, listened = listened, timestamp = timestamp)
             }.onFailure { throwable ->
-                Timber.e(throwable, "Failed to persist listening session for song=%s", songId)
+                Logger.e(throwable) { String.format("Failed to persist listening session for song=%s", songId) }
             }
         }
     }
@@ -370,7 +370,7 @@ class ListeningStatsTracker(
         persistenceScope.launch {
             runCatching { listenHistoryRepository.record(listen) }
                 .onFailure { throwable ->
-                    Timber.e(throwable, "Failed to record listen for song=%s", listen.songId)
+                    Logger.e(throwable) { String.format("Failed to record listen for song=%s", listen.songId) }
                 }
         }
     }

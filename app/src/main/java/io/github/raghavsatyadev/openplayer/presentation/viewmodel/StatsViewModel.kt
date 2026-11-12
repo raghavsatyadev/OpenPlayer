@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -95,7 +95,7 @@ class StatsViewModel(
             }.onSuccess { summary ->
                 _weeklyOverview.value = summary
             }.onFailure { throwable ->
-                Timber.e(throwable, "Failed to load weekly stats overview")
+                Logger.e(throwable) { "Failed to load weekly stats overview" }
                 _weeklyOverview.value = null
             }
         }
@@ -115,7 +115,7 @@ class StatsViewModel(
                 // A newer refresh replaced this one; it publishes the result instead.
                 throw cancellation
             } catch (throwable: Exception) {
-                Timber.e(throwable, "Failed to load home stats overview")
+                Logger.e(throwable) { "Failed to load home stats overview" }
                 // Keep showing the last good summary rather than flashing the empty state.
                 if (_homeOverviewState.value !is HomeStatsOverviewState.Ready) {
                     _homeOverviewState.value = HomeStatsOverviewState.Empty
@@ -158,7 +158,7 @@ class StatsViewModel(
                     selectedRange = range
                 )
             }
-            summary.exceptionOrNull()?.let { Timber.e(it, "Failed to load stats for range %s", range) }
+            summary.exceptionOrNull()?.let { Logger.e(it) { String.format("Failed to load stats for range %s", range) } }
         }
     }
 

@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import io.github.raghavsatyadev.openplayer.data.observer.MediaStoreObserver
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -242,11 +242,11 @@ class SyncManager(
 
             if (!shouldRunSync) {
                 val ageSeconds = (now - lastSyncTimestamp) / 1000
-                Timber.tag(TAG).d("Skipping startup sync (last sync ${ageSeconds}s ago)")
+                Logger.withTag(TAG).d { "Skipping startup sync (last sync ${ageSeconds}s ago)" }
                 return@launch
             }
 
-            Timber.tag(TAG).i("Startup sync requested - Scheduling Incremental Sync")
+            Logger.withTag(TAG).i { "Startup sync requested - Scheduling Incremental Sync" }
             enqueueSyncWork(
                 request = SyncWorker.incrementalSyncWork(),
                 policy = ExistingWorkPolicy.KEEP,
@@ -261,7 +261,7 @@ class SyncManager(
      * This is the recommended sync method for pull-to-refresh actions.
      */
     fun incrementalSync() {
-        Timber.tag(TAG).i("Incremental sync requested - Scheduling incremental worker")
+        Logger.withTag(TAG).i { "Incremental sync requested - Scheduling incremental worker" }
         enqueueSyncWork(
             // Explicit user request (pull-to-refresh): run now even during playback.
             request = SyncWorker.incrementalSyncWork(
@@ -277,7 +277,7 @@ class SyncManager(
      * Use this when the user explicitly wants to force a complete rescan.
      */
     fun fullSync(deepScan: Boolean = true) {
-        Timber.tag(TAG).i("Full sync requested - Scheduling full sync worker")
+        Logger.withTag(TAG).i { "Full sync requested - Scheduling full sync worker" }
         enqueueSyncWork(
             request = SyncWorker.fullSyncWork(deepScan = deepScan),
             policy = ExistingWorkPolicy.REPLACE
@@ -290,7 +290,7 @@ class SyncManager(
      * Use when local library data is corrupted or songs are missing.
      */
     fun rebuildDatabase() {
-        Timber.tag(TAG).i("Rebuild database requested - Scheduling rebuild worker")
+        Logger.withTag(TAG).i { "Rebuild database requested - Scheduling rebuild worker" }
         enqueueSyncWork(
             request = SyncWorker.rebuildDatabaseWork(),
             policy = ExistingWorkPolicy.REPLACE
@@ -303,7 +303,7 @@ class SyncManager(
      * when the caller just changed the selected folders.
      */
     fun forceRefresh() {
-        Timber.tag(TAG).i("Manual local refresh requested - Scheduling incremental worker")
+        Logger.withTag(TAG).i { "Manual local refresh requested - Scheduling incremental worker" }
         enqueueSyncWork(
             // Explicit user request (refresh button, folder changes, end of setup): run now
             // even during playback.
@@ -382,9 +382,7 @@ class SyncManager(
                         FollowUpSyncDecision.NONE -> Unit
                         FollowUpSyncDecision.NOW -> {
                             localLibraryChangeTracker.recordFollowUp()
-                            Timber.tag(TAG).i(
-                                "MediaStore changed during the last sync - scheduling a follow-up local sync"
-                            )
+                            Logger.withTag(TAG).i { "MediaStore changed during the last sync - scheduling a follow-up local sync" }
                             // Picks up files that landed during the previous sync, often one the
                             // user is waiting on; a cheap delta scan, so it also runs during playback.
                             enqueueBypassLocalSync()
@@ -404,15 +402,13 @@ class SyncManager(
      */
     private fun scheduleBackoffFollowUpSync(followUps: Int) {
         if (cappedFollowUpJob?.isActive == true) return
-        Timber.tag(TAG).w(
-            "MediaStore keeps changing during syncs ($followUps follow-ups in a row) - checking again in ${FOLLOW_UP_CAP_BACKOFF_MS / 1_000}s"
-        )
+        Logger.withTag(TAG).w { "MediaStore keeps changing during syncs ($followUps follow-ups in a row) - checking again in ${FOLLOW_UP_CAP_BACKOFF_MS / 1_000}s" }
         cappedFollowUpJob = sharingScope.launch {
             delay(FOLLOW_UP_CAP_BACKOFF_MS)
             // A sync that ran in the meantime may already have picked the changes up.
             if (!localLibraryChangeTracker.hasUnscannedChanges()) return@launch
             if (!userPreferencesRepository.initialSetupDoneFlow.first()) return@launch
-            Timber.tag(TAG).i("Scheduling a delayed follow-up local sync")
+            Logger.withTag(TAG).i { "Scheduling a delayed follow-up local sync" }
             enqueueBypassLocalSync()
         }
     }
@@ -429,10 +425,10 @@ class SyncManager(
     private suspend fun runLocalAutoSyncAfterDebounce() {
         delay(MEDIASTORE_CHANGE_DEBOUNCE_MS)
         if (!userPreferencesRepository.initialSetupDoneFlow.first()) {
-            Timber.tag(TAG).d("Skipping storage-change sync: initial setup not finished")
+            Logger.withTag(TAG).d { "Skipping storage-change sync: initial setup not finished" }
             return
         }
-        Timber.tag(TAG).i("Storage change detected - scheduling local incremental sync")
+        Logger.withTag(TAG).i { "Storage change detected - scheduling local incremental sync" }
         // Auto-add of a just-downloaded/added file: the user is looking at the
         // library expecting it to appear, so bypass the playback-active deferral.
         enqueueBypassLocalSync()
@@ -447,7 +443,7 @@ class SyncManager(
                         after = readExternalMediaStoreGenerations(context)
                     )
                     if (changedWhileAway) {
-                        Timber.tag(TAG).i("MediaStore changed while the app was in the background")
+                        Logger.withTag(TAG).i { "MediaStore changed while the app was in the background" }
                         // A sync that is still running gets a follow-up for this change too.
                         localLibraryChangeTracker.onMediaStoreChanged()
                     }
@@ -483,15 +479,15 @@ class SyncManager(
                 mediaStoreChangedWhileAway = mediaStoreChangedWhileAway
             )
         ) {
-            Timber.tag(TAG).d("Skipping foreground catch-up sync (cooldown active)")
+            Logger.withTag(TAG).d { "Skipping foreground catch-up sync (cooldown active)" }
             return
         }
         if (!userPreferencesRepository.initialSetupDoneFlow.first()) {
-            Timber.tag(TAG).d("Skipping foreground catch-up sync: initial setup not finished")
+            Logger.withTag(TAG).d { "Skipping foreground catch-up sync: initial setup not finished" }
             return
         }
         lastForegroundSyncTime = now
-        Timber.tag(TAG).i("Foreground catch-up - scheduling local incremental sync")
+        Logger.withTag(TAG).i { "Foreground catch-up - scheduling local incremental sync" }
         // User just returned to the app; surface anything indexed while backgrounded
         // without waiting for playback to stop.
         enqueueBypassLocalSync()
@@ -514,7 +510,7 @@ class SyncManager(
             workManager.getWorkInfosForUniqueWorkFlow(SyncWorker.WORK_NAME).first()
         )
         if (deferredWorkIds.isNotEmpty()) {
-            Timber.tag(TAG).i("Replacing a sync that is waiting for playback to stop")
+            Logger.withTag(TAG).i { "Replacing a sync that is waiting for playback to stop" }
             deferredWorkIds.forEach { workManager.cancelWorkById(it) }
         }
         enqueueSyncWork(

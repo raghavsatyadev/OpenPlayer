@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 class AudioBookmarksViewModel(
     private val bookmarkRepository: AudioBookmarkRepository,
@@ -63,7 +63,7 @@ class AudioBookmarksViewModel(
     fun relinkOrphanedBookmarks() {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching { bookmarkRepository.relinkOrphanedBookmarks() }
-                .onFailure { Timber.w(it, "Failed to relink orphaned bookmarks") }
+                .onFailure { Logger.w(it) { "Failed to relink orphaned bookmarks" } }
         }
     }
 

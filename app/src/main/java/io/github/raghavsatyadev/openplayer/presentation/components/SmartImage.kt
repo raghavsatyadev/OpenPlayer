@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
@@ -29,13 +30,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.compose.AsyncImagePainter
-import coil.request.CachePolicy
-import coil.request.ImageRequest
-import coil.size.Size
-import coil.compose.SubcomposeAsyncImage
-import coil.compose.SubcomposeAsyncImageContent
+import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter
+import coil3.compose.SubcomposeAsyncImage
+import coil3.compose.SubcomposeAsyncImageContent
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
+import coil3.request.crossfade
+import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.utils.LocalArtworkUri
 
@@ -103,7 +106,7 @@ fun SmartImage(
         requestTargetSize
     ) {
         if (artworkModel is ImageRequest) {
-            artworkModel.newBuilder(context)
+            artworkModel.newBuilder()
                 .size(requestTargetSize)
                 .build()
         } else {
@@ -133,7 +136,7 @@ fun SmartImage(
             colorFilter = colorFilter,
             alpha = alpha
         ) {
-            val state = painter.state
+            val state = painter.state.collectAsState().value
             LaunchedEffect(state) {
                 onState?.invoke(state)
             }

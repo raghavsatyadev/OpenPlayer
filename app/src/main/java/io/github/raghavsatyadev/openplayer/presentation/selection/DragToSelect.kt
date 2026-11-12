@@ -34,7 +34,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 private const val LogTag = "DragToSelect"
 
@@ -275,7 +275,7 @@ private class DragToSelectNode<T : Any>(
                     hasDispatchedNestedScroll = false
                     launch { settleNestedScroll() }
                 }
-                tracker?.let { Timber.tag(LogTag).d("Drag-select ended on row %d", it.currentIndex) }
+                tracker?.let { Logger.withTag(LogTag).d { String.format("Drag-select ended on row %d", it.currentIndex) } }
                 tracker = null
                 selectionLeftByDrag = null
                 rangeGate = null
@@ -301,7 +301,7 @@ private class DragToSelectNode<T : Any>(
             itemKey = itemKey,
         )
         if (anchor == null) {
-            Timber.tag(LogTag).w("Drag-select not started: the long-pressed row is not on screen")
+            Logger.withTag(LogTag).w { "Drag-select not started: the long-pressed row is not on screen" }
             return false
         }
         // The long press has already toggled the anchor, so its state now is the drag's target.
@@ -310,7 +310,7 @@ private class DragToSelectNode<T : Any>(
         selectionLeftByDrag = selectedKeys()
         rangeGate = DragRangeGate(startY = pointerInWindow.y, touchSlop = touchSlop)
         edgeGate = AutoScrollEdgeGate(startY = pointerInWindow.y, touchSlop = touchSlop)
-        Timber.tag(LogTag).d("Drag-select started on row %d, selecting=%b", anchor, selecting)
+        Logger.withTag(LogTag).d { String.format("Drag-select started on row %d, selecting=%b", anchor, selecting) }
         return true
     }
 
@@ -319,7 +319,7 @@ private class DragToSelectNode<T : Any>(
      * holding the list, and with no edge gate left auto-scroll winds down on its next step.
      */
     private fun endDragEarly(tracker: DragSelectionTracker<T>, reason: String) {
-        Timber.tag(LogTag).d("Drag-select ended on row %d: %s", tracker.currentIndex, reason)
+        Logger.withTag(LogTag).d { String.format("Drag-select ended on row %d: %s", tracker.currentIndex, reason) }
         this.tracker = null
         selectionLeftByDrag = null
         rangeGate = null

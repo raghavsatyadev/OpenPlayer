@@ -26,7 +26,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import io.github.raghavsatyadev.openplayer.data.model.Song
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import io.github.raghavsatyadev.openplayer.utils.QueueUtils
 import io.github.raghavsatyadev.openplayer.utils.MediaItemBuilder
 import kotlin.math.abs
@@ -387,7 +387,7 @@ class PlaybackStateHolder(
         val positionMs = controller.currentPosition
         val hasPrevious = controller.hasPreviousMediaItem()
         if (behavior.shouldRestartCurrentTrack(positionMs, hasPrevious)) {
-            Timber.tag(TAG).d("Previous restarts the track (behavior=%s, position=%d ms)", behavior, positionMs)
+            Logger.withTag(TAG).d { String.format("Previous restarts the track (behavior=%s, position=%d ms)", behavior, positionMs) }
             // Route the restart through seekTo() so the position override, the engine seek hint and
             // the UI position are updated together; a bare controller.seekTo(0) left a stale
             // override behind and the displayed position could lag the restart.
@@ -485,10 +485,7 @@ class PlaybackStateHolder(
 
         val resolved = minOf(reported, hint)
         if (diff > 10_000L) {
-            Timber.tag(TAG).w(
-                "Duration mismatch resolved (reported=%dms, hint=%dms, pos=%dms, resolved=%dms)",
-                reported, hint, position, resolved
-            )
+            Logger.withTag(TAG).w { String.format("Duration mismatch resolved (reported=%dms, hint=%dms, pos=%dms, resolved=%dms)", reported, hint, position, resolved) }
         }
         return resolved
     }
@@ -521,11 +518,7 @@ class PlaybackStateHolder(
                                 visibleSong.id != currentMediaId
 
                             if (hasMediaMismatch) {
-                                Timber.tag(TAG).v(
-                                    "Skipping local progress tick due media mismatch (visible=%s, player=%s)",
-                                    visibleSong.id,
-                                    currentMediaId
-                                )
+                                Logger.withTag(TAG).v { String.format("Skipping local progress tick due media mismatch (visible=%s, player=%s)", visibleSong.id, currentMediaId) }
                                 delay(tickMs)
                                 continue
                             }
@@ -604,11 +597,7 @@ class PlaybackStateHolder(
 
         val currentCount = player.mediaItemCount
         if (currentCount != desiredQueue.size) {
-            Timber.tag(TAG).w(
-                "Cannot reorder queue in place: size mismatch (player=%d, desired=%d)",
-                currentCount,
-                desiredQueue.size
-            )
+            Logger.withTag(TAG).w { String.format("Cannot reorder queue in place: size mismatch (player=%d, desired=%d)", currentCount, desiredQueue.size) }
             return false
         }
 
@@ -626,7 +615,7 @@ class PlaybackStateHolder(
         val currentCounts = currentIds.groupingBy { it }.eachCount()
         val desiredCounts = desiredIds.groupingBy { it }.eachCount()
         if (currentCounts != desiredCounts) {
-            Timber.tag(TAG).w("Cannot reorder queue in place: mediaId mismatch")
+            Logger.withTag(TAG).w { "Cannot reorder queue in place: mediaId mismatch" }
             return false
         }
 
@@ -648,10 +637,7 @@ class PlaybackStateHolder(
             }
 
             if (fromIndex == null) {
-                Timber.tag(TAG).w(
-                    "Cannot reorder queue in place: target mediaId '%s' not found",
-                    desiredId
-                )
+                Logger.withTag(TAG).w { String.format("Cannot reorder queue in place: target mediaId '%s' not found", desiredId) }
                 return false
             }
 

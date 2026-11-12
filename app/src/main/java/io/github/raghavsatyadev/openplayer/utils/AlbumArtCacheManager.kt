@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import java.util.Locale
 
@@ -104,7 +104,7 @@ object AlbumArtCacheManager {
                 return@withLock 0
             }
             
-            Timber.tag(TAG).d("Cache size ${currentSize / 1024 / 1024}MB exceeds limit, cleaning...")
+            Logger.withTag(TAG).d { "Cache size ${currentSize / 1024 / 1024}MB exceeds limit, cleaning..." }
             
             val filesToDelete = snapshotFilesForCleanup(
                 artFiles = artFiles,
@@ -124,7 +124,7 @@ object AlbumArtCacheManager {
             
             lastCleanupTime = System.currentTimeMillis()
             
-            Timber.tag(TAG).d("Cleaned $deletedCount files, freed ${freedBytes / 1024}KB")
+            Logger.withTag(TAG).d { "Cleaned $deletedCount files, freed ${freedBytes / 1024}KB" }
             
             deletedCount
         }
@@ -162,7 +162,7 @@ object AlbumArtCacheManager {
             }
             
             if (deletedCount > 0) {
-                Timber.tag(TAG).d("Cleaned $deletedCount orphaned album art files")
+                Logger.withTag(TAG).d { "Cleaned $deletedCount orphaned album art files" }
             }
             
             deletedCount
@@ -218,7 +218,7 @@ object AlbumArtCacheManager {
                 }
             }
             
-            Timber.tag(TAG).d("Cleared all album art cache: $deletedCount files")
+            Logger.withTag(TAG).d { "Cleared all album art cache: $deletedCount files" }
             deletedCount
         }
     }

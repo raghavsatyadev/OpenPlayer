@@ -4,7 +4,7 @@ agp = "9.6.0-alpha03"
 animation = "1.13.0-rc01"
 appcompat = "1.8.0"
 capturable = "3.0.1"
-coilCompose = "2.7.0"
+coil = "3.6.3"
 composeUi = "1.13.0-rc01"
 constraintlayoutCompose = "1.1.2"
 coreSplashscreen = "1.2.0"
@@ -66,7 +66,7 @@ smoothCornerRectAndroidCompose = "v1.0.0"
 wavySlider = "2.2.0"
 workRuntimeKtx = "2.12.0"
 composeTesting = "1.0.0-alpha03"
-timber = "5.0.1"
+kermit = "2.2.0"
 mockk = "1.14.12"
 turbine = "1.2.1"
 truth = "1.4.5"
@@ -118,7 +118,8 @@ androidx-paging-compose = { module = "androidx.paging:paging-compose", version.r
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 capturable = { module = "dev.shreyaspatil:capturable", version.ref = "capturable" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
@@ -151,7 +152,7 @@ ktor-server-cio = { group = "io.ktor", name = "ktor-server-cio-jvm", version.ref
 material = { module = "com.google.android.material:material", version.ref = "material" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 smooth-corner-rect-android-compose = { module = "com.github.racra:smooth-corner-rect-android-compose", version.ref = "smoothCornerRectAndroidCompose" }
-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 wavy-slider = { module = "ir.mahozad.multiplatform:wavy-slider", version.ref = "wavySlider" }
 taglib = { group = "io.github.kyant0", name = "taglib", version.ref = "taglib" }
 jaudiotagger = { group = "net.jthink", name = "jaudiotagger", version.ref = "jaudiotagger" }

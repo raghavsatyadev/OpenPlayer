@@ -13,7 +13,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -30,7 +30,7 @@ class UpdateCheckWorker(
             updateManager.findUpdate()
         } catch (error: Exception) {
             if (error is CancellationException) throw error
-            Timber.w(error, "Background update check failed")
+            Logger.w(error) { "Background update check failed" }
             return Result.retry()
         }
         val available = update as? UpdateStatus.Available ?: return Result.success()

@@ -43,7 +43,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.UUID
 import java.util.concurrent.TimeUnit
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -189,7 +189,7 @@ class PlaylistViewModel(
                             )
                         }
                     } else {
-                        Timber.tag("PlaylistVM").w("Folder playlist with path $folderPath not found.")
+                        Logger.withTag("PlaylistVM").w { "Folder playlist with path $folderPath not found." }
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
@@ -232,7 +232,7 @@ class PlaylistViewModel(
                             )
                         }
                     } else {
-                        Timber.tag("PlaylistVM").w("Playlist with id $playlistId not found.")
+                        Logger.withTag("PlaylistVM").w { "Playlist with id $playlistId not found." }
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
@@ -244,7 +244,7 @@ class PlaylistViewModel(
                     }
                 }
             } catch (e: Exception) {
-                Timber.tag("PlaylistVM").e(e, "Error loading playlist details for id $playlistId")
+                Logger.withTag("PlaylistVM").e(e) { "Error loading playlist details for id $playlistId" }
                 _uiState.update {
                     it.copy(
                         isLoading = false,
@@ -436,7 +436,7 @@ class PlaylistViewModel(
 
                 file.absolutePath
             } catch (e: Exception) {
-                Timber.e(e)
+                Logger.e(e) { (e).message ?: "" }
                 null
             }
         }
@@ -457,7 +457,7 @@ class PlaylistViewModel(
                     playlistPreferencesRepository.createPlaylist(name, songIds)
                 }
             } catch (e: Exception) {
-                Timber.tag("PlaylistViewModel").e(e, "Error importing M3U")
+                Logger.withTag("PlaylistViewModel").e(e) { "Error importing M3U" }
             }
         }
     }
@@ -473,7 +473,7 @@ class PlaylistViewModel(
                     }
                 }
             } catch (e: Exception) {
-                Timber.tag("PlaylistViewModel").e(e, "Error exporting M3U")
+                Logger.withTag("PlaylistViewModel").e(e) { "Error exporting M3U" }
             }
         }
     }
@@ -649,7 +649,7 @@ class PlaylistViewModel(
                     currentSongs.map { it.id }
                 )
                 if (fullOrder == null) {
-                    Timber.tag("PlaylistVM").w("Reorder of playlist $playlistId rejected; reloading it.")
+                    Logger.withTag("PlaylistVM").w { "Reorder of playlist $playlistId rejected; reloading it." }
                     if (_uiState.value.currentPlaylistDetails?.id == playlistId) {
                         loadPlaylistDetails(playlistId)
                     }
@@ -901,7 +901,7 @@ class PlaylistViewModel(
                     _playlistCreationEvent.emit(true)
                 }
             } catch (e: Exception) {
-                Timber.tag("PlaylistViewModel").e(e, "Error merging playlists")
+                Logger.withTag("PlaylistViewModel").e(e) { "Error merging playlists" }
             }
         }
     }
@@ -917,7 +917,7 @@ class PlaylistViewModel(
                 playlist to songs
             }
         } catch (e: Exception) {
-            Timber.tag("PlaylistViewModel").e(e, "Error getting playlists with songs")
+            Logger.withTag("PlaylistViewModel").e(e) { "Error getting playlists with songs" }
             emptyList()
         }
     }
@@ -927,17 +927,17 @@ class PlaylistViewModel(
      */
     fun shareSelectedPlaylistsAsZip(playlistIds: List<String>, activity: android.app.Activity?) {
         if (activity == null) {
-            Timber.tag("PlaylistViewModel").w("Activity is null, cannot share")
+            Logger.withTag("PlaylistViewModel").w { "Activity is null, cannot share" }
             return
         }
 
         viewModelScope.launch {
             try {
-                Timber.tag("PlaylistViewModel").d("Starting share of ${playlistIds.size} playlists")
+                Logger.withTag("PlaylistViewModel").d { "Starting share of ${playlistIds.size} playlists" }
                 val playlistsWithSongs = getPlaylistsWithSongs(playlistIds)
 
                 if (playlistsWithSongs.isEmpty()) {
-                    Timber.tag("PlaylistViewModel").w("No playlists found to share")
+                    Logger.withTag("PlaylistViewModel").w { "No playlists found to share" }
                     Toast.makeText(context, context.getString(R.string.playlist_none_to_share), Toast.LENGTH_SHORT).show()
                     return@launch
                 }
@@ -954,7 +954,7 @@ class PlaylistViewModel(
                     shareFile = File(context.cacheDir, shareFileName)
                     shareFile.writeText(m3uContent)
                     shareMimeType = "audio/mpegurl"
-                    Timber.tag("PlaylistViewModel").d("Created M3U file: ${shareFile.absolutePath}, size: ${shareFile.length()} bytes")
+                    Logger.withTag("PlaylistViewModel").d { "Created M3U file: ${shareFile.absolutePath}, size: ${shareFile.length()} bytes" }
                 } else {
                     val firstPlaylistName = sanitizeFileName(playlistsWithSongs.first().first.name)
                     val zipFileName = "Playlists_${firstPlaylistName}_and_${playlistsWithSongs.size - 1}_more.zip"
@@ -983,7 +983,7 @@ class PlaylistViewModel(
 
                     shareFileName = zipFileName
                     shareMimeType = "application/zip"
-                    Timber.tag("PlaylistViewModel").d("Created ZIP file: ${shareFile.absolutePath}, size: ${shareFile.length()} bytes")
+                    Logger.withTag("PlaylistViewModel").d { "Created ZIP file: ${shareFile.absolutePath}, size: ${shareFile.length()} bytes" }
                 }
 
                 val uri = androidx.core.content.FileProvider.getUriForFile(
@@ -998,14 +998,14 @@ class PlaylistViewModel(
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 }
 
-                Timber.tag("PlaylistViewModel").d("Launching share intent for: $shareFileName")
+                Logger.withTag("PlaylistViewModel").d { "Launching share intent for: $shareFileName" }
                 activity.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.playlist_share_chooser_title)))
                 val n = playlistsWithSongs.size
                 val sharingMsg = context.resources.getQuantityString(R.plurals.sharing_playlists_message, n, n)
                 Toast.makeText(context, sharingMsg, Toast.LENGTH_SHORT).show()
 
             } catch (e: Exception) {
-                Timber.tag("PlaylistViewModel").e(e, "Error sharing playlists")
+                Logger.withTag("PlaylistViewModel").e(e) { "Error sharing playlists" }
                 Toast.makeText(context, context.getString(R.string.playlist_share_failed, e.message ?: ""), Toast.LENGTH_LONG).show()
             }
         }
@@ -1046,10 +1046,10 @@ class PlaylistViewModel(
                     isQueueGenerated = false
                 )
 
-                Timber.tag("PlaylistViewModel").d("Successfully merged ${playlistIds.size} playlists into '$newPlaylistName' with ${allSongs.size} total unique songs")
+                Logger.withTag("PlaylistViewModel").d { "Successfully merged ${playlistIds.size} playlists into '$newPlaylistName' with ${allSongs.size} total unique songs" }
 
             } catch (e: Exception) {
-                Timber.tag("PlaylistViewModel").e(e, "Error merging playlists")
+                Logger.withTag("PlaylistViewModel").e(e) { "Error merging playlists" }
             }
         }
     }
@@ -1062,7 +1062,7 @@ class PlaylistViewModel(
 
         viewModelScope.launch {
             try {
-                Timber.tag("PlaylistViewModel").d("Starting export of ${playlistIds.size} playlists")
+                Logger.withTag("PlaylistViewModel").d { "Starting export of ${playlistIds.size} playlists" }
                 val musicDir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_MUSIC)
                 if (!musicDir.exists()) {
                     musicDir.mkdirs()
@@ -1075,7 +1075,7 @@ class PlaylistViewModel(
 
                 val playlistsWithSongs = getPlaylistsWithSongs(playlistIds)
                 if (playlistsWithSongs.isEmpty()) {
-                    Timber.tag("PlaylistViewModel").w("No playlists found to export")
+                    Logger.withTag("PlaylistViewModel").w { "No playlists found to export" }
                     Toast.makeText(context, context.getString(R.string.playlist_none_to_export), Toast.LENGTH_SHORT).show()
                     return@launch
                 }
@@ -1090,17 +1090,17 @@ class PlaylistViewModel(
                         counter++
                     }
                     file.writeText(m3uContent)
-                    Timber.tag("PlaylistViewModel").d("Exported playlist '${playlist.name}' to ${file.absolutePath}")
+                    Logger.withTag("PlaylistViewModel").d { "Exported playlist '${playlist.name}' to ${file.absolutePath}" }
                 }
 
-                Timber.tag("PlaylistViewModel").d("Successfully exported ${playlistIds.size} playlists to $exportDir")
+                Logger.withTag("PlaylistViewModel").d { "Successfully exported ${playlistIds.size} playlists to $exportDir" }
                 val count = playlistsWithSongs.size
                 val folderLabel = context.getString(R.string.playlist_export_folder_display)
                 val exportedMsg = context.resources.getQuantityString(R.plurals.exported_playlists_message, count, count, folderLabel)
                 Toast.makeText(context, exportedMsg, Toast.LENGTH_SHORT).show()
 
             } catch (e: Exception) {
-                Timber.tag("PlaylistViewModel").e(e, "Error exporting playlists")
+                Logger.withTag("PlaylistViewModel").e(e) { "Error exporting playlists" }
                 Toast.makeText(context, context.getString(R.string.playlist_export_failed, e.message ?: ""), Toast.LENGTH_SHORT).show()
             }
         }

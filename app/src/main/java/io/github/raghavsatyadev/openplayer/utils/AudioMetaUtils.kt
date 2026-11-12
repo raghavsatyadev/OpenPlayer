@@ -7,7 +7,7 @@ import android.os.Build
 import io.github.raghavsatyadev.openplayer.data.database.MusicDao
 import java.io.File
 import java.util.Locale
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 data class AudioMeta(
     val mimeType: String?,
@@ -48,7 +48,7 @@ object AudioMetaUtils {
                     null
                 }
             } catch (e: Exception) {
-                Timber.tag("AudioMetaUtils").w("Retriever failed for $filePath: ${e.message}")
+                Logger.withTag("AudioMetaUtils").w { "Retriever failed for $filePath: ${e.message}" }
             }
         }
 
@@ -71,7 +71,7 @@ object AudioMetaUtils {
                 release()
             }
         } catch (e: Exception) {
-            Timber.tag("AudioMetaUtils").w("Extractor failed for $filePath: ${e.message}")
+            Logger.withTag("AudioMetaUtils").w { "Extractor failed for $filePath: ${e.message}" }
         }
 
         return AudioMeta(mimeType, bitrate, sampleRate)

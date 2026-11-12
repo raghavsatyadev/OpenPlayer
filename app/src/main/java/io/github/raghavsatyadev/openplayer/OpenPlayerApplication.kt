@@ -9,8 +9,13 @@ import android.os.Build
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import coil.ImageLoader
-import coil.ImageLoaderFactory
+import androidx.work.Configuration
+import co.touchlab.kermit.Logger
+import co.touchlab.kermit.Severity
+import co.touchlab.kermit.platformLogWriter
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.SingletonImageLoader
 import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceDiagnosticsController
 import io.github.raghavsatyadev.openplayer.data.media.SongMetadataEditor
 import io.github.raghavsatyadev.openplayer.data.playlist.M3uSyncCoordinator
@@ -36,9 +41,8 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
-import timber.log.Timber
 
-class OpenPlayerApplication : Application(), ImageLoaderFactory, KoinComponent {
+class OpenPlayerApplication : Application(), SingletonImageLoader.Factory, KoinComponent {
 
     private val imageLoader: ImageLoader by inject()
 
@@ -113,10 +117,11 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, KoinComponent {
             CrashHandler.install(this)
         }
 
+        Logger.setLogWriters(platformLogWriter())
         if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+            Logger.setMinSeverity(Severity.Verbose)
         } else {
-            Timber.plant(ReleaseTree())
+            Logger.setMinSeverity(Severity.Warn)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -160,7 +165,7 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, KoinComponent {
         }
     }
 
-    override fun newImageLoader(): ImageLoader {
+    override fun newImageLoader(context: PlatformContext): ImageLoader {
         return imageLoader.newBuilder()
             .components {
                 add(io.github.raghavsatyadev.openplayer.data.image.SharedCloudArtworkStringMapper(packageName))
@@ -176,7 +181,17 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, KoinComponent {
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
 
-        imageLoader.memoryCache?.trimMemory(level)
+        val memoryCache = imageLoader.memoryCache
+        if (memoryCache != null) {
+            if (level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND) {
+                memoryCache.clear()
+            } else if (
+                level >= ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN ||
+                level == ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL
+            ) {
+                memoryCache.trimToSize(memoryCache.size / 2)
+            }
+        }
 
         if (
             level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_MODERATE ||

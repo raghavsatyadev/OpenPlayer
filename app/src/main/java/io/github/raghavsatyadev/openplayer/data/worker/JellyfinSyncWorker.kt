@@ -6,7 +6,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import io.github.raghavsatyadev.openplayer.data.jellyfin.JellyfinRepository
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 class JellyfinSyncWorker(
     appContext: Context,
@@ -15,13 +15,13 @@ class JellyfinSyncWorker(
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
-        Timber.d("JellyfinSyncWorker: Starting full sync")
+        Logger.d { "JellyfinSyncWorker: Starting full sync" }
 
         return try {
             repository.syncAllPlaylistsAndSongs()
             Result.success()
         } catch (e: Exception) {
-            Timber.e(e, "JellyfinSyncWorker: Sync failed")
+            Logger.e(e) { "JellyfinSyncWorker: Sync failed" }
             Result.failure(workDataOf(ERROR_MESSAGE to e.message))
         }
     }

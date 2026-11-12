@@ -15,7 +15,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Keeps the process and its network access alive while an update downloads. Without it,
@@ -72,7 +72,7 @@ class UpdateDownloadService : Service(), KoinComponent {
         fun start(context: Context) {
             runCatching {
                 ContextCompat.startForegroundService(context, Intent(context, UpdateDownloadService::class.java))
-            }.onFailure { Timber.w(it, "Could not keep the update download in the foreground") }
+            }.onFailure { Logger.w(it) { "Could not keep the update download in the foreground" } }
         }
     }
 }

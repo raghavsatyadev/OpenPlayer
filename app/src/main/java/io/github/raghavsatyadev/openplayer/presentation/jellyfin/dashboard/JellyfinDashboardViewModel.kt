@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -122,7 +122,7 @@ class JellyfinDashboardViewModel(
                     try {
                         repository.syncUnifiedLibrarySongsFromJellyfin()
                     } catch (e: Exception) {
-                        Timber.e(e, "Failed to sync unified library after playlist sync")
+                        Logger.e(e) { "Failed to sync unified library after playlist sync" }
                     }
                     _syncMessage.value = "Synced $count songs"
                 },

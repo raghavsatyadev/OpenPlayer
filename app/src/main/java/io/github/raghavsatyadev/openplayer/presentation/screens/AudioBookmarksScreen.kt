@@ -148,7 +148,7 @@ import io.github.raghavsatyadev.openplayer.ui.theme.GenreThemeUtils
 import io.github.raghavsatyadev.openplayer.ui.theme.LocalOpenPlayerDarkTheme
 import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerStatusBarStyle
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
-import coil.size.Size
+import coil3.size.Size
 import kotlinx.coroutines.delay
 import java.util.Locale
 import kotlin.math.roundToInt

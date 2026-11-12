@@ -2,15 +2,15 @@ package io.github.raghavsatyadev.openplayer.data.image
 
 import android.net.Uri
 import androidx.annotation.VisibleForTesting
-import coil.ImageLoader
-import coil.fetch.FetchResult
-import coil.fetch.Fetcher
-import coil.request.Options
+import coil3.ImageLoader
+import coil3.fetch.FetchResult
+import coil3.fetch.Fetcher
+import coil3.request.Options
 import io.github.raghavsatyadev.openplayer.data.jellyfin.JellyfinRepository
 import kotlinx.coroutines.CancellationException
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import java.net.ConnectException
 import java.net.NoRouteToHostException
@@ -74,16 +74,16 @@ class JellyfinCoilFetcher(
     }
 
     override suspend fun fetch(): FetchResult? {
-        Timber.v("$TAG: Fetching $uri")
+        Logger.v { "$TAG: Fetching $uri" }
 
         val itemId = uri.host ?: uri.path?.removePrefix("/")
         if (itemId.isNullOrBlank()) {
-            Timber.w("$TAG: Invalid URI format: $uri")
+            Logger.w { "$TAG: Invalid URI format: $uri" }
             return null
         }
 
         if (!repository.isLoggedIn) {
-            Timber.v("$TAG: Not logged in, skipping fetch")
+            Logger.v { "$TAG: Not logged in, skipping fetch" }
             return null
         }
 
@@ -103,7 +103,7 @@ class JellyfinCoilFetcher(
         val imageUrl = repository.getImageUrl(itemId, sizeParam)
         if (imageUrl.isNullOrBlank()) {
             if (shouldLogFailure("no_url_$itemId")) {
-                Timber.w("$TAG: No image URL for $itemId")
+                Logger.w { "$TAG: No image URL for $itemId" }
             }
             return null
         }
@@ -123,7 +123,7 @@ class JellyfinCoilFetcher(
             if (e is CancellationException) throw e
             if (isConnectionFailure(e)) markServerUnreachable()
             if (shouldLogFailure("download_$itemId")) {
-                Timber.w(e, "$TAG: Failed to download cover art for $itemId")
+                Logger.w(e) { "$TAG: Failed to download cover art for $itemId" }
             }
             cachedAlbumCover(itemId, sizeParam)
         }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /** Serializes settings, foreground permission checks, and backup restores against the same cache. */
 class FolderArtworkSettingsCoordinator(
@@ -44,7 +44,7 @@ class FolderArtworkSettingsCoordinator(
             throw error
         } catch (error: Exception) {
             // Leave the marker unchanged so the next foreground/settings event retries.
-            Timber.e(error, "Unable to reconcile folder artwork settings")
+            Logger.e(error) { "Unable to reconcile folder artwork settings" }
         }
     }
 

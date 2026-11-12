@@ -92,9 +92,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import coil.ImageLoader
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import coil3.ImageLoader
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
+import coil3.toBitmap
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.ImageCropView
 import io.github.raghavsatyadev.openplayer.data.model.PlaylistShapeType
@@ -306,9 +308,9 @@ private fun CreatePlaylistContent(
                  .build()
              
              val result = loader.execute(request)
-             val drawable = result.drawable
-             if (drawable is android.graphics.drawable.BitmapDrawable) {
-                 imageBitmap = drawable.bitmap.asImageBitmap()
+             val bitmap = result.image?.toBitmap()
+             if (bitmap != null) {
+                 imageBitmap = bitmap.asImageBitmap()
              }
          } else {
              imageBitmap = null
@@ -736,9 +738,9 @@ fun EditPlaylistContent(
                  .allowHardware(false)
                  .build()
              val result = loader.execute(request)
-             val drawable = result.drawable
-             if (drawable is android.graphics.drawable.BitmapDrawable) {
-                 imageBitmap = drawable.bitmap.asImageBitmap()
+             val bitmap = result.image?.toBitmap()
+             if (bitmap != null) {
+                 imageBitmap = bitmap.asImageBitmap()
              }
          } else {
              imageBitmap = null

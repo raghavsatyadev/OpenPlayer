@@ -51,7 +51,7 @@ import androidx.glance.unit.ColorProvider
 import io.github.raghavsatyadev.openplayer.data.model.QueueItem
 import io.github.raghavsatyadev.openplayer.utils.createScalableBackgroundBitmap
 import java.util.Locale
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 class OpenPlayerGlanceWidget : GlanceAppWidget() {
 
@@ -78,8 +78,7 @@ class OpenPlayerGlanceWidget : GlanceAppWidget() {
             val playerInfo = currentState<PlayerInfo>()
             val currentSize = LocalSize.current
 
-            Timber.tag("OpenPlayerGlanceWidget")
-                .d("Providing Glance. PlayerInfo: title='${playerInfo.songTitle}', artist='${playerInfo.artistName}', isPlaying=${playerInfo.isPlaying}, hasBitmap=${playerInfo.albumArtBitmapData != null}, progress=${playerInfo.currentPositionMs}/${playerInfo.totalDurationMs}")
+            Logger.withTag("OpenPlayerGlanceWidget").d { "Providing Glance. PlayerInfo: title='${playerInfo.songTitle}', artist='${playerInfo.artistName}', isPlaying=${playerInfo.isPlaying}, hasBitmap=${playerInfo.albumArtBitmapData != null}, progress=${playerInfo.currentPositionMs}/${playerInfo.totalDurationMs}" }
 
             // themeColors is null when there is no palette (nothing playing, or no
             // artwork), in which case the regular dynamic Glance theme applies.
@@ -111,8 +110,7 @@ class OpenPlayerGlanceWidget : GlanceAppWidget() {
         val albumArtBitmapData = playerInfo.albumArtBitmapData
         val albumArtUri = playerInfo.albumArtUri
 
-        Timber.tag("OpenPlayerGlanceWidget")
-            .d("WidgetUi: PlayerInfo received. Title: $title, Artist: $artist, HasBitmapData: ${albumArtBitmapData != null}, BitmapDataSize: ${albumArtBitmapData?.size ?: "N/A"}")
+        Logger.withTag("OpenPlayerGlanceWidget").d { "WidgetUi: PlayerInfo received. Title: $title, Artist: $artist, HasBitmapData: ${albumArtBitmapData != null}, BitmapDataSize: ${albumArtBitmapData?.size ?: "N/A"}" }
 
         val actualBackgroundColor = GlanceTheme.colors.surface
         val onBackgroundColor = GlanceTheme.colors.onSurface
@@ -1068,9 +1066,8 @@ class OpenPlayerGlanceWidget : GlanceAppWidget() {
         cornerRadius: Dp = 16.dp
     ) {
         val TAG_AAIG = "AlbumArtImageGlance"
-        Timber.tag(TAG_AAIG)
-            .d("Init. bitmapData is null: ${bitmapData == null}. Requested Dp size: $size")
-        if (bitmapData != null) Timber.tag(TAG_AAIG).d("bitmapData size: ${bitmapData.size} bytes")
+        Logger.withTag(TAG_AAIG).d { "Init. bitmapData is null: ${bitmapData == null}. Requested Dp size: $size" }
+        if (bitmapData != null) Logger.withTag(TAG_AAIG).d { "bitmapData size: ${bitmapData.size} bytes" }
 
         val sizingModifier = if (size != null) modifier.size(size) else modifier
         val widgetDpSize = LocalSize.current
@@ -1080,14 +1077,13 @@ class OpenPlayerGlanceWidget : GlanceAppWidget() {
             var bitmap = AlbumArtBitmapCache.getBitmap(cacheKey)
 
             if (bitmap != null) {
-                Timber.tag(TAG_AAIG).d("Bitmap cache HIT for key: $cacheKey. Using cached bitmap.")
+                Logger.withTag(TAG_AAIG).d { "Bitmap cache HIT for key: $cacheKey. Using cached bitmap." }
             } else {
-                Timber.tag(TAG_AAIG).d("Bitmap cache MISS for key: $cacheKey. Decoding new bitmap.")
+                Logger.withTag(TAG_AAIG).d { "Bitmap cache MISS for key: $cacheKey. Decoding new bitmap." }
                 try {
                     val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
                     BitmapFactory.decodeByteArray(data, 0, data.size, options)
-                    Timber.tag(TAG_AAIG)
-                        .d("Initial bounds: ${options.outWidth}x${options.outHeight}")
+                    Logger.withTag(TAG_AAIG).d { "Initial bounds: ${options.outWidth}x${options.outHeight}" }
 
                     val imageHeight = options.outHeight
                     val imageWidth = options.outWidth
@@ -1100,11 +1096,11 @@ class OpenPlayerGlanceWidget : GlanceAppWidget() {
                             val targetSizePx = (size.value * density).toInt()
                             targetWidthPx = targetSizePx
                             targetHeightPx = targetSizePx
-                            Timber.tag(TAG_AAIG).d("Target Px size for Dp $size: $targetSizePx")
+                            Logger.withTag(TAG_AAIG).d { "Target Px size for Dp $size: $targetSizePx" }
                         } else {
                             targetWidthPx = (widgetDpSize.width.value * density).toInt()
                             targetHeightPx = (widgetDpSize.height.value * density).toInt()
-                            Timber.tag(TAG_AAIG).d("Target Px size from widget DpSize ${widgetDpSize}: ${targetWidthPx}x${targetHeightPx}")
+                            Logger.withTag(TAG_AAIG).d { "Target Px size from widget DpSize ${widgetDpSize}: ${targetWidthPx}x${targetHeightPx}" }
                         }
                     }
 
@@ -1115,28 +1111,25 @@ class OpenPlayerGlanceWidget : GlanceAppWidget() {
                             inSampleSize *= 2
                         }
                     }
-                    Timber.tag(TAG_AAIG).d("Calculated inSampleSize: $inSampleSize")
+                    Logger.withTag(TAG_AAIG).d { "Calculated inSampleSize: $inSampleSize" }
 
                     options.inSampleSize = inSampleSize
                     options.inJustDecodeBounds = false
                     val sampledBitmap = BitmapFactory.decodeByteArray(data, 0, data.size, options)
 
                     if (sampledBitmap == null) {
-                        Timber.tag(TAG_AAIG)
-                            .e("BitmapFactory.decodeByteArray returned null after sampling.")
+                        Logger.withTag(TAG_AAIG).e { "BitmapFactory.decodeByteArray returned null after sampling." }
                         return@let null
                     }
-                    Timber.tag(TAG_AAIG)
-                        .d("Sampled bitmap size: ${sampledBitmap.width}x${sampledBitmap.height}")
+                    Logger.withTag(TAG_AAIG).d { "Sampled bitmap size: ${sampledBitmap.width}x${sampledBitmap.height}" }
 
                     bitmap = sampledBitmap
 
-                    Timber.tag(TAG_AAIG)
-                        .d("Final bitmap size: ${bitmap.width}x${bitmap.height}. Putting into cache with key: $cacheKey")
+                    Logger.withTag(TAG_AAIG).d { "Final bitmap size: ${bitmap.width}x${bitmap.height}. Putting into cache with key: $cacheKey" }
                     bitmap.let { AlbumArtBitmapCache.putBitmap(cacheKey, it) }
 
                 } catch (e: Exception) {
-                    Timber.tag(TAG_AAIG).e(e, "Error decoding or scaling bitmap: ${e.message}")
+                    Logger.withTag(TAG_AAIG).e(e) { "Error decoding or scaling bitmap: ${e.message}" }
                     bitmap = null
                 }
             }

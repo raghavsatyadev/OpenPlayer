@@ -8,6 +8,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.SessionToken
 import androidx.work.WorkManager
 import com.google.gson.Gson
+import io.github.raghavsatyadev.openplayer.BuildConfig
 import io.github.raghavsatyadev.openplayer.OpenPlayerApplication
 import io.github.raghavsatyadev.openplayer.data.preferences.dataStore
 import io.github.raghavsatyadev.openplayer.data.service.MusicService

@@ -7,8 +7,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalContext
-import coil.request.CachePolicy
-import coil.size.Size
+import coil3.ImageLoader
+import coil3.imageLoader
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
+import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.albumArtMemoryCacheKey
 import io.github.raghavsatyadev.openplayer.presentation.components.safeAlbumArtTargetSize
@@ -24,7 +28,7 @@ fun PrefetchAlbumNeighborsImg(
 ) {
     if (current == null) return
     val context = LocalContext.current
-    val loader = remember { coil.ImageLoader(context) }
+    val loader = remember { ImageLoader(context) }
     val index = remember(current, queue) { queue.indexOfFirst { it.id == current.id } }
     LaunchedEffect(index, queue) {
         if (index == -1) return@LaunchedEffect
@@ -35,7 +39,7 @@ fun PrefetchAlbumNeighborsImg(
                 val diskPolicy = if (LocalArtworkUri.isLocalArtworkUri(data)) CachePolicy.DISABLED else CachePolicy.ENABLED
                 val targetSize = safeAlbumArtTargetSize(Size.ORIGINAL)
                 val memoryCacheKey = albumArtMemoryCacheKey(data, targetSize)
-                val req = coil.request.ImageRequest.Builder(context)
+                val req = ImageRequest.Builder(context)
                     .data(data)
                     .apply {
                         if (memoryCacheKey != null) {
@@ -64,7 +68,7 @@ fun PrefetchAlbumNeighbors(
 ) {
     if (!isActive || queue.isEmpty()) return
     val context = LocalContext.current
-    val imageLoader = coil.Coil.imageLoader(context)
+    val imageLoader = context.imageLoader
     val requestTargetSize = remember(targetSize) {
         safeAlbumArtTargetSize(targetSize)
     }
@@ -80,19 +84,19 @@ fun PrefetchAlbumNeighbors(
                     .filter { it in queue.indices && it != page }
                 indices.forEach { idx ->
                     queue[idx].albumArtUriString?.let { uri ->
-                        val diskPolicy = if (LocalArtworkUri.isLocalArtworkUri(uri)) coil.request.CachePolicy.DISABLED else coil.request.CachePolicy.ENABLED
+                        val diskPolicy = if (LocalArtworkUri.isLocalArtworkUri(uri)) CachePolicy.DISABLED else CachePolicy.ENABLED
                         val memoryCacheKey = albumArtMemoryCacheKey(uri, requestTargetSize)
-                        val req = coil.request.ImageRequest.Builder(context)
+                        val req = ImageRequest.Builder(context)
                             .data(uri)
                             .size(requestTargetSize)
-                            .memoryCachePolicy(coil.request.CachePolicy.ENABLED)
+                            .memoryCachePolicy(CachePolicy.ENABLED)
                             .apply {
                                 if (memoryCacheKey != null) {
                                     memoryCacheKey(memoryCacheKey)
                                 }
                             }
                             .diskCachePolicy(diskPolicy)
-                            .networkCachePolicy(coil.request.CachePolicy.ENABLED)
+                            .networkCachePolicy(CachePolicy.ENABLED)
                             .allowHardware(true)
                             .build()
                         imageLoader.enqueue(req)

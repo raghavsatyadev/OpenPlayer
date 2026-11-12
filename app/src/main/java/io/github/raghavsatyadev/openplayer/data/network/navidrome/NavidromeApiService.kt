@@ -8,7 +8,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.security.MessageDigest
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -66,7 +66,7 @@ class NavidromeApiService(
     ) {
         this.credentials = credentials
         this.authMethod = authMethod
-        Timber.d("$TAG: Credentials set for server: ${credentials.normalizedServerUrl}, user: ${credentials.username}, auth: $authMethod")
+        Logger.d { "$TAG: Credentials set for server: ${credentials.normalizedServerUrl}, user: ${credentials.username}, auth: $authMethod" }
     }
 
     /**
@@ -75,7 +75,7 @@ class NavidromeApiService(
     fun clearCredentials() {
         this.credentials = null
         this.authMethod = NavidromeAuthMethod.TOKEN
-        Timber.d("$TAG: Credentials cleared")
+        Logger.d { "$TAG: Credentials cleared" }
     }
 
     /**
@@ -140,7 +140,7 @@ class NavidromeApiService(
         return withContext(Dispatchers.IO) {
             try {
                 val url = buildApiUrl(endpoint, params, method)
-                Timber.d("$TAG: >>> GET $endpoint")
+                Logger.d { "$TAG: >>> GET $endpoint" }
 
                 val request = Request.Builder()
                     .url(url)
@@ -154,15 +154,15 @@ class NavidromeApiService(
                     val body = response.body.string()
 
                     if (!response.isSuccessful) {
-                        Timber.w("$TAG: <<< HTTP $code for $endpoint")
+                        Logger.w { "$TAG: <<< HTTP $code for $endpoint" }
                         return@withContext Result.failure(Exception("HTTP $code: ${response.message}"))
                     }
 
-                    Timber.d("$TAG: <<< HTTP $code for $endpoint, body length: ${body.length}")
+                    Logger.d { "$TAG: <<< HTTP $code for $endpoint, body length: ${body.length}" }
                     Result.success(body)
                 }
             } catch (e: Exception) {
-                Timber.e(e, "$TAG: !!! FAILED GET $endpoint")
+                Logger.e(e) { "$TAG: !!! FAILED GET $endpoint" }
                 Result.failure(e)
             }
         }
@@ -190,7 +190,7 @@ class NavidromeApiService(
 
             Result.success(subsonicResponse)
         } catch (e: Exception) {
-            Timber.e(e, "$TAG: Failed to parse response")
+            Logger.e(e) { "$TAG: Failed to parse response" }
             Result.failure(e)
         }
     }
@@ -208,7 +208,7 @@ class NavidromeApiService(
 
         val error = result.exceptionOrNull()
         if (error is SubsonicApiException && shouldFallBackToPasswordAuth(error, method)) {
-            Timber.w("$TAG: Server rejected token auth (${error.message}), retrying with password auth")
+            Logger.w { "$TAG: Server rejected token auth (${error.message}), retrying with password auth" }
             authMethod = NavidromeAuthMethod.PASSWORD
             onAuthMethodChanged?.invoke(NavidromeAuthMethod.PASSWORD)
             return requestParsed(endpoint, params, NavidromeAuthMethod.PASSWORD)
@@ -545,14 +545,14 @@ class NavidromeApiService(
         params["id"] = id
         params["submission"] = submission.toString()
         
-        Timber.d("$TAG: Calling scrobble API: id=$id, submission=$submission")
+        Logger.d { "$TAG: Calling scrobble API: id=$id, submission=$submission" }
         return requestAndParse("scrobble", params).fold(
             onSuccess = {
-                Timber.d("$TAG: scrobble API success")
+                Logger.d { "$TAG: scrobble API success" }
                 Result.success(Unit)
             },
             onFailure = {
-                Timber.e(it, "$TAG: scrobble API failed")
+                Logger.e(it) { "$TAG: scrobble API failed" }
                 Result.failure(it)
             }
         )

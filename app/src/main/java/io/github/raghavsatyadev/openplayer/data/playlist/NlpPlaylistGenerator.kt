@@ -22,7 +22,7 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlin.random.Random
 
 /**
@@ -92,7 +92,7 @@ class NlpPlaylistGenerator(
                 context = mixContext,
                 concepts = concepts,
             )
-            Timber.tag(TAG).d("NLP playlist: len=%d-%d -> %d songs", minLength, maxLength, resultIds.size)
+            Logger.withTag(TAG).d { String.format("NLP playlist: len=%d-%d -> %d songs", minLength, maxLength, resultIds.size) }
 
             if (resultIds.isNotEmpty()) {
                 recentMixes.addLast(now to resultIds)
@@ -101,7 +101,7 @@ class NlpPlaylistGenerator(
                     mixPreferences.recordSmartMix(resultIds, now)
                 } catch (e: Exception) {
                     if (e is CancellationException) throw e
-                    Timber.tag(TAG).w(e, "Unable to persist mix freshness")
+                    Logger.withTag(TAG).w(e) { "Unable to persist mix freshness" }
                 }
             }
 
@@ -152,7 +152,7 @@ class NlpPlaylistGenerator(
             playlistPreferencesRepository.getPlaylistsOnce()
         } catch (e: Exception) {
             if (e is CancellationException) throw e
-            Timber.tag(TAG).w(e, "Unable to load local playlist relationships")
+            Logger.withTag(TAG).w(e) { "Unable to load local playlist relationships" }
             emptyList()
         }
         val generatedPlaylistIds = try {
@@ -194,7 +194,7 @@ class NlpPlaylistGenerator(
         dailyMixManager.getAllEngagementStats()
     } catch (e: Exception) {
         if (e is CancellationException) throw e
-        Timber.tag(TAG).e(e, "Error loading engagement stats")
+        Logger.withTag(TAG).e(e) { "Error loading engagement stats" }
         emptyMap()
     }
 
@@ -253,7 +253,7 @@ class NlpPlaylistGenerator(
                                     TagBpmReader.readBpm(path)
                                 } catch (e: Exception) {
                                     if (e is CancellationException) throw e
-                                    Timber.tag(TAG).d(e, "Tag BPM read failed for %s", path)
+                                    Logger.withTag(TAG).d(e) { String.format("Tag BPM read failed for %s", path) }
                                     null
                                 }?.takeIf { it in PLAUSIBLE_TAG_BPM_RANGE }
                                 if (bpm != null) song.id to bpm else null

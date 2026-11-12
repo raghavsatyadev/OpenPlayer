@@ -2,7 +2,7 @@ package io.github.raghavsatyadev.openplayer.data.service.player
 
 import android.media.AudioFormat
 import android.media.AudioTrack
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Checks whether the device's audio stack can actually accept PCM_FLOAT output.
@@ -23,7 +23,7 @@ object HiFiCapabilityChecker {
         cachedResult?.let { return it }
         return runCheck().also {
             cachedResult = it
-            Timber.tag("HiFiCapability").i("PCM_FLOAT AudioTrack supported: $it")
+            Logger.withTag("HiFiCapability").i { "PCM_FLOAT AudioTrack supported: $it" }
         }
     }
 
@@ -34,7 +34,7 @@ object HiFiCapabilityChecker {
             AudioFormat.ENCODING_PCM_FLOAT
         )
         if (minBuf <= 0 || minBuf == AudioTrack.ERROR || minBuf == AudioTrack.ERROR_BAD_VALUE) {
-            Timber.tag("HiFiCapability").w("getMinBufferSize rejected PCM_FLOAT (result=$minBuf)")
+            Logger.withTag("HiFiCapability").w { "getMinBufferSize rejected PCM_FLOAT (result=$minBuf)" }
             return false
         }
 
@@ -58,10 +58,10 @@ object HiFiCapabilityChecker {
                 .build()
             val initialized = track.state == AudioTrack.STATE_INITIALIZED
             track.release()
-            if (!initialized) Timber.tag("HiFiCapability").w("AudioTrack created but state != INITIALIZED")
+            if (!initialized) Logger.withTag("HiFiCapability").w { "AudioTrack created but state != INITIALIZED" }
             initialized
         } catch (e: Exception) {
-            Timber.tag("HiFiCapability").w(e, "AudioTrack PCM_FLOAT creation threw")
+            Logger.withTag("HiFiCapability").w(e) { "AudioTrack PCM_FLOAT creation threw" }
             false
         }
     }

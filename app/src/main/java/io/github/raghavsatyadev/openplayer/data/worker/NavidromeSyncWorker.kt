@@ -6,7 +6,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 class NavidromeSyncWorker(
     appContext: Context,
@@ -18,7 +18,7 @@ class NavidromeSyncWorker(
         val syncType = inputData.getString(KEY_SYNC_TYPE) ?: SYNC_TYPE_ALL
         val playlistId = inputData.getString(KEY_PLAYLIST_ID)
 
-        Timber.d("NavidromeSyncWorker: Starting sync (type=$syncType, playlistId=$playlistId)")
+        Logger.d { "NavidromeSyncWorker: Starting sync (type=$syncType, playlistId=$playlistId)" }
 
         return try {
             when (syncType) {
@@ -44,7 +44,7 @@ class NavidromeSyncWorker(
             }
             Result.success()
         } catch (e: Exception) {
-            Timber.e(e, "NavidromeSyncWorker: Sync failed")
+            Logger.e(e) { "NavidromeSyncWorker: Sync failed" }
             Result.failure(workDataOf(ERROR_MESSAGE to e.message))
         }
     }

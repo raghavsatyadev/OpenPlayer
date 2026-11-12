@@ -153,7 +153,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticsConfig
@@ -287,13 +287,11 @@ class MainActivity : ComponentActivity() {
         }
         val shouldBenchmarkRebuildDatabase =
             isBenchmarkMode && intent.getBooleanExtra("benchmark_rebuild_database", false)
-        Timber.tag("OpenPlayerBenchmark").i(
-            "onCreate benchmark=$isBenchmarkMode rebuildDatabase=$shouldBenchmarkRebuildDatabase"
-        )
+        Logger.withTag("OpenPlayerBenchmark").i { "onCreate benchmark=$isBenchmarkMode rebuildDatabase=$shouldBenchmarkRebuildDatabase" }
         if (shouldBenchmarkRebuildDatabase) {
             lifecycleScope.launch {
                 userPreferencesRepository.setInitialSetupDone(true)
-                Timber.tag("OpenPlayerBenchmark").i("Enqueueing benchmark database rebuild")
+                Logger.withTag("OpenPlayerBenchmark").i { "Enqueueing benchmark database rebuild" }
                 syncManager.rebuildDatabase()
                 delay(1_500L)
                 playerViewModel.prepareBenchmarkPlayerFromLibrary()
@@ -479,7 +477,7 @@ class MainActivity : ComponentActivity() {
 
         when {
             intent.action == MainActivityIntentContract.ACTION_SHUFFLE_ALL -> {
-                Timber.tag("TileDebug").d("handleIntent: ACTION_SHUFFLE_ALL received")
+                Logger.withTag("TileDebug").d { "handleIntent: ACTION_SHUFFLE_ALL received" }
                 playerViewModel.triggerShuffleAllFromTile()
                 intent.action = null
             }
@@ -559,9 +557,9 @@ class MainActivity : ComponentActivity() {
                     try {
                         contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     } catch (securityException: SecurityException) {
-                        Timber.tag("MainActivity").w(securityException, "Unable to persist URI permission for $uri")
+                        Logger.withTag("MainActivity").w(securityException) { "Unable to persist URI permission for $uri" }
                     } catch (illegalArgumentException: IllegalArgumentException) {
-                        Timber.tag("MainActivity").w(illegalArgumentException, "Persistable URI permission not granted for $uri")
+                        Logger.withTag("MainActivity").w(illegalArgumentException) { "Persistable URI permission not granted for $uri" }
                     }
                 }
             }

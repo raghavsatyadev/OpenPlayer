@@ -6,7 +6,7 @@ import io.github.raghavsatyadev.openplayer.data.stream.CloudStreamSecurity
 import kotlinx.coroutines.CancellationException
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Local HTTP proxy server for streaming Navidrome/Subsonic audio.
@@ -43,7 +43,7 @@ class NavidromeStreamProxy(
             repository.getStreamUrl(id)
         } catch (e: Exception) {
             if (e is CancellationException) throw e
-            Timber.w(e, "NavidromeStreamProxy: Failed to resolve stream URL for song $id")
+            Logger.w(e) { "NavidromeStreamProxy: Failed to resolve stream URL for song $id" }
             null
         }
     }
@@ -66,7 +66,7 @@ class NavidromeStreamProxy(
             getOrFetchStreamUrl(songId)
         } catch (e: Exception) {
             if (e is CancellationException) throw e
-            Timber.w(e, "warmUpStreamUrl failed for $songId")
+            Logger.w(e) { "warmUpStreamUrl failed for $songId" }
         }
     }
 }

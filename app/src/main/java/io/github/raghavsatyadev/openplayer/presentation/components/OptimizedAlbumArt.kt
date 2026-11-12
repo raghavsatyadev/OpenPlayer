@@ -25,14 +25,16 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.SubcomposeAsyncImage
-import coil.compose.SubcomposeAsyncImageContent
-import coil.memory.MemoryCache
-import coil.request.CachePolicy
-import coil.request.ImageRequest
-import coil.size.Dimension
-import coil.size.Size
+import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.SubcomposeAsyncImage
+import coil3.compose.SubcomposeAsyncImageContent
+import coil3.memory.MemoryCache
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import coil3.request.error
+import coil3.size.Dimension
+import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.utils.LocalArtworkUri
 
@@ -78,17 +80,17 @@ fun OptimizedAlbumArt(
     val memoryCacheKey = remember(artworkModel, requestTargetSize) {
         albumArtMemoryCacheKey(artworkModel, requestTargetSize)
     }
-    val placeholderMemoryCacheKey = remember(memoryCacheKey, artworkModel) {
+    val placeholderMemoryCacheKey: String? = remember(memoryCacheKey, artworkModel) {
         when (artworkModel) {
-            is ImageRequest -> artworkModel.placeholderMemoryCacheKey
+            is ImageRequest -> artworkModel.placeholderMemoryCacheKey?.key
                 ?: artworkModel.memoryCacheKey
-                ?: memoryCacheKey?.let { MemoryCache.Key(it) }
-            else -> memoryCacheKey?.let { MemoryCache.Key(it) }
+                ?: memoryCacheKey
+            else -> memoryCacheKey
         }
     }
     val requestModel = remember(context, artworkModel, requestTargetSize) {
         when (artworkModel) {
-            is ImageRequest -> artworkModel.newBuilder(context).apply {
+            is ImageRequest -> artworkModel.newBuilder().apply {
                 size(requestTargetSize)
                 if (artworkModel.memoryCacheKey == null) {
                     memoryCacheKey(memoryCacheKey)

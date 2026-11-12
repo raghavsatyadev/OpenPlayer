@@ -2,7 +2,7 @@ package io.github.raghavsatyadev.openplayer.data.media
 
 import android.os.ParcelFileDescriptor
 import com.kyant.taglib.TagLib
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import kotlin.math.pow
 
@@ -62,7 +62,7 @@ class ReplayGainManager() {
         if (filePath.isBlank()) return null
 
         synchronized(cache) { cache[filePath] }?.let {
-            Timber.tag(TAG).d("Cache hit for ${File(filePath).name}")
+            Logger.withTag(TAG).d { "Cache hit for ${File(filePath).name}" }
             return it
         }
 
@@ -86,12 +86,12 @@ class ReplayGainManager() {
                 }
 
                 ReplayGainValues(trackGainDb = trackGain, albumGainDb = albumGain).also {
-                    Timber.tag(TAG).d("ReplayGain for ${file.name}: track=${it.trackGainDb}dB, album=${it.albumGainDb}dB")
+                    Logger.withTag(TAG).d { "ReplayGain for ${file.name}: track=${it.trackGainDb}dB, album=${it.albumGainDb}dB" }
                     synchronized(cache) { cache[filePath] = it }
                 }
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Failed to read ReplayGain from: $filePath")
+            Logger.withTag(TAG).w(e) { "Failed to read ReplayGain from: $filePath" }
             null
         }
     }

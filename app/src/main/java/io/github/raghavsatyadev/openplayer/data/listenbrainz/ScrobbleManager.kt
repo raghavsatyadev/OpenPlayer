@@ -9,7 +9,7 @@ import io.github.raghavsatyadev.openplayer.data.database.SongEntity
 import io.github.raghavsatyadev.openplayer.data.preferences.ListenBrainzPreferencesRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.util.concurrent.TimeUnit
 
 /**
@@ -39,7 +39,7 @@ class ScrobbleManager(
                 if (listenBrainzRepository.isAuthorized() && listenBrainzDao.count() > 0) {
                     listenBrainzRepository.scheduleFlush()
                 }
-            }.onFailure { Timber.e(it, "Failed to schedule startup scrobble flush") }
+            }.onFailure { Logger.e(it) { "Failed to schedule startup scrobble flush" } }
         }
     }
 
@@ -53,7 +53,7 @@ class ScrobbleManager(
         if (!meetsListenThreshold(listenedMs, trackDurationMs)) return
         scope.launch {
             runCatching { enqueueListen(songId, startedAtEpochMs) }
-                .onFailure { Timber.e(it, "Failed to enqueue ListenBrainz listen for song=%s", songId) }
+                .onFailure { Logger.e(it) { String.format("Failed to enqueue ListenBrainz listen for song=%s", songId) } }
         }
     }
 
@@ -77,7 +77,7 @@ class ScrobbleManager(
                     durationMs = song.duration.takeIf { it > 0 },
                     recordingMbid = song.mbRecordingId
                 )
-            }.onFailure { Timber.d(it, "ListenBrainz playing-now failed for song=%s", songId) }
+            }.onFailure { Logger.d(it) { String.format("ListenBrainz playing-now failed for song=%s", songId) } }
         }
     }
 

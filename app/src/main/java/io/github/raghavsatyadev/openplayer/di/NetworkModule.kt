@@ -1,8 +1,11 @@
 package io.github.raghavsatyadev.openplayer.di
 
-import coil.ImageLoader
-import coil.disk.DiskCache
-import coil.memory.MemoryCache
+import coil3.ImageLoader
+import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import coil3.request.allowHardware
+import okio.Path.Companion.toOkioPath
+import coil3.disk.DiskCache
+import coil3.memory.MemoryCache
 import io.github.raghavsatyadev.openplayer.BuildConfig
 import io.github.raghavsatyadev.openplayer.data.image.JellyfinCoilFetcher
 import io.github.raghavsatyadev.openplayer.data.image.LocalArtworkCoilFetcher
@@ -171,21 +174,20 @@ val networkModule = module {
         val context = androidContext()
         val okHttpClient: OkHttpClient = get()
         ImageLoader.Builder(context)
-            .okHttpClient(okHttpClient)
-            .dispatcher(Dispatchers.Default)
+            .components { add(OkHttpNetworkFetcherFactory(callFactory = { okHttpClient })) }
+            .coroutineContext(Dispatchers.Default)
             .allowHardware(true)
             .memoryCache {
-                MemoryCache.Builder(context)
+                MemoryCache.Builder()
                     .maxSizeBytes(40 * 1024 * 1024)
                     .build()
             }
             .diskCache {
                 DiskCache.Builder()
-                    .directory(context.cacheDir.resolve("image_cache"))
+                    .directory(context.cacheDir.resolve("image_cache").toOkioPath())
                     .maxSizeBytes(100L * 1024 * 1024)
                     .build()
             }
-            .respectCacheHeaders(false)
             .build()
     }
 

@@ -1,9 +1,9 @@
 package io.github.raghavsatyadev.openplayer.data.media
 
 import android.content.Context
-import coil.annotation.ExperimentalCoilApi
-import coil.imageLoader
-import coil.memory.MemoryCache
+import coil3.annotation.ExperimentalCoilApi
+import coil3.imageLoader
+import coil3.memory.MemoryCache
 
 class ImageCacheManager(
     private val context: Context

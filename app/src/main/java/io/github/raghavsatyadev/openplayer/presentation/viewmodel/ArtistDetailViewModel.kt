@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Holds the full UI state for ArtistDetailScreen.
@@ -114,7 +114,7 @@ class ArtistDetailViewModel(
         loadedArtistId = id
         currentLoadJob?.cancel()
         currentLoadJob = viewModelScope.launch {
-            Timber.tag("ArtistDebug").d("loadArtistData: id=$id")
+            Logger.withTag("ArtistDebug").d { "loadArtistData: id=$id" }
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
                 // "Start with": a page that is already open keeps its layout if the setting changes.
@@ -124,7 +124,7 @@ class ArtistDetailViewModel(
                 val artistSongsFlow = musicRepository.getSongsForArtist(id)
 
                 combine(artistDetailsFlow, artistSongsFlow) { artist, songs ->
-                    Timber.tag("ArtistDebug").d("loadArtistData: id=$id found=${artist != null} songs=${songs.size}")
+                    Logger.withTag("ArtistDebug").d { "loadArtistData: id=$id found=${artist != null} songs=${songs.size}" }
                     artist to songs
                 }
                     .catch { e ->
@@ -152,7 +152,7 @@ class ArtistDetailViewModel(
                                 artistName = artist.name
                             )
                         } catch (e: Exception) {
-                            Timber.tag("ArtistDebug").w("Failed to resolve effective artist image: ${e.message}")
+                            Logger.withTag("ArtistDebug").w { "Failed to resolve effective artist image: ${e.message}" }
                             artist.effectiveImageUrl
                         }
 
@@ -160,7 +160,7 @@ class ArtistDetailViewModel(
                             try {
                                 themeStateHolder.getOrGenerateColorScheme(effectiveUrl)
                             } catch (e: Exception) {
-                                Timber.tag("ArtistDebug").w("Color scheme pre-warm failed: ${e.message}")
+                                Logger.withTag("ArtistDebug").w { "Color scheme pre-warm failed: ${e.message}" }
                                 null
                             }
                         } else null
@@ -214,7 +214,7 @@ class ArtistDetailViewModel(
                         themeStateHolder.forceRegenerateColorScheme(internalPath)
                         themeStateHolder.getOrGenerateColorScheme(internalPath)
                     } catch (e: Exception) {
-                        Timber.tag("ArtistDebug").w("Failed to regenerate color scheme for custom image: ${e.message}")
+                        Logger.withTag("ArtistDebug").w { "Failed to regenerate color scheme for custom image: ${e.message}" }
                         null
                     }
 
@@ -228,7 +228,7 @@ class ArtistDetailViewModel(
                     }
                 }
             } catch (e: Exception) {
-                Timber.tag("ArtistDebug").e("Failed to set custom image: ${e.message}")
+                Logger.withTag("ArtistDebug").e { "Failed to set custom image: ${e.message}" }
             }
         }
     }
@@ -254,7 +254,7 @@ class ArtistDetailViewModel(
                     try {
                         themeStateHolder.getOrGenerateColorScheme(newEffectiveUrl)
                     } catch (e: Exception) {
-                        Timber.tag("ArtistDebug").w("Failed to regenerate palette after clear: ${e.message}")
+                        Logger.withTag("ArtistDebug").w { "Failed to regenerate palette after clear: ${e.message}" }
                         null
                     }
                 } else null
@@ -268,7 +268,7 @@ class ArtistDetailViewModel(
                 }
 
             } catch (e: Exception) {
-                Timber.tag("ArtistDebug").e("Failed to clear custom image: ${e.message}")
+                Logger.withTag("ArtistDebug").e { "Failed to clear custom image: ${e.message}" }
             }
         }
     }

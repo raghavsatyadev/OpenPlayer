@@ -9,7 +9,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /** Receives [PackageInstaller] session results for self-updates. */
 class UpdateInstallReceiver : BroadcastReceiver(), KoinComponent {
@@ -31,7 +31,7 @@ class UpdateInstallReceiver : BroadcastReceiver(), KoinComponent {
             val inForeground = ProcessLifecycleOwner.get().lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
             val opened = inForeground && runCatching {
                 context.startActivity(Intent(confirmIntent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            }.onFailure { Timber.w(it, "Could not open the install confirmation") }.isSuccess
+            }.onFailure { Logger.w(it) { "Could not open the install confirmation" } }.isSuccess
             if (!opened) UpdateNotifications.showInstallConfirmation(context, confirmIntent)
         } else {
             UpdateNotifications.dismissInstallConfirmation(context)

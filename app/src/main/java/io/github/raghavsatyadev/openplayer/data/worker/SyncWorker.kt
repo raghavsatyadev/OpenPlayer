@@ -55,7 +55,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 enum class SyncMode {
     INCREMENTAL,
@@ -141,9 +141,7 @@ class SyncWorker(
                         inputData.getBoolean(INPUT_BYPASS_PLAYBACK_DEFERRAL, false)
 
                     if (!hasMediaReadPermission()) {
-                        Timber.tag(TAG).w(
-                            "Skipping sync: media read permission not granted (setup not finished?)"
-                        )
+                        Logger.withTag(TAG).w { "Skipping sync: media read permission not granted (setup not finished?)" }
                         // Nothing can be read without the permission, so pending changes must not
                         // keep scheduling follow-up syncs.
                         localLibraryChangeTracker.onLocalScanStarted()
@@ -158,14 +156,11 @@ class SyncWorker(
                             runAttemptCount = runAttemptCount
                         )
                     ) {
-                        Timber.tag(TAG).d(
-                            "SyncWorker deferring INCREMENTAL sync (playback active, attempt=$runAttemptCount)"
-                        )
+                        Logger.withTag(TAG).d { "SyncWorker deferring INCREMENTAL sync (playback active, attempt=$runAttemptCount)" }
                         return@withContext Result.retry()
                     }
 
-                    Timber.tag(TAG)
-                        .i("Starting MediaStore synchronization (Mode: $syncMode, ForceMetadata: $requestedForceMetadata)...")
+                    Logger.withTag(TAG).i { "Starting MediaStore synchronization (Mode: $syncMode, ForceMetadata: $requestedForceMetadata)..." }
                     val startTime = System.currentTimeMillis()
                     AdvancedPerformanceDiagnostics.recordEventIfEnabled(
                         type = AdvancedPerformanceDiagnostics.EventTypes.WORKER,
@@ -207,13 +202,10 @@ class SyncWorker(
                     minSongDurationMs = userPreferencesRepository.getMinSongDuration()
                     minTracksPerAlbum = userPreferencesRepository.minTracksPerAlbumFlow.first()
 
-                    Timber.tag(TAG)
-                        .d(
-                            "Artist delimiters=$artistDelimiters, groupByAlbumArtist=$groupByAlbumArtist, " +
+                    Logger.withTag(TAG).d { "Artist delimiters=$artistDelimiters, groupByAlbumArtist=$groupByAlbumArtist, " +
                                 "rescanRequired=$rescanRequired, directoryRulesChanged=$directoryRulesChanged " +
                                 "(current=$directoryRulesVersion, applied=$lastAppliedDirectoryRulesVersion), " +
-                                "metadataCharsetRepairPending=$metadataCharsetRepairPending"
-                        )
+                                "metadataCharsetRepairPending=$metadataCharsetRepairPending" }
 
                     // Snapshot before the first MediaStore read: a change reported after this
                     // point may be missing from this run and gets a follow-up sync.
@@ -228,8 +220,7 @@ class SyncWorker(
                         val deletedIds = localSongIds - mediaStoreIds
 
                         if (deletedIds.isNotEmpty()) {
-                            Timber.tag(TAG)
-                                .i("Found ${deletedIds.size} deleted songs. Removing from database...")
+                            Logger.withTag(TAG).i { "Found ${deletedIds.size} deleted songs. Removing from database..." }
                             setProgress(
                                 workDataOf(
                                     PROGRESS_CURRENT to 0,
@@ -239,7 +230,7 @@ class SyncWorker(
                             )
                             musicDao.deleteSongsAndRelatedData(deletedIds.toList())
                         } else {
-                            Timber.tag(TAG).d("No deleted songs found.")
+                            Logger.withTag(TAG).d { "No deleted songs found." }
                         }
                     }
 
@@ -267,16 +258,13 @@ class SyncWorker(
                     )
 
                     if (hasUnindexedSongs && !syncPlan.forceProcessAll) {
-                        Timber.tag(TAG).i("Recovering unindexed MediaStore songs without a timestamp cutoff.")
+                        Logger.withTag(TAG).i { "Recovering unindexed MediaStore songs without a timestamp cutoff." }
                     }
                     if (metadataCharsetRepairPending && !syncPlan.forceProcessAll) {
-                        Timber.tag(TAG).i(
-                            "Re-checking stored metadata text once without a timestamp cutoff (charset repair v$CURRENT_METADATA_CHARSET_REPAIR_VERSION)."
-                        )
+                        Logger.withTag(TAG).i { "Re-checking stored metadata text once without a timestamp cutoff (charset repair v$CURRENT_METADATA_CHARSET_REPAIR_VERSION)." }
                     }
 
-                    Timber.tag(TAG)
-                        .i("Fetching music from MediaStore (plan=${syncPlan.localScanMode}, since=$fetchTimestamp seconds)...")
+                    Logger.withTag(TAG).i { "Fetching music from MediaStore (plan=${syncPlan.localScanMode}, since=$fetchTimestamp seconds)..." }
 
                     val progressBatchSize = 50
 
@@ -298,8 +286,7 @@ class SyncWorker(
                         )
                     }
 
-                    Timber.tag(TAG)
-                        .i("Fetched ${mediaStoreSongs.size} new/modified songs from MediaStore.")
+                    Logger.withTag(TAG).i { "Fetched ${mediaStoreSongs.size} new/modified songs from MediaStore." }
                     val songsToInsert = mediaStoreSongs + videoLibrarySongs.entitiesToAdd(rebuild = syncMode == SyncMode.REBUILD)
                         .map { ScannedSong(entity = it, artistValues = listOf(it.artistName)) }
 
@@ -325,8 +312,7 @@ class SyncWorker(
                         val existingArtistIdMap = allExistingArtists.associate { it.name to it.id }.toMutableMap()
                         val maxArtistId = (musicDao.getMaxArtistId() ?: 0L).coerceAtLeast(0L)
 
-                        Timber.tag(TAG)
-                            .i("Processing ${songsToInsert.size} songs for upsert. Hash: ${songsToInsert.hashCode()}")
+                        Logger.withTag(TAG).i { "Processing ${songsToInsert.size} songs for upsert. Hash: ${songsToInsert.hashCode()}" }
 
                         val (correctedSongs, albums, artists, crossRefs) =
                                 preProcessAndDeduplicateWithMultiArtist(
@@ -405,8 +391,7 @@ class SyncWorker(
                     }
 
                     val endTime = System.currentTimeMillis()
-                    Timber.tag(TAG)
-                        .i("Synchronization finished successfully in ${endTime - startTime}ms.")
+                    Logger.withTag(TAG).i { "Synchronization finished successfully in ${endTime - startTime}ms." }
 
                     // Diagnostics: record scan duration + how many songs were processed this run,
                     // so the performance report can attribute lag to scanning.
@@ -423,11 +408,11 @@ class SyncWorker(
                     // Songs whose files carry no genre get one from the artist table or earlier
                     // online lookups; never fails the sync.
                     runCatching { genreFiller.fillAfterSync() }
-                        .onFailure { Timber.tag(TAG).w(it, "Genre fill failed") }
+                        .onFailure { Logger.withTag(TAG).w(it) { "Genre fill failed" } }
 
                     val totalSongs = musicDao.getSongCount().first()
                     if (!syncPlan.runMaintenance) {
-                        Timber.tag(TAG).d("Skipping library maintenance phases for local-only sync.")
+                        Logger.withTag(TAG).d { "Skipping library maintenance phases for local-only sync." }
                         AdvancedPerformanceDiagnostics.recordEventIfEnabled(
                             type = AdvancedPerformanceDiagnostics.EventTypes.WORKER,
                             name = "sync_worker_success"
@@ -446,8 +431,7 @@ class SyncWorker(
 
                     val autoScanLrc = userPreferencesRepository.autoScanLrcFilesFlow.first()
                     if (autoScanLrc) {
-                        Timber.tag(TAG)
-                            .i("Auto-scan LRC files enabled. Starting scan phase in chunks...")
+                        Logger.withTag(TAG).i { "Auto-scan LRC files enabled. Starting scan phase in chunks..." }
 
                         val mediaStoreSongIds = musicDao.getAllMediaStoreSongIds()
                         val totalToScan = mediaStoreSongIds.size
@@ -494,12 +478,10 @@ class SyncWorker(
                                         )
                                     }
                             totalScannedCount += idBatch.size
-                            Timber.tag(TAG).d(
-                                    "LRC Scan: Processed batch of ${idBatch.size}, total assigned so far: $batchScannedCount"
-                            )
+                            Logger.withTag(TAG).d { "LRC Scan: Processed batch of ${idBatch.size}, total assigned so far: $batchScannedCount" }
                         }
 
-                        Timber.tag(TAG).i("LRC Scan finished for $totalToScan songs.")
+                        Logger.withTag(TAG).i { "LRC Scan finished for $totalToScan songs." }
                     }
 
                     setProgress(
@@ -535,7 +517,7 @@ class SyncWorker(
                     artistImageRepository.clearCache()
                     Result.success(workDataOf(OUTPUT_TOTAL_SONGS to finalTotalSongs))
                 } catch (e: Exception) {
-                    Timber.tag(TAG).e(e, "Error during MediaStore synchronization")
+                    Logger.withTag(TAG).e(e) { "Error during MediaStore synchronization" }
                     AdvancedPerformanceDiagnostics.recordEventIfEnabled(
                         type = AdvancedPerformanceDiagnostics.EventTypes.WORKER,
                         name = "sync_worker_failure"
@@ -747,7 +729,7 @@ class SyncWorker(
         val now = System.currentTimeMillis()
         val cacheAge = now - genreMapCacheTimestamp
         if (!forceRefresh && genreMapCache.isNotEmpty() && cacheAge < GENRE_CACHE_TTL_MS) {
-            Timber.tag(TAG).d("Using cached genre map (${genreMapCache.size} entries, age: ${cacheAge/1000}s)")
+            Logger.withTag(TAG).d { "Using cached genre map (${genreMapCache.size} entries, age: ${cacheAge/1000}s)" }
             return@coroutineScope genreMapCache
         }
         
@@ -819,13 +801,13 @@ class SyncWorker(
             }.awaitAll()
             
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Error fetching genre map")
+            Logger.withTag(TAG).e(e) { "Error fetching genre map" }
         }
         
         if (genreMap.isNotEmpty()) {
             genreMapCache = genreMap.toMap()
             genreMapCacheTimestamp = System.currentTimeMillis()
-            Timber.tag(TAG).d("Genre map cache updated with ${genreMap.size} entries")
+            Logger.withTag(TAG).d { "Genre map cache updated with ${genreMap.size} entries" }
         }
         
         genreMap
@@ -1019,7 +1001,7 @@ class SyncWorker(
                 }
 
         if (rawDataList.isEmpty()) {
-            Timber.tag(TAG).i("MediaStore cursor produced 0 raw songs after directory filtering")
+            Logger.withTag(TAG).i { "MediaStore cursor produced 0 raw songs after directory filtering" }
             return@traceAsyncSection emptyList()
         }
 
@@ -1046,9 +1028,7 @@ class SyncWorker(
         rawDataList.clear()
 
         val totalCount = songsToProcess.size
-        Timber.tag(TAG).i(
-            "MediaStore raw=$rawSongCount, songsToProcess=$totalCount, forceProcessAll=$forceProcessAll, resetExistingLocalData=$resetExistingLocalData"
-        )
+        Logger.withTag(TAG).i { "MediaStore raw=$rawSongCount, songsToProcess=$totalCount, forceProcessAll=$forceProcessAll, resetExistingLocalData=$resetExistingLocalData" }
         if (totalCount == 0) {
             return@traceAsyncSection emptyList()
         }
@@ -1197,7 +1177,7 @@ class SyncWorker(
                         if (meta.year != null) year = meta.year
                     }
                 } catch (e: Exception) {
-                    Timber.tag(TAG).w(e, "Failed to read metadata via TagLib for ${raw.filePath}")
+                    Logger.withTag(TAG).w(e) { "Failed to read metadata via TagLib for ${raw.filePath}" }
                 }
             }
         }
@@ -1302,7 +1282,7 @@ class SyncWorker(
         fun invalidateGenreCache() {
             genreMapCache = emptyMap()
             genreMapCacheTimestamp = 0L
-            Timber.tag(TAG).d("Genre cache invalidated")
+            Logger.withTag(TAG).d { "Genre cache invalidated" }
         }
 
         fun startUpSyncWork(deepScan: Boolean = false) =

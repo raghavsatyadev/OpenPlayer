@@ -11,7 +11,7 @@ import io.github.raghavsatyadev.openplayer.data.database.SongUserMetaEntity
 import io.github.raghavsatyadev.openplayer.data.repository.SongUserMeta
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Per-song rating, moods and tags, as an array of
@@ -68,7 +68,7 @@ class SongUserMetaModuleHandler(
                 else -> row
             }
         }
-        if (skipped > 0) Timber.tag(TAG).i("Song meta restore: $skipped entries skipped, song not found")
+        if (skipped > 0) Logger.withTag(TAG).i { "Song meta restore: $skipped entries skipped, song not found" }
         // A song named twice keeps its latest entry.
         dao.replaceAll(resolved.groupBy { it.songId }.map { (_, rows) -> rows.maxBy { it.updatedAt } })
     }

@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.memory.MemoryCache
-import coil.request.CachePolicy
-import coil.request.ImageRequest
+import coil3.memory.MemoryCache
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
 import io.github.raghavsatyadev.openplayer.utils.AlbumArtUtils
 import io.github.raghavsatyadev.openplayer.utils.LocalArtworkUri
 
@@ -30,10 +30,10 @@ internal fun withLocalArtworkCacheVersion(model: Any?, version: Long): Any? {
     return model.newBuilder()
         .data(versionedUri)
         .memoryCacheKey(model.memoryCacheKey?.let { key ->
-            MemoryCache.Key("${key.key}_artwork_version_$version", key.extras)
+            "${key}_artwork_version_$version"
         })
         // A caller's old placeholder key can otherwise resurrect the invalidated image.
-        .placeholderMemoryCacheKey(null as MemoryCache.Key?)
+        .placeholderMemoryCacheKey(null as String?)
         .diskCachePolicy(CachePolicy.DISABLED)
         .build()
 }

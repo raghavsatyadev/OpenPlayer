@@ -32,7 +32,7 @@ import kotlinx.coroutines.withContext
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 class PlaybackStatsRepository(
     private val context: Context
@@ -665,7 +665,7 @@ class PlaybackStatsRepository(
         }
             .onFailure { throwable ->
                 if (throwable !is FileNotFoundException) {
-                    Timber.e(throwable, "Failed reading playback history")
+                    Logger.e(throwable) { "Failed reading playback history" }
                 }
             }
             .getOrNull()
@@ -681,7 +681,7 @@ class PlaybackStatsRepository(
             val element = gson.fromJson(raw, JsonElement::class.java)
             parseElement(element)
         }.getOrElse { throwable ->
-            Timber.e(throwable, "Failed parsing playback history")
+            Logger.e(throwable) { "Failed parsing playback history" }
             mutableListOf()
         }
     }
@@ -1031,7 +1031,7 @@ class PlaybackStatsRepository(
         return runCatching {
             val parent = historyFile.parentFile
             if (parent != null && !parent.exists() && !parent.mkdirs()) {
-                Timber.w("Unable to ensure playback history directory: ${parent.absolutePath}")
+                Logger.w { "Unable to ensure playback history directory: ${parent.absolutePath}" }
             }
             outputStream = atomicHistoryFile.startWrite()
             outputStream?.write(payload)
@@ -1041,7 +1041,7 @@ class PlaybackStatsRepository(
             true
         }.onFailure { throwable ->
             outputStream?.let { stream -> atomicHistoryFile.failWrite(stream) }
-            Timber.e(throwable, "Failed to persist playback history")
+            Logger.e(throwable) { "Failed to persist playback history" }
         }.getOrDefault(false)
     }
 

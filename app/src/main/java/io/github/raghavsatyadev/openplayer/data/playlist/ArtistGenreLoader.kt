@@ -2,7 +2,7 @@ package io.github.raghavsatyadev.openplayer.data.playlist
 
 import android.content.Context
 import io.github.raghavsatyadev.openplayer.data.playlist.nlp.ArtistGenreTable
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Reads the shipped [ArtistGenreTable] asset for the artists a library actually contains.
@@ -22,10 +22,10 @@ class ArtistGenreLoader(
         return try {
             context.assets.open(ASSET_PATH).bufferedReader().use { reader ->
                 ArtistGenreTable.parse(reader.lineSequence(), artistKeys)
-            }.also { Timber.tag(TAG).d("Artist genres resolved: ${it.size} of ${artistKeys.size}") }
+            }.also { Logger.withTag(TAG).d { "Artist genres resolved: ${it.size} of ${artistKeys.size}" } }
         } catch (e: Exception) {
             // Includes the asset simply not being present, which is a supported state.
-            Timber.tag(TAG).w(e, "Artist genre table unavailable; untagged songs stay unclassified")
+            Logger.withTag(TAG).w(e) { "Artist genre table unavailable; untagged songs stay unclassified" }
             ArtistGenreTable.EMPTY
         }
     }

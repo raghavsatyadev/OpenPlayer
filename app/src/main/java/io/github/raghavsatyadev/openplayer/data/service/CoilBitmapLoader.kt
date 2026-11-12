@@ -7,11 +7,12 @@ import androidx.annotation.OptIn
 import androidx.core.graphics.drawable.toBitmap
 import androidx.media3.common.util.BitmapLoader
 import androidx.media3.common.util.UnstableApi
-import coil.imageLoader
-import coil.request.CachePolicy
-import coil.request.ImageRequest
-import coil.size.Precision
-import coil.size.Size
+import coil3.imageLoader
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
+import coil3.size.Precision
+import coil3.toBitmap
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.SettableFuture
 import kotlinx.coroutines.CoroutineScope
@@ -46,13 +47,12 @@ class CoilBitmapLoader(private val context: Context, private val scope: Coroutin
                     .build()
                 
                 val result = context.imageLoader.execute(request)
-                val drawable = result.drawable
+                val bitmap = result.image?.toBitmap()
                 
-                if (drawable != null) {
-                    val bitmap = drawable.toBitmap()
+                if (bitmap != null) {
                     future.set(bitmap)
                 } else {
-                    future.setException(IllegalStateException("Coil returned null drawable for data: $data"))
+                    future.setException(IllegalStateException("Coil returned null image for data: $data"))
                 }
             } catch (e: Exception) {
                 future.setException(e)

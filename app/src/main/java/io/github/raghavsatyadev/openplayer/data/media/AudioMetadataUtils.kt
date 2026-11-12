@@ -10,7 +10,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.net.URLConnection
 import java.util.Locale
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 internal fun createTempAudioFileFromUri(context: Context, uri: Uri): File? {
     return try {
@@ -26,7 +26,7 @@ internal fun createTempAudioFileFromUri(context: Context, uri: Uri): File? {
         }
         tempFile
     } catch (error: Exception) {
-        Timber.tag("AudioMetadataUtils").e(error, "Error creating temp file from URI: $uri")
+        Logger.withTag("AudioMetadataUtils").e(error) { "Error creating temp file from URI: $uri" }
         null
     }
 }

@@ -59,7 +59,7 @@ import org.jaudiotagger.tag.mp4.Mp4Tag
 import org.jaudiotagger.tag.mp4.field.Mp4TagReverseDnsField
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag
 import org.jaudiotagger.tag.wav.WavTag
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -301,7 +301,7 @@ class SongMetadataEditor(
     ): SongMetadataEditResult = withContext(Dispatchers.IO) {
         val validationError = validateMetadataInput(newTitle, newArtist, newAlbum, newAlbumArtist, newComposer, newGenre, newLyrics)
         if (validationError != null) {
-            Timber.w("Metadata validation failed: $validationError")
+            Logger.w { "Metadata validation failed: $validationError" }
             return@withContext SongMetadataEditResult(
                 success = false,
                 updatedAlbumArtUri = null,
@@ -349,7 +349,7 @@ class SongMetadataEditor(
             val filePath = getFilePathFromMediaStore(songId)
 
             if (filePath.isNullOrBlank()) {
-                Timber.tag(TAG).e("Could not get file path for songId: $songId")
+                Logger.withTag(TAG).e { "Could not get file path for songId: $songId" }
                 return@withContext SongMetadataEditResult(
                     success = false,
                     updatedAlbumArtUri = null,
@@ -383,20 +383,16 @@ class SongMetadataEditor(
                 val effectiveExtension = when {
                     detectedContainer == DetectedContainer.OGG_OPUS -> {
                         if (extension != detectedContainer.canonicalExtension) {
-                            Timber.tag(TAG).d(
-                                "METADATA_EDIT: Detected Ogg Opus stream in .$extension file. " +
-                                    "Routing write through the Opus-safe metadata path."
-                            )
+                            Logger.withTag(TAG).d { "METADATA_EDIT: Detected Ogg Opus stream in .$extension file. " +
+                                    "Routing write through the Opus-safe metadata path." }
                         }
                         detectedContainer.canonicalExtension
                     }
                     detectedContainer != DetectedContainer.UNKNOWN &&
                         detectedContainer.canonicalExtension != extension -> {
-                        Timber.tag(TAG).w(
-                            "METADATA_EDIT: Extension mismatch — filename has .$extension but magic bytes " +
+                        Logger.withTag(TAG).w { "METADATA_EDIT: Extension mismatch — filename has .$extension but magic bytes " +
                                 "indicate ${detectedContainer.name}. Routing write as .${detectedContainer.canonicalExtension} " +
-                                "via temp-file swap to avoid container corruption."
-                        )
+                                "via temp-file swap to avoid container corruption." }
                         detectedContainer.canonicalExtension
                     }
                     else -> extension
@@ -420,7 +416,7 @@ class SongMetadataEditor(
 
                 val runPipeline: (String) -> Boolean = { path ->
                     if (useVorbisJavaPrimary) {
-                        Timber.tag(TAG).d("METADATA_EDIT: Using VorbisJava Opus writer for $effectiveExtension: $path")
+                        Logger.withTag(TAG).d { "METADATA_EDIT: Using VorbisJava Opus writer for $effectiveExtension: $path" }
                         updateFileMetadataWithVorbisJava(
                             filePath = path,
                             // A temp copy being edited is not the song; only the song needs a pending write-back.
@@ -440,7 +436,7 @@ class SongMetadataEditor(
                             coverArtUpdate = coverArtUpdate
                         )
                     } else if (useJAudioTaggerPrimary) {
-                        Timber.tag(TAG).d("METADATA_EDIT: Using JAudioTagger as primary for $effectiveExtension: $path")
+                        Logger.withTag(TAG).d { "METADATA_EDIT: Using JAudioTagger as primary for $effectiveExtension: $path" }
                         updateFileMetadataWithJAudioTagger(
                             filePath = path,
                             newTitle = newTitle,
@@ -459,7 +455,7 @@ class SongMetadataEditor(
                             coverArtUpdate = coverArtUpdate
                         )
                     } else {
-                        Timber.tag(TAG).d("METADATA_EDIT: Using TagLib for $effectiveExtension: $path")
+                        Logger.withTag(TAG).d { "METADATA_EDIT: Using TagLib for $effectiveExtension: $path" }
                         val tagLibSuccess = updateFileMetadataWithTagLib(
                             filePath = path,
                             newTitle = newTitle,
@@ -476,8 +472,7 @@ class SongMetadataEditor(
                             coverArtUpdate = coverArtUpdate
                         )
                         if (!tagLibSuccess) {
-                            Timber.tag(TAG)
-                                .w("METADATA_EDIT: TagLib failed for $effectiveExtension, falling back to JAudioTagger")
+                            Logger.withTag(TAG).w { "METADATA_EDIT: TagLib failed for $effectiveExtension, falling back to JAudioTagger" }
                             updateFileMetadataWithJAudioTagger(
                                 filePath = path,
                                 newTitle = newTitle,
@@ -516,7 +511,7 @@ class SongMetadataEditor(
                 // through the ContentResolver instead.
                 val needsContentResolverWriteBack = fileExists && !File(finalFilePath).canWrite()
                 val fileUpdateSuccess = if (!fileExists) {
-                    Timber.tag(TAG).e("METADATA_EDIT: File does not exist: $finalFilePath")
+                    Logger.withTag(TAG).e { "METADATA_EDIT: File does not exist: $finalFilePath" }
                     false
                 } else if (needsTransactionalTempWrite || needsContentResolverWriteBack) {
                     // TagLib and the container-specific rating/custom-field writer are two separate
@@ -529,7 +524,7 @@ class SongMetadataEditor(
                 if (fileUpdateSuccess) {
                     null
                 } else {
-                    Timber.tag(TAG).e("Failed to update file metadata for songId: $songId")
+                    Logger.withTag(TAG).e { "Failed to update file metadata for songId: $songId" }
                     SongMetadataEditResult(
                         success = false,
                         updatedAlbumArtUri = null,
@@ -551,7 +546,7 @@ class SongMetadataEditor(
                 discNumber = newDiscNumber
             )
             if (!mediaStoreSuccess) {
-                Timber.w("MediaStore update failed, but file was updated for songId: $songId")
+                Logger.w { "MediaStore update failed, but file was updated for songId: $songId" }
             }
 
             var storedCoverArtUri: String? = null
@@ -575,13 +570,10 @@ class SongMetadataEditor(
                 forceMediaRescan(finalFilePath)
             }
 
-            Timber.tag(TAG).e("METADATA_EDIT: Successfully updated metadata for songId: $songId")
+            Logger.withTag(TAG).e { "METADATA_EDIT: Successfully updated metadata for songId: $songId" }
             SongMetadataEditResult(success = true, updatedAlbumArtUri = storedCoverArtUri)
         } catch (e: MetadataWriteInterruptedException) {
-            Timber.tag(TAG).e(
-                e,
-                "METADATA_EDIT: Song $songId was cut off; edited copy ${e.pending.copy.name} is kept to write back later"
-            )
+            Logger.withTag(TAG).e(e) { "METADATA_EDIT: Song $songId was cut off; edited copy ${e.pending.copy.name} is kept to write back later" }
             SongMetadataEditResult(
                 success = false,
                 updatedAlbumArtUri = null,
@@ -589,7 +581,7 @@ class SongMetadataEditor(
                 errorMessage = context.getString(R.string.metadata_edit_write_interrupted)
             )
         } catch (e: SecurityException) {
-            Timber.e(e, "Security exception editing metadata for songId: $songId")
+            Logger.e(e) { "Security exception editing metadata for songId: $songId" }
             SongMetadataEditResult(
                 success = false,
                 updatedAlbumArtUri = null,
@@ -597,7 +589,7 @@ class SongMetadataEditor(
                 errorMessage = "Permission denied: ${e.localizedMessage}"
             )
         } catch (e: IOException) {
-            Timber.e(e, "IO exception editing metadata for songId: $songId")
+            Logger.e(e) { "IO exception editing metadata for songId: $songId" }
             SongMetadataEditResult(
                 success = false,
                 updatedAlbumArtUri = null,
@@ -605,7 +597,7 @@ class SongMetadataEditor(
                 errorMessage = "Error accessing file: ${e.localizedMessage}"
             )
         } catch (e: OutOfMemoryError) {
-            Timber.e(e, "OOM editing metadata for songId: $songId")
+            Logger.e(e) { "OOM editing metadata for songId: $songId" }
             SongMetadataEditResult(
                 success = false,
                 updatedAlbumArtUri = null,
@@ -613,7 +605,7 @@ class SongMetadataEditor(
                 errorMessage = "File too large or corrupted"
             )
         } catch (e: Exception) {
-            Timber.e(e, "Failed to update metadata for songId: $songId")
+            Logger.e(e) { "Failed to update metadata for songId: $songId" }
             val errorType = when {
                 e.message?.contains("corrupt", ignoreCase = true) == true -> MetadataEditError.FILE_CORRUPTED
                 e.message?.contains("unsupported", ignoreCase = true) == true -> MetadataEditError.UNSUPPORTED_FORMAT
@@ -654,12 +646,10 @@ class SongMetadataEditor(
             originalFile.inputStream().use { input ->
                 FileOutputStream(tempFile).use { out -> input.copyTo(out) }
             }
-            Timber.tag(TAG).d(
-                "METADATA_EDIT: Copied ${originalFile.length()} bytes to temp ${tempFile.name} for extension-corrected write"
-            )
+            Logger.withTag(TAG).d { "METADATA_EDIT: Copied ${originalFile.length()} bytes to temp ${tempFile.name} for extension-corrected write" }
             val writeOk = writer(tempFile.absolutePath)
             if (!writeOk) {
-                Timber.tag(TAG).e("METADATA_EDIT: Writer failed on temp file ${tempFile.absolutePath}")
+                Logger.withTag(TAG).e { "METADATA_EDIT: Writer failed on temp file ${tempFile.absolutePath}" }
                 return false
             }
             val editedBytes = tempFile.length()
@@ -668,19 +658,17 @@ class SongMetadataEditor(
             } else if (!writeBackViaContentResolver(song, tempFile, originalFile)) {
                 return false
             }
-            Timber.tag(TAG).d(
-                "METADATA_EDIT: Restored $editedBytes edited bytes back to $originalPath"
-            )
+            Logger.withTag(TAG).d { "METADATA_EDIT: Restored $editedBytes edited bytes back to $originalPath" }
             true
         } catch (e: MetadataWriteInterruptedException) {
             throw e
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "METADATA_EDIT: Extension-swap pipeline failed for $originalPath")
+            Logger.withTag(TAG).e(e) { "METADATA_EDIT: Extension-swap pipeline failed for $originalPath" }
             false
         } finally {
             // Gone already when its bytes were staged as a pending write-back.
             if (tempFile.exists() && !tempFile.delete()) {
-                Timber.tag(TAG).w("METADATA_EDIT: Could not delete temp file ${tempFile.absolutePath}")
+                Logger.withTag(TAG).w { "METADATA_EDIT: Could not delete temp file ${tempFile.absolutePath}" }
             }
         }
     }
@@ -690,7 +678,7 @@ class SongMetadataEditor(
         // bytes can only go back into the file they were read from.
         val destination = pendingSongAt(song, expectedRowId = song.songId)
         if (destination.row == null) {
-            Timber.tag(TAG).e("METADATA_EDIT: Cannot write back: file is not writable and no MediaStore row of song ${song.songId} names it")
+            Logger.withTag(TAG).e { "METADATA_EDIT: Cannot write back: file is not writable and no MediaStore row of song ${song.songId} names it" }
             return false
         }
         val result = writeBackEditedCopy(
@@ -703,11 +691,11 @@ class SongMetadataEditor(
         )
         return when (result) {
             WriteBackResult.Written -> {
-                Timber.tag(TAG).d("METADATA_EDIT: Wrote edited bytes back via ContentResolver (rwt)")
+                Logger.withTag(TAG).d { "METADATA_EDIT: Wrote edited bytes back via ContentResolver (rwt)" }
                 true
             }
             WriteBackResult.NotStarted -> {
-                Timber.tag(TAG).e("METADATA_EDIT: Could not write back to ${song.path}; original left unchanged")
+                Logger.withTag(TAG).e { "METADATA_EDIT: Could not write back to ${song.path}; original left unchanged" }
                 false
             }
             is WriteBackResult.FailedAfterTruncate -> throw interruptedOrIoException(result, original)
@@ -739,17 +727,12 @@ class SongMetadataEditor(
                 if (sibling.renameTo(target)) {
                     return
                 }
-                Timber.tag(TAG).w(
-                    "METADATA_EDIT: Atomic rename onto ${target.path} failed; falling back to in-place overwrite"
-                )
+                Logger.withTag(TAG).w { "METADATA_EDIT: Atomic rename onto ${target.path} failed; falling back to in-place overwrite" }
             } catch (e: Exception) {
-                Timber.tag(TAG).w(
-                    e,
-                    "METADATA_EDIT: Sibling temp write for ${target.path} failed; falling back to in-place overwrite"
-                )
+                Logger.withTag(TAG).w(e) { "METADATA_EDIT: Sibling temp write for ${target.path} failed; falling back to in-place overwrite" }
             } finally {
                 if (sibling.exists() && !sibling.delete()) {
-                    Timber.tag(TAG).w("METADATA_EDIT: Could not delete temp file ${sibling.absolutePath}")
+                    Logger.withTag(TAG).w { "METADATA_EDIT: Could not delete temp file ${sibling.absolutePath}" }
                 }
             }
         }
@@ -780,7 +763,7 @@ class SongMetadataEditor(
     private fun availableBytesNextTo(file: File): Long? = try {
         file.parentFile?.let { StatFs(it.path).availableBytes }
     } catch (e: Exception) {
-        Timber.tag(TAG).w(e, "METADATA_EDIT: Could not read free space next to ${file.path}")
+        Logger.withTag(TAG).w(e) { "METADATA_EDIT: Could not read free space next to ${file.path}" }
         null
     }
 
@@ -849,7 +832,7 @@ class SongMetadataEditor(
             MediaStoreRow(id, MediaStore.Audio.Media.getContentUri(volumeName, id))
         }
     } catch (e: Exception) {
-        Timber.tag(TAG).w(e, "METADATA_EDIT: Could not look up the MediaStore row of $path")
+        Logger.withTag(TAG).w(e) { "METADATA_EDIT: Could not look up the MediaStore row of $path" }
         null
     }
 
@@ -860,7 +843,7 @@ class SongMetadataEditor(
             else -> false
         }
     } catch (e: Exception) {
-        Timber.tag(TAG).w(e, "METADATA_EDIT: Could not tell whether the volume of ${file.path} is mounted")
+        Logger.withTag(TAG).w(e) { "METADATA_EDIT: Could not tell whether the volume of ${file.path} is mounted" }
         false
     }
 
@@ -912,21 +895,19 @@ class SongMetadataEditor(
                 val bitsPerSample = (((header[20].toInt() and 0x01) shl 4) or
                     ((header[21].toInt() and 0xF0) shr 4)) + 1
 
-                Timber.tag(TAG)
-                    .d("FLAC analysis: sampleRate=$sampleRate, bitsPerSample=$bitsPerSample")
+                Logger.withTag(TAG).d { "FLAC analysis: sampleRate=$sampleRate, bitsPerSample=$bitsPerSample" }
                 
                 val isProblematic = sampleRate > 96000 || bitsPerSample > 24
                 
                 if (isProblematic) {
-                    Timber.tag(TAG)
-                        .w("FLAC file may be problematic: $filePath (${sampleRate}Hz, ${bitsPerSample}bit)")
+                    Logger.withTag(TAG).w { "FLAC file may be problematic: $filePath (${sampleRate}Hz, ${bitsPerSample}bit)" }
                     FlacAnalysisResult.Problematic(sampleRate, bitsPerSample)
                 } else {
                     FlacAnalysisResult.Safe(sampleRate, bitsPerSample)
                 }
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Could not analyze FLAC file: $filePath")
+            Logger.withTag(TAG).w(e) { "Could not analyze FLAC file: $filePath" }
             FlacAnalysisResult.Unknown
         }
     }
@@ -998,7 +979,7 @@ class SongMetadataEditor(
                 }
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Container detection failed for $filePath")
+            Logger.withTag(TAG).w(e) { "Container detection failed for $filePath" }
             DetectedContainer.UNKNOWN
         }
     }
@@ -1043,10 +1024,8 @@ class SongMetadataEditor(
     ): Boolean {
         when (val flacResult = isProblematicFlacFile(filePath)) {
             is FlacAnalysisResult.Problematic -> {
-                Timber.tag(TAG)
-                    .w("TAGLIB: Skipping file modification for high-resolution FLAC (${flacResult.sampleRate}Hz, ${flacResult.bitsPerSample}bit)")
-                Timber.tag(TAG)
-                    .w("TAGLIB: High-res FLAC files may not work correctly with TagLib. Will update MediaStore only.")
+                Logger.withTag(TAG).w { "TAGLIB: Skipping file modification for high-resolution FLAC (${flacResult.sampleRate}Hz, ${flacResult.bitsPerSample}bit)" }
+                Logger.withTag(TAG).w { "TAGLIB: High-res FLAC files may not work correctly with TagLib. Will update MediaStore only." }
                 return true
             }
             else -> { }
@@ -1055,17 +1034,16 @@ class SongMetadataEditor(
         return try {
             val audioFile = File(filePath)
             if (!audioFile.exists()) {
-                Timber.tag(TAG).e("TAGLIB: Audio file does not exist: $filePath")
+                Logger.withTag(TAG).e { "TAGLIB: Audio file does not exist: $filePath" }
                 return false
             }
-            Timber.tag(TAG).e("TAGLIB: Opening file: $filePath")
+            Logger.withTag(TAG).e { "TAGLIB: Opening file: $filePath" }
 
             ParcelFileDescriptor.open(audioFile, ParcelFileDescriptor.MODE_READ_WRITE).use { fd ->
-                Timber.tag(TAG).e("TAGLIB: Getting existing metadata...")
+                Logger.withTag(TAG).e { "TAGLIB: Getting existing metadata..." }
                 val metadataFd = fd.dup()
                 val existingMetadata = TagLib.getMetadata(metadataFd.detachFd())
-                Timber.tag(TAG)
-                    .e("TAGLIB: Existing metadata: ${existingMetadata?.propertyMap?.keys}")
+                Logger.withTag(TAG).e { "TAGLIB: Existing metadata: ${existingMetadata?.propertyMap?.keys}" }
                 val propertyMap = HashMap(existingMetadata?.propertyMap ?: emptyMap())
 
                 propertyMap["TITLE"] = arrayOf(newTitle)
@@ -1085,13 +1063,13 @@ class SongMetadataEditor(
                 }
                 propertyMap.applyReplayGainUpdate(REPLAYGAIN_TRACK_GAIN_KEY, replayGainTrackUpdate)
                 propertyMap.applyReplayGainUpdate(REPLAYGAIN_ALBUM_GAIN_KEY, replayGainAlbumUpdate)
-                Timber.tag(TAG).e("TAGLIB: Updated property map, saving...")
+                Logger.withTag(TAG).e { "TAGLIB: Updated property map, saving..." }
 
                 val saveFd = fd.dup()
                 val metadataSaved = TagLib.savePropertyMap(saveFd.detachFd(), propertyMap)
-                Timber.tag(TAG).e("TAGLIB: savePropertyMap result: $metadataSaved")
+                Logger.withTag(TAG).e { "TAGLIB: savePropertyMap result: $metadataSaved" }
                 if (!metadataSaved) {
-                    Timber.tag(TAG).e("TAGLIB: Failed to save metadata for file: $filePath")
+                    Logger.withTag(TAG).e { "TAGLIB: Failed to save metadata for file: $filePath" }
                     return false
                 }
 
@@ -1115,11 +1093,9 @@ class SongMetadataEditor(
                         val pictureFd = fd.dup()
                         val coverSaved = TagLib.savePictures(pictureFd.detachFd(), it)
                         if (!coverSaved) {
-                            Timber.tag(TAG)
-                                .w("TAGLIB: Failed to save cover art, but metadata was saved")
+                            Logger.withTag(TAG).w { "TAGLIB: Failed to save cover art, but metadata was saved" }
                         } else {
-                            Timber.tag(TAG)
-                                .d("TAGLIB: Successfully ${if (update.isDeletion) "removed" else "embedded"} cover art")
+                            Logger.withTag(TAG).d { "TAGLIB: Successfully ${if (update.isDeletion) "removed" else "embedded"} cover art" }
                         }
                     }
                 }
@@ -1130,15 +1106,15 @@ class SongMetadataEditor(
                     raf.fd.sync()
                 }
             } catch (e: Exception) {
-                Timber.tag(TAG).w(e, "Could not sync file, changes should still be persisted")
+                Logger.withTag(TAG).w(e) { "Could not sync file, changes should still be persisted" }
             }
 
-            Timber.tag(TAG).e("TAGLIB: SUCCESS - Updated file metadata: ${audioFile.path}")
+            Logger.withTag(TAG).e { "TAGLIB: SUCCESS - Updated file metadata: ${audioFile.path}" }
             true
 
         } catch (e: Exception) {
-            Timber.tag(TAG).e("TAGLIB ERROR: ${e.javaClass.simpleName}: ${e.message}")
-            Timber.e(e)
+            Logger.withTag(TAG).e { "TAGLIB ERROR: ${e.javaClass.simpleName}: ${e.message}" }
+            Logger.e(e) { (e).message ?: "" }
             false
         }
     }
@@ -1205,7 +1181,7 @@ class SongMetadataEditor(
             coverArtUpdate?.let { update ->
                 if (update.isDeletion) {
                     tag.deleteArtworkField()
-                    Timber.tag(TAG).d("JAUDIOTAGGER: Removed cover art")
+                    Logger.withTag(TAG).d { "JAUDIOTAGGER: Removed cover art" }
                 } else if (update.bytes != null) {
                     try {
                         tag.deleteArtworkField()
@@ -1220,22 +1196,21 @@ class SongMetadataEditor(
                         artwork.height = options.outHeight
                         
                         tag.setField(artwork)
-                        Timber.tag(TAG)
-                            .d("JAUDIOTAGGER: Embedded new cover art (${update.mimeType}, ${options.outWidth}x${options.outHeight})")
+                        Logger.withTag(TAG).d { "JAUDIOTAGGER: Embedded new cover art (${update.mimeType}, ${options.outWidth}x${options.outHeight})" }
                     } catch (e: Exception) {
-                        Timber.tag(TAG).e(e, "JAUDIOTAGGER: Failed to create artwork from bytes")
+                        Logger.withTag(TAG).e(e) { "JAUDIOTAGGER: Failed to create artwork from bytes" }
                     }
                 } else {
-                    Timber.tag(TAG).w("JAUDIOTAGGER: Ignoring invalid CoverArtUpdate with no bytes and no deletion flag")
+                    Logger.withTag(TAG).w { "JAUDIOTAGGER: Ignoring invalid CoverArtUpdate with no bytes and no deletion flag" }
                 }
             }
 
             audioFile.commit()
-            Timber.tag(TAG).d("JAUDIOTAGGER: SUCCESS - Updated file metadata: $filePath")
+            Logger.withTag(TAG).d { "JAUDIOTAGGER: SUCCESS - Updated file metadata: $filePath" }
             true
         } catch (e: Exception) {
-            Timber.tag(TAG).e("JAUDIOTAGGER ERROR: ${e.javaClass.simpleName}: ${e.message}")
-            Timber.e(e)
+            Logger.withTag(TAG).e { "JAUDIOTAGGER ERROR: ${e.javaClass.simpleName}: ${e.message}" }
+            Logger.e(e) { (e).message ?: "" }
             false
         }
     }
@@ -1258,10 +1233,10 @@ class SongMetadataEditor(
             val tag = audioFile.tag ?: audioFile.createDefaultTag()
             tag.applyCustomMetadataChanges(customMetadataChanges, tagFamily)
             audioFile.commit()
-            Timber.tag(TAG).d("JAUDIOTAGGER: Updated rating/custom metadata: $filePath")
+            Logger.withTag(TAG).d { "JAUDIOTAGGER: Updated rating/custom metadata: $filePath" }
             true
         } catch (error: Exception) {
-            Timber.tag(TAG).e(error, "JAUDIOTAGGER: Failed to update rating/custom metadata: $filePath")
+            Logger.withTag(TAG).e(error) { "JAUDIOTAGGER: Failed to update rating/custom metadata: $filePath" }
             false
         }
     }
@@ -1291,17 +1266,17 @@ class SongMetadataEditor(
         
         return try {
             if (!audioFile.exists()) {
-                Timber.tag(TAG).e("VORBISJAVA: Audio file does not exist: $filePath")
+                Logger.withTag(TAG).e { "VORBISJAVA: Audio file does not exist: $filePath" }
                 return false
             }
 
-            Timber.tag(TAG).e("VORBISJAVA: Reading Opus file: $filePath")
+            Logger.withTag(TAG).e { "VORBISJAVA: Reading Opus file: $filePath" }
             
             val sourceOpusFile = OpusFile(audioFile)
             opusFile = sourceOpusFile
             val tags = sourceOpusFile.tags ?: OpusTags()
 
-            Timber.tag(TAG).e("VORBISJAVA: Existing tags: ${tags.allComments}")
+            Logger.withTag(TAG).e { "VORBISJAVA: Existing tags: ${tags.allComments}" }
             
             tags.replaceSingleComment("TITLE", newTitle)
             tags.replaceSingleComment("ARTIST", newArtist)
@@ -1319,14 +1294,14 @@ class SongMetadataEditor(
                 tags.applyCoverArtUpdate(update)
             }
 
-            Timber.tag(TAG).e("VORBISJAVA: Updated tags: ${tags.allComments}")
+            Logger.withTag(TAG).e { "VORBISJAVA: Updated tags: ${tags.allComments}" }
             
             tempFile = File(
                 context.cacheDir,
                 "metadata_edit_opus_${System.nanoTime()}.$originalExtension"
             )
             
-            Timber.tag(TAG).e("VORBISJAVA: Writing to temp file: ${tempFile.path}")
+            Logger.withTag(TAG).e { "VORBISJAVA: Writing to temp file: ${tempFile.path}" }
             FileOutputStream(tempFile).use { fos ->
                 OpusFile(fos, sourceOpusFile.info, tags).use { newOpusFile ->
                     var packet = sourceOpusFile.nextAudioPacket
@@ -1340,31 +1315,30 @@ class SongMetadataEditor(
             opusFile = null
             
             if (!tempFile.exists() || tempFile.length() == 0L) {
-                Timber.tag(TAG).e("VORBISJAVA: Temp file creation failed or is empty")
+                Logger.withTag(TAG).e { "VORBISJAVA: Temp file creation failed or is empty" }
                 return false
             }
-            Timber.tag(TAG)
-                .e("VORBISJAVA: Temp file size: ${tempFile.length()} bytes, original: ${audioFile.length()} bytes")
+            Logger.withTag(TAG).e { "VORBISJAVA: Temp file size: ${tempFile.length()} bytes, original: ${audioFile.length()} bytes" }
             
             replaceFileContentSafely(tempFile, audioFile, song)
 
-            Timber.tag(TAG).e("VORBISJAVA: SUCCESS - Updated file metadata: ${audioFile.path}")
+            Logger.withTag(TAG).e { "VORBISJAVA: SUCCESS - Updated file metadata: ${audioFile.path}" }
             true
 
         } catch (e: MetadataWriteInterruptedException) {
             throw e
         } catch (e: Exception) {
-            Timber.tag(TAG).e("VORBISJAVA ERROR: ${e.javaClass.simpleName}: ${e.message}")
-            Timber.e(e)
+            Logger.withTag(TAG).e { "VORBISJAVA ERROR: ${e.javaClass.simpleName}: ${e.message}" }
+            Logger.e(e) { (e).message ?: "" }
             false
         } finally {
             try {
                 opusFile?.close()
             } catch (e: Exception) {
-                Timber.tag(TAG).w(e, "VORBISJAVA: Could not close source Opus file")
+                Logger.withTag(TAG).w(e) { "VORBISJAVA: Could not close source Opus file" }
             }
             if (tempFile != null && tempFile.exists() && tempFile.delete() == false) {
-                Timber.tag(TAG).w("VORBISJAVA: Could not delete temp file ${tempFile.absolutePath}")
+                Logger.withTag(TAG).w { "VORBISJAVA: Could not delete temp file ${tempFile.absolutePath}" }
             }
         }
     }
@@ -1399,11 +1373,11 @@ class SongMetadataEditor(
             val rowsUpdated = context.contentResolver.update(uri, values, null, null)
             val success = rowsUpdated > 0
 
-            Timber.d("MediaStore update: $rowsUpdated row(s) affected")
+            Logger.d { "MediaStore update: $rowsUpdated row(s) affected" }
             success
 
         } catch (e: Exception) {
-            Timber.e(e, "Failed to update MediaStore for songId: $songId")
+            Logger.e(e) { "Failed to update MediaStore for songId: $songId" }
             false
         }
     }
@@ -1412,24 +1386,24 @@ class SongMetadataEditor(
         try {
             val file = File(filePath)
             if (file.exists()) {
-                Timber.tag(TAG).e("RESCAN: Starting MediaScanner for: $filePath")
+                Logger.withTag(TAG).e { "RESCAN: Starting MediaScanner for: $filePath" }
                 MediaScannerConnection.scanFile(
                     context,
                     arrayOf(filePath),
                     null
                 ) { path, uri ->
-                    Timber.tag(TAG).e("RESCAN: Completed for: $path, new URI: $uri")
+                    Logger.withTag(TAG).e { "RESCAN: Completed for: $path, new URI: $uri" }
                 }
             } else {
-                Timber.tag(TAG).e("RESCAN: File does not exist: $filePath")
+                Logger.withTag(TAG).e { "RESCAN: File does not exist: $filePath" }
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).e("RESCAN ERROR: ${e.message}")
+            Logger.withTag(TAG).e { "RESCAN ERROR: ${e.message}" }
         }
     }
 
     private fun getFilePathFromMediaStore(songId: Long): String? {
-        Timber.tag(TAG).e("getFilePathFromMediaStore: Looking up songId: $songId")
+        Logger.withTag(TAG).e { "getFilePathFromMediaStore: Looking up songId: $songId" }
         return try {
             context.contentResolver.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -1438,19 +1412,18 @@ class SongMetadataEditor(
                 arrayOf(songId.toString()),
                 null
             )?.use { cursor ->
-                Timber.tag(TAG).e("getFilePathFromMediaStore: Cursor count: ${cursor.count}")
+                Logger.withTag(TAG).e { "getFilePathFromMediaStore: Cursor count: ${cursor.count}" }
                 if (cursor.moveToFirst()) {
                     val path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA))
-                    Timber.tag(TAG).e("getFilePathFromMediaStore: Found path: $path")
+                    Logger.withTag(TAG).e { "getFilePathFromMediaStore: Found path: $path" }
                     path
                 } else {
-                    Timber.tag(TAG)
-                        .e("getFilePathFromMediaStore: No file found for songId: $songId")
+                    Logger.withTag(TAG).e { "getFilePathFromMediaStore: No file found for songId: $songId" }
                     null
                 }
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).e("getFilePathFromMediaStore: Error querying MediaStore: ${e.message}")
+            Logger.withTag(TAG).e { "getFilePathFromMediaStore: Error querying MediaStore: ${e.message}" }
             null
         }
     }
@@ -1491,18 +1464,18 @@ private fun OpusTags.applyCoverArtUpdate(update: CoverArtUpdate) {
     removeComments("COVERARTMIME")
 
     if (update.isDeletion) {
-        Timber.tag(TAG).d("VORBISJAVA: Removed cover art")
+        Logger.withTag(TAG).d { "VORBISJAVA: Removed cover art" }
         return
     }
 
     val imageBytes = update.bytes
     if (imageBytes == null) {
-        Timber.tag(TAG).w("VORBISJAVA: Ignoring invalid CoverArtUpdate with no bytes and no deletion flag")
+        Logger.withTag(TAG).w { "VORBISJAVA: Ignoring invalid CoverArtUpdate with no bytes and no deletion flag" }
         return
     }
 
     addComment("METADATA_BLOCK_PICTURE", buildVorbisPictureBlock(imageBytes, update.mimeType))
-    Timber.tag(TAG).d("VORBISJAVA: Embedded cover art (${update.mimeType}, ${imageBytes.size} bytes)")
+    Logger.withTag(TAG).d { "VORBISJAVA: Embedded cover art (${update.mimeType}, ${imageBytes.size} bytes)" }
 }
 
 private fun buildVorbisPictureBlock(imageBytes: ByteArray, mimeType: String): String {
@@ -1658,7 +1631,7 @@ private fun Tag.upsertReplayGainField(key: String, value: String) {
             deleteField(fieldId)
             setField(Mp4TagReverseDnsField(fieldId, MP4_REVERSE_DNS_ISSUER, key, value))
         }
-        else -> Timber.tag(TAG).w("ReplayGain update is not supported for tag type: ${this::class.java.simpleName}")
+        else -> Logger.withTag(TAG).w { "ReplayGain update is not supported for tag type: ${this::class.java.simpleName}" }
     }
 }
 
@@ -1669,7 +1642,7 @@ private fun Tag.removeReplayGainField(key: String) {
         is FlacTag -> deleteField(key)
         is VorbisCommentTag -> deleteField(key)
         is Mp4Tag -> deleteField(replayGainMp4FieldId(key))
-        else -> Timber.tag(TAG).w("ReplayGain removal is not supported for tag type: ${this::class.java.simpleName}")
+        else -> Logger.withTag(TAG).w { "ReplayGain removal is not supported for tag type: ${this::class.java.simpleName}" }
     }
 }
 

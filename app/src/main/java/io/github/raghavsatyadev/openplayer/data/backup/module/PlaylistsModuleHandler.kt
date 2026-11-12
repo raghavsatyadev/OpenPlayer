@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Files
@@ -178,7 +178,7 @@ class PlaylistsModuleHandler(
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
-                    Timber.tag(TAG).e(e, "Pending playlist restore failed; retrying after the next sync")
+                    Logger.withTag(TAG).e(e) { "Pending playlist restore failed; retrying after the next sync" }
                 }
             }
     }
@@ -209,10 +209,10 @@ class PlaylistsModuleHandler(
                 tempFile.toPath(), pendingFile.toPath(),
                 StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING
             )
-            Timber.tag(TAG).i("Saved pending playlist restore for songs not in the library yet")
+            Logger.withTag(TAG).i { "Saved pending playlist restore for songs not in the library yet" }
             true
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Failed to save pending playlist restore file")
+            Logger.withTag(TAG).e(e) { "Failed to save pending playlist restore file" }
             tempFile.delete()
             false
         }
@@ -268,7 +268,7 @@ class PlaylistsModuleHandler(
         val json = try {
             pendingFile.readText()
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Failed to read pending playlist restore file")
+            Logger.withTag(TAG).e(e) { "Failed to read pending playlist restore file" }
             return@withLock
         }
         // A file this can't parse is dropped, and so is one from before unresolvedSongIds was
@@ -279,7 +279,7 @@ class PlaylistsModuleHandler(
         val unresolvedSongIds = resolvableSongIds(pending?.unresolvedSongIds.orEmpty(), songMetadata)
         if (pending == null || unresolvedSongIds.isEmpty()) {
             pendingFile.delete()
-            Timber.tag(TAG).i("Pending playlist restore: dropped, nothing it can still fill in")
+            Logger.withTag(TAG).i { "Pending playlist restore: dropped, nothing it can still fill in" }
             return@withLock
         }
 
@@ -314,14 +314,12 @@ class PlaylistsModuleHandler(
 
         val stillPending = pendingRestoreOf(waiting, songMetadata, unresolvedSongIds - newlyResolved)
         if (grownCount > 0) {
-            Timber.tag(TAG).i(
-                "Pending playlist restore: $grownCount playlists grew, " +
-                    "${stillPending?.unresolvedSongIds.orEmpty().size} songs still unresolved"
-            )
+            Logger.withTag(TAG).i { "Pending playlist restore: $grownCount playlists grew, " +
+                    "${stillPending?.unresolvedSongIds.orEmpty().size} songs still unresolved" }
         }
         if (stillPending == null) {
             pendingFile.delete()
-            Timber.tag(TAG).i("Pending playlist restore: nothing left to fill in")
+            Logger.withTag(TAG).i { "Pending playlist restore: nothing left to fill in" }
         } else if (stillPending != pending) {
             // When this fails, the next retry reads the earlier file again, and counts the songs
             // this one added as the backup's copies instead of adding them twice.
@@ -395,7 +393,7 @@ class PlaylistsModuleHandler(
             val bytes = file.readBytes()
             Base64.encodeToString(bytes, Base64.NO_WRAP)
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Failed to read cover image: $path")
+            Logger.withTag(TAG).w(e) { "Failed to read cover image: $path" }
             null
         }
     }
@@ -413,7 +411,7 @@ class PlaylistsModuleHandler(
                 file.writeBytes(bytes)
                 playlist.copy(coverImageUri = file.absolutePath)
             } catch (e: Exception) {
-                Timber.tag(TAG).w(e, "Failed to restore cover image for playlist ${playlist.id}")
+                Logger.withTag(TAG).w(e) { "Failed to restore cover image for playlist ${playlist.id}" }
                 playlist.copy(coverImageUri = null)
             }
         }
@@ -447,7 +445,7 @@ class PlaylistsModuleHandler(
         }
 
         if (unresolvedCount > 0) {
-            Timber.tag(TAG).w("Playlist restore: $resolvedCount/$totalSongs songs resolved, $unresolvedCount unresolved")
+            Logger.withTag(TAG).w { "Playlist restore: $resolvedCount/$totalSongs songs resolved, $unresolvedCount unresolved" }
         }
 
         val resolvedPlaylists = playlists.map { playlist ->

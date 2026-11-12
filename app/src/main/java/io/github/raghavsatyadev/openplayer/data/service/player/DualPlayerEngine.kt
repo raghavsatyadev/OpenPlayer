@@ -54,7 +54,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.io.IOException
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlin.coroutines.resume
 
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeStreamProxy
@@ -390,14 +390,14 @@ class DualPlayerEngine(
     private val focusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
         when (focusChange) {
             AudioManager.AUDIOFOCUS_LOSS -> {
-                Timber.tag("TransitionDebug").d("AudioFocus LOSS. Pausing.")
+                Logger.withTag("TransitionDebug").d { "AudioFocus LOSS. Pausing." }
                 isFocusLossPause = false
                 playerA.playWhenReady = false
                 playerB?.playWhenReady = false
                 abandonAudioFocus()
             }
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                Timber.tag("TransitionDebug").d("AudioFocus LOSS_TRANSIENT. Pausing.")
+                Logger.withTag("TransitionDebug").d { "AudioFocus LOSS_TRANSIENT. Pausing." }
                 val auxiliaryPlayer = playerB
                 isFocusLossPause = shouldResumeAfterTransientAudioFocusLoss(
                     masterPlayWhenReady = playerA.playWhenReady,
@@ -410,7 +410,7 @@ class DualPlayerEngine(
                 auxiliaryPlayer?.playWhenReady = false
             }
             AudioManager.AUDIOFOCUS_GAIN -> {
-                Timber.tag("TransitionDebug").d("AudioFocus GAIN. Resuming if paused by loss.")
+                Logger.withTag("TransitionDebug").d { "AudioFocus GAIN. Resuming if paused by loss." }
                 if (isFocusLossPause) {
                     isFocusLossPause = false
                     playerA.playWhenReady = true
@@ -472,13 +472,13 @@ class DualPlayerEngine(
         ) {
             val isHardware = AudioDecoderPolicy.isLikelyHardwareDecoder(decoderName)
             _activeDecoderInfo.value = ActiveDecoderInfo(decoderName, isHardware)
-            Timber.tag("DualPlayerEngine").d("Audio decoder initialized: %s (Hardware: %b)", decoderName, isHardware)
+            Logger.withTag("DualPlayerEngine").d { String.format("Audio decoder initialized: %s (Hardware: %b)", decoderName, isHardware) }
         }
 
         override fun onAudioSessionIdChanged(audioSessionId: Int) {
             if (audioSessionId != 0 && _activeAudioSessionId.value != audioSessionId) {
                 _activeAudioSessionId.value = audioSessionId
-                Timber.tag("TransitionDebug").d("Master audio session changed: %d", audioSessionId)
+                Logger.withTag("TransitionDebug").d { String.format("Master audio session changed: %d", audioSessionId) }
             }
         }
 
@@ -510,7 +510,7 @@ class DualPlayerEngine(
                         }
                     }
                 } catch (e: Exception) {
-                    Timber.tag("DualPlayerEngine").w(e, "Pre-resolution error")
+                    Logger.withTag("DualPlayerEngine").w(e) { "Pre-resolution error" }
                 }
             }
         }
@@ -678,7 +678,7 @@ class DualPlayerEngine(
                             resolveCloudUri(uriToResolve)
                         }
                     } catch (e: Exception) {
-                        Timber.tag("DualPlayerEngine").w(e, "Error during pre-resolution triggered manually")
+                        Logger.withTag("DualPlayerEngine").w(e) { "Error during pre-resolution triggered manually" }
                     }
                 }
             }
@@ -742,7 +742,7 @@ class DualPlayerEngine(
                 if (transitionRunning) playerB?.playWhenReady = false
             }
             else -> {
-                Timber.tag("TransitionDebug").w("AudioFocus Request Failed: $result")
+                Logger.withTag("TransitionDebug").w { "AudioFocus Request Failed: $result" }
                 playerA.playWhenReady = false
             }
         }
@@ -818,9 +818,9 @@ class DualPlayerEngine(
             playerA.setWakeMode(mode)
             playerB?.setWakeMode(mode)
             currentWakeMode = mode
-            Timber.tag("DualPlayerEngine").d("Wake mode updated to %d", mode)
+            Logger.withTag("DualPlayerEngine").d { String.format("Wake mode updated to %d", mode) }
         } catch (e: Exception) {
-            Timber.tag("DualPlayerEngine").w(e, "Failed to update wake mode")
+            Logger.withTag("DualPlayerEngine").w(e) { "Failed to update wake mode" }
         }
     }
 
@@ -851,7 +851,7 @@ class DualPlayerEngine(
     private fun disableAudioOffloadForSession(reason: String) {
         if (!audioOffloadEnabledForCurrentMode) return
         if (transitionRunning) {
-            Timber.tag("DualPlayerEngine").w("Skipping offload fallback during active transition. %s", reason)
+            Logger.withTag("DualPlayerEngine").w { String.format("Skipping offload fallback during active transition. %s", reason) }
             return
         }
 
@@ -903,7 +903,7 @@ class DualPlayerEngine(
             onTransitionFinishedListeners.forEach { it() }
         }
 
-        Timber.tag("DualPlayerEngine").d(logMessage)
+        Logger.withTag("DualPlayerEngine").d { logMessage }
     }
 
     private fun capturePlayerRebuildState(): PlayerRebuildState {
@@ -969,7 +969,7 @@ class DualPlayerEngine(
             restoreVolumeBeforeTransition()
             setPauseAtEndOfMediaItems(false)
         }
-        Timber.tag("TransitionDebug").d("Cancelled active transition before rebuilding players.")
+        Logger.withTag("TransitionDebug").d { "Cancelled active transition before rebuilding players." }
     }
 
     private fun invalidateActiveTransition() {
@@ -1024,7 +1024,7 @@ class DualPlayerEngine(
             sharedAudioSessionId = try {
                 audioManager.generateAudioSessionId()
             } catch (e: Exception) {
-                Timber.tag("DualPlayerEngine").w(e, "Failed to generate a shared audio session id")
+                Logger.withTag("DualPlayerEngine").w(e) { "Failed to generate a shared audio session id" }
                 AudioManager.ERROR
             }
         }
@@ -1122,7 +1122,7 @@ class DualPlayerEngine(
                     val offlineUri = try {
                         runBlocking { cloudOfflineRepository.resolveLocalUri(originalUri) }
                     } catch (e: Exception) {
-                        Timber.tag("DualPlayerEngine").w(e, "Offline copy lookup failed")
+                        Logger.withTag("DualPlayerEngine").w(e) { "Offline copy lookup failed" }
                         null
                     }
                     if (offlineUri != null) {
@@ -1142,7 +1142,7 @@ class DualPlayerEngine(
                     // controller-driven playback and restored queues would otherwise
                     // hand a raw cloud scheme to DefaultDataSource and surface a
                     // "Source error" toast.
-                    Timber.tag("DualPlayerEngine").d("resolveDataSpec: cache miss for %s — resolving inline", scheme)
+                    Logger.withTag("DualPlayerEngine").d { String.format("resolveDataSpec: cache miss for %s — resolving inline", scheme) }
                     val inlineResolved = try {
                         runBlocking { resolveCloudUri(uri) }
                     } catch (e: Exception) {
@@ -1292,13 +1292,9 @@ class DualPlayerEngine(
             playerA.setWakeMode(desiredMode)
             playerB?.setWakeMode(desiredMode)
             currentWakeMode = desiredMode
-            Timber.tag("DualPlayerEngine").d(
-                "Wake mode -> %d (sleepingForOffload=%b)",
-                desiredMode,
-                lastSleepingForOffload
-            )
+            Logger.withTag("DualPlayerEngine").d { String.format("Wake mode -> %d (sleepingForOffload=%b)", desiredMode, lastSleepingForOffload) }
         } catch (e: Exception) {
-            Timber.tag("DualPlayerEngine").w(e, "Failed to apply offload-aware wake mode")
+            Logger.withTag("DualPlayerEngine").w(e) { "Failed to apply offload-aware wake mode" }
         }
     }
 
@@ -1326,8 +1322,7 @@ class DualPlayerEngine(
         val resolvedMode = if (
             mode == AudioOutputMode.PCM_FLOAT && !HiFiCapabilityChecker.isSupported()
         ) {
-            Timber.tag("DualPlayerEngine")
-                .w("PCM float output requested but device does not support PCM_FLOAT; using system default")
+            Logger.withTag("DualPlayerEngine").w { "PCM float output requested but device does not support PCM_FLOAT; using system default" }
             AudioOutputMode.SYSTEM_DEFAULT
         } else {
             mode
@@ -1345,7 +1340,7 @@ class DualPlayerEngine(
                 try {
                     cloudOfflineRepository.resolveLocalUri(uriString)
                 } catch (error: Exception) {
-                    Timber.tag("DualPlayerEngine").w(error, "Offline copy lookup failed")
+                    Logger.withTag("DualPlayerEngine").w(error) { "Offline copy lookup failed" }
                     null
                 }
             },
@@ -1445,7 +1440,7 @@ class DualPlayerEngine(
             auxiliaryPlayer.pause()
         } catch (e: Exception) {
             resetPreparedWindowState()
-            Timber.tag("TransitionDebug").e(e, "Failed to prepare next player")
+            Logger.withTag("TransitionDebug").e(e) { "Failed to prepare next player" }
         }
     }
 
@@ -1492,7 +1487,7 @@ class DualPlayerEngine(
                 throw e
             } catch (e: Exception) {
                 if (transitionRunTracker.isCurrent(transitionRunId)) {
-                    Timber.tag("TransitionDebug").e(e, "Error performing transition")
+                    Logger.withTag("TransitionDebug").e(e) { "Error performing transition" }
                     restoreVolumeBeforeTransition()
                     setPauseAtEndOfMediaItems(false)
                     playerB?.stop()
@@ -1683,10 +1678,7 @@ class DualPlayerEngine(
         // If the snapshot no longer describes the queue this window was cut from we cannot
         // splice safely; fall back to trusting the player timeline rather than corrupting it.
         if (plan == null || !windowMatchesSnapshot(windowStart, windowStart + windowLength, snapshot)) {
-            Timber.tag("DualPlayerEngine").w(
-                "Cannot restore full timeline: window [%d,%d) does not match snapshot of %d",
-                windowStart, windowStart + windowLength, snapshot.size
-            )
+            Logger.withTag("DualPlayerEngine").w { String.format("Cannot restore full timeline: window [%d,%d) does not match snapshot of %d", windowStart, windowStart + windowLength, snapshot.size) }
             refreshQueueSnapshotFromMaster(windowStartIndex = 0, usesWindowedQueue = false)
             return
         }
@@ -1695,7 +1687,7 @@ class DualPlayerEngine(
             plan.tail?.let { playerA.addMediaItems(ArrayList(snapshot.subList(it.first, it.last + 1))) }
             plan.head?.let { playerA.addMediaItems(0, ArrayList(snapshot.subList(it.first, it.last + 1))) }
         } catch (e: Exception) {
-            Timber.tag("DualPlayerEngine").e(e, "Failed to restore full master timeline")
+            Logger.withTag("DualPlayerEngine").e(e) { "Failed to restore full master timeline" }
             refreshQueueSnapshotFromMaster(windowStartIndex = 0, usesWindowedQueue = false)
             return
         }

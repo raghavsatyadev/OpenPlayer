@@ -2,7 +2,7 @@ package io.github.raghavsatyadev.openplayer.data.playlist
 
 import android.content.Context
 import io.github.raghavsatyadev.openplayer.data.playlist.nlp.ConceptTable
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Loads the shipped [ConceptTable] asset once and keeps it for the process lifetime.
@@ -32,10 +32,10 @@ class ConceptTableLoader(
             }
         } catch (e: Exception) {
             // Includes the asset simply not being present, which is a supported state.
-            Timber.tag(TAG).w(e, "Concept table unavailable; Smart Mix keeps its curated vocabulary")
+            Logger.withTag(TAG).w(e) { "Concept table unavailable; Smart Mix keeps its curated vocabulary" }
             ConceptTable.EMPTY
         }
-        Timber.tag(TAG).d("Concept table loaded: ${table.size} rows")
+        Logger.withTag(TAG).d { "Concept table loaded: ${table.size} rows" }
         cached = table
         return table
     }

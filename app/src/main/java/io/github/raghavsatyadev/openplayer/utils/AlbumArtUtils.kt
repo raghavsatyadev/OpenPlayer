@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -646,7 +646,7 @@ object AlbumArtUtils {
             scaled.recycle()
             if (encoded.isNotEmpty() && encoded.size < bytes.size) encoded else bytes
         } catch (e: Throwable) {
-            Timber.tag("AlbumArtUtils").w(e, "Failed to bound artwork for cache; keeping original bytes")
+            Logger.withTag("AlbumArtUtils").w(e) { "Failed to bound artwork for cache; keeping original bytes" }
             bytes
         }
     }

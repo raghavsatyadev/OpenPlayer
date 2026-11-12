@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Decides which recaps the Stats screen and the seasonal Home card offer. Both flows only
@@ -71,7 +71,7 @@ class RecapEntryViewModel(
         }
         .distinctUntilChanged()
         .catch { throwable ->
-            Timber.e(throwable, "Failed to load recap entries")
+            Logger.e(throwable) { "Failed to load recap entries" }
             emit(persistentListOf())
         }
         .flowOn(dispatchers.default)
@@ -95,7 +95,7 @@ class RecapEntryViewModel(
         }
         .distinctUntilChanged()
         .catch { throwable ->
-            Timber.e(throwable, "Failed to load the seasonal recap card")
+            Logger.e(throwable) { "Failed to load the seasonal recap card" }
             emit(null)
         }
         .flowOn(dispatchers.default)

@@ -10,7 +10,7 @@ import io.github.raghavsatyadev.openplayer.data.database.SongEngagementEntity
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import java.util.Calendar
 import java.util.LinkedHashSet
@@ -74,7 +74,7 @@ class DailyMixManager(
                     }
                 } else null
             } catch (e: Exception) {
-                Timber.tag(TAG).e(e, "Failed to read legacy engagement data")
+                Logger.withTag(TAG).e(e) { "Failed to read legacy engagement data" }
                 null
             }
         }
@@ -82,12 +82,12 @@ class DailyMixManager(
         if (entitiesToInsert != null) {
             try {
                 engagementDao.upsertEngagements(entitiesToInsert)
-                Timber.tag(TAG).i("Migrated ${entitiesToInsert.size} engagement records from JSON to Room")
+                Logger.withTag(TAG).i { "Migrated ${entitiesToInsert.size} engagement records from JSON to Room" }
 
                 val backupFile = File(context.filesDir, "song_scores.json.bak")
                 legacyScoresFile.renameTo(backupFile)
             } catch (e: Exception) {
-                Timber.tag(TAG).e(e, "Failed to insert legacy engagement data into Room")
+                Logger.withTag(TAG).e(e) { "Failed to insert legacy engagement data into Room" }
             }
         }
 
@@ -119,7 +119,7 @@ class DailyMixManager(
         }
 
         val raw = runCatching { legacyScoresFile.readText() }
-            .onFailure { Timber.tag(TAG).e(it, "Failed to read legacy song scores file") }
+            .onFailure { Logger.withTag(TAG).e(it) { "Failed to read legacy song scores file" } }
             .getOrNull()
             ?.takeIf { it.isNotBlank() }
             ?: return mutableMapOf()
@@ -128,7 +128,7 @@ class DailyMixManager(
             val element = gson.fromJson(raw, JsonElement::class.java)
             parseEngagementElement(element)
         }.getOrElse { throwable ->
-            Timber.tag(TAG).e(throwable, "Failed to parse legacy song scores file")
+            Logger.withTag(TAG).e(throwable) { "Failed to parse legacy song scores file" }
             mutableMapOf()
         }
     }
@@ -146,7 +146,7 @@ class DailyMixManager(
             val parsed: MutableMap<String, SongEngagementStats> = gson.fromJson(element, statsType)
             parsed.mapValuesTo(mutableMapOf()) { (_, stats) -> sanitizeStats(stats) }
         }.getOrElse {
-            Timber.tag(TAG).w("Unsupported song engagement format, ignoring it")
+            Logger.withTag(TAG).w { "Unsupported song engagement format, ignoring it" }
             mutableMapOf()
         }
     }
@@ -158,7 +158,7 @@ class DailyMixManager(
             if (stats != null) {
                 result[key] = stats
             } else {
-                Timber.tag(TAG).w("Skipping song engagement entry for \"$key\" because it could not be parsed: $value")
+                Logger.withTag(TAG).w { "Skipping song engagement entry for \"$key\" because it could not be parsed: $value" }
             }
         }
         return result
@@ -185,7 +185,7 @@ class DailyMixManager(
             }
         }
 
-        Timber.tag(TAG).w("Encountered unsupported engagement value for \"$key\": $value")
+        Logger.withTag(TAG).w { "Encountered unsupported engagement value for \"$key\": $value" }
         return null
     }
 

@@ -19,7 +19,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlin.math.roundToInt
 import kotlinx.serialization.json.Json
 import kotlinx.collections.immutable.ImmutableList
@@ -98,7 +98,7 @@ class EqualizerViewModel(
             val max = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
             _systemVolume.value = if (max > 0) current.toFloat() / max.toFloat() else 0.5f
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Failed to load system volume")
+            Logger.withTag(TAG).e(e) { "Failed to load system volume" }
         }
     }
 
@@ -110,14 +110,14 @@ class EqualizerViewModel(
                 audioManager.setStreamVolume(android.media.AudioManager.STREAM_MUSIC, target, 0)
                 _systemVolume.value = percent
             } catch (e: Exception) {
-                Timber.tag(TAG).e(e, "Failed to set system volume")
+                Logger.withTag(TAG).e(e) { "Failed to set system volume" }
             }
         }
     }
     
     private fun initializeEqualizer() {
         viewModelScope.launch {
-            Timber.tag(TAG).d("Initializing equalizer...")
+            Logger.withTag(TAG).d { "Initializing equalizer..." }
             
             if (!equalizerManager.isAttached) {
                 val enabled = equalizerPreferencesRepository.equalizerEnabledFlow.first()
@@ -142,7 +142,7 @@ class EqualizerViewModel(
                     equalizerManager.attachToAudioSessionIfNeeded(initialSessionId)
                 }
             } else {
-                Timber.tag(TAG).d("Equalizer already attached by service, skipping restore.")
+                Logger.withTag(TAG).d { "Equalizer already attached by service, skipping restore." }
             }
             
             _uiState.update {
@@ -155,7 +155,7 @@ class EqualizerViewModel(
 
             dualPlayerEngine.activeAudioSessionId.collect { sessionId ->
                 if (sessionId != 0) {
-                    Timber.tag(TAG).d("Audio Session ID changed to $sessionId.")
+                    Logger.withTag(TAG).d { "Audio Session ID changed to $sessionId." }
                     _uiState.update {
                         it.copy(
                             isBassBoostSupported = equalizerManager.isBassBoostSupported(),
@@ -469,7 +469,7 @@ class EqualizerViewModel(
     fun reattachToPlayer() {
         viewModelScope.launch {
             val audioSessionId = dualPlayerEngine.getAudioSessionId()
-            Timber.tag(TAG).d("Reattaching equalizer to new audio session: $audioSessionId")
+            Logger.withTag(TAG).d { "Reattaching equalizer to new audio session: $audioSessionId" }
             equalizerManager.attachToAudioSessionIfNeeded(audioSessionId)
         }
     }
@@ -488,7 +488,7 @@ class EqualizerViewModel(
                 equalizerPreferencesRepository.setLoudnessEnhancerEnabled(latest.loudnessEnhancerEnabled)
                 equalizerPreferencesRepository.setLoudnessEnhancerStrength(latest.loudnessEnhancerStrength.toInt().coerceIn(0, 1000))
             }.onFailure { error ->
-                Timber.tag(TAG).w(error, "Failed to flush equalizer state during onCleared")
+                Logger.withTag(TAG).w(error) { "Failed to flush equalizer state during onCleared" }
             }
         }
     }
@@ -500,6 +500,6 @@ class EqualizerViewModel(
         persistLoudnessJob?.cancel()
         persistLatestStateAsync()
         super.onCleared()
-        Timber.tag(TAG).d("ViewModel cleared")
+        Logger.withTag(TAG).d { "ViewModel cleared" }
     }
 }

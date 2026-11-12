@@ -3,7 +3,7 @@ package io.github.raghavsatyadev.openplayer.data.equalizer
 import android.content.Context
 import android.content.Intent
 import android.media.audiofx.AudioEffect
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Announces the player's audio session to external audio effect apps
@@ -65,9 +65,9 @@ class ExternalAudioEffectSession(
         }
         try {
             context.sendBroadcast(intent)
-            Timber.tag(TAG).d("Broadcast %s for session %d", action, audioSessionId)
+            Logger.withTag(TAG).d { String.format("Broadcast %s for session %d", action, audioSessionId) }
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Failed to broadcast %s for session %d", action, audioSessionId)
+            Logger.withTag(TAG).w(e) { String.format("Failed to broadcast %s for session %d", action, audioSessionId) }
         }
     }
 }

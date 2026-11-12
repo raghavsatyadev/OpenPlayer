@@ -15,7 +15,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import coil.size.Size
+import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.preferences.CarouselStyle
 import io.github.raghavsatyadev.openplayer.presentation.components.scoped.PrefetchAlbumNeighbors

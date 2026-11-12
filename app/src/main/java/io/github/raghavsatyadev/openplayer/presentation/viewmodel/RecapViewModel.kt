@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Builds the recap story for the year in the `year` navigation argument. The story is a
@@ -55,7 +55,7 @@ class RecapViewModel(
             } catch (cancellation: CancellationException) {
                 throw cancellation
             } catch (throwable: Exception) {
-                Timber.e(throwable, "Failed to build the %d recap", year)
+                Logger.e(throwable) { String.format("Failed to build the %d recap", year) }
                 _uiState.value = RecapUiState.NotEnoughData(year)
             }
         }
@@ -100,7 +100,7 @@ class RecapViewModel(
             throw cancellation
         } catch (throwable: Exception) {
             // The story is already up with cover stand-ins; keep it rather than failing it.
-            Timber.w(throwable, "Failed to load artist pictures for the %d recap", year)
+            Logger.w(throwable) { String.format("Failed to load artist pictures for the %d recap", year) }
             return
         }
         if (pictures.isNotEmpty()) {

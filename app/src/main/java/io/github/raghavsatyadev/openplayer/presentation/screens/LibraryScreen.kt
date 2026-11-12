@@ -126,11 +126,12 @@ import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.compose.AsyncImage
-import coil.compose.AsyncImagePainter
-import coil.imageLoader
-import coil.request.ImageRequest
-import coil.size.Size
+import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter
+import coil3.imageLoader
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.ShimmerBox
 import io.github.raghavsatyadev.openplayer.data.model.Album
@@ -262,7 +263,7 @@ import io.github.raghavsatyadev.openplayer.ui.theme.LocalShowScrollbar
 import io.github.raghavsatyadev.openplayer.presentation.components.LibrarySortBottomSheet
 import io.github.raghavsatyadev.openplayer.presentation.library.KeepUnscrolledListAtTop
 import io.github.raghavsatyadev.openplayer.presentation.library.sortFolderSongs
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import kotlin.math.abs
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
@@ -554,7 +555,7 @@ fun LibraryScreen(
                 }
                     .onFailure { error ->
                         if (error is CancellationException) throw error
-                        Timber.tag("LibrarySelection").e(error, "Unable to resolve selected albums")
+                        Logger.withTag("LibrarySelection").e(error) { "Unable to resolve selected albums" }
                         playerViewModel.sendToast(context.getString(R.string.no_valid_songs))
                     }
             }
@@ -580,7 +581,7 @@ fun LibraryScreen(
                 }
                     .onFailure { error ->
                         if (error is CancellationException) throw error
-                        Timber.tag("LibrarySelection").e(error, "Unable to resolve selected artists")
+                        Logger.withTag("LibrarySelection").e(error) { "Unable to resolve selected artists" }
                         playerViewModel.sendToast(context.getString(R.string.no_valid_songs))
                     }
             }
@@ -601,7 +602,7 @@ fun LibraryScreen(
         { playlist ->
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
             playlistMultiSelectionState.toggleSelection(playlist)
-            Timber.tag("PlaylistMultiSelect").d("Toggled: ${playlist.name}, total selected: ${playlistMultiSelectionState.selectedPlaylists.value.size}")
+            Logger.withTag("PlaylistMultiSelect").d { "Toggled: ${playlist.name}, total selected: ${playlistMultiSelectionState.selectedPlaylists.value.size}" }
         }
     }
 

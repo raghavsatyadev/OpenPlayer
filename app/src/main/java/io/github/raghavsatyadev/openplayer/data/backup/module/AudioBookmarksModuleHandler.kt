@@ -12,7 +12,7 @@ import io.github.raghavsatyadev.openplayer.data.database.backupSongIdOfRestoredB
 import io.github.raghavsatyadev.openplayer.data.database.restoredBookmarkSongId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Audio bookmarks, as an array of [AudioBookmarkEntity] (the shape every version reads).
@@ -83,7 +83,7 @@ class AudioBookmarksModuleHandler(
             }
         }
         if (unmatched > 0) {
-            Timber.tag(TAG).i("Bookmark restore: $unmatched kept aside until their songs are found")
+            Logger.withTag(TAG).i { "Bookmark restore: $unmatched kept aside until their songs are found" }
         }
 
         val songs = songResolver.songsFor(remapped.map { it.songId })

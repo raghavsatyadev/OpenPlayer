@@ -2276,7 +2276,7 @@ private fun RotationArtwork(
     large: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val targetSize = if (large) coil.size.Size(300, 300) else SmartImageCompactListTargetSize
+    val targetSize = if (large) coil3.size.Size(300, 300) else SmartImageCompactListTargetSize
     when {
         entry.dimension == RotationDimension.Genres -> MonogramArtwork(
             text = entry.title,

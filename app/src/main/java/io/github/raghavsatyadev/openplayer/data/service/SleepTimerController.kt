@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Enforces the sleep timers inside MusicService:
@@ -77,13 +77,13 @@ internal class SleepTimerController(
         }
         session.setTimer(Timer.Duration(endsAtMillis, minutes))
         applyEngineHold()
-        Timber.tag(TAG).d("Duration sleep timer set for %d minutes", minutes)
+        Logger.withTag(TAG).d { String.format("Duration sleep timer set for %d minutes", minutes) }
     }
 
     /** The countdown or the backstop alarm ran out, whichever came first. */
     fun onDurationExpired() {
         if (session.timer.value !is Timer.Duration) return
-        Timber.tag(TAG).d("Duration sleep timer expired. Pausing playback.")
+        Logger.withTag(TAG).d { "Duration sleep timer expired. Pausing playback." }
         cancelTimer()
         sessionPlayer().pause()
         session.emit(Event.DurationExpired)
@@ -100,7 +100,7 @@ internal class SleepTimerController(
         }
         val songId = sessionPlayer().currentMediaItem?.mediaId
         if (songId.isNullOrBlank()) {
-            Timber.tag(TAG).d("End-of-track timer ignored: no active song")
+            Logger.withTag(TAG).d { "End-of-track timer ignored: no active song" }
             return
         }
         cancelTimer()
@@ -108,7 +108,7 @@ internal class SleepTimerController(
         stopCountedPlay(restoreRepeatMode = true)
         session.setTimer(Timer.EndOfTrack(songId))
         applyEngineHold()
-        Timber.tag(TAG).d("End-of-track timer set for mediaId=%s", songId)
+        Logger.withTag(TAG).d { String.format("End-of-track timer set for mediaId=%s", songId) }
     }
 
     fun cancelTimer() {
@@ -136,7 +136,7 @@ internal class SleepTimerController(
         session.setCountedPlay(CountedPlay(songId, count.coerceAtLeast(1)))
         player.repeatMode = Player.REPEAT_MODE_ONE
         applyEngineHold()
-        Timber.tag(TAG).d("Counted play started: %d plays of mediaId=%s", count, songId)
+        Logger.withTag(TAG).d { String.format("Counted play started: %d plays of mediaId=%s", count, songId) }
     }
 
     fun stopCountedPlay(restoreRepeatMode: Boolean = true) {
@@ -164,7 +164,7 @@ internal class SleepTimerController(
             if (isNaturalEnd) {
                 // The pause-at-end hold should have stopped us first; if the track still
                 // rolled over, stop on the start of the next one.
-                Timber.tag(TAG).w("End-of-track hold missed the boundary; pausing after it.")
+                Logger.withTag(TAG).w { "End-of-track hold missed the boundary; pausing after it." }
                 val player = sessionPlayer()
                 player.pause()
                 player.seekTo(0L)
@@ -224,13 +224,13 @@ internal class SleepTimerController(
     }
 
     private fun finishEndOfTrack(endOfTrack: Timer.EndOfTrack) {
-        Timber.tag(TAG).d("End-of-track timer reached for mediaId=%s", endOfTrack.songId)
+        Logger.withTag(TAG).d { String.format("End-of-track timer reached for mediaId=%s", endOfTrack.songId) }
         cancelTimer()
         session.emit(Event.EndOfTrackReached(endOfTrack.songId))
     }
 
     private fun finishCountedPlay(countedPlay: CountedPlay) {
-        Timber.tag(TAG).d("Counted play finished after %d plays", countedPlay.total)
+        Logger.withTag(TAG).d { String.format("Counted play finished after %d plays", countedPlay.total) }
         stopCountedPlay(restoreRepeatMode = true)
         session.emit(Event.CountedPlayFinished(countedPlay.songId))
     }

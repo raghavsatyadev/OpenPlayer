@@ -9,7 +9,7 @@ import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.database.MusicDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 
 class ArtistImagesModuleHandler(
@@ -62,7 +62,7 @@ class ArtistImagesModuleHandler(
                     file.writeBytes(bytes)
                     musicDao.updateArtistCustomImage(artistId, file.absolutePath)
                 } catch (e: Exception) {
-                    Timber.tag(TAG).w(e, "Failed to restore custom image for artist: ${entry.artistName}")
+                    Logger.withTag(TAG).w(e) { "Failed to restore custom image for artist: ${entry.artistName}" }
                 }
             }
         }
@@ -91,7 +91,7 @@ class ArtistImagesModuleHandler(
                     file.writeBytes(bytes)
                     musicDao.updateArtistCustomImage(artist.id, file.absolutePath)
                 } catch (e: Exception) {
-                    Timber.tag(TAG).w(e, "Failed to roll back custom image for artist: ${artist.name}")
+                    Logger.withTag(TAG).w(e) { "Failed to roll back custom image for artist: ${artist.name}" }
                 }
             } else {
                 File(context.filesDir, "artist_art_${artist.id}.jpg").delete()
@@ -107,7 +107,7 @@ class ArtistImagesModuleHandler(
             val bytes = file.readBytes()
             Base64.encodeToString(bytes, Base64.NO_WRAP)
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Failed to read artist image: $path")
+            Logger.withTag(TAG).w(e) { "Failed to read artist image: $path" }
             null
         }
     }

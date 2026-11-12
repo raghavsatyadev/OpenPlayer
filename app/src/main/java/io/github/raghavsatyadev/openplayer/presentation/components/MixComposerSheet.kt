@@ -538,7 +538,7 @@ private fun MixPreviewList(
             Row(Modifier.fillMaxWidth().clip(trackShape).background(colors.surfaceContainer).padding(12.dp),
                 verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 OptimizedAlbumArt(song.albumArtUriString, song.title,
-                    modifier = Modifier.size(52.dp).clip(RoundedCornerShape(14.dp)), targetSize = coil.size.Size(156, 156))
+                    modifier = Modifier.size(52.dp).clip(RoundedCornerShape(14.dp)), targetSize = coil3.size.Size(156, 156))
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(song.title, style = MaterialTheme.typography.bodyLarge, maxLines = 2, overflow = TextOverflow.Ellipsis)
                     Text(song.displayArtist, style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant, maxLines = 2, overflow = TextOverflow.Ellipsis)

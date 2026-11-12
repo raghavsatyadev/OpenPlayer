@@ -1,8 +1,8 @@
 package io.github.raghavsatyadev.openplayer.data.image
 
 import android.net.Uri
-import coil.map.Mapper
-import coil.request.Options
+import coil3.map.Mapper
+import coil3.request.Options
 import io.github.raghavsatyadev.openplayer.data.provider.SharedArtworkContentProvider
 
 /*

@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.security.MessageDigest
 import java.security.SecureRandom
 import java.util.concurrent.ConcurrentHashMap
@@ -142,11 +142,11 @@ abstract class CloudStreamProxy<K : Any>(
                 createdServer.start(wait = false)
                 server = createdServer
                 actualPort = createdServer.engine.resolvedConnectors().first().port
-                Timber.d("$proxyTag started on port $actualPort")
+                Logger.d { "$proxyTag started on port $actualPort" }
             } catch (_: CancellationException) {
-                Timber.d("$proxyTag start cancelled")
+                Logger.d { "$proxyTag start cancelled" }
             } catch (e: Exception) {
-                Timber.e(e, "Failed to start $proxyTag")
+                Logger.e(e) { "Failed to start $proxyTag" }
             }
         }
     }
@@ -160,7 +160,7 @@ abstract class CloudStreamProxy<K : Any>(
         actualPort = 0
         sessionToken = ""
         urlCache.clear()
-        Timber.d("$proxyTag stopped")
+        Logger.d { "$proxyTag stopped" }
     }
 
     /** Extract the raw ID string from a parsed URI. Override for custom URI layouts. */
@@ -328,7 +328,7 @@ abstract class CloudStreamProxy<K : Any>(
                             msg.contains("JobCancellationException")
                         ) {
                         } else {
-                            Timber.w(e, "$proxyTag stream failed")
+                            Logger.w(e) { "$proxyTag stream failed" }
                         }
                     }
                 }

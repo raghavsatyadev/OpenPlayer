@@ -1,15 +1,15 @@
 package io.github.raghavsatyadev.openplayer.data.image
 
 import android.net.Uri
-import coil.ImageLoader
-import coil.fetch.FetchResult
-import coil.fetch.Fetcher
-import coil.request.Options
+import coil3.ImageLoader
+import coil3.fetch.FetchResult
+import coil3.fetch.Fetcher
+import coil3.request.Options
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
 import kotlinx.coroutines.CancellationException
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
@@ -48,16 +48,16 @@ class NavidromeCoilFetcher(
     }
 
     override suspend fun fetch(): FetchResult? {
-        Timber.v("$TAG: Fetching $uri")
+        Logger.v { "$TAG: Fetching $uri" }
 
         val coverArtId = uri.host ?: uri.path?.removePrefix("/")
         if (coverArtId.isNullOrBlank()) {
-            Timber.w("$TAG: Invalid URI format: $uri")
+            Logger.w { "$TAG: Invalid URI format: $uri" }
             return null
         }
 
         if (!repository.isLoggedIn) {
-            Timber.v("$TAG: Not logged in, skipping fetch")
+            Logger.v { "$TAG: Not logged in, skipping fetch" }
             return null
         }
 
@@ -73,7 +73,7 @@ class NavidromeCoilFetcher(
         val coverArtUrl = repository.getCoverArtUrl(coverArtId, sizeParam)
         if (coverArtUrl.isNullOrBlank()) {
             if (shouldLogFailure("no_url_$coverArtId")) {
-                Timber.w("$TAG: No cover art URL for $coverArtId")
+                Logger.w { "$TAG: No cover art URL for $coverArtId" }
             }
             return null
         }
@@ -85,7 +85,7 @@ class NavidromeCoilFetcher(
             // A cancelled fetch (its list item scrolled away) is not a failed download.
             if (e is CancellationException) throw e
             if (shouldLogFailure("download_$coverArtId")) {
-                Timber.w(e, "$TAG: Failed to download cover art for $coverArtId")
+                Logger.w(e) { "$TAG: Failed to download cover art for $coverArtId" }
             }
             null
         }

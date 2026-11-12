@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.media
 
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.RandomAccessFile
 
 /**
@@ -33,7 +33,7 @@ object TagBpmReader {
                 }
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).d(e, "Tag BPM read failed for %s", filePath)
+            Logger.withTag(TAG).d(e) { String.format("Tag BPM read failed for %s", filePath) }
             null
         }
     }

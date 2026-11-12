@@ -39,8 +39,8 @@ import io.github.raghavsatyadev.openplayer.data.model.StorageFilter
 import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
-import coil.size.Size
-import coil.compose.AsyncImagePainter
+import coil3.size.Size
+import coil3.compose.AsyncImagePainter
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
