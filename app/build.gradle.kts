@@ -287,21 +287,14 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.koin.test)
     androidTestImplementation(libs.kotlinx.coroutines.test)
-    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.room3.testing)
     androidTestImplementation(libs.androidx.sqlite.bundled)
     androidTestImplementation(libs.truth)
-    androidTestImplementation(libs.mockk.android)
-    androidTestImplementation(libs.worktesting)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    androidTestImplementation(libs.androidx.uiautomator)
 
     debugImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 
     constraints {
         implementation(libs.netty.common)
