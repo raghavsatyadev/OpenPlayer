@@ -40,7 +40,6 @@ import io.github.raghavsatyadev.openplayer.data.model.TransitionSettings
 import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
 import io.github.raghavsatyadev.openplayer.utils.MediaItemBuilder
 import io.github.raghavsatyadev.openplayer.utils.envelope
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,8 +55,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.coroutines.resume
 
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeStreamProxy
@@ -229,9 +226,8 @@ internal fun shouldDisableAudioOffloadOnEarlyBuffering(
  * After a transition, Player A adopts the state of Player B, ensuring continuity.
  */
 @OptIn(UnstableApi::class)
-@Singleton
-class DualPlayerEngine @Inject constructor(
-    @param:ApplicationContext private val context: Context,
+class DualPlayerEngine(
+    private val context: Context,
     private val navidromeStreamProxy: NavidromeStreamProxy,
     private val jellyfinStreamProxy: io.github.raghavsatyadev.openplayer.data.jellyfin.JellyfinStreamProxy,
     private val cloudOfflineRepository: CloudOfflineRepository

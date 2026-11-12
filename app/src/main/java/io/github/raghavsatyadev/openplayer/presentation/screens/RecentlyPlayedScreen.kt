@@ -64,7 +64,7 @@ import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.R
@@ -99,7 +99,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun RecentlyPlayedScreen(
     playerViewModel: PlayerViewModel,
-    playlistViewModel: PlaylistViewModel = hiltViewModel(),
+    playlistViewModel: PlaylistViewModel = koinViewModel(),
     navController: NavController
 ) = traceSection("RecentlyPlayedScreen.Composition") {
     val context = LocalContext.current

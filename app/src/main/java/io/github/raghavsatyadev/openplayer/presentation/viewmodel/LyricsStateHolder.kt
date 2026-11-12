@@ -16,8 +16,6 @@ import io.github.raghavsatyadev.openplayer.utils.LyricsImportValidationResult
 import io.github.raghavsatyadev.openplayer.utils.LyricsUtils
 import io.github.raghavsatyadev.openplayer.utils.ValidatedLyricsImport
 import java.io.File
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,8 +43,7 @@ interface LyricsLoadCallback {
  * Manages lyrics loading, search state, and sync offset.
  * Extracted from PlayerViewModel to improve modularity.
  */
-@Singleton
-class LyricsStateHolder @Inject constructor(
+class LyricsStateHolder(
     private val musicRepository: MusicRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val songMetadataEditor: SongMetadataEditor

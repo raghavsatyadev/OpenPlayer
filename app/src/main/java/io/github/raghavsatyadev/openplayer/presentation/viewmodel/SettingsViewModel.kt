@@ -44,8 +44,6 @@ import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.data.model.LyricsSourcePreference
 import io.github.raghavsatyadev.openplayer.data.worker.SyncManager
 import io.github.raghavsatyadev.openplayer.data.worker.SyncProgress
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -54,8 +52,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import io.github.raghavsatyadev.openplayer.di.AppScope
-import javax.inject.Inject
 
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.NavBarStyle
@@ -197,8 +193,7 @@ private sealed interface SettingsUiUpdate {
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
+class SettingsViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
     private val themePreferencesRepository: ThemePreferencesRepository,
     private val colorSchemeProcessor: ColorSchemeProcessor,
@@ -208,8 +203,8 @@ class SettingsViewModel @Inject constructor(
     private val backupManager: BackupManager,
     private val folderArtworkSettingsCoordinator: FolderArtworkSettingsCoordinator,
     private val listenHistoryPreferences: ListenHistoryPreferences,
-    @ApplicationContext private val context: Context,
-    @AppScope private val appScope: CoroutineScope,
+    private val context: Context,
+    private val appScope: CoroutineScope,
     private val onlineCoverPreferences: OnlineCoverPreferences,
     private val onlineCoverRepository: OnlineCoverRepository,
     private val onlineGenreSettings: io.github.raghavsatyadev.openplayer.data.genre.OnlineGenreSettings

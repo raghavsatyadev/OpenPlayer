@@ -9,12 +9,9 @@ import android.os.Handler
 import android.os.Looper
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.service.player.DualPlayerEngine
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Kind of local audio output, used for icons and labels in the output picker. */
 enum class AudioOutputKind { PhoneSpeaker, Wired, Usb, Bluetooth, HearingAid, Other }
@@ -38,9 +35,8 @@ data class AudioOutputDevice(
  * Connecting devices that are paired but not connected is left to the system output switcher
  * or Bluetooth settings, which the picker links to.
  */
-@Singleton
-class AudioOutputStateHolder @Inject constructor(
-    @ApplicationContext private val context: Context,
+class AudioOutputStateHolder(
+    private val context: Context,
     private val engine: DualPlayerEngine,
 ) {
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager

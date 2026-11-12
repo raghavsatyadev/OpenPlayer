@@ -15,10 +15,8 @@ import io.github.raghavsatyadev.openplayer.presentation.recap.RecapUiModel
 import io.github.raghavsatyadev.openplayer.presentation.recap.RecapUiState
 import io.github.raghavsatyadev.openplayer.presentation.recap.buildRecapSlides
 import io.github.raghavsatyadev.openplayer.presentation.stats.resolveStatsArtistImages
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.util.Locale
-import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,8 +30,7 @@ import timber.log.Timber
  * Builds the recap story for the year in the `year` navigation argument. The story is a
  * snapshot: plays recorded while it is open do not reshuffle the slides under the reader.
  */
-@HiltViewModel
-class RecapViewModel @Inject constructor(
+class RecapViewModel(
     savedStateHandle: SavedStateHandle,
     private val playbackStatsRepository: PlaybackStatsRepository,
     private val musicRepository: MusicRepository,

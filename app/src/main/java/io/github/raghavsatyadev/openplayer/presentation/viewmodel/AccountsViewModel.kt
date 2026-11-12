@@ -8,8 +8,6 @@ import io.github.raghavsatyadev.openplayer.data.listenbrainz.ListenBrainzProfile
 import io.github.raghavsatyadev.openplayer.data.listenbrainz.ListenBrainzRepository
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
 import io.github.raghavsatyadev.openplayer.data.preferences.ListenBrainzPreferencesRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -79,8 +77,7 @@ data class AccountsUiState(
     val listenBrainz: ListenBrainzUiModel? = null
 )
 
-@HiltViewModel
-class AccountsViewModel @Inject constructor(
+class AccountsViewModel(
     private val navidromeRepository: NavidromeRepository,
     private val jellyfinRepository: JellyfinRepository,
     private val listenBrainzRepository: ListenBrainzRepository,

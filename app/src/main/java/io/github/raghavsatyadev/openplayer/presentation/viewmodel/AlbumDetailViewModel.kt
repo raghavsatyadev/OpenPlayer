@@ -9,8 +9,6 @@ import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
 import io.github.raghavsatyadev.openplayer.R
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +19,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 data class AlbumDetailUiState(
     val album: Album? = null,
@@ -30,9 +27,8 @@ data class AlbumDetailUiState(
     val error: String? = null
 )
 
-@HiltViewModel
-class AlbumDetailViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+class AlbumDetailViewModel(
+    private val context: Context,
     private val musicRepository: MusicRepository,
     private val cloudOfflineRepository: CloudOfflineRepository,
     savedStateHandle: SavedStateHandle

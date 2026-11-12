@@ -13,20 +13,18 @@ import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.utils.FileDeletionUtils
 import io.github.raghavsatyadev.openplayer.utils.LyricsUtils
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
-class MetadataEditStateHolder @Inject constructor(
+class MetadataEditStateHolder(
     private val songMetadataEditor: SongMetadataEditor,
     private val musicRepository: MusicRepository,
     private val imageCacheManager: ImageCacheManager,
     private val themeStateHolder: ThemeStateHolder,
-    @ApplicationContext private val context: Context
+    private val context: Context
 ) {
 
     data class MetadataEditResult(

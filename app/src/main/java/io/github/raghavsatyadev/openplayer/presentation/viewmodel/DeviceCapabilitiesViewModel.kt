@@ -24,11 +24,8 @@ import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepos
 import io.github.raghavsatyadev.openplayer.data.service.player.ActiveDecoderInfo
 import io.github.raghavsatyadev.openplayer.data.service.player.DualPlayerEngine
 import io.github.raghavsatyadev.openplayer.data.service.player.HiFiCapabilityChecker
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.util.Locale
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -154,9 +151,8 @@ private data class AudioFormatCandidate(
     val offloadEncoding: Int?
 )
 
-@HiltViewModel
-class DeviceCapabilitiesViewModel @Inject constructor(
-    @param:ApplicationContext private val context: Context,
+class DeviceCapabilitiesViewModel(
+    private val context: Context,
     private val engine: DualPlayerEngine,
     private val musicDao: MusicDao,
     private val userPreferencesRepository: UserPreferencesRepository,

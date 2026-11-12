@@ -8,7 +8,6 @@ import com.google.gson.reflect.TypeToken
 import io.github.raghavsatyadev.openplayer.data.database.EngagementDao
 import io.github.raghavsatyadev.openplayer.data.database.SongEngagementEntity
 import io.github.raghavsatyadev.openplayer.data.model.Song
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
@@ -16,12 +15,9 @@ import java.io.File
 import java.util.Calendar
 import java.util.LinkedHashSet
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class DailyMixManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+class DailyMixManager(
+    private val context: Context,
     private val engagementDao: EngagementDao
 ) {
 

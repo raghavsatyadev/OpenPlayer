@@ -3,17 +3,14 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /** The search-tap preference for the search screen and its settings row. */
-@HiltViewModel
-class SearchTapModeViewModel @Inject constructor(
+class SearchTapModeViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
 

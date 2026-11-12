@@ -8,8 +8,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -21,8 +19,7 @@ import kotlinx.collections.immutable.toImmutableList
  * Selection order is maintained - the first selected song is at index 0,
  * subsequent selections are appended in the order they were selected.
  */
-@Singleton
-class MultiSelectionStateHolder @Inject constructor() {
+class MultiSelectionStateHolder() {
 
     private val _selectedSongs = MutableStateFlow<ImmutableList<Song>>(persistentListOf())
     

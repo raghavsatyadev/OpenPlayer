@@ -134,7 +134,7 @@ import io.github.raghavsatyadev.openplayer.data.database.AudioBookmarkEntity
 import io.github.raghavsatyadev.openplayer.data.database.backupSongIdOfRestoredBookmark
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import androidx.compose.material3.ModalBottomSheet
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.components.ScreenWrapper
@@ -162,7 +162,7 @@ fun AudioBookmarksScreen(
     navController: NavController,
     playerViewModel: PlayerViewModel,
     onOpenSidebar: () -> Unit,
-    bookmarksViewModel: AudioBookmarksViewModel = hiltViewModel()
+    bookmarksViewModel: AudioBookmarksViewModel = koinViewModel()
 ) {
     val bookmarks by bookmarksViewModel.allBookmarks.collectAsStateWithLifecycle()
     var query by rememberSaveable { mutableStateOf("") }
@@ -437,7 +437,7 @@ fun AudioBookmarkFolderScreen(
     songId: String,
     navController: NavController,
     playerViewModel: PlayerViewModel,
-    bookmarksViewModel: AudioBookmarksViewModel = hiltViewModel()
+    bookmarksViewModel: AudioBookmarksViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val clipboard = LocalClipboard.current

@@ -2,10 +2,7 @@ package io.github.raghavsatyadev.openplayer.data.playlist
 
 import android.content.Context
 import io.github.raghavsatyadev.openplayer.data.playlist.nlp.ConceptTable
-import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Loads the shipped [ConceptTable] asset once and keeps it for the process lifetime.
@@ -18,9 +15,8 @@ import javax.inject.Singleton
  * so a missing, truncated or corrupt asset costs SmartMix its extra vocabulary and nothing else.
  * It never throws and never blocks a mix.
  */
-@Singleton
-class ConceptTableLoader @Inject constructor(
-    @ApplicationContext private val context: Context,
+class ConceptTableLoader(
+    private val context: Context,
 ) {
     @Volatile private var cached: ConceptTable? = null
 

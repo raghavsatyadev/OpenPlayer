@@ -21,7 +21,6 @@ import android.net.NetworkRequest
 import android.net.wifi.WifiManager
 import android.os.Build
 import androidx.core.content.ContextCompat
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,8 +28,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 data class BluetoothAudioDeviceState(
     val name: String,
@@ -48,9 +45,8 @@ data class BluetoothAudioDeviceState(
  * - Bluetooth state tracking (enabled, active device name, discovered/connected audio devices)
  * - System callback registration and lifecycle management
  */
-@Singleton
-class ConnectivityStateHolder @Inject constructor(
-    @ApplicationContext private val context: Context
+class ConnectivityStateHolder(
+    private val context: Context
 ) {
     private val _isWifiEnabled = MutableStateFlow(false)
     val isWifiEnabled: StateFlow<Boolean> = _isWifiEnabled.asStateFlow()

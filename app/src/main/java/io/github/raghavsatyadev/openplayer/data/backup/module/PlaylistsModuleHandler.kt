@@ -17,9 +17,6 @@ import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesR
 import io.github.raghavsatyadev.openplayer.data.preferences.PreferenceBackupEntry
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.worker.SyncManager
-import io.github.raghavsatyadev.openplayer.di.AppScope
-import io.github.raghavsatyadev.openplayer.di.BackupGson
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,9 +32,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
 
 /**
  * Playlists and their ordering preferences.
@@ -48,16 +42,15 @@ import javax.inject.Singleton
  * later library syncs find them, until every song the backup has metadata for resolves. Songs
  * it has none for aren't waited on (see [resolvableSongIds]).
  */
-@Singleton
-class PlaylistsModuleHandler @Inject constructor(
-    @ApplicationContext private val context: Context,
+class PlaylistsModuleHandler(
+    private val context: Context,
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val musicDao: MusicDao,
     private val songResolver: BackupSongResolver,
-    @BackupGson private val gson: Gson,
-    private val syncManagerProvider: Provider<SyncManager>,
-    @AppScope private val appScope: CoroutineScope
+    private val gson: Gson,
+    private val syncManagerProvider: () -> SyncManager,
+    private val appScope: CoroutineScope
 ) : BackupModuleHandler {
 
     private val pendingRestoreMutex = Mutex()
@@ -176,7 +169,7 @@ class PlaylistsModuleHandler @Inject constructor(
      * [appScope] has no exception handler.
      */
     private suspend fun retryPendingWhenIdle() {
-        syncManagerProvider.get().syncProgress
+        syncManagerProvider().syncProgress
             .distinctUntilChanged()
             .filter { !it.isRunning }
             .collect {

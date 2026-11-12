@@ -2,8 +2,6 @@ package io.github.raghavsatyadev.openplayer.data.worker
 
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Remembers whether MediaStore changed after the local library scan last read it.
@@ -17,8 +15,7 @@ import javax.inject.Singleton
  * Process-local on purpose: after a process restart the foreground catch-up sync covers anything
  * that changed in between.
  */
-@Singleton
-class LocalLibraryChangeTracker @Inject constructor() {
+class LocalLibraryChangeTracker() {
     private val changeVersion = AtomicLong(0)
     private val scannedVersion = AtomicLong(0)
     private val consecutiveFollowUps = AtomicInteger(0)

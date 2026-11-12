@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.R
@@ -123,7 +123,7 @@ fun RecentlyPlayedSongOptionsSheet(
     )
 
     if (showPlaylistBottomSheet) {
-        val playlistViewModel: PlaylistViewModel = hiltViewModel()
+        val playlistViewModel: PlaylistViewModel = koinViewModel()
         val playlistUiState by playlistViewModel.uiState.collectAsStateWithLifecycle()
         val navBarCompactMode by playerViewModel.navBarCompactMode.collectAsStateWithLifecycle()
         val systemNavBarInset = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()

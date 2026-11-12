@@ -10,12 +10,9 @@ import io.github.raghavsatyadev.openplayer.data.database.AudioBookmarkDao
 import io.github.raghavsatyadev.openplayer.data.database.AudioBookmarkEntity
 import io.github.raghavsatyadev.openplayer.data.database.backupSongIdOfRestoredBookmark
 import io.github.raghavsatyadev.openplayer.data.database.restoredBookmarkSongId
-import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Audio bookmarks, as an array of [AudioBookmarkEntity] (the shape every version reads).
@@ -29,11 +26,10 @@ import javax.inject.Singleton
  * library hasn't been scanned, gets a [restoredBookmarkSongId] rather than an id that may name
  * another song here.
  */
-@Singleton
-class AudioBookmarksModuleHandler @Inject constructor(
+class AudioBookmarksModuleHandler(
     private val audioBookmarkDao: AudioBookmarkDao,
     private val songResolver: BackupSongResolver,
-    @BackupGson private val gson: Gson
+    private val gson: Gson
 ) : BackupModuleHandler {
 
     override val section = BackupSection.AUDIO_BOOKMARKS

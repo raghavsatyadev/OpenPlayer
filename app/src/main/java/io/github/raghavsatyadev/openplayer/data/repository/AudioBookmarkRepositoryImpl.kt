@@ -7,11 +7,8 @@ import io.github.raghavsatyadev.openplayer.data.database.AudioBookmarkEntity
 import io.github.raghavsatyadev.openplayer.data.database.backupSongIdOfRestoredBookmark
 import io.github.raghavsatyadev.openplayer.data.database.restoredBookmarkSongId
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AudioBookmarkRepositoryImpl @Inject constructor(
+class AudioBookmarkRepositoryImpl(
     private val audioBookmarkDao: AudioBookmarkDao,
     private val songResolver: BackupSongResolver
 ) : AudioBookmarkRepository {

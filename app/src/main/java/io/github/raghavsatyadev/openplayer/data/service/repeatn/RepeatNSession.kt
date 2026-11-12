@@ -3,15 +3,12 @@ package io.github.raghavsatyadev.openplayer.data.service.repeatn
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Process-wide repeat-N state. [RepeatNController] (inside MusicService) is the only writer;
  * the UI mirrors [remaining] for the badge on the repeat button and sends commands back.
  */
-@Singleton
-class RepeatNSession @Inject constructor() {
+class RepeatNSession() {
     private val _remaining = MutableStateFlow(0)
 
     /** Extra plays still to come for the current song; 0 when repeat-N is off. */

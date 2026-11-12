@@ -102,7 +102,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioBookmarksViewModel
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -236,7 +236,7 @@ fun FullPlayerContent(
     var showArtistPicker by rememberSaveable { mutableStateOf(false) }
     var showSaveBookmarkDialog by rememberSaveable { mutableStateOf(false) }
     var showAudioOutputSheet by rememberSaveable { mutableStateOf(false) }
-    val bookmarksViewModel: AudioBookmarksViewModel = hiltViewModel()
+    val bookmarksViewModel: AudioBookmarksViewModel = koinViewModel()
     
     val lyricsSearchUiState by playerViewModel.lyricsSearchUiState.collectAsStateWithLifecycle()
 

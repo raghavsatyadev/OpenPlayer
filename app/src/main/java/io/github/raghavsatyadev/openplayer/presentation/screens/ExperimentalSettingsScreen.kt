@@ -59,7 +59,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
@@ -79,7 +79,7 @@ fun ExperimentalSettingsScreen(
     navController: NavController,
     playerViewModel: PlayerViewModel,
     onNavigationIconClick: () -> Unit,
-    settingsViewModel: SettingsViewModel = hiltViewModel()
+    settingsViewModel: SettingsViewModel = koinViewModel()
 ) {
     val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
 

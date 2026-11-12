@@ -5,8 +5,6 @@ import io.github.raghavsatyadev.openplayer.data.database.SavedQueueDao
 import io.github.raghavsatyadev.openplayer.data.database.SavedQueueEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** A named queue snapshot: its songs (by id), and the song and position playback was at. */
 data class SavedQueue(
@@ -19,8 +17,7 @@ data class SavedQueue(
 )
 
 /** Saved named queues (Namida's queue history), stored in `saved_queues`. */
-@Singleton
-class SavedQueueRepository @Inject constructor(
+class SavedQueueRepository(
     private val dao: SavedQueueDao
 ) {
     fun observeAll(): Flow<List<SavedQueue>> = dao.observeAll().map { rows -> rows.map { it.toModel() } }

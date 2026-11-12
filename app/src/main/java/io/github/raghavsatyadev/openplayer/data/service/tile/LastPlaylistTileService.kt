@@ -14,10 +14,8 @@ import io.github.raghavsatyadev.openplayer.data.model.MusicFolder
 import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -35,47 +33,16 @@ import kotlinx.coroutines.withContext
  * (which could cause ANR when the user opens the Quick Settings panel).
  */
 @RequiresApi(Build.VERSION_CODES.N)
-class LastPlaylistTileService : TileService() {
+class LastPlaylistTileService : TileService(), KoinComponent {
 
     companion object {
         private const val FOLDER_PLAYLIST_PREFIX = "folder_playlist:"
         private const val REQUEST_CODE_LAST_PLAYLIST = 1002
     }
 
-    @EntryPoint
-    @InstallIn(SingletonComponent::class)
-    interface LastPlaylistTileEntryPoint {
-        fun musicRepository(): MusicRepository
-        fun playlistPreferencesRepository(): PlaylistPreferencesRepository
-        fun userPreferencesRepository(): UserPreferencesRepository
-    }
-
-    private val prefsRepo: UserPreferencesRepository by lazy {
-        val appContext = applicationContext
-        val entryPoint = EntryPointAccessors.fromApplication(
-            appContext,
-            LastPlaylistTileEntryPoint::class.java
-        )
-        entryPoint.userPreferencesRepository()
-    }
-
-    private val playlistRepo: PlaylistPreferencesRepository by lazy {
-        val appContext = applicationContext
-        val entryPoint = EntryPointAccessors.fromApplication(
-            appContext,
-            LastPlaylistTileEntryPoint::class.java
-        )
-        entryPoint.playlistPreferencesRepository()
-    }
-
-    private val musicRepo: MusicRepository by lazy {
-        val appContext = applicationContext
-        val entryPoint = EntryPointAccessors.fromApplication(
-            appContext,
-            LastPlaylistTileEntryPoint::class.java
-        )
-        entryPoint.musicRepository()
-    }
+    private val prefsRepo: UserPreferencesRepository by inject()
+    private val playlistRepo: PlaylistPreferencesRepository by inject()
+    private val musicRepo: MusicRepository by inject()
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 

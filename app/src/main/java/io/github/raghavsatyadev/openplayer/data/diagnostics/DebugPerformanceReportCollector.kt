@@ -9,7 +9,6 @@ import io.github.raghavsatyadev.openplayer.data.preferences.EqualizerPreferences
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.service.player.DualPlayerEngine
 import io.github.raghavsatyadev.openplayer.utils.AudioMetaUtils
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -17,8 +16,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Assembles a [DebugPerformanceReport] from already-known data: device/build info,
@@ -30,9 +27,8 @@ import javax.inject.Singleton
  * app did its normal work or is a cheap single SQL aggregate. [generate] runs off
  * the main thread.
  */
-@Singleton
-class DebugPerformanceReportCollector @Inject constructor(
-    @param:ApplicationContext private val context: Context,
+class DebugPerformanceReportCollector(
+    private val context: Context,
     private val musicDao: MusicDao,
     private val engine: DualPlayerEngine,
     private val userPreferencesRepository: UserPreferencesRepository,

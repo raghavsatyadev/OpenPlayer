@@ -23,7 +23,6 @@ import io.github.raghavsatyadev.openplayer.utils.normalizeMetadataText
 import io.github.raghavsatyadev.openplayer.utils.normalizeMetadataTextOrEmpty
 import io.github.raghavsatyadev.openplayer.utils.extractArtistsFromTitle
 import io.github.raghavsatyadev.openplayer.utils.splitArtistsByDelimiters
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
@@ -38,8 +37,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 import java.io.File
-import javax.inject.Inject
-import javax.inject.Singleton
 import timber.log.Timber
 
 private data class SearchPrefs(
@@ -52,9 +49,8 @@ private data class SearchPrefs(
     val minDuration: Int
 )
 
-@Singleton
-class MediaStoreSongRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+class MediaStoreSongRepository(
+    private val context: Context,
     private val mediaStoreObserver: MediaStoreObserver,
     private val favoritesDao: FavoritesDao,
     private val musicDao: MusicDao,

@@ -3,15 +3,12 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 import androidx.media3.session.MediaController
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.utils.MediaItemBuilder
-import dagger.hilt.android.scopes.ViewModelScoped
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@ViewModelScoped
-class QueueUndoStateHolder @Inject constructor() {
+class QueueUndoStateHolder() {
     private var queueItemUndoTimerJob: Job? = null
 
     fun removeSongFromQueue(

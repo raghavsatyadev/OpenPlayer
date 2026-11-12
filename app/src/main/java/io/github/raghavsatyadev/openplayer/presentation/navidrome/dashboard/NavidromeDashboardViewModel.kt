@@ -10,7 +10,6 @@ import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
 import io.github.raghavsatyadev.openplayer.data.navidrome.model.NavidromeMusicFolder
 import io.github.raghavsatyadev.openplayer.data.worker.NavidromeSyncWorker
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,14 +17,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.map
 
-@HiltViewModel
-class NavidromeDashboardViewModel @Inject constructor(
+class NavidromeDashboardViewModel(
     private val repository: NavidromeRepository,
     private val workManager: WorkManager
 ) : ViewModel() {

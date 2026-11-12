@@ -6,7 +6,6 @@ import io.github.raghavsatyadev.openplayer.data.database.AudioBookmarkEntity
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.AudioBookmarkRepository
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,10 +13,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
-@HiltViewModel
-class AudioBookmarksViewModel @Inject constructor(
+class AudioBookmarksViewModel(
     private val bookmarkRepository: AudioBookmarkRepository,
     private val musicRepository: MusicRepository
 ) : ViewModel() {

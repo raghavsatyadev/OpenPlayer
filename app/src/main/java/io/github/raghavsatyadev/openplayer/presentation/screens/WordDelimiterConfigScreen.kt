@@ -67,7 +67,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ArtistSettingsViewModel
@@ -79,7 +79,7 @@ import androidx.compose.ui.text.style.TextOverflow
 @Composable
 fun WordDelimiterConfigScreen(
     navController: NavController,
-    viewModel: ArtistSettingsViewModel = hiltViewModel()
+    viewModel: ArtistSettingsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current

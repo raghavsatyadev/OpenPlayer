@@ -7,7 +7,6 @@ import io.github.raghavsatyadev.openplayer.data.database.MusicDao
 import io.github.raghavsatyadev.openplayer.data.database.OpenPlayerDatabase
 import io.github.raghavsatyadev.openplayer.data.history.ListenHistoryRepository
 import io.github.raghavsatyadev.openplayer.data.preferences.ListenHistoryPreferences
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
@@ -17,17 +16,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Imports listening history from Last.fm, Spotify, ListenBrainz or YouTube Music exports the user
  * picked with the file picker. Reads and plans off the main thread, writes in chunked transactions,
  * and publishes [state] for the import sheet.
  */
-@Singleton
-class ExternalHistoryImporter @Inject constructor(
-    @ApplicationContext private val context: Context,
+class ExternalHistoryImporter(
+    private val context: Context,
     private val database: OpenPlayerDatabase,
     private val listenHistoryDao: ListenHistoryDao,
     private val musicDao: MusicDao,

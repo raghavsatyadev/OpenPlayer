@@ -5,20 +5,15 @@ import android.net.Uri
 import com.google.gson.Gson
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupManifest
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupModuleInfo
-import io.github.raghavsatyadev.openplayer.di.BackupGson
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.security.MessageDigest
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class BackupWriter @Inject constructor(
-    @ApplicationContext private val context: Context,
-    @BackupGson private val gson: Gson
+class BackupWriter(
+    private val context: Context,
+    private val gson: Gson
 ) {
     suspend fun write(
         uri: Uri,

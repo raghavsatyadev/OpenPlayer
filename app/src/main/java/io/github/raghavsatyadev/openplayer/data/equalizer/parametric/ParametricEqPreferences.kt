@@ -7,12 +7,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Stores the parametric EQ switch and profile in the app's preferences DataStore (no database). */
-@Singleton
-class ParametricEqPreferences @Inject constructor(
+class ParametricEqPreferences(
     private val dataStore: DataStore<Preferences>,
 ) {
     val enabledFlow: Flow<Boolean> = dataStore.data.map { it[ENABLED] ?: false }

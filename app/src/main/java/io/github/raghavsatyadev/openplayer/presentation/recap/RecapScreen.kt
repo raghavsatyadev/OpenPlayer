@@ -81,7 +81,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -132,7 +132,7 @@ private val SlideScrollStatesSaver = listSaver<List<ScrollState>, Int>(
 fun RecapScreen(
     navController: NavController,
     playerViewModel: PlayerViewModel,
-    recapViewModel: RecapViewModel = hiltViewModel()
+    recapViewModel: RecapViewModel = koinViewModel()
 ) {
     val uiState by recapViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current

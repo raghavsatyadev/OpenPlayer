@@ -24,8 +24,6 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.ZoneId
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Manages Daily Mix and Your Mix state.
@@ -36,8 +34,7 @@ import javax.inject.Singleton
  * - Persist and restore mix state
  * - Check if mix needs updating based on day change
  */
-@Singleton
-class DailyMixStateHolder @Inject constructor(
+class DailyMixStateHolder(
     private val dailyMixManager: DailyMixManager,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val musicRepository: MusicRepository,

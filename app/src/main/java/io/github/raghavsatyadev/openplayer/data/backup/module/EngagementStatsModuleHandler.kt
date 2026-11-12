@@ -7,16 +7,12 @@ import com.google.gson.JsonParser
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.database.EngagementDao
 import io.github.raghavsatyadev.openplayer.data.database.SongEngagementEntity
-import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class EngagementStatsModuleHandler @Inject constructor(
+class EngagementStatsModuleHandler(
     private val engagementDao: EngagementDao,
-    @BackupGson private val gson: Gson
+    private val gson: Gson
 ) : BackupModuleHandler {
 
     override val section = BackupSection.ENGAGEMENT_STATS

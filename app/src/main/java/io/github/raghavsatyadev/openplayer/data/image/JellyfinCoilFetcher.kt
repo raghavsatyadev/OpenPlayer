@@ -17,7 +17,6 @@ import java.net.NoRouteToHostException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.concurrent.ConcurrentHashMap
-import javax.inject.Inject
 
 class JellyfinCoilFetcher(
     private val uri: Uri,
@@ -141,7 +140,7 @@ class JellyfinCoilFetcher(
         )
     }
 
-    class Factory @Inject constructor(
+    class Factory(
         private val repository: JellyfinRepository,
         private val okHttpClient: OkHttpClient
     ) : Fetcher.Factory<Uri> {

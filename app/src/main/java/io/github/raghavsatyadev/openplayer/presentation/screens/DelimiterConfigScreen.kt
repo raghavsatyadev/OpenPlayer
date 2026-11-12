@@ -69,7 +69,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
@@ -84,7 +84,7 @@ import androidx.compose.ui.text.style.TextOverflow
 @Composable
 fun DelimiterConfigScreen(
     navController: NavController,
-    viewModel: ArtistSettingsViewModel = hiltViewModel()
+    viewModel: ArtistSettingsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current

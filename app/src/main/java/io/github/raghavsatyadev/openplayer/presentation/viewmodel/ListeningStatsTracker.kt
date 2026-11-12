@@ -19,8 +19,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 import timber.log.Timber
 
 /**
@@ -33,8 +31,7 @@ import timber.log.Timber
  * - Handle voluntary vs automatic plays
  * - Record a listen in the history once a play meets the listen rule (see [ListenPass])
  */
-@Singleton
-class ListeningStatsTracker @Inject constructor(
+class ListeningStatsTracker(
     private val dailyMixManager: DailyMixManager,
     private val playbackStatsRepository: PlaybackStatsRepository,
     private val scrobbleManager: ScrobbleManager,

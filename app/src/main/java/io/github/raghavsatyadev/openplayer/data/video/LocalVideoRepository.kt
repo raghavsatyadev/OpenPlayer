@@ -14,8 +14,6 @@ import androidx.core.content.ContextCompat
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.preferences.VideoPreferences
 import io.github.raghavsatyadev.openplayer.data.preferences.VideoSettings
-import io.github.raghavsatyadev.openplayer.di.AppScope
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -30,8 +28,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * The device's video files, from MediaStore, kept in memory and matched to tracks.
@@ -39,11 +35,10 @@ import javax.inject.Singleton
  * Nothing is stored in the database: MediaStore already has the duration and size, and the list
  * is rebuilt whenever MediaStore's videos change.
  */
-@Singleton
-class LocalVideoRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+class LocalVideoRepository(
+    private val context: Context,
     private val videoPreferences: VideoPreferences,
-    @AppScope private val scope: CoroutineScope,
+    private val scope: CoroutineScope,
 ) {
     /** Every video on the device, before the folder settings. */
     private val _videos = MutableStateFlow<List<LocalVideo>>(emptyList())

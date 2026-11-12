@@ -4,12 +4,9 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import io.github.raghavsatyadev.openplayer.data.database.GenreFillDao
 import io.github.raghavsatyadev.openplayer.data.preferences.OnlineGenrePreferences
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** What the "Find missing genres online" switches do besides saving the setting. */
-@Singleton
-class OnlineGenreSettings @Inject constructor(
+class OnlineGenreSettings(
     private val preferences: OnlineGenrePreferences,
     private val dao: GenreFillDao,
     private val workManager: WorkManager,

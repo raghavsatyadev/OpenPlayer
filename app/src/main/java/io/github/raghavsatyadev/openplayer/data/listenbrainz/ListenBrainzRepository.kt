@@ -10,7 +10,6 @@ import androidx.work.WorkManager
 import io.github.raghavsatyadev.openplayer.data.database.ListenBrainzDao
 import io.github.raghavsatyadev.openplayer.data.database.ListenBrainzPendingListenEntity
 import io.github.raghavsatyadev.openplayer.data.worker.ScrobbleFlushWorker
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,8 +17,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import retrofit2.Response
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Connecting failed because the entered server URL is not a usable http(s) URL. */
 class InvalidServerUrlException : IllegalArgumentException("Invalid ListenBrainz server URL")
@@ -30,13 +27,12 @@ class InvalidServerUrlException : IllegalArgumentException("Invalid ListenBrainz
  *
  * Scrobbling is opt-in: with no stored token, every path here is a no-op.
  */
-@Singleton
-class ListenBrainzRepository @Inject constructor(
+class ListenBrainzRepository(
     private val api: ListenBrainzApiService,
     private val listenBrainzDao: ListenBrainzDao,
     private val workManager: WorkManager,
     private val endpoint: ListenBrainzEndpoint,
-    @ApplicationContext private val context: Context
+    private val context: Context
 ) {
     companion object {
         private const val TAG = "ListenBrainzRepo"

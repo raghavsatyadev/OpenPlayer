@@ -122,7 +122,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.ui.theme.LocalOpenPlayerDarkTheme
 import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -340,12 +340,12 @@ private fun PlayerUiState.toLibraryScreenProjection(): LibraryScreenPlayerProjec
 fun LibraryScreen(
     navController: NavController,
     playerViewModel: PlayerViewModel = sharedPlayerViewModel(),
-    playlistViewModel: PlaylistViewModel = hiltViewModel(),
-    libraryViewModel: LibraryViewModel = hiltViewModel(),
-    songInfoBottomSheetViewModel: SongInfoBottomSheetViewModel = hiltViewModel(),
-    cloudDownloadsViewModel: CloudDownloadsViewModel = hiltViewModel(),
-    videosViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.VideosLibraryViewModel = hiltViewModel(),
-    smartMixViewModel: SmartMixViewModel = hiltViewModel()
+    playlistViewModel: PlaylistViewModel = koinViewModel(),
+    libraryViewModel: LibraryViewModel = koinViewModel(),
+    songInfoBottomSheetViewModel: SongInfoBottomSheetViewModel = koinViewModel(),
+    cloudDownloadsViewModel: CloudDownloadsViewModel = koinViewModel(),
+    videosViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.VideosLibraryViewModel = koinViewModel(),
+    smartMixViewModel: SmartMixViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current

@@ -7,20 +7,15 @@ import com.google.gson.reflect.TypeToken
 import io.github.raghavsatyadev.openplayer.data.backup.model.ArtistImageBackupEntry
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.database.MusicDao
-import io.github.raghavsatyadev.openplayer.di.BackupGson
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ArtistImagesModuleHandler @Inject constructor(
-    @ApplicationContext private val context: Context,
+class ArtistImagesModuleHandler(
+    private val context: Context,
     private val musicDao: MusicDao,
-    @BackupGson private val gson: Gson
+    private val gson: Gson
 ) : BackupModuleHandler {
 
     override val section = BackupSection.ARTIST_IMAGES

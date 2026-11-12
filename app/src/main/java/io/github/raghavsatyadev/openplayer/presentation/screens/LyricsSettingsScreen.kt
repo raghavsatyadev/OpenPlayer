@@ -54,7 +54,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.R
@@ -80,7 +80,7 @@ private const val MAX_LYRICS_BLUR_STRENGTH = 2f
 fun LyricsSettingsScreen(
     navController: NavController,
     playerViewModel: PlayerViewModel,
-    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = koinViewModel(),
     highlightKey: String? = null
 ) {
     val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()

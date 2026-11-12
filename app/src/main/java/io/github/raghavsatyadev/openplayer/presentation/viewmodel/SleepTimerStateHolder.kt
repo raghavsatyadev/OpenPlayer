@@ -7,7 +7,6 @@ import androidx.media3.session.SessionCommand
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.service.MusicNotificationProvider
 import io.github.raghavsatyadev.openplayer.data.service.SleepTimerSession
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Mirrors the sleep timers for the UI and forwards the user's choices to MusicService.
@@ -25,9 +22,8 @@ import javax.inject.Singleton
  * enforces every timer, since only it lives for the whole playback session and sees every
  * player swap; this holder only renders [SleepTimerSession] and toasts its events.
  */
-@Singleton
-class SleepTimerStateHolder @Inject constructor(
-    @ApplicationContext private val context: Context,
+class SleepTimerStateHolder(
+    private val context: Context,
     private val session: SleepTimerSession,
 ) {
     private val _isEndOfTrackTimerActive = MutableStateFlow(value = false)

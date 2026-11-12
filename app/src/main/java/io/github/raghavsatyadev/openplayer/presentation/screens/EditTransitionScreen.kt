@@ -71,7 +71,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Curve
@@ -89,7 +89,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun EditTransitionScreen(
     navController: NavController,
-    viewModel: TransitionViewModel = hiltViewModel()
+    viewModel: TransitionViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }

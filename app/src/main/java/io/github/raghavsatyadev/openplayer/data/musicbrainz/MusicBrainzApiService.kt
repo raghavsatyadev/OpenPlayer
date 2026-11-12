@@ -3,8 +3,6 @@ package io.github.raghavsatyadev.openplayer.data.musicbrainz
 import android.os.SystemClock
 import io.github.raghavsatyadev.openplayer.BuildConfig
 import java.io.IOException
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -27,8 +25,7 @@ data class MusicBrainzMatch(
     val disambiguation: String?
 )
 
-@Singleton
-class MusicBrainzApiService @Inject constructor(
+class MusicBrainzApiService(
     baseClient: OkHttpClient
 ) {
     private val client = baseClient.newBuilder()

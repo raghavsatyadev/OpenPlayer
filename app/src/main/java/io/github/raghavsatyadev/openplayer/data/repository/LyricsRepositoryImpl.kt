@@ -24,7 +24,6 @@ import io.github.raghavsatyadev.openplayer.utils.LogUtils
 import io.github.raghavsatyadev.openplayer.utils.LyricsUtils
 import io.github.raghavsatyadev.openplayer.utils.MultiLangRomanizer
 import io.github.raghavsatyadev.openplayer.utils.NetworkRetryUtils
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -42,8 +41,6 @@ import java.net.UnknownHostException
 import java.text.Normalizer
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.abs
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -132,9 +129,8 @@ private data class RemoteLyricsMatch(
     val score: Int
 )
 
-@Singleton
-class LyricsRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+class LyricsRepositoryImpl(
+    private val context: Context,
     private val lrcLibApiService: LrcLibApiService,
     private val lyricsDao: io.github.raghavsatyadev.openplayer.data.database.LyricsDao,
     private val okHttpClient: OkHttpClient,

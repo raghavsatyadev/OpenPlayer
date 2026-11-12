@@ -17,15 +17,12 @@ import io.github.raghavsatyadev.openplayer.data.database.TransitionRuleEntity
 import io.github.raghavsatyadev.openplayer.data.preferences.PreferenceBackupEntry
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.stats.PlaybackStatsRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 enum class BackupSection(
     val key: String,
@@ -119,9 +116,8 @@ data class AppDataBackupPayload(
 )
 
 @Deprecated("Use BackupManager instead. This class is retained for legacy format reference only.")
-@Singleton
-class AppDataBackupManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+class AppDataBackupManager(
+    private val context: Context,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val favoritesDao: FavoritesDao,
     private val lyricsDao: LyricsDao,

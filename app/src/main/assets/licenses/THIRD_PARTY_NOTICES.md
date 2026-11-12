@@ -20,7 +20,7 @@ The full text of every license listed here is bundled in `licenses/texts/`.
 | AndroidX / Jetpack (Compose, Material 3, Media3, Room, Paging, Navigation, Lifecycle, WorkManager, Glance, Security, Graphics Shapes) | The Android Open Source Project | Apache 2.0 |
 | Material Components for Android | Google | Apache 2.0 |
 | Kotlin standard library and kotlinx (coroutines, serialization, collections-immutable) | JetBrains s.r.o. and Kotlin contributors | Apache 2.0 |
-| Dagger / Hilt | The Dagger Authors (Google) | Apache 2.0 |
+| Koin | Kotzilla | Apache 2.0 |
 | Accompanist (permissions, drawable-painter) | Google | Apache 2.0 |
 | Coil | Coil Contributors | Apache 2.0 |
 | Gson | Google | Apache 2.0 |

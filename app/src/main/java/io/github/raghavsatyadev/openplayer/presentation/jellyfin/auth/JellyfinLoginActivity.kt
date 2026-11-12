@@ -70,7 +70,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.jellyfin.model.JellyfinCredentials
@@ -78,11 +78,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.CloudLibraryP
 import io.github.raghavsatyadev.openplayer.presentation.components.CloudLibraryPickerSheet
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerTheme
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.toImmutableList
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-
-@AndroidEntryPoint
 class JellyfinLoginActivity : ComponentActivity() {
 
     override fun attachBaseContext(newBase: android.content.Context) {
@@ -103,7 +100,7 @@ class JellyfinLoginActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun JellyfinLoginScreen(
-    viewModel: JellyfinLoginViewModel = hiltViewModel(),
+    viewModel: JellyfinLoginViewModel = koinViewModel(),
     onClose: () -> Unit
 ) {
     val context = LocalContext.current

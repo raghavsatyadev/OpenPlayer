@@ -5,8 +5,6 @@ import io.github.raghavsatyadev.openplayer.data.database.SongUserMetaDao
 import io.github.raghavsatyadev.openplayer.data.database.SongUserMetaEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** A song's rating (0 = unrated, up to [MAX_RATING]), moods and tags. */
 data class SongUserMeta(
@@ -23,8 +21,7 @@ data class SongUserMeta(
 }
 
 /** Per-song rating, moods and tags (Namida's track stats), stored in `song_user_meta`. */
-@Singleton
-class SongUserMetaRepository @Inject constructor(
+class SongUserMetaRepository(
     private val dao: SongUserMetaDao
 ) {
     fun observe(songId: String): Flow<SongUserMeta?> = dao.observe(songId).map { it?.toModel() }

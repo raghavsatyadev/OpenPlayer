@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.data.library.DuplicateFinder
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 data class DuplicateSongsUiState(
     val isLoading: Boolean = true,
@@ -21,8 +19,7 @@ data class DuplicateSongsUiState(
     val totalDuplicates: Int get() = groups.sumOf { it.songs.size }
 }
 
-@HiltViewModel
-class DuplicateSongsViewModel @Inject constructor(
+class DuplicateSongsViewModel(
     private val musicRepository: MusicRepository,
 ) : ViewModel() {
 

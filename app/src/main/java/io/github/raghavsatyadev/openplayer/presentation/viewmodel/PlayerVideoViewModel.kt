@@ -16,8 +16,6 @@ import io.github.raghavsatyadev.openplayer.data.video.LocalVideo
 import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
 import io.github.raghavsatyadev.openplayer.data.video.VideoSongs
 import io.github.raghavsatyadev.openplayer.data.video.VideoSync
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -32,7 +30,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * Plays the local video that matches the current track, muted, in step with the audio.
@@ -41,9 +38,8 @@ import javax.inject.Inject
  * the audio's position, play state and speed and follows them. The player exists only while a
  * video surface is on screen ([attach]/[detach]).
  */
-@HiltViewModel
-class PlayerVideoViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+class PlayerVideoViewModel(
+    private val context: Context,
     private val playbackStateHolder: PlaybackStateHolder,
     private val videoRepository: LocalVideoRepository,
     private val videoPreferences: VideoPreferences,

@@ -80,7 +80,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
@@ -111,7 +111,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun DeviceCapabilitiesScreen(
     navController: NavController,
-    viewModel: DeviceCapabilitiesViewModel = hiltViewModel(),
+    viewModel: DeviceCapabilitiesViewModel = koinViewModel(),
     playerViewModel: PlayerViewModel
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()

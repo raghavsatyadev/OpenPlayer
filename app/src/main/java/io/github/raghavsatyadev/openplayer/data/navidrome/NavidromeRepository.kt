@@ -29,7 +29,6 @@ import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepos
 import io.github.raghavsatyadev.openplayer.data.stream.BulkSyncResult
 import io.github.raghavsatyadev.openplayer.data.stream.CloudMusicUtils
 import io.github.raghavsatyadev.openplayer.utils.GenreParser
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -48,8 +47,6 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicInteger
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.absoluteValue
 import androidx.core.content.edit
 
@@ -59,14 +56,13 @@ import androidx.core.content.edit
  * Manages authentication, playlist synchronization, and song caching.
  */
 @Suppress("DEPRECATION")
-@Singleton
-class NavidromeRepository @Inject constructor(
+class NavidromeRepository(
     private val api: NavidromeApiService,
     private val dao: NavidromeDao,
     private val musicDao: MusicDao,
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
-    @ApplicationContext private val context: Context
+    private val context: Context
 ) {
     companion object {
         const val SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000L

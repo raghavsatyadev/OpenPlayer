@@ -5,11 +5,8 @@ import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupValidationResult
 import io.github.raghavsatyadev.openplayer.data.backup.model.Severity
 import io.github.raghavsatyadev.openplayer.data.backup.model.ValidationError
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ModuleSchemaValidator @Inject constructor(
+class ModuleSchemaValidator(
     private val contentSanitizer: ContentSanitizer
 ) {
     private data class NumericFieldResult(

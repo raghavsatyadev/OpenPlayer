@@ -2,7 +2,6 @@ package io.github.raghavsatyadev.openplayer.data.worker
 
 import android.content.Context
 import androidx.core.net.toUri
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
@@ -12,8 +11,6 @@ import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
 import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
 import io.github.raghavsatyadev.openplayer.data.offline.OfflineDownloadStatus
 import io.github.raghavsatyadev.openplayer.data.stream.CloudStreamSecurity
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -27,10 +24,9 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import timber.log.Timber
 import kotlin.coroutines.coroutineContext
 
-@HiltWorker
-class CloudTrackDownloadWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
+class CloudTrackDownloadWorker(
+    appContext: Context,
+    workerParams: WorkerParameters,
     private val dao: OfflineTrackDao,
     private val navidromeRepository: NavidromeRepository,
     private val jellyfinRepository: JellyfinRepository,

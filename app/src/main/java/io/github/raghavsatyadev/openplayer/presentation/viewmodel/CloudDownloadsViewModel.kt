@@ -7,8 +7,6 @@ import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
 import io.github.raghavsatyadev.openplayer.data.offline.OfflineDownload
 import io.github.raghavsatyadev.openplayer.data.offline.OfflineDownloadStatus
 import io.github.raghavsatyadev.openplayer.data.model.Song
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -44,8 +42,7 @@ internal fun List<OfflineDownload>.toCloudDownloadsUiState(): CloudDownloadsUiSt
             .sumOf { it.bytesDownloaded.coerceAtLeast(0L) }
     )
 
-@HiltViewModel
-class CloudDownloadsViewModel @Inject constructor(
+class CloudDownloadsViewModel(
     private val repository: CloudOfflineRepository
 ) : ViewModel() {
     val uiState: StateFlow<CloudDownloadsUiState> = repository.observeAll()

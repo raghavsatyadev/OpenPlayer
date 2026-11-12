@@ -8,11 +8,8 @@ import io.github.raghavsatyadev.openplayer.data.backup.model.RestorePlan
 import io.github.raghavsatyadev.openplayer.data.backup.module.BackupModuleHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class RestorePlanner @Inject constructor(
+class RestorePlanner(
     private val backupReader: BackupReader,
     private val handlers: Map<BackupSection, @JvmSuppressWildcards BackupModuleHandler>
 ) {

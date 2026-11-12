@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.SeekbarStyle
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.settingHighlight
@@ -17,7 +17,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SeekbarViewMod
 /** Wavy / Waveform choice for the full player's seekbar. */
 @Composable
 fun SeekbarStyleSetting(highlightKey: String?) {
-    val viewModel: SeekbarViewModel = hiltViewModel()
+    val viewModel: SeekbarViewModel = koinViewModel()
     val style by viewModel.style.collectAsState()
     ThemeSelectorItem(
         label = stringResource(R.string.setcat_seekbar_style_label),

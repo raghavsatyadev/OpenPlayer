@@ -7,7 +7,6 @@ import io.github.raghavsatyadev.openplayer.data.history.recommend.HistoryPicks
 import io.github.raghavsatyadev.openplayer.data.history.recommend.HistoryPicksRepository
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 /** How the "more like" section picks songs for its seed track. */
 enum class SeedPickMode { ALONGSIDE, TIME_RANGE, DISCOVERED, ERA }
@@ -39,8 +37,7 @@ data class HistoryPicksState(
 )
 
 /** Home sections built from the listen history (see [HistoryPicks]). */
-@HiltViewModel
-class HistoryPicksViewModel @Inject constructor(
+class HistoryPicksViewModel(
     private val repository: HistoryPicksRepository,
     private val musicRepository: MusicRepository,
     playbackStateHolder: PlaybackStateHolder,

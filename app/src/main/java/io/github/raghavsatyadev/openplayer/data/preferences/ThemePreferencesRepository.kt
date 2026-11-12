@@ -8,11 +8,8 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ThemePreferencesRepository @Inject constructor(
+class ThemePreferencesRepository(
     private val dataStore: DataStore<Preferences>
 ) {
     private object Keys {

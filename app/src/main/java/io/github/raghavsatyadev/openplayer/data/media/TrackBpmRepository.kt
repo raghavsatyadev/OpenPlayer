@@ -5,8 +5,6 @@ import androidx.media3.common.MediaItem
 import io.github.raghavsatyadev.openplayer.utils.MediaItemBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Tempo source for the smart crossfade: resolves a track's BPM from its embedded tag
@@ -18,8 +16,7 @@ import javax.inject.Singleton
  * Tracks without a readable local file path (cloud streams) or without a plausible tag
  * value simply resolve to null and the caller falls back to the standard crossfade.
  */
-@Singleton
-class TrackBpmRepository @Inject constructor() {
+class TrackBpmRepository() {
 
     private object NoBpm
 

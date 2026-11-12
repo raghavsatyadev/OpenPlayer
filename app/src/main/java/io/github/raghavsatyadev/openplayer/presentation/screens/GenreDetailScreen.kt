@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.zIndex
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -106,9 +106,9 @@ fun GenreDetailScreen(
     genreId: String,
     decodedGenreId: String = java.net.URLDecoder.decode(genreId, "UTF-8"),
     playerViewModel: PlayerViewModel,
-    viewModel: GenreDetailViewModel = hiltViewModel(),
-    playlistViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewModel = hiltViewModel(),
-    cloudDownloadsViewModel: CloudDownloadsViewModel = hiltViewModel()
+    viewModel: GenreDetailViewModel = koinViewModel(),
+    playlistViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewModel = koinViewModel(),
+    cloudDownloadsViewModel: CloudDownloadsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val stablePlayerState by playerViewModel.stablePlayerState.collectAsStateWithLifecycle()

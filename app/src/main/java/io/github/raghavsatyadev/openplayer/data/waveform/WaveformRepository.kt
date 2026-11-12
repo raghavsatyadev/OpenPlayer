@@ -3,7 +3,6 @@ package io.github.raghavsatyadev.openplayer.data.waveform
 import android.content.Context
 import android.net.Uri
 import io.github.raghavsatyadev.openplayer.data.model.Song
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -12,8 +11,6 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import timber.log.Timber
 import java.io.File
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Waveform bars for a song: from the cache under cacheDir/waveforms when present, otherwise
@@ -21,9 +18,8 @@ import javax.inject.Singleton
  * the song cannot be decoded (callers fall back to the plain slider). Collecting it cancels the
  * decode when the collector goes away, for example on a skip.
  */
-@Singleton
-class WaveformRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+class WaveformRepository(
+    private val context: Context,
 ) {
     private val cache = WaveformCache(File(context.cacheDir, "waveforms"))
     private val extractor = WaveformExtractor()

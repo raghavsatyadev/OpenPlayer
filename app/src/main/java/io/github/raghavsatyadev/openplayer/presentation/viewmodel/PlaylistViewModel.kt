@@ -20,7 +20,6 @@ import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleDefiniti
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleResolver
 import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -39,13 +38,11 @@ import android.graphics.ImageDecoder
 import android.os.Build
 import android.provider.MediaStore
 import io.github.raghavsatyadev.openplayer.R
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.UUID
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import timber.log.Timber
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -70,14 +67,13 @@ sealed class PlaylistSongsOrderMode {
     data class Sorted(val option: SortOption) : PlaylistSongsOrderMode()
 }
 
-@HiltViewModel
-class PlaylistViewModel @Inject constructor(
+class PlaylistViewModel(
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,
     private val musicRepository: MusicRepository,
     private val dailyMixManager: DailyMixManager,
     private val smartRuleResolver: SmartRuleResolver,
     private val m3uManager: M3uManager,
-    @ApplicationContext private val context: Context
+    private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlaylistUiState())

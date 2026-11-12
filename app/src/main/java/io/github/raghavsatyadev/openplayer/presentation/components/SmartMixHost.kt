@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
@@ -26,7 +26,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SmartMixViewMo
 fun SmartMixHost(
     playerViewModel: PlayerViewModel,
     modifier: Modifier = Modifier,
-    smartMixViewModel: SmartMixViewModel = hiltViewModel(),
+    smartMixViewModel: SmartMixViewModel = koinViewModel(),
 ) {
     val target by smartMixViewModel.target.collectAsStateWithLifecycle()
     val preview by smartMixViewModel.mixPreview.collectAsStateWithLifecycle()

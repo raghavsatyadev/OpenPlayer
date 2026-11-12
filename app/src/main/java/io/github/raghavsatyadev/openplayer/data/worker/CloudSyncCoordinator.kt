@@ -2,12 +2,9 @@ package io.github.raghavsatyadev.openplayer.data.worker
 
 import io.github.raghavsatyadev.openplayer.data.jellyfin.JellyfinRepository
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
-import javax.inject.Inject
-import javax.inject.Singleton
 import timber.log.Timber
 
-@Singleton
-class CloudSyncCoordinator @Inject constructor(
+class CloudSyncCoordinator(
     private val navidromeRepository: NavidromeRepository,
     private val jellyfinRepository: JellyfinRepository
 ) {

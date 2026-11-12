@@ -4,8 +4,6 @@ import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.utils.QueueUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Manages queue shuffle state.
@@ -13,8 +11,7 @@ import javax.inject.Singleton
  *
  * This class handles the original queue order for shuffle/unshuffle operations.
  */
-@Singleton
-class QueueStateHolder @Inject constructor() {
+class QueueStateHolder() {
 
     private var _originalQueueOrder: List<Song> = emptyList()
     val originalQueueOrder: List<Song> get() = _originalQueueOrder

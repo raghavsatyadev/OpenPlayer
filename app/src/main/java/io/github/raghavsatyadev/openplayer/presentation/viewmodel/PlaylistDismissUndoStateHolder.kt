@@ -3,9 +3,6 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 import android.content.Context
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ViewModelScoped
-import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
@@ -16,9 +13,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-@ViewModelScoped
-class PlaylistDismissUndoStateHolder @Inject constructor(
-    @ApplicationContext private val context: Context,
+class PlaylistDismissUndoStateHolder(
+    private val context: Context,
 ) {
     private var dismissUndoTimerJob: Job? = null
     private var undoObserverJob: Job? = null

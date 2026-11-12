@@ -5,8 +5,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import io.github.raghavsatyadev.openplayer.data.playlist.M3uSyncCheckpoint
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -44,8 +42,7 @@ internal fun M3uSyncConfig.withLinksIfSelectionMatches(
  * Keeping the tree grant and reconciliation checkpoints in one serialized value means an update
  * cannot expose a link without its matching checkpoint (or vice versa).
  */
-@Singleton
-class M3uSyncPreferences @Inject constructor(
+class M3uSyncPreferences(
     private val dataStore: DataStore<Preferences>,
     private val json: Json,
 ) {

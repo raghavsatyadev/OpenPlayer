@@ -72,7 +72,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import androidx.lifecycle.Lifecycle
@@ -135,17 +135,17 @@ fun HomeScreen(
     navController: NavController,
     paddingValuesParent: PaddingValues,
     playerViewModel: PlayerViewModel = sharedPlayerViewModel(),
-    settingsViewModel: SettingsViewModel = hiltViewModel(),
-    streamingLoginViewModel: StreamingProviderLoginViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = koinViewModel(),
+    streamingLoginViewModel: StreamingProviderLoginViewModel = koinViewModel(),
     onOpenSidebar: () -> Unit
 ) {
     val context = LocalContext.current
     val isBenchmarkMode = remember {
         (context as? android.app.Activity)?.intent?.getBooleanExtra("is_benchmark", false) ?: false
     }
-    val statsViewModel: StatsViewModel = hiltViewModel()
-    val recapEntryViewModel: RecapEntryViewModel = hiltViewModel()
-    val historyPicksViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.HistoryPicksViewModel = hiltViewModel()
+    val statsViewModel: StatsViewModel = koinViewModel()
+    val recapEntryViewModel: RecapEntryViewModel = koinViewModel()
+    val historyPicksViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.HistoryPicksViewModel = koinViewModel()
     val settingsUiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
     val dailyMixSongs by playerViewModel.dailyMixSongs.collectAsStateWithLifecycle()
     val curatedYourMixSongs by playerViewModel.yourMixSongs.collectAsStateWithLifecycle()

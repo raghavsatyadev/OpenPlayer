@@ -16,7 +16,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.FileExplorerContent
@@ -39,7 +39,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewMo
 fun ExcludedDirectoriesScreen(
     onNavigateBack: () -> Unit,
     isMiniplayerVisible: Boolean,
-    settingsViewModel: SettingsViewModel = hiltViewModel()
+    settingsViewModel: SettingsViewModel = koinViewModel()
 ) {
     val currentPath by settingsViewModel.currentPath.collectAsStateWithLifecycle()
     val directoryChildren by settingsViewModel.currentDirectoryChildren.collectAsStateWithLifecycle()

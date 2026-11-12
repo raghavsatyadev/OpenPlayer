@@ -11,11 +11,8 @@ import io.github.raghavsatyadev.openplayer.utils.LocalArtworkUri
 import io.github.raghavsatyadev.openplayer.utils.StorageType
 import io.github.raghavsatyadev.openplayer.utils.StorageUtils
 import kotlinx.collections.immutable.toImmutableList
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class FolderTreeBuilder @Inject constructor() {
+class FolderTreeBuilder() {
 
     fun buildFolderTree(
         folderSongs: List<FolderSongRow>,

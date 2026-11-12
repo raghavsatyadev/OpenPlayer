@@ -6,11 +6,8 @@ import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupValidationResult
 import io.github.raghavsatyadev.openplayer.data.backup.model.Severity
 import io.github.raghavsatyadev.openplayer.data.backup.model.ValidationError
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ValidationPipeline @Inject constructor(
+class ValidationPipeline(
     private val fileValidator: BackupFileValidator,
     private val manifestValidator: ManifestValidator,
     private val moduleSchemaValidator: ModuleSchemaValidator

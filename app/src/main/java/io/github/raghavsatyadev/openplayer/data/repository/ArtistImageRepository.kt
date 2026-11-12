@@ -12,7 +12,6 @@ import io.github.raghavsatyadev.openplayer.utils.AlbumArtUtils
 import io.github.raghavsatyadev.openplayer.utils.FolderArtistArtUtils
 import io.github.raghavsatyadev.openplayer.utils.NetworkRetryUtils
 import io.github.raghavsatyadev.openplayer.utils.isRetryableNetworkError
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
@@ -29,8 +28,6 @@ import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.max
 import kotlin.math.roundToInt
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import timber.log.Timber
@@ -40,12 +37,11 @@ import androidx.core.graphics.scale
  * Resolves local artist portraits before fetching and caching Deezer images.
  * Uses both in-memory LRU cache and Room database for persistent storage.
  */
-@Singleton
-class ArtistImageRepository @Inject constructor(
+class ArtistImageRepository(
     private val deezerApiService: DeezerApiService,
     private val musicDao: MusicDao,
     private val userPreferencesRepository: UserPreferencesRepository,
-    @ApplicationContext private val context: Context
+    private val context: Context
 ) {
     companion object {
         private const val TAG = "ArtistImageRepository"

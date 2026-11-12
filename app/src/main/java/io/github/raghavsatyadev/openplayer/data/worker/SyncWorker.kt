@@ -6,7 +6,6 @@ import android.content.ContentUris
 import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
-import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.NetworkType
@@ -42,8 +41,6 @@ import io.github.raghavsatyadev.openplayer.utils.buildLocalAudioSelection
 import io.github.raghavsatyadev.openplayer.utils.normalizeMetadataTextOrEmpty
 import io.github.raghavsatyadev.openplayer.utils.splitArtistsByDelimiters
 import io.github.raghavsatyadev.openplayer.utils.traceAsyncSection
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
@@ -99,20 +96,17 @@ private fun isDefaultMetadata(value: String): Boolean {
         lower == "unknown album"
 }
 
-@HiltWorker
-class SyncWorker
-@AssistedInject
-constructor(
-        @Assisted appContext: Context,
-        @Assisted workerParams: WorkerParameters,
-        private val musicDao: MusicDao,
-        private val userPreferencesRepository: UserPreferencesRepository,
-        private val lyricsRepository: LyricsRepository,
-        private val cloudSyncCoordinator: CloudSyncCoordinator,
-        private val artistImageRepository: ArtistImageRepository,
-        private val localLibraryChangeTracker: LocalLibraryChangeTracker,
-        private val videoLibrarySongs: VideoLibrarySongs,
-        private val genreFiller: GenreFiller
+class SyncWorker(
+    appContext: Context,
+    workerParams: WorkerParameters,
+    private val musicDao: MusicDao,
+    private val userPreferencesRepository: UserPreferencesRepository,
+    private val lyricsRepository: LyricsRepository,
+    private val cloudSyncCoordinator: CloudSyncCoordinator,
+    private val artistImageRepository: ArtistImageRepository,
+    private val localLibraryChangeTracker: LocalLibraryChangeTracker,
+    private val videoLibrarySongs: VideoLibrarySongs,
+    private val genreFiller: GenreFiller
 ) : CoroutineWorker(appContext, workerParams) {
 
     private val contentResolver: ContentResolver = appContext.contentResolver

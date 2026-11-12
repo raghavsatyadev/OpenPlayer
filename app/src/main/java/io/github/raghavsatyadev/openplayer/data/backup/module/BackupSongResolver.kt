@@ -4,8 +4,6 @@ import io.github.raghavsatyadev.openplayer.data.database.MusicDao
 import io.github.raghavsatyadev.openplayer.data.database.SongSummary
 import io.github.raghavsatyadev.openplayer.data.database.toSong
 import io.github.raghavsatyadev.openplayer.data.model.Song
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Song metadata stored alongside backed-up song ids, for matching on another device. */
 data class BackupSongMetadata(
@@ -21,8 +19,7 @@ data class BackupSongMetadata(
  * export [BackupSongMetadata] next to them, and resolve them against the current library on
  * restore.
  */
-@Singleton
-class BackupSongResolver @Inject constructor(private val musicDao: MusicDao) {
+class BackupSongResolver(private val musicDao: MusicDao) {
 
     /** Metadata for the local songs among [songIds]; songs the library can't describe are left out. */
     suspend fun metadataFor(songIds: Collection<String>): Map<String, BackupSongMetadata> {

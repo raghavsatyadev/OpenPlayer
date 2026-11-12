@@ -5,16 +5,12 @@ import com.google.gson.reflect.TypeToken
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.preferences.PreferenceBackupEntry
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
-import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class QuickFillModuleHandler @Inject constructor(
+class QuickFillModuleHandler(
     private val userPreferencesRepository: UserPreferencesRepository,
-    @BackupGson private val gson: Gson
+    private val gson: Gson
 ) : BackupModuleHandler {
 
     override val section = BackupSection.QUICK_FILL

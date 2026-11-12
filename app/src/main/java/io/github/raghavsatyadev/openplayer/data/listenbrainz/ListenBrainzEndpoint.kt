@@ -2,8 +2,6 @@ package io.github.raghavsatyadev.openplayer.data.listenbrainz
 
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Holds the ListenBrainz-compatible API root all requests are routed to.
@@ -12,8 +10,7 @@ import javax.inject.Singleton
  * interceptor re-roots every request through [rewrite], so a self-hosted
  * ListenBrainz or Maloja endpoint applies without rebuilding the network stack.
  */
-@Singleton
-class ListenBrainzEndpoint @Inject constructor() {
+class ListenBrainzEndpoint() {
 
     @Volatile
     var customBaseUrl: HttpUrl? = null

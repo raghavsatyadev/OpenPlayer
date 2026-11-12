@@ -2,13 +2,10 @@ package io.github.raghavsatyadev.openplayer.data.musicbrainz
 
 import io.github.raghavsatyadev.openplayer.data.database.MusicDao
 import io.github.raghavsatyadev.openplayer.data.model.Song
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-@Singleton
-class MusicBrainzRepository @Inject constructor(
+class MusicBrainzRepository(
     private val api: MusicBrainzApiService,
     private val musicDao: MusicDao
 ) {

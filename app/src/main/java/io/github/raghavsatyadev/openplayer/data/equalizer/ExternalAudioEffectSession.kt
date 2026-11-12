@@ -3,10 +3,7 @@ package io.github.raghavsatyadev.openplayer.data.equalizer
 import android.content.Context
 import android.content.Intent
 import android.media.audiofx.AudioEffect
-import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Announces the player's audio session to external audio effect apps
@@ -22,9 +19,8 @@ import javax.inject.Singleton
  * Both actions are on Android's implicit-broadcast exemption list, so manifest-declared receivers
  * in those apps still receive them on O+.
  */
-@Singleton
-class ExternalAudioEffectSession @Inject constructor(
-    @param:ApplicationContext private val context: Context
+class ExternalAudioEffectSession(
+    private val context: Context
 ) {
 
     private companion object {

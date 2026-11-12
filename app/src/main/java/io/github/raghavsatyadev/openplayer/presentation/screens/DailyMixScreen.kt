@@ -63,7 +63,7 @@ import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.R
@@ -95,11 +95,11 @@ import kotlinx.collections.immutable.persistentListOf
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DailyMixScreen(
-    mainViewModel: MainViewModel = hiltViewModel(),
-    playlistViewModel: PlaylistViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel = koinViewModel(),
+    playlistViewModel: PlaylistViewModel = koinViewModel(),
     playerViewModel: PlayerViewModel,
     navController: NavController,
-    smartMixViewModel: SmartMixViewModel = hiltViewModel(),
+    smartMixViewModel: SmartMixViewModel = koinViewModel(),
 ) = traceSection("DailyMixScreen.Composition") {
     val dailyMixTitle = stringResource(R.string.presentation_batch_b_daily_mix_title)
     val playItLabel = stringResource(R.string.presentation_batch_b_play_it)

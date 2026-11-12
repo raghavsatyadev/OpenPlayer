@@ -4,21 +4,16 @@ import android.content.Context
 import android.net.Uri
 import com.google.gson.Gson
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupManifest
-import io.github.raghavsatyadev.openplayer.di.BackupGson
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.io.Reader
 import java.util.zip.GZIPInputStream
 import java.util.zip.ZipInputStream
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class BackupReader @Inject constructor(
-    @ApplicationContext private val context: Context,
-    @BackupGson private val gson: Gson,
+class BackupReader(
+    private val context: Context,
+    private val gson: Gson,
     private val formatDetector: BackupFormatDetector,
     private val legacyAdapter: LegacyPayloadAdapter
 ) {

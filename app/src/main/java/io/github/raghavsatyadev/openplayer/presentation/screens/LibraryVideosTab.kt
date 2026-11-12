@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.LibraryTabId
@@ -54,7 +54,7 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 internal fun LibraryVideosTab(
     playerViewModel: PlayerViewModel,
     bottomBarHeight: Dp,
-    viewModel: VideosLibraryViewModel = hiltViewModel(),
+    viewModel: VideosLibraryViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val permissionLauncher = rememberLauncherForActivityResult(

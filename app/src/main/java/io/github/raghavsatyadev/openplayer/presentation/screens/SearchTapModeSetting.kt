@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.settingHighlight
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.SearchTapMode
@@ -17,7 +17,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.SearchT
 /** Choice of what tapping a song in the search results does. */
 @Composable
 fun SearchTapModeSetting(highlightKey: String?) {
-    val viewModel: SearchTapModeViewModel = hiltViewModel()
+    val viewModel: SearchTapModeViewModel = koinViewModel()
     val mode by viewModel.mode.collectAsState()
     ThemeSelectorItem(
         label = stringResource(R.string.setcat_search_tap_mode_label),

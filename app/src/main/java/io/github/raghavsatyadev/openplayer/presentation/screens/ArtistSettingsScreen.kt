@@ -76,7 +76,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
@@ -99,7 +99,7 @@ private const val ARTIST_SETTINGS_ARTIST_PAGE_ITEM_INDEX = 3
 fun ArtistSettingsScreen(
     navController: NavController,
     highlightKey: String? = null,
-    viewModel: ArtistSettingsViewModel = hiltViewModel()
+    viewModel: ArtistSettingsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val density = LocalDensity.current

@@ -5,11 +5,8 @@ import android.net.Uri
 import io.github.raghavsatyadev.openplayer.data.model.Playlist
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.IOException
 import java.io.Reader
-import javax.inject.Inject
-import javax.inject.Singleton
 
 internal const val MAX_M3U_CHARACTERS = 8 * 1024 * 1024
 
@@ -38,9 +35,8 @@ data class M3uParseResult(
     val ambiguousEntries: List<String>,
 )
 
-@Singleton
-class M3uManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+class M3uManager(
+    private val context: Context,
     private val musicRepository: MusicRepository
 ) {
 

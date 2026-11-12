@@ -65,7 +65,7 @@ import io.github.raghavsatyadev.openplayer.ui.theme.LocalShowScrollbar
 import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerStatusBarStyle
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.data.model.Artist
@@ -116,8 +116,8 @@ fun ArtistDetailScreen(
     artistId: String,
     navController: NavController,
     playerViewModel: PlayerViewModel,
-    viewModel: ArtistDetailViewModel = hiltViewModel(),
-    playlistViewModel: PlaylistViewModel = hiltViewModel()
+    viewModel: ArtistDetailViewModel = koinViewModel(),
+    playlistViewModel: PlaylistViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     // Kept as State and read only by the album list and the expand-all button, so a header tap

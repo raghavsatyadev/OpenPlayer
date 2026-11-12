@@ -7,16 +7,13 @@ import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.data.repository.SavedQueue
 import io.github.raghavsatyadev.openplayer.data.repository.SavedQueueRepository
 import io.github.raghavsatyadev.openplayer.data.repository.SavedQueueRestorePlan
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /** Saves the play queue under a name, lists saved queues, and turns one back into a playable plan. */
-@HiltViewModel
-class SavedQueuesViewModel @Inject constructor(
+class SavedQueuesViewModel(
     private val repository: SavedQueueRepository,
     private val musicRepository: MusicRepository
 ) : ViewModel() {

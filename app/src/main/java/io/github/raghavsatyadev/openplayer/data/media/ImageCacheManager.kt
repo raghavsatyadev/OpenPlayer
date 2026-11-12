@@ -4,13 +4,9 @@ import android.content.Context
 import coil.annotation.ExperimentalCoilApi
 import coil.imageLoader
 import coil.memory.MemoryCache
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ImageCacheManager @Inject constructor(
-    @ApplicationContext private val context: Context
+class ImageCacheManager(
+    private val context: Context
 ) {
     /**
      * Drops every decoded and on-disk image Coil holds.

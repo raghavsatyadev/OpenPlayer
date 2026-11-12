@@ -25,7 +25,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.database.NavidromePlaylistEntity
 import io.github.raghavsatyadev.openplayer.data.model.Song
@@ -44,7 +44,7 @@ import kotlinx.collections.immutable.toImmutableList
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun NavidromeDashboardScreen(
-    viewModel: NavidromeDashboardViewModel = hiltViewModel(),
+    viewModel: NavidromeDashboardViewModel = koinViewModel(),
     onBack: () -> Unit
 ) {
     val playlists by viewModel.playlists.collectAsStateWithLifecycle()

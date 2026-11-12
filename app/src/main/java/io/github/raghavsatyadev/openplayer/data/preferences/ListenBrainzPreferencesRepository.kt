@@ -8,16 +8,13 @@ import io.github.raghavsatyadev.openplayer.data.database.ListenBrainzSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Per-source scrobble toggles. All default to enabled — connecting a ListenBrainz account is the
  * consent act; users disable a streaming source only when their server already scrobbles
  * server-side. With no account connected these values have no effect.
  */
-@Singleton
-class ListenBrainzPreferencesRepository @Inject constructor(
+class ListenBrainzPreferencesRepository(
     private val dataStore: DataStore<Preferences>
 ) {
     private object Keys {

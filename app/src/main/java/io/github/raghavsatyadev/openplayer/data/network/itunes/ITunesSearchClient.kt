@@ -7,8 +7,6 @@ import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Response from iTunes Search API.
@@ -40,8 +38,7 @@ data class ITunesSong(
 /**
  * Client for searching songs and artwork on the iTunes Search API.
  */
-@Singleton
-class ITunesSearchClient @Inject constructor(
+class ITunesSearchClient(
     private val okHttpClient: OkHttpClient,
     private val gson: Gson
 ) {

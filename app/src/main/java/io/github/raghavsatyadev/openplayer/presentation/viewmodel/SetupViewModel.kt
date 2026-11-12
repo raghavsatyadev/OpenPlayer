@@ -23,8 +23,6 @@ import io.github.raghavsatyadev.openplayer.data.preferences.ThemePreferencesRepo
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.data.worker.SyncManager
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,7 +32,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import java.io.File
 
 data class SetupUiState(
@@ -67,14 +64,13 @@ sealed interface SetupEvent {
     data class RestoreCompleted(val message: String) : SetupEvent
 }
 
-@HiltViewModel
-class SetupViewModel @Inject constructor(
+class SetupViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
     private val themePreferencesRepository: ThemePreferencesRepository,
     private val syncManager: SyncManager,
     private val backupManager: BackupManager,
     private val musicRepository: MusicRepository,
-    @ApplicationContext private val context: Context
+    private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SetupUiState())

@@ -24,10 +24,7 @@ import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
 import io.github.raghavsatyadev.openplayer.data.offline.OfflineDownload
 import io.github.raghavsatyadev.openplayer.utils.AudioMeta
 import io.github.raghavsatyadev.openplayer.utils.AudioMetaUtils
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,12 +38,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
-@HiltViewModel
-class SongInfoBottomSheetViewModel @Inject constructor(
+class SongInfoBottomSheetViewModel(
     private val musicDao: MusicDao,
     private val cloudOfflineRepository: CloudOfflineRepository,
     private val musicBrainzRepository: MusicBrainzRepository,
-    @ApplicationContext private val appContext: Context,
+    private val appContext: Context,
 ) : ViewModel() {
 
     data class SongLocationInfo(

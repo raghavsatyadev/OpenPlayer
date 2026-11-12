@@ -66,7 +66,7 @@ import io.github.raghavsatyadev.openplayer.ui.glancewidget.OpenPlayerGlanceWidge
 import io.github.raghavsatyadev.openplayer.ui.glancewidget.PlayerActions
 import io.github.raghavsatyadev.openplayer.ui.glancewidget.PlayerInfoStateDefinition
 import io.github.raghavsatyadev.openplayer.utils.AlbumArtUtils
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.android.ext.android.inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -93,7 +93,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ColorSchemePai
 import io.github.raghavsatyadev.openplayer.utils.ArtworkTransportSanitizer
 import io.github.raghavsatyadev.openplayer.utils.MediaItemBuilder
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
-import io.github.raghavsatyadev.openplayer.di.AppScope
+import io.github.raghavsatyadev.openplayer.di.QUALIFIER_APP_SCOPE
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ListeningStatsTracker
 import kotlin.math.abs
 import java.io.ByteArrayOutputStream
@@ -105,7 +105,6 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import coil.size.Precision
 
-import javax.inject.Inject
 import androidx.core.net.toUri
 
 /**
@@ -179,50 +178,31 @@ suspend fun loadArtworkBytesViaCoil(context: Context, uri: Uri): ByteArray? {
 
 
 @androidx.annotation.OptIn(UnstableApi::class)
-@AndroidEntryPoint
 class MusicService : MediaSessionService() {
 
-    @Inject
-    lateinit var engine: DualPlayerEngine
-    @Inject
-    lateinit var controller: TransitionController
-    @Inject
-    lateinit var musicRepository: MusicRepository
+    private val engine: DualPlayerEngine by inject()
+    private val controller: TransitionController by inject()
+    private val musicRepository: MusicRepository by inject()
 
-    @Inject
-    lateinit var localVideoRepository: LocalVideoRepository
-    @Inject
-    lateinit var userPreferencesRepository: UserPreferencesRepository
-    @Inject
-    lateinit var equalizerPreferencesRepository: EqualizerPreferencesRepository
-    @Inject
-    lateinit var themePreferencesRepository: ThemePreferencesRepository
-    @Inject
-    lateinit var equalizerManager: EqualizerManager
-    @Inject
-    lateinit var parametricEqPreferences: io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricEqPreferences
-    @Inject
-    lateinit var externalAudioEffectSession: ExternalAudioEffectSession
-    @Inject
-    lateinit var colorSchemeProcessor: ColorSchemeProcessor
-    @Inject
-    lateinit var replayGainManager: io.github.raghavsatyadev.openplayer.data.media.ReplayGainManager
-    @Inject
-    lateinit var navidromeRepository: NavidromeRepository
-    @Inject
-    lateinit var listeningStatsTracker: ListeningStatsTracker
-    @Inject
-    lateinit var sleepTimerSession: SleepTimerSession
-    @Inject
-    lateinit var repeatNSession: io.github.raghavsatyadev.openplayer.data.service.repeatn.RepeatNSession
-    @Inject
-    @AppScope
-    lateinit var appScope: CoroutineScope
+    private val localVideoRepository: LocalVideoRepository by inject()
+    private val userPreferencesRepository: UserPreferencesRepository by inject()
+    private val equalizerPreferencesRepository: EqualizerPreferencesRepository by inject()
+    private val themePreferencesRepository: ThemePreferencesRepository by inject()
+    private val equalizerManager: EqualizerManager by inject()
+    private val parametricEqPreferences: io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricEqPreferences by inject()
+    private val externalAudioEffectSession: ExternalAudioEffectSession by inject()
+    private val colorSchemeProcessor: ColorSchemeProcessor by inject()
+    private val replayGainManager: io.github.raghavsatyadev.openplayer.data.media.ReplayGainManager by inject()
+    private val navidromeRepository: NavidromeRepository by inject()
+    private val listeningStatsTracker: ListeningStatsTracker by inject()
+    private val sleepTimerSession: SleepTimerSession by inject()
+    private val repeatNSession: io.github.raghavsatyadev.openplayer.data.service.repeatn.RepeatNSession by inject()
+    private val appScope: CoroutineScope by inject(QUALIFIER_APP_SCOPE)
 
     private var userPlaybackSpeed = 1f
 
     // ReplayGain volume-normalization state + logic, extracted to a standalone
-    // component. Lazily built so the Hilt-injected engine/replayGainManager and the
+    // component. Lazily built so the Koin-injected engine/replayGainManager and the
     // service scope are ready before first use (first playback event).
     private val replayGainProcessor by lazy {
         ReplayGainProcessor(
@@ -442,7 +422,7 @@ class MusicService : MediaSessionService() {
 
         // Marked foreground-service starts (media buttons, and the widget's
         // startForegroundService() fallback) are promoted here, before super.onCreate(),
-        // so Hilt injection and MediaSession setup cannot use up Android's FGS deadline.
+        // so Koin injection and MediaSession setup cannot use up Android's FGS deadline.
         // Plain binds and plain startService() starts are never marked, so opening the
         // app does not flash the temporary placeholder notification.
         temporaryForegroundStartedInOnCreate = consumePendingTemporaryForegroundStart()

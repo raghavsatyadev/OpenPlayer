@@ -23,8 +23,6 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.random.Random
 
 /**
@@ -40,8 +38,7 @@ import kotlin.random.Random
  * files so tempo matching can use real numbers. There is no on-device audio analysis: songs
  * without a tagged BPM simply fall back to the engine's genre-derived energy heuristic.
  */
-@Singleton
-class NlpPlaylistGenerator @Inject constructor(
+class NlpPlaylistGenerator(
     private val musicRepository: MusicRepository,
     private val dailyMixManager: DailyMixManager,
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,

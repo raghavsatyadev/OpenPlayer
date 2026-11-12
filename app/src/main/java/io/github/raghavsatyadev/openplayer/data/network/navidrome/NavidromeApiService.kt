@@ -12,8 +12,6 @@ import timber.log.Timber
 import java.security.MessageDigest
 import java.util.UUID
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Navidrome/Subsonic API client.
@@ -25,8 +23,7 @@ import javax.inject.Singleton
  *
  * API Reference: http://www.subsonic.org/pages/api.jsp
  */
-@Singleton
-class NavidromeApiService @Inject constructor(
+class NavidromeApiService(
     baseOkHttpClient: OkHttpClient
 ) {
 

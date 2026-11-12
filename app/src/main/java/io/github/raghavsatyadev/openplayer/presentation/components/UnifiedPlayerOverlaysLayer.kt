@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.util.UnstableApi
@@ -181,7 +181,7 @@ internal fun UnifiedPlayerSongInfoLayer(
     selectedSongForInfo?.let { staticSong ->
         val context = LocalContext.current
         var showPlaylistBottomSheet by remember(staticSong.id) { mutableStateOf(false) }
-        val playlistViewModel: PlaylistViewModel = hiltViewModel()
+        val playlistViewModel: PlaylistViewModel = koinViewModel()
         val playlistUiState by playlistViewModel.uiState.collectAsStateWithLifecycle()
         val liveSongState by remember(playerViewModel, staticSong.id) {
             playerViewModel.observeSong(staticSong.id).map { it ?: staticSong }

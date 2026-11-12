@@ -57,7 +57,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.MAX_NAV_BAR_CORNER_RADIUS
@@ -74,7 +74,7 @@ const val DEFAULT_NAV_BAR_CORNER_RADIUS = 28f
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun NavBarCornerRadiusScreen(
-    navController: NavController, settingsViewModel: SettingsViewModel = hiltViewModel()
+    navController: NavController, settingsViewModel: SettingsViewModel = koinViewModel()
 ) {
     val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
     val isFullWidth = uiState.navBarStyle == NavBarStyle.FULL_WIDTH

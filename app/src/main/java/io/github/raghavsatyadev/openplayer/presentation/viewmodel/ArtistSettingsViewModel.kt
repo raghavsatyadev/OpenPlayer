@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.worker.SyncManager
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 data class ArtistSettingsUiState(
     val artistDelimiters: List<String> = UserPreferencesRepository.DEFAULT_ARTIST_DELIMITERS,
@@ -24,8 +22,7 @@ data class ArtistSettingsUiState(
     val isResyncing: Boolean = false
 )
 
-@HiltViewModel
-class ArtistSettingsViewModel @Inject constructor(
+class ArtistSettingsViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
     private val syncManager: SyncManager
 ) : ViewModel() {

@@ -24,7 +24,6 @@ import io.github.raghavsatyadev.openplayer.data.backup.restore.RestoreExecutor
 import io.github.raghavsatyadev.openplayer.data.backup.restore.RestorePlanner
 import io.github.raghavsatyadev.openplayer.data.backup.validation.BackupFileValidator
 import io.github.raghavsatyadev.openplayer.data.backup.validation.ValidationPipeline
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -33,12 +32,9 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import javax.crypto.AEADBadTagException
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class BackupManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+class BackupManager(
+    private val context: Context,
     private val backupWriter: BackupWriter,
     private val backupReader: BackupReader,
     private val restorePlanner: RestorePlanner,

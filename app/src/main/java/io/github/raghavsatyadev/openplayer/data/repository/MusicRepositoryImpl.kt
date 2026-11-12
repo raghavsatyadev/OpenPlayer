@@ -9,14 +9,11 @@ import android.provider.MediaStore
 
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.ArtistImageRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 import androidx.core.net.toUri
 import io.github.raghavsatyadev.openplayer.data.database.FavoritesDao
 import io.github.raghavsatyadev.openplayer.data.database.GenreSongCountRow
@@ -80,9 +77,8 @@ import kotlinx.coroutines.CoroutineScope
 import timber.log.Timber
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Singleton
-class MusicRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+class MusicRepositoryImpl(
+    private val context: Context,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,
     private val searchHistoryDao: SearchHistoryDao,

@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.worker
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
@@ -13,8 +12,6 @@ import io.github.raghavsatyadev.openplayer.data.database.ListenBrainzDao
 import io.github.raghavsatyadev.openplayer.data.database.ListenBrainzPendingListenEntity
 import io.github.raghavsatyadev.openplayer.data.listenbrainz.ListenBrainzRepository
 import io.github.raghavsatyadev.openplayer.data.listenbrainz.ListenBrainzSubmitResult
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -25,10 +22,9 @@ import java.util.concurrent.TimeUnit
  * pauses flushing entirely (the queue survives until the user reconnects); rate limits and
  * network failures retry with backoff.
  */
-@HiltWorker
-class ScrobbleFlushWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
+class ScrobbleFlushWorker(
+    appContext: Context,
+    workerParams: WorkerParameters,
     private val listenBrainzDao: ListenBrainzDao,
     private val repository: ListenBrainzRepository
 ) : CoroutineWorker(appContext, workerParams) {

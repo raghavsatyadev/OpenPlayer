@@ -35,7 +35,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 import java.nio.file.Path
-import javax.inject.Provider
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PlaylistsModuleHandlerTest {
@@ -55,7 +54,7 @@ class PlaylistsModuleHandlerTest {
         every { sync.syncProgress } returns syncProgress
         return PlaylistsModuleHandler(
             context, playlists, preferences, musicDao, BackupSongResolver(musicDao), gson,
-            Provider { sync }, scope
+            { sync }, scope
         )
     }
 

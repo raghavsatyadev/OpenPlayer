@@ -2,20 +2,16 @@ package io.github.raghavsatyadev.openplayer.data.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Settings for looking up missing song genres online. */
-@Singleton
-class OnlineGenrePreferences @Inject constructor(
-    @ApplicationContext private val context: Context
+class OnlineGenrePreferences(
+    private val context: Context
 ) {
     private val prefs: SharedPreferences =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)

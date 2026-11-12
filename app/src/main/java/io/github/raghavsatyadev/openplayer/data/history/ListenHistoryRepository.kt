@@ -7,27 +7,23 @@ import io.github.raghavsatyadev.openplayer.data.database.ListenSource
 import io.github.raghavsatyadev.openplayer.data.database.SongListenCount
 import io.github.raghavsatyadev.openplayer.data.preferences.ListenHistoryPreferences
 import io.github.raghavsatyadev.openplayer.data.stats.PlaybackStatsRepository
-import io.github.raghavsatyadev.openplayer.di.AppScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Per-listen history: one row per play that met the [ListenCountRule].
  * Listening time keeps going to [PlaybackStatsRepository]; this records what counted as a listen.
  */
-@Singleton
-class ListenHistoryRepository @Inject constructor(
+class ListenHistoryRepository(
     private val listenHistoryDao: ListenHistoryDao,
     private val engagementDao: EngagementDao,
     private val playbackStatsRepository: PlaybackStatsRepository,
     private val preferences: ListenHistoryPreferences,
-    @AppScope private val appScope: CoroutineScope
+    private val appScope: CoroutineScope
 ) {
     private val importMutex = Mutex()
 

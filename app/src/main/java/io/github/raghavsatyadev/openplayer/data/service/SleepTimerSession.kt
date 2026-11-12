@@ -6,16 +6,13 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Process-wide sleep-timer state. [SleepTimerController] (inside MusicService) is the only
  * writer, because only the service can enforce a timer while the UI is gone; the UI mirrors
  * it from here.
  */
-@Singleton
-class SleepTimerSession @Inject constructor() {
+class SleepTimerSession() {
 
     sealed interface Timer {
         data class Duration(val endsAtMillis: Long, val minutes: Int) : Timer

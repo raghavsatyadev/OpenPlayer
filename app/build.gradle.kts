@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.baselineprofile)
     id("kotlin-parcelize")
@@ -225,14 +224,12 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.appcompat)
 
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
-    ksp(libs.kotlin.metadata.jvm)
-    annotationProcessor(libs.kotlin.metadata.jvm)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.hilt.work)
-    ksp(libs.androidx.hilt.compiler)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.workmanager)
+    implementation(libs.koin.compose.viewmodel)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.runtime.ktx)
 
@@ -290,6 +287,8 @@ dependencies {
         exclude(group = "androidx.compose.ui")
     }
 
+    testImplementation(libs.koin.test)
+    testImplementation(libs.koin.test.junit5)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
     testRuntimeOnly(libs.junit.jupiter.engine)
@@ -335,13 +334,6 @@ dependencies {
     }
 }
 
-configurations.configureEach {
-    resolutionStrategy.eachDependency {
-        if (requested.group == "org.jetbrains.kotlin" && requested.name == "kotlin-metadata-jvm") {
-            useVersion(libs.versions.kotlin.get())
-        }
-    }
-}
 
 tasks.withType<Test> {
     useJUnitPlatform()

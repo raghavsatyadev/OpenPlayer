@@ -1,8 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.diagnostics
 
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -12,8 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicLong
 
-@Singleton
-class AdvancedPerformanceDiagnosticsController @Inject constructor(
+class AdvancedPerformanceDiagnosticsController(
     private val userPreferencesRepository: UserPreferencesRepository
 ) {
     private val stallMonitor = MainThreadStallMonitor()

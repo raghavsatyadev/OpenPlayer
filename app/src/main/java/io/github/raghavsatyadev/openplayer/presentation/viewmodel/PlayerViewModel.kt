@@ -80,8 +80,8 @@ import io.github.raghavsatyadev.openplayer.utils.ZipShareHelper
 import io.github.raghavsatyadev.openplayer.presentation.selection.flattenDistinctGroups
 import io.github.raghavsatyadev.openplayer.presentation.navigation.PlayerSheetBackCoordinator
 import io.github.raghavsatyadev.openplayer.presentation.selection.effectiveLibraryStorageFilter
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -122,7 +122,6 @@ import kotlinx.coroutines.yield
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import java.util.Locale
-import javax.inject.Inject
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import coil.memory.MemoryCache
@@ -267,9 +266,8 @@ private data class ResolvedAlbumSelection(
 @androidx.annotation.OptIn(UnstableApi::class)
 @SuppressLint("LogNotTimber")
 @OptIn(coil.annotation.ExperimentalCoilApi::class, ExperimentalCoroutinesApi::class)
-@HiltViewModel
-class PlayerViewModel @Inject constructor(
-    @param:ApplicationContext private val context: Context,
+class PlayerViewModel(
+    private val context: Context,
     private val musicRepository: MusicRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val themePreferencesRepository: ThemePreferencesRepository,
@@ -301,7 +299,7 @@ class PlayerViewModel @Inject constructor(
     private val sessionToken: SessionToken,
     private val mediaControllerFactory: io.github.raghavsatyadev.openplayer.data.media.MediaControllerFactory,
     private val dispatchers: DispatcherProvider
-) : ViewModel() {
+) : ViewModel(), KoinComponent {
 
     private val _playerUiState = MutableStateFlow(PlayerUiState())
     val playerUiState: StateFlow<PlayerUiState> = _playerUiState.asStateFlow()
@@ -854,11 +852,9 @@ class PlayerViewModel @Inject constructor(
 
 
 
-    @Inject
-    lateinit var mediaMapper: io.github.raghavsatyadev.openplayer.data.media.MediaMapper
+    val mediaMapper: io.github.raghavsatyadev.openplayer.data.media.MediaMapper by inject()
 
-    @Inject
-    lateinit var imageCacheManager: io.github.raghavsatyadev.openplayer.data.media.ImageCacheManager
+    val imageCacheManager: io.github.raghavsatyadev.openplayer.data.media.ImageCacheManager by inject()
 
     init {
         viewModelScope.launch { offerToRestoreInterruptedSaves() }

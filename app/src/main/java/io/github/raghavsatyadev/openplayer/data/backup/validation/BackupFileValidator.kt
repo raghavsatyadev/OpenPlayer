@@ -9,15 +9,11 @@ import io.github.raghavsatyadev.openplayer.data.backup.model.BackupManifest
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupValidationResult
 import io.github.raghavsatyadev.openplayer.data.backup.model.Severity
 import io.github.raghavsatyadev.openplayer.data.backup.model.ValidationError
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.InputStream
 import java.util.zip.ZipInputStream
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class BackupFileValidator @Inject constructor(
-    @ApplicationContext private val context: Context,
+class BackupFileValidator(
+    private val context: Context,
     private val formatDetector: BackupFormatDetector
 ) {
     companion object {

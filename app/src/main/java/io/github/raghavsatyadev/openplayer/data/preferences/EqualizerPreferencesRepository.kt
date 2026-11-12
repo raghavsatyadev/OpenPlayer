@@ -13,11 +13,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class EqualizerPreferencesRepository @Inject constructor(
+class EqualizerPreferencesRepository(
     private val dataStore: DataStore<Preferences>,
     private val json: Json
 ) {

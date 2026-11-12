@@ -66,7 +66,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -77,11 +77,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.CloudLibraryP
 import io.github.raghavsatyadev.openplayer.presentation.components.CloudLibraryPickerSheet
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerTheme
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.toImmutableList
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-
-@AndroidEntryPoint
 class NavidromeLoginActivity : ComponentActivity() {
 
     override fun attachBaseContext(newBase: android.content.Context) {
@@ -102,7 +99,7 @@ class NavidromeLoginActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun NavidromeLoginScreen(
-    viewModel: NavidromeLoginViewModel = hiltViewModel(),
+    viewModel: NavidromeLoginViewModel = koinViewModel(),
     onClose: () -> Unit
 ) {
     val context = LocalContext.current

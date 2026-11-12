@@ -8,13 +8,10 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
-import javax.inject.Singleton
 
 private val Context.smartMixDataStore: DataStore<Preferences> by preferencesDataStore(name = "smart_mix")
 
@@ -26,12 +23,10 @@ private val Context.smartMixDataStore: DataStore<Preferences> by preferencesData
  * Kept in its own store, not the shared settings store, because it is device-local listening
  * history: song ids from a backup would not match another library.
  */
-@Singleton
 class MixPreferences internal constructor(
     private val dataStore: DataStore<Preferences>,
 ) {
-    @Inject
-    constructor(@ApplicationContext context: Context) : this(context.smartMixDataStore)
+    constructor(context: Context) : this(context.smartMixDataStore)
 
     private object Keys {
         val MIX_IDS = (0 until GENERATIONS).map { stringSetPreferencesKey("offline_mix_ids_v1_$it") }

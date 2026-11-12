@@ -1,38 +1,9 @@
 package io.github.raghavsatyadev.openplayer.di
 
-import javax.inject.Qualifier
+import org.koin.core.qualifier.named
 
-/**
- * Qualifier for Deezer Retrofit instance.
- */
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class DeezerRetrofit
-
-/**
- * Qualifier for Fast OkHttpClient (Short timeouts).
- */
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class FastOkHttpClient
-
-/**
- * Qualifier for Gson instance configured for backup serialization.
- */
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class BackupGson
-
-/**
- * Qualifier for application-lifetime coroutine scope.
- */
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class AppScope
-
-/**
- * Qualifier for ListenBrainz Retrofit instance.
- */
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class ListenBrainzRetrofit
+val QUALIFIER_DEEZER_RETROFIT = named("DeezerRetrofit")
+val QUALIFIER_FAST_OKHTTP_CLIENT = named("FastOkHttpClient")
+val QUALIFIER_BACKUP_GSON = named("BackupGson")
+val QUALIFIER_APP_SCOPE = named("AppScope")
+val QUALIFIER_LISTEN_BRAINZ_RETROFIT = named("ListenBrainzRetrofit")

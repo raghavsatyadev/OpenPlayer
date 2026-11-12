@@ -26,7 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.database.JellyfinPlaylistEntity
 import io.github.raghavsatyadev.openplayer.data.jellyfin.model.JellyfinLibrary
@@ -44,7 +44,7 @@ import kotlinx.collections.immutable.toImmutableList
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun JellyfinDashboardScreen(
-    viewModel: JellyfinDashboardViewModel = hiltViewModel(),
+    viewModel: JellyfinDashboardViewModel = koinViewModel(),
     onBack: () -> Unit
 ) {
     val playlists by viewModel.playlists.collectAsStateWithLifecycle()

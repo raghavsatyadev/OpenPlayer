@@ -10,12 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** How much of a track must play before it counts as a listen, and the one-time import flag. */
-@Singleton
-class ListenHistoryPreferences @Inject constructor(
+class ListenHistoryPreferences(
     private val dataStore: DataStore<Preferences>
 ) {
     private object Keys {

@@ -10,7 +10,6 @@ import io.github.raghavsatyadev.openplayer.data.video.LocalVideo
 import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
 import io.github.raghavsatyadev.openplayer.data.video.VideoSongs
 import io.github.raghavsatyadev.openplayer.data.video.videoToSongMap
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -21,7 +20,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @Immutable
 data class VideoRow(val video: LocalVideo, val song: Song?, val librarySong: Song? = null) {
@@ -39,8 +37,7 @@ data class VideosTabState(
 }
 
 /** The Videos library tab: every local video and the track it matches, if any. */
-@HiltViewModel
-class VideosLibraryViewModel @Inject constructor(
+class VideosLibraryViewModel(
     private val videoRepository: LocalVideoRepository,
     private val videoPreferences: VideoPreferences,
     musicRepository: MusicRepository,

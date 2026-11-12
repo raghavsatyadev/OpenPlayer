@@ -13,14 +13,10 @@ import io.github.raghavsatyadev.openplayer.data.preferences.M3uSyncLink
 import io.github.raghavsatyadev.openplayer.data.preferences.M3uSyncPreferences
 import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
-import io.github.raghavsatyadev.openplayer.di.AppScope
 import io.github.raghavsatyadev.openplayer.di.DispatcherProvider
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.IOException
 import java.security.MessageDigest
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -120,14 +116,13 @@ internal fun m3uReplacementNames(
  * SAF traversal, stable identity markers, conflict detection and checkpoints stay behind this
  * boundary so UI and workers only need to request a sync.
  */
-@Singleton
-class M3uSyncRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+class M3uSyncRepository(
+    private val context: Context,
     private val playlistRepository: PlaylistPreferencesRepository,
     private val musicRepository: MusicRepository,
     private val preferences: M3uSyncPreferences,
     private val dispatchers: DispatcherProvider,
-    @AppScope appScope: CoroutineScope,
+    appScope: CoroutineScope,
 ) {
     private val resolver: ContentResolver get() = context.contentResolver
     private val syncMutex = Mutex()

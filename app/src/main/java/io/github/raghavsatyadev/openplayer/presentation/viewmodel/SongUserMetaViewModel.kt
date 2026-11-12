@@ -4,14 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.data.repository.SongUserMeta
 import io.github.raghavsatyadev.openplayer.data.repository.SongUserMetaRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /** Reads and saves a song's rating, moods and tags, and the values already used on other songs. */
-@HiltViewModel
-class SongUserMetaViewModel @Inject constructor(
+class SongUserMetaViewModel(
     private val repository: SongUserMetaRepository
 ) : ViewModel() {
 

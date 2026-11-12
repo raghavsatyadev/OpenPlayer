@@ -8,11 +8,8 @@ import com.google.gson.reflect.TypeToken
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.database.TransitionDao
 import io.github.raghavsatyadev.openplayer.data.database.TransitionRuleEntity
-import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Transition rules, as an array of [TransitionRuleEntity] (the shape every version reads).
@@ -22,11 +19,10 @@ import javax.inject.Singleton
  * every custom transition pointing at songs that aren't there. Older versions ignore the extra
  * fields, and backups without them restore their ids unchanged.
  */
-@Singleton
-class TransitionsModuleHandler @Inject constructor(
+class TransitionsModuleHandler(
     private val transitionDao: TransitionDao,
     private val songResolver: BackupSongResolver,
-    @BackupGson private val gson: Gson
+    private val gson: Gson
 ) : BackupModuleHandler {
 
     override val section = BackupSection.TRANSITIONS

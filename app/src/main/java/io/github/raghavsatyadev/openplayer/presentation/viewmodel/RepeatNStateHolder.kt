@@ -7,12 +7,9 @@ import io.github.raghavsatyadev.openplayer.data.service.MusicNotificationProvide
 import io.github.raghavsatyadev.openplayer.data.service.repeatn.RepeatNCounter
 import io.github.raghavsatyadev.openplayer.data.service.repeatn.RepeatNSession
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Mirrors repeat-N for the UI and forwards the user's choices to MusicService. */
-@Singleton
-class RepeatNStateHolder @Inject constructor(
+class RepeatNStateHolder(
     private val session: RepeatNSession,
 ) {
     /** Extra plays still to come for the current song; 0 when off. */

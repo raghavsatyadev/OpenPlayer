@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -21,7 +21,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerVideoVie
 @Composable
 internal fun activityPlayerVideoViewModel(): PlayerVideoViewModel {
     val owner = LocalActivity.current as? ViewModelStoreOwner
-    return if (owner != null) hiltViewModel(owner) else hiltViewModel()
+    return if (owner != null) koinViewModel(viewModelStoreOwner = owner) else koinViewModel()
 }
 
 /** In picture-in-picture, covers the whole (tiny) window with the video and nothing else. */

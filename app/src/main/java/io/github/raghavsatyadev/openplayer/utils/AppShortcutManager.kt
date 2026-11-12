@@ -10,21 +10,17 @@ import io.github.raghavsatyadev.openplayer.MainActivity
 import io.github.raghavsatyadev.openplayer.MainActivityIntentContract
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Manages dynamic app shortcuts for the launcher and persists the last playlist
  * to DataStore so Quick Settings tiles can access it even when the app is closed.
  */
-@Singleton
-class AppShortcutManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+class AppShortcutManager(
+    private val context: Context,
     private val userPreferencesRepository: UserPreferencesRepository
 ) {
     companion object {

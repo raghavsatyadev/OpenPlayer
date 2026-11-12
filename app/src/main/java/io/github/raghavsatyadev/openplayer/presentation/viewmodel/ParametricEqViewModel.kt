@@ -10,9 +10,6 @@ import io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricB
 import io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricEqPreferences
 import io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricEqProfile
 import io.github.raghavsatyadev.openplayer.data.service.player.DualPlayerEngine
-import io.github.raghavsatyadev.openplayer.di.AppScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,7 +24,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 enum class ParametricMessage { IMPORT_NO_FILTERS, IMPORT_FAILED, EXPORT_FAILED, EXPORTED }
 
@@ -39,13 +35,12 @@ data class ParametricEqUiState(
 )
 
 /** State holder for the parametric EQ editor; the effect itself lives in [EqualizerManager]. */
-@HiltViewModel
-class ParametricEqViewModel @Inject constructor(
+class ParametricEqViewModel(
     private val equalizerManager: EqualizerManager,
     private val preferences: ParametricEqPreferences,
     private val dualPlayerEngine: DualPlayerEngine,
-    @param:AppScope private val appScope: CoroutineScope,
-    @param:ApplicationContext private val context: Context,
+    private val appScope: CoroutineScope,
+    private val context: Context,
 ) : ViewModel() {
 
     private val engine = equalizerManager.parametric

@@ -47,7 +47,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioOutputDevice
@@ -62,7 +62,7 @@ import timber.log.Timber
 internal fun AudioOutputBottomSheet(
     sheetState: SheetState,
     onDismiss: () -> Unit,
-    viewModel: AudioOutputViewModel = hiltViewModel(),
+    viewModel: AudioOutputViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
     val outputs by viewModel.outputs.collectAsStateWithLifecycle()

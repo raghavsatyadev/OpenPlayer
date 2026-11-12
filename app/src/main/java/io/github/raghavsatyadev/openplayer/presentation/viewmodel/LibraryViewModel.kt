@@ -3,11 +3,8 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class LibraryViewModel @Inject constructor(
+class LibraryViewModel(
     private val libraryStateHolder: LibraryStateHolder
 ) : ViewModel() {
 

@@ -6,15 +6,12 @@ import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleCodec
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleDefinition
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleResolver
 import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /** Saves rule playlists and counts what a rule would match, for the rule editor sheet. */
-@HiltViewModel
-class SmartRulePlaylistViewModel @Inject constructor(
+class SmartRulePlaylistViewModel(
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,
     private val resolver: SmartRuleResolver,
 ) : ViewModel() {

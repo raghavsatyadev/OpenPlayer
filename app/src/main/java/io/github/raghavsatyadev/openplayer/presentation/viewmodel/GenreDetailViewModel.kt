@@ -7,7 +7,6 @@ import io.github.raghavsatyadev.openplayer.data.model.Genre
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.utils.GenreParser
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import io.github.raghavsatyadev.openplayer.di.DispatcherProvider
-import javax.inject.Inject
 
 enum class SortOption { ARTIST, ALBUM, TITLE }
 
@@ -101,8 +99,7 @@ data class GenreDetailUiState(
     val error: String? = null
 )
 
-@HiltViewModel
-class GenreDetailViewModel @Inject constructor(
+class GenreDetailViewModel(
     private val musicRepository: MusicRepository,
     private val savedStateHandle: SavedStateHandle,
     private val dispatchers: DispatcherProvider

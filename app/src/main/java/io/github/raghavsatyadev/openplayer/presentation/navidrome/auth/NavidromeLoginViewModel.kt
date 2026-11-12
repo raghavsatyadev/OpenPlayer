@@ -7,14 +7,12 @@ import androidx.work.WorkManager
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
 import io.github.raghavsatyadev.openplayer.data.navidrome.model.NavidromeMusicFolder
 import io.github.raghavsatyadev.openplayer.data.worker.NavidromeSyncWorker
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 sealed interface NavidromeLoginState {
     data object Idle : NavidromeLoginState
@@ -33,8 +31,7 @@ sealed interface NavidromeLoginState {
     data class Error(val message: String) : NavidromeLoginState
 }
 
-@HiltViewModel
-class NavidromeLoginViewModel @Inject constructor(
+class NavidromeLoginViewModel(
     private val repository: NavidromeRepository,
     private val workManager: WorkManager
 ) : ViewModel() {

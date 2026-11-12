@@ -6,7 +6,6 @@ import io.github.raghavsatyadev.openplayer.data.database.JellyfinPlaylistEntity
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.jellyfin.JellyfinRepository
 import io.github.raghavsatyadev.openplayer.data.jellyfin.model.JellyfinLibrary
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -14,14 +13,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.map
 
-@HiltViewModel
-class JellyfinDashboardViewModel @Inject constructor(
+class JellyfinDashboardViewModel(
     private val repository: JellyfinRepository
 ) : ViewModel() {
 

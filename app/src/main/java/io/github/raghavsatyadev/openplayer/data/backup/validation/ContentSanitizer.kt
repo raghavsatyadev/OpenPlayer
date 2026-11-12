@@ -1,10 +1,7 @@
 package io.github.raghavsatyadev.openplayer.data.backup.validation
 
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ContentSanitizer @Inject constructor() {
+class ContentSanitizer() {
 
     companion object {
         const val DEFAULT_MAX_LENGTH = 10_000

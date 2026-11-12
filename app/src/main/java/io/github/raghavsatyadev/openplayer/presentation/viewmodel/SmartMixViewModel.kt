@@ -2,16 +2,13 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * Screen access to the shared [SmartMixStateHolder]: entry points open the composer, the host in
  * MainActivity renders it, and settings clears its history. Every instance sees the same state.
  */
-@HiltViewModel
-class SmartMixViewModel @Inject constructor(
+class SmartMixViewModel(
     private val holder: SmartMixStateHolder,
 ) : ViewModel() {
     val target = holder.target

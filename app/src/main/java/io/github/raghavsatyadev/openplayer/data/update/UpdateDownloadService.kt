@@ -7,10 +7,8 @@ import android.content.pm.ServiceInfo
 import android.os.IBinder
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -25,21 +23,15 @@ import timber.log.Timber
  * The download itself stays in [AppUpdateManager]; this service mirrors its progress and
  * stops as soon as the status leaves [UpdateStatus.Downloading].
  */
-class UpdateDownloadService : Service() {
+class UpdateDownloadService : Service(), KoinComponent {
 
-    @EntryPoint
-    @InstallIn(SingletonComponent::class)
-    interface UpdateDownloadServiceEntryPoint {
-        fun appUpdateManager(): AppUpdateManager
-    }
+    private val manager: AppUpdateManager by inject()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val manager = EntryPointAccessors.fromApplication(applicationContext, UpdateDownloadServiceEntryPoint::class.java)
-            .appUpdateManager()
         val downloading = manager.status.value as? UpdateStatus.Downloading
         // startForeground must run even when there is nothing left to do, or the system
         // treats the startForegroundService() call as a broken promise.

@@ -9,12 +9,9 @@ import io.github.raghavsatyadev.openplayer.data.database.SongUserMetaCodec
 import io.github.raghavsatyadev.openplayer.data.database.SongUserMetaDao
 import io.github.raghavsatyadev.openplayer.data.database.SongUserMetaEntity
 import io.github.raghavsatyadev.openplayer.data.repository.SongUserMeta
-import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Per-song rating, moods and tags, as an array of
@@ -24,11 +21,10 @@ import javax.inject.Singleton
  * under [SONG] and restore points it at this library's id for that song. A local song that cannot
  * be matched is skipped (a wrong id would put the rating on another song); cloud ids are kept.
  */
-@Singleton
-class SongUserMetaModuleHandler @Inject constructor(
+class SongUserMetaModuleHandler(
     private val dao: SongUserMetaDao,
     private val songResolver: BackupSongResolver,
-    @BackupGson private val gson: Gson
+    private val gson: Gson
 ) : BackupModuleHandler {
 
     override val section = BackupSection.SONG_USER_META

@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.playlist
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -13,14 +12,9 @@ import androidx.work.WorkerParameters
 import io.github.raghavsatyadev.openplayer.data.model.isSmartPlaylist
 import io.github.raghavsatyadev.openplayer.data.preferences.M3uSyncPreferences
 import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesRepository
-import io.github.raghavsatyadev.openplayer.di.AppScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.combine
@@ -30,10 +24,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@HiltWorker
-class M3uSyncWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
+class M3uSyncWorker(
+    appContext: Context,
+    workerParams: WorkerParameters,
     private val repository: M3uSyncRepository,
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result = try {
@@ -53,13 +46,12 @@ class M3uSyncWorker @AssistedInject constructor(
 }
 
 /** Schedules periodic, foreground and playlist-change reconciliation without leaking UI state. */
-@Singleton
 @OptIn(FlowPreview::class)
-class M3uSyncCoordinator @Inject constructor(
+class M3uSyncCoordinator(
     private val workManager: WorkManager,
     private val preferences: M3uSyncPreferences,
     private val playlistRepository: PlaylistPreferencesRepository,
-    @AppScope private val scope: CoroutineScope,
+    private val scope: CoroutineScope,
 ) {
     private val started = AtomicBoolean(false)
     @Volatile

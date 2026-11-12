@@ -1,20 +1,16 @@
 package io.github.raghavsatyadev.openplayer.data.worker
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import timber.log.Timber
 
-@HiltWorker
-class NavidromeSyncWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
+class NavidromeSyncWorker(
+    appContext: Context,
+    workerParams: WorkerParameters,
     private val repository: NavidromeRepository
 ) : CoroutineWorker(appContext, workerParams) {
 

@@ -34,6 +34,7 @@ import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.library.DuplicateFinder
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.DuplicateSongsViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -41,7 +42,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewMode
 fun DuplicateSongsScreen(
     navController: NavController,
     playerViewModel: PlayerViewModel,
-    viewModel: DuplicateSongsViewModel = androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel(),
+    viewModel: DuplicateSongsViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val duplicatesQueueName = stringResource(R.string.duplicates_title)

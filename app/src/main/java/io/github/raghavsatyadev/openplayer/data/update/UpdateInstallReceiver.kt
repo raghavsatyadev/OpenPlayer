@@ -5,22 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.os.Build
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import timber.log.Timber
 
 /** Receives [PackageInstaller] session results for self-updates. */
-class UpdateInstallReceiver : BroadcastReceiver() {
-
-    @EntryPoint
-    @InstallIn(SingletonComponent::class)
-    interface UpdateInstallReceiverEntryPoint {
-        fun appUpdateManager(): AppUpdateManager
-    }
+class UpdateInstallReceiver : BroadcastReceiver(), KoinComponent {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != ACTION_INSTALL_STATUS) return
@@ -45,8 +37,7 @@ class UpdateInstallReceiver : BroadcastReceiver() {
             UpdateNotifications.dismissInstallConfirmation(context)
         }
 
-        EntryPointAccessors.fromApplication(context, UpdateInstallReceiverEntryPoint::class.java)
-            .appUpdateManager()
+        get<AppUpdateManager>()
             .onInstallStatus(status, confirmIntent, message)
     }
 

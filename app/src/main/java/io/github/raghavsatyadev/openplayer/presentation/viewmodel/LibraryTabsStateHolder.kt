@@ -3,16 +3,13 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 import io.github.raghavsatyadev.openplayer.data.model.LibraryTabId
 import io.github.raghavsatyadev.openplayer.data.model.toLibraryTabIdOrNull
 import io.github.raghavsatyadev.openplayer.utils.traceSection
-import dagger.hilt.android.scopes.ViewModelScoped
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@ViewModelScoped
-class LibraryTabsStateHolder @Inject constructor() {
+class LibraryTabsStateHolder() {
     fun showSortingSheet(isSortingSheetVisible: MutableStateFlow<Boolean>) {
         isSortingSheetVisible.value = true
     }

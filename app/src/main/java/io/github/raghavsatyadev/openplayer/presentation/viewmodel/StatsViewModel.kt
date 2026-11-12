@@ -11,8 +11,6 @@ import io.github.raghavsatyadev.openplayer.data.stats.StatsTimeRange
 import io.github.raghavsatyadev.openplayer.di.DispatcherProvider
 import io.github.raghavsatyadev.openplayer.presentation.stats.resolveStatsArtistImages
 import io.github.raghavsatyadev.openplayer.utils.GenreParser
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,8 +27,7 @@ import timber.log.Timber
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
-@HiltViewModel
-class StatsViewModel @Inject constructor(
+class StatsViewModel(
     private val playbackStatsRepository: PlaybackStatsRepository,
     private val musicRepository: MusicRepository,
     private val artistImageRepository: ArtistImageRepository,

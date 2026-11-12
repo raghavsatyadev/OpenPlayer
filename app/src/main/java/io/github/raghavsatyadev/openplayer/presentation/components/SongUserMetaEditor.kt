@@ -35,7 +35,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
@@ -50,7 +50,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SongUserMetaVi
 fun SongUserMetaEntryButton(
     song: Song,
     modifier: Modifier = Modifier,
-    viewModel: SongUserMetaViewModel = hiltViewModel()
+    viewModel: SongUserMetaViewModel = koinViewModel()
 ) {
     val meta by remember(song.id) { viewModel.metaFor(song.id) }.collectAsStateWithLifecycle(initialValue = null)
     var showEditor by remember { mutableStateOf(false) }

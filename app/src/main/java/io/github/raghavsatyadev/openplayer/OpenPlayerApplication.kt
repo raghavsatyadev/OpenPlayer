@@ -9,79 +9,64 @@ import android.os.Build
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.hilt.work.HiltWorkerFactory
-import androidx.work.Configuration
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceDiagnosticsController
 import io.github.raghavsatyadev.openplayer.data.media.SongMetadataEditor
-import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.playlist.M3uSyncCoordinator
+import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.repository.ArtistImageRepository
+import io.github.raghavsatyadev.openplayer.di.allModules
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.LibraryStateHolder
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ThemeStateHolder
 import io.github.raghavsatyadev.openplayer.utils.AlbumArtCacheManager
-import io.github.raghavsatyadev.openplayer.utils.FolderArtworkSettingsCoordinator
 import io.github.raghavsatyadev.openplayer.utils.AppLocaleManager
 import io.github.raghavsatyadev.openplayer.utils.CrashHandler
+import io.github.raghavsatyadev.openplayer.utils.FolderArtworkSettingsCoordinator
 import io.github.raghavsatyadev.openplayer.utils.MediaMetadataRetrieverPool
 import io.github.raghavsatyadev.openplayer.utils.PhoneOrientationPolicy
-import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.component.KoinComponent
+import org.koin.core.context.startKoin
 import timber.log.Timber
-import javax.inject.Inject
 
-@HiltAndroidApp
-class OpenPlayerApplication : Application(), ImageLoaderFactory, Configuration.Provider {
+class OpenPlayerApplication : Application(), ImageLoaderFactory, KoinComponent {
 
-    @Inject
-    lateinit var workerFactory: HiltWorkerFactory
+    private val imageLoader: ImageLoader by inject()
 
-    @Inject
-    lateinit var imageLoader: dagger.Lazy<ImageLoader>
+    private val navidromeCoilFetcherFactory: io.github.raghavsatyadev.openplayer.data.image.NavidromeCoilFetcher.Factory by inject()
 
-    @Inject
-    lateinit var navidromeCoilFetcherFactory: dagger.Lazy<io.github.raghavsatyadev.openplayer.data.image.NavidromeCoilFetcher.Factory>
+    private val jellyfinCoilFetcherFactory: io.github.raghavsatyadev.openplayer.data.image.JellyfinCoilFetcher.Factory by inject()
 
-    @Inject
-    lateinit var jellyfinCoilFetcherFactory: dagger.Lazy<io.github.raghavsatyadev.openplayer.data.image.JellyfinCoilFetcher.Factory>
+    private val localArtworkCoilFetcherFactory: io.github.raghavsatyadev.openplayer.data.image.LocalArtworkCoilFetcher.Factory by inject()
 
-    @Inject
-    lateinit var localArtworkCoilFetcherFactory: dagger.Lazy<io.github.raghavsatyadev.openplayer.data.image.LocalArtworkCoilFetcher.Factory>
+    private val themeStateHolder: ThemeStateHolder by inject()
 
-    @Inject
-    lateinit var themeStateHolder: dagger.Lazy<ThemeStateHolder>
+    private val artistImageRepository: ArtistImageRepository by inject()
 
-    @Inject
-    lateinit var artistImageRepository: dagger.Lazy<ArtistImageRepository>
+    private val libraryStateHolder: LibraryStateHolder by inject()
 
-    @Inject
-    lateinit var libraryStateHolder: dagger.Lazy<LibraryStateHolder>
+    private val userPreferencesRepository: UserPreferencesRepository by inject()
 
-    @Inject
-    lateinit var userPreferencesRepository: dagger.Lazy<UserPreferencesRepository>
+    private val folderArtworkSettingsCoordinator: FolderArtworkSettingsCoordinator by inject()
 
-    @Inject
-    lateinit var folderArtworkSettingsCoordinator: dagger.Lazy<FolderArtworkSettingsCoordinator>
+    private val syncManager: io.github.raghavsatyadev.openplayer.data.worker.SyncManager by inject()
 
-    @Inject
-    lateinit var syncManager: dagger.Lazy<io.github.raghavsatyadev.openplayer.data.worker.SyncManager>
+    private val advancedPerformanceDiagnosticsController: AdvancedPerformanceDiagnosticsController by inject()
 
-    @Inject
-    lateinit var advancedPerformanceDiagnosticsController: dagger.Lazy<AdvancedPerformanceDiagnosticsController>
+    private val m3uSyncCoordinator: M3uSyncCoordinator by inject()
 
-    @Inject
-    lateinit var m3uSyncCoordinator: dagger.Lazy<M3uSyncCoordinator>
+    private val updateCheckScheduler: io.github.raghavsatyadev.openplayer.data.update.UpdateCheckScheduler by inject()
 
-    @Inject
-    lateinit var updateCheckScheduler: dagger.Lazy<io.github.raghavsatyadev.openplayer.data.update.UpdateCheckScheduler>
-
-    @Inject
-    lateinit var songMetadataEditor: dagger.Lazy<SongMetadataEditor>
+    private val songMetadataEditor: SongMetadataEditor by inject()
 
     private val startupScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -91,22 +76,22 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, Configuration.P
 
     private val appLifecycleObserver = object : DefaultLifecycleObserver {
         override fun onStart(owner: LifecycleOwner) {
-            libraryStateHolder.get().restoreAfterTrimIfNeeded()
-            m3uSyncCoordinator.get().onAppForeground()
-            advancedPerformanceDiagnosticsController.get().onAppForeground()
+            libraryStateHolder.restoreAfterTrimIfNeeded()
+            m3uSyncCoordinator.onAppForeground()
+            advancedPerformanceDiagnosticsController.onAppForeground()
             // Gives songs cut off by an interrupted tag save (a failed write-back, or the app
             // being killed mid-write) their edited audio back, and lists the ones the app can no
             // longer write to so the player can ask the user for access.
-            startupScope.launch { songMetadataEditor.get().resumeInterruptedWriteBacks() }
+            startupScope.launch { songMetadataEditor.resumeInterruptedWriteBacks() }
         }
 
         override fun onResume(owner: LifecycleOwner) {
             // Image access can change while system settings is open, without restarting us.
-            startupScope.launch { folderArtworkSettingsCoordinator.get().reconcile() }
+            startupScope.launch { folderArtworkSettingsCoordinator.reconcile() }
         }
 
         override fun onStop(owner: LifecycleOwner) {
-            advancedPerformanceDiagnosticsController.get().onAppBackground()
+            advancedPerformanceDiagnosticsController.onAppBackground()
         }
     }
 
@@ -116,6 +101,13 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, Configuration.P
 
     override fun onCreate() {
         super.onCreate()
+
+        startKoin {
+            androidLogger()
+            androidContext(this@OpenPlayerApplication)
+            workManagerFactory()
+            modules(allModules)
+        }
 
         if (BuildConfig.BUILD_TYPE != "benchmark") {
             CrashHandler.install(this)
@@ -141,17 +133,17 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, Configuration.P
 
         registerActivityLifecycleCallbacks(PhoneOrientationPolicy)
 
-        syncManager.get().start()
+        syncManager.start()
 
-        m3uSyncCoordinator.get().start()
+        m3uSyncCoordinator.start()
 
-        updateCheckScheduler.get().start()
+        updateCheckScheduler.start()
 
-        advancedPerformanceDiagnosticsController.get().start(startupScope)
+        advancedPerformanceDiagnosticsController.start(startupScope)
 
         startupScope.launch {
             val savedLimit = runCatching {
-                userPreferencesRepository.get().albumArtCacheLimitMbFlow.first()
+                userPreferencesRepository.albumArtCacheLimitMbFlow.first()
             }.getOrNull()
             if (savedLimit != null) {
                 AlbumArtCacheManager.configuredCacheLimitMb = savedLimit.toLong()
@@ -162,20 +154,20 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, Configuration.P
         // notably when a backup restore writes it straight into DataStore. A stale mirror would
         // leave the toggle reporting one thing while artwork resolution did another.
         startupScope.launch {
-            userPreferencesRepository.get().useFolderAlbumArtFlow.collect {
-                folderArtworkSettingsCoordinator.get().reconcile()
+            userPreferencesRepository.useFolderAlbumArtFlow.collect {
+                folderArtworkSettingsCoordinator.reconcile()
             }
         }
     }
 
     override fun newImageLoader(): ImageLoader {
-        return imageLoader.get().newBuilder()
+        return imageLoader.newBuilder()
             .components {
                 add(io.github.raghavsatyadev.openplayer.data.image.SharedCloudArtworkStringMapper(packageName))
                 add(io.github.raghavsatyadev.openplayer.data.image.SharedCloudArtworkUriMapper(packageName))
-                add(localArtworkCoilFetcherFactory.get())
-                add(navidromeCoilFetcherFactory.get())
-                add(jellyfinCoilFetcherFactory.get())
+                add(localArtworkCoilFetcherFactory)
+                add(navidromeCoilFetcherFactory)
+                add(jellyfinCoilFetcherFactory)
             }
             .build()
     }
@@ -184,14 +176,14 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, Configuration.P
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
 
-        imageLoader.get().memoryCache?.trimMemory(level)
+        imageLoader.memoryCache?.trimMemory(level)
 
         if (
             level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_MODERATE ||
             level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND ||
             level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN
         ) {
-            themeStateHolder.get().trimMemory(level)
+            themeStateHolder.trimMemory(level)
         }
 
         if (
@@ -199,23 +191,17 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, Configuration.P
             level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND ||
             level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN
         ) {
-            artistImageRepository.get().clearCache()
+            artistImageRepository.clearCache()
             MediaMetadataRetrieverPool.clear()
         }
 
-        libraryStateHolder.get().trimMemory(level)
+        libraryStateHolder.trimMemory(level)
 
         if (
             level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL ||
             level >= ComponentCallbacks2.TRIM_MEMORY_COMPLETE
         ) {
-            imageLoader.get().memoryCache?.clear()
+            imageLoader.memoryCache?.clear()
         }
     }
-
-    override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
-
 }

@@ -7,8 +7,6 @@ import kotlinx.coroutines.CancellationException
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Local HTTP proxy server for streaming Navidrome/Subsonic audio.
@@ -16,8 +14,7 @@ import javax.inject.Singleton
  * Resolves `navidrome://{songId}` URIs by generating authenticated streaming URLs
  * from the Navidrome server and proxying the audio data to ExoPlayer.
  */
-@Singleton
-class NavidromeStreamProxy @Inject constructor(
+class NavidromeStreamProxy(
     private val repository: NavidromeRepository,
     okHttpClient: OkHttpClient
 ) : CloudStreamProxy<String>(okHttpClient) {

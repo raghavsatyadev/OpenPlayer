@@ -8,13 +8,11 @@ import io.github.raghavsatyadev.openplayer.data.model.TransitionMode
 import io.github.raghavsatyadev.openplayer.data.model.TransitionRule
 import io.github.raghavsatyadev.openplayer.data.model.TransitionSettings
 import io.github.raghavsatyadev.openplayer.data.repository.TransitionRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 data class TransitionUiState(
     val rule: TransitionRule? = null,
@@ -25,8 +23,7 @@ data class TransitionUiState(
     val playlistId: String? = null
 )
 
-@HiltViewModel
-class TransitionViewModel @Inject constructor(
+class TransitionViewModel(
     private val transitionRepository: TransitionRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {

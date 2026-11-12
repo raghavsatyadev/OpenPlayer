@@ -99,7 +99,7 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.HapticFeedbackConstantsCompat
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import coil.size.Size
@@ -158,8 +158,8 @@ fun PlaylistDetailScreen(
     onBackClick: () -> Unit,
     onDeletePlayListClick: () -> Unit,
     playerViewModel: PlayerViewModel,
-    playlistViewModel: PlaylistViewModel = hiltViewModel(),
-    cloudDownloadsViewModel: CloudDownloadsViewModel = hiltViewModel(),
+    playlistViewModel: PlaylistViewModel = koinViewModel(),
+    cloudDownloadsViewModel: CloudDownloadsViewModel = koinViewModel(),
     navController: NavController
 ) {
     val uiState by playlistViewModel.uiState.collectAsStateWithLifecycle()

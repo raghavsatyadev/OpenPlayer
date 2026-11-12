@@ -7,14 +7,11 @@ import io.github.raghavsatyadev.openplayer.data.preferences.VideoSettings
 import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
 import io.github.raghavsatyadev.openplayer.data.video.VideoMatchingMode
 import io.github.raghavsatyadev.openplayer.data.worker.SyncManager
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /** Settings > Playback > Music videos. */
-@HiltViewModel
-class VideoSettingsViewModel @Inject constructor(
+class VideoSettingsViewModel(
     private val videoPreferences: VideoPreferences,
     private val videoRepository: LocalVideoRepository,
     private val syncManager: SyncManager,

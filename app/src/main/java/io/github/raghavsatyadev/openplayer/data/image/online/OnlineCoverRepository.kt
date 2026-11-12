@@ -9,7 +9,6 @@ import io.github.raghavsatyadev.openplayer.data.network.deezer.DeezerApiService
 import io.github.raghavsatyadev.openplayer.data.network.itunes.ITunesSearchClient
 import io.github.raghavsatyadev.openplayer.data.preferences.OnlineCoverPreferences
 import io.github.raghavsatyadev.openplayer.utils.LocalArtworkUri
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.Semaphore
@@ -23,15 +22,12 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.concurrent.ConcurrentHashMap
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Resolves missing album covers from online sources (Deezer, iTunes) and caches them locally.
  */
-@Singleton
-class OnlineCoverRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+class OnlineCoverRepository(
+    private val context: Context,
     private val deezer: DeezerApiService,
     private val itunes: ITunesSearchClient,
     private val okHttpClient: OkHttpClient,

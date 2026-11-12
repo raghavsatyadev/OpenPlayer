@@ -129,7 +129,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.R
@@ -170,8 +170,8 @@ private val ScreenGutter = 20.dp
 fun StatsScreen(
     navController: NavController,
     playerViewModel: PlayerViewModel,
-    statsViewModel: StatsViewModel = hiltViewModel(),
-    recapEntryViewModel: RecapEntryViewModel = hiltViewModel()
+    statsViewModel: StatsViewModel = koinViewModel(),
+    recapEntryViewModel: RecapEntryViewModel = koinViewModel()
 ) {
     val uiState by statsViewModel.uiState.collectAsStateWithLifecycle()
     val recapEntries by recapEntryViewModel.statsEntries.collectAsStateWithLifecycle()

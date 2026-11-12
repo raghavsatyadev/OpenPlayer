@@ -31,8 +31,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.Locale
-import javax.inject.Inject
-import javax.inject.Singleton
 
 private const val ENABLE_FOLDERS_STORAGE_FILTER = false
 /** [io.github.raghavsatyadev.openplayer.data.model.Genre.id] of the bucket for songs without a genre tag. */
@@ -71,8 +69,7 @@ data class LibraryGenresState(
  * Manages the data state of the music library: Songs, Albums, Artists, Folders.
  * Handles loading from Repository and applying SortOptions.
  */
-@Singleton
-class LibraryStateHolder @Inject constructor(
+class LibraryStateHolder(
     private val musicRepository: MusicRepository,
     private val userPreferencesRepository: UserPreferencesRepository
 ) {

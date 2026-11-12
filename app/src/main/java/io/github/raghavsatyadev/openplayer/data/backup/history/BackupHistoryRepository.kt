@@ -7,16 +7,12 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupHistoryEntry
-import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class BackupHistoryRepository @Inject constructor(
+class BackupHistoryRepository(
     private val dataStore: DataStore<Preferences>,
-    @BackupGson private val gson: Gson
+    private val gson: Gson
 ) {
     companion object {
         private val BACKUP_HISTORY_KEY = stringPreferencesKey("backup_history_json")

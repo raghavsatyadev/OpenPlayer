@@ -4,8 +4,6 @@ import android.os.ParcelFileDescriptor
 import com.kyant.taglib.TagLib
 import timber.log.Timber
 import java.io.File
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.pow
 
 /**
@@ -18,8 +16,7 @@ import kotlin.math.pow
  * The gain is converted to a linear volume multiplier: 10^(gainDb / 20)
  * and clamped to [0.0, 1.0] to avoid clipping.
  */
-@Singleton
-class ReplayGainManager @Inject constructor() {
+class ReplayGainManager() {
 
     private val cache = object : LinkedHashMap<String, ReplayGainValues?>(64, 0.75f, true) {
         override fun removeEldestEntry(eldest: Map.Entry<String, ReplayGainValues?>) = size > 200

@@ -9,12 +9,9 @@ import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Looks up the newest published build of each channel. */
-@Singleton
-class AppReleaseSource @Inject constructor(
+class AppReleaseSource(
     baseClient: OkHttpClient,
 ) {
     private val client = baseClient.newBuilder()

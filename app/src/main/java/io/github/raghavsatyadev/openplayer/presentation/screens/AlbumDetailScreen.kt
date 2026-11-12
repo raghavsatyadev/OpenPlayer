@@ -89,7 +89,7 @@ import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerStatusBarStyle
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
@@ -127,8 +127,8 @@ fun AlbumDetailScreen(
     albumId: String,
     navController: NavController,
     playerViewModel: PlayerViewModel,
-    viewModel: AlbumDetailViewModel = hiltViewModel(),
-    playlistViewModel: PlaylistViewModel = hiltViewModel()
+    viewModel: AlbumDetailViewModel = koinViewModel(),
+    playlistViewModel: PlaylistViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val stablePlayerState by playerViewModel.stablePlayerState.collectAsStateWithLifecycle()

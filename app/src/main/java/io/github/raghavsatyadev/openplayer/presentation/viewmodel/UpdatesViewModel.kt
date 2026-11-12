@@ -6,12 +6,10 @@ import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.data.update.AppUpdateManager
 import io.github.raghavsatyadev.openplayer.data.update.UpdateChannel
 import io.github.raghavsatyadev.openplayer.data.update.UpdateStatus
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 @Immutable
 data class UpdatesUiState(
@@ -22,8 +20,7 @@ data class UpdatesUiState(
     val status: UpdateStatus,
 )
 
-@HiltViewModel
-class UpdatesViewModel @Inject constructor(
+class UpdatesViewModel(
     private val updateManager: AppUpdateManager,
 ) : ViewModel() {
 

@@ -42,7 +42,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.offline.OfflineDownload
@@ -53,7 +53,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.CloudDownloads
 @Composable
 fun CloudDownloadsScreen(
     onBack: () -> Unit,
-    viewModel: CloudDownloadsViewModel = hiltViewModel()
+    viewModel: CloudDownloadsViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 

@@ -8,7 +8,6 @@ import com.google.gson.reflect.TypeToken
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.utils.GenreParser
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -24,8 +23,6 @@ import java.time.format.TextStyle
 import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,9 +34,8 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 import timber.log.Timber
 
-@Singleton
-class PlaybackStatsRepository @Inject constructor(
-    @ApplicationContext private val context: Context
+class PlaybackStatsRepository(
+    private val context: Context
 ) {
 
     private val gson = Gson()

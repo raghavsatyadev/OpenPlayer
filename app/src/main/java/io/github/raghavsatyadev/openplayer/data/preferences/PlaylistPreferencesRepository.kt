@@ -15,11 +15,8 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class PlaylistPreferencesRepository @Inject constructor(
+class PlaylistPreferencesRepository(
     private val localPlaylistDao: LocalPlaylistDao,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val transitionDao: TransitionDao

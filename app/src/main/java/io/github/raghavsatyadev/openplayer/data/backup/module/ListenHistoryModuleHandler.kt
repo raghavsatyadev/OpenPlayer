@@ -9,12 +9,9 @@ import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.database.ListenHistoryDao
 import io.github.raghavsatyadev.openplayer.data.database.ListenHistoryEntity
 import io.github.raghavsatyadev.openplayer.data.preferences.ListenHistoryPreferences
-import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Counted listen history, as an array of
@@ -24,12 +21,11 @@ import javax.inject.Singleton
  * On restore, songs are matched against the local library using [songResolver]. A song that cannot
  * be matched is dropped along with its listens.
  */
-@Singleton
-class ListenHistoryModuleHandler @Inject constructor(
+class ListenHistoryModuleHandler(
     private val dao: ListenHistoryDao,
     private val songResolver: BackupSongResolver,
     private val preferences: ListenHistoryPreferences,
-    @BackupGson private val gson: Gson
+    private val gson: Gson
 ) : BackupModuleHandler {
 
     override val section = BackupSection.LISTEN_HISTORY

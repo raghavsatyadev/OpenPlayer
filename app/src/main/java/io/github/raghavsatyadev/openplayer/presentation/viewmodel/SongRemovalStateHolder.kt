@@ -6,14 +6,11 @@ import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
-import dagger.hilt.android.scopes.ViewModelScoped
-import javax.inject.Inject
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-@ViewModelScoped
-class SongRemovalStateHolder @Inject constructor(
+class SongRemovalStateHolder(
     private val musicRepository: MusicRepository,
     private val metadataEditStateHolder: MetadataEditStateHolder,
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,

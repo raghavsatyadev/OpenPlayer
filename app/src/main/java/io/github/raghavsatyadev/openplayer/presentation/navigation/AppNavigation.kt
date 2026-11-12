@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.ui.unit.IntOffset
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -410,7 +410,7 @@ fun AppNavigation(
                 popExitTransition = { popExitTransition() },
             ) { backStackEntry ->
                 val playlistId = backStackEntry.arguments?.getString("playlistId")
-                val playlistViewModel: PlaylistViewModel = hiltViewModel()
+                val playlistViewModel: PlaylistViewModel = koinViewModel()
                 if (playlistId != null) {
                     ScreenWrapper(navController = navController, playerViewModel = playerViewModel) {
                         PlaylistDetailScreen(

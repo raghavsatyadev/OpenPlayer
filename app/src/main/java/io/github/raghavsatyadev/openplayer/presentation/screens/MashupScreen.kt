@@ -49,7 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
@@ -65,7 +65,7 @@ import io.github.raghavsatyadev.openplayer.presentation.components.rememberSynce
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MashupScreen(
-    mashupViewModel: MashupViewModel = hiltViewModel()
+    mashupViewModel: MashupViewModel = koinViewModel()
 ) {
     val mashupUiState by mashupViewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalSheetState()

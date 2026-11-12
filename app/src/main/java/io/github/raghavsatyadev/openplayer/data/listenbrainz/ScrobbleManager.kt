@@ -7,13 +7,10 @@ import io.github.raghavsatyadev.openplayer.data.database.ListenBrainzSource
 import io.github.raghavsatyadev.openplayer.data.database.MusicDao
 import io.github.raghavsatyadev.openplayer.data.database.SongEntity
 import io.github.raghavsatyadev.openplayer.data.preferences.ListenBrainzPreferencesRepository
-import io.github.raghavsatyadev.openplayer.di.AppScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Bridges finalized listening sessions to the ListenBrainz submission queue.
@@ -25,13 +22,12 @@ import javax.inject.Singleton
  * The ListenBrainz threshold is deliberately independent of the tracker's own stats floor, and
  * of the Subsonic scrobble in MusicService (which fires on raw track-end with no threshold).
  */
-@Singleton
-class ScrobbleManager @Inject constructor(
+class ScrobbleManager(
     private val musicDao: MusicDao,
     private val listenBrainzDao: ListenBrainzDao,
     private val listenBrainzRepository: ListenBrainzRepository,
     private val listenBrainzPreferences: ListenBrainzPreferencesRepository,
-    @AppScope private val scope: CoroutineScope
+    private val scope: CoroutineScope
 ) {
     private var lastPlayingNowSongId: String? = null
     private var lastPlayingNowRealtimeMs: Long = 0L

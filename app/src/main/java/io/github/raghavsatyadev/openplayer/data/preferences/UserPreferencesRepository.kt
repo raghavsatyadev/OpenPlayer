@@ -24,8 +24,6 @@ import io.github.raghavsatyadev.openplayer.data.equalizer.EqualizerPreset
 import io.github.raghavsatyadev.openplayer.data.model.StorageFilter
 import io.github.raghavsatyadev.openplayer.data.update.UpdateChannel
 import io.github.raghavsatyadev.openplayer.utils.PlaybackSpeedUtils
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.text.get
 import kotlin.text.set
 import kotlinx.coroutines.flow.Flow
@@ -82,12 +80,9 @@ data class AdvancedPerformanceDiagnosticsSettings(
         enabled && expiresAtEpochMs?.let { nowEpochMs < it } == true
 }
 
-@Singleton
-class UserPreferencesRepository
-@Inject
-constructor(
-        private val dataStore: DataStore<Preferences>,
-        private val json: Json
+class UserPreferencesRepository(
+    private val dataStore: DataStore<Preferences>,
+    private val json: Json
 ) {
 
     private val backupExcludedKeyNames = setOf(

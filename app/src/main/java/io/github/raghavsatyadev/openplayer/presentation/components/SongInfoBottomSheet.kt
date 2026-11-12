@@ -61,7 +61,7 @@ import io.github.raghavsatyadev.openplayer.utils.formatDuration
 import io.github.raghavsatyadev.openplayer.utils.shapes.RoundedStarShape
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import androidx.core.net.toUri
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.data.media.CoverArtUpdate
 import io.github.raghavsatyadev.openplayer.data.media.CustomMetadataChanges
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SongInfoBottomSheetViewModel
@@ -107,7 +107,7 @@ fun SongInfoBottomSheet(
         customMetadataChanges: CustomMetadataChanges
     ) -> Unit,
     removeFromListTrigger: () -> Unit,
-    songInfoViewModel: SongInfoBottomSheetViewModel = hiltViewModel()
+    songInfoViewModel: SongInfoBottomSheetViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     var showEditSheet by remember { mutableStateOf(false) }

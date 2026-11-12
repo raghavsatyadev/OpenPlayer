@@ -5,16 +5,12 @@ import com.google.gson.reflect.TypeToken
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.database.SearchHistoryDao
 import io.github.raghavsatyadev.openplayer.data.database.SearchHistoryEntity
-import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class SearchHistoryModuleHandler @Inject constructor(
+class SearchHistoryModuleHandler(
     private val searchHistoryDao: SearchHistoryDao,
-    @BackupGson private val gson: Gson
+    private val gson: Gson
 ) : BackupModuleHandler {
 
     override val section = BackupSection.SEARCH_HISTORY

@@ -72,7 +72,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.data.model.Album
 import io.github.raghavsatyadev.openplayer.data.model.Artist
 import io.github.raghavsatyadev.openplayer.data.model.Playlist
@@ -170,10 +170,10 @@ private const val MAX_ALBUM_MULTI_SELECTION = 6
 fun SearchScreen(
     paddingValues: PaddingValues,
     playerViewModel: PlayerViewModel = sharedPlayerViewModel(),
-    playlistViewModel: PlaylistViewModel = hiltViewModel(),
+    playlistViewModel: PlaylistViewModel = koinViewModel(),
     navController: NavHostController,
     onSearchBarActiveChange: (Boolean) -> Unit = {},
-    cloudDownloadsViewModel: CloudDownloadsViewModel = hiltViewModel()
+    cloudDownloadsViewModel: CloudDownloadsViewModel = koinViewModel()
 ) {
     val searchScreenEnteredAt = remember { android.os.SystemClock.elapsedRealtime() }
     var searchQuery by rememberSaveable { mutableStateOf(playerViewModel.searchQuery) }
@@ -1197,7 +1197,7 @@ fun SearchResultsList(
             ?.let { "Search: $it" }
             ?: "Search Results"
     }
-    val searchTapModeViewModel: SearchTapModeViewModel = hiltViewModel()
+    val searchTapModeViewModel: SearchTapModeViewModel = koinViewModel()
     val searchTapMode by searchTapModeViewModel.mode.collectAsStateWithLifecycle()
     val tapContext = androidx.compose.ui.platform.LocalContext.current
     val searchTapActions = remember(playerViewModel) { playerViewModel.searchTapActions { tapContext.getString(it) } }

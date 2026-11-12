@@ -8,13 +8,11 @@ import io.github.raghavsatyadev.openplayer.data.stats.PlaybackStatsRepository
 import io.github.raghavsatyadev.openplayer.di.DispatcherProvider
 import io.github.raghavsatyadev.openplayer.presentation.recap.RecapEntry
 import io.github.raghavsatyadev.openplayer.presentation.recap.RecapSchedule
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Clock
 import java.time.Duration
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -38,8 +36,7 @@ import timber.log.Timber
  * compute while collected, so a screen that shows one of them never pays for the other.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
-@HiltViewModel
-class RecapEntryViewModel @Inject constructor(
+class RecapEntryViewModel(
     private val playbackStatsRepository: PlaybackStatsRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     dispatchers: DispatcherProvider

@@ -27,8 +27,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 private data class TransitionSettingsSnapshot(
     val resolution: TransitionResolution,
@@ -41,8 +39,7 @@ private data class TransitionSettingsSnapshot(
  * commanding the DualPlayerEngine.
  */
 @OptIn(UnstableApi::class)
-@Singleton
-class TransitionController @Inject constructor(
+class TransitionController(
     private val engine: DualPlayerEngine,
     private val transitionRepository: TransitionRepository,
     private val userPreferencesRepository: UserPreferencesRepository,

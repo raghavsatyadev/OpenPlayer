@@ -28,7 +28,6 @@ import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepos
 import io.github.raghavsatyadev.openplayer.data.stream.BulkSyncResult
 import io.github.raghavsatyadev.openplayer.data.stream.CloudMusicUtils
 import io.github.raghavsatyadev.openplayer.utils.GenreParser
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -41,19 +40,16 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.absoluteValue
 
 @Suppress("DEPRECATION")
-@Singleton
-class JellyfinRepository @Inject constructor(
+class JellyfinRepository(
     private val api: JellyfinApiService,
     private val dao: JellyfinDao,
     private val musicDao: MusicDao,
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
-    @ApplicationContext private val context: Context
+    private val context: Context
 ) {
     private companion object {
         private const val TAG = "JellyfinRepo"

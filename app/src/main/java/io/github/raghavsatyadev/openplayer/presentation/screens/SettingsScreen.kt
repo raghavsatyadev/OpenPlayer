@@ -97,7 +97,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewMode
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewModel
 import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.data.preferences.LaunchTab
@@ -109,7 +109,7 @@ fun SettingsScreen(
         navController: NavController,
         playerViewModel: PlayerViewModel,
         onNavigationIconClick: () -> Unit,
-        settingsViewModel: SettingsViewModel = hiltViewModel()
+        settingsViewModel: SettingsViewModel = koinViewModel()
 ) {
 
     val transitionState = remember { MutableTransitionState(false) }

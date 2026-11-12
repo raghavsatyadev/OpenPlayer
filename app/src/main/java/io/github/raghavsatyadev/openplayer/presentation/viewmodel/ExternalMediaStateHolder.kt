@@ -11,12 +11,10 @@ import io.github.raghavsatyadev.openplayer.data.media.imageExtensionFromMimeType
 import io.github.raghavsatyadev.openplayer.data.media.isValidImageData
 import io.github.raghavsatyadev.openplayer.data.media.resolveAudioFileExtension
 import io.github.raghavsatyadev.openplayer.data.model.Song
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
-import javax.inject.Inject
 
 data class ExternalSongLoadResult(
     val song: Song,
@@ -25,8 +23,8 @@ data class ExternalSongLoadResult(
     val displayName: String?
 )
 
-class ExternalMediaStateHolder @Inject constructor(
-    @ApplicationContext private val context: Context
+class ExternalMediaStateHolder(
+    private val context: Context
 ) {
 
     suspend fun buildExternalQueue(

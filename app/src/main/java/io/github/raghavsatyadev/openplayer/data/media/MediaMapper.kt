@@ -5,9 +5,6 @@ import androidx.media3.common.MediaItem
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.utils.MediaItemBuilder
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Helper to map MediaItem to Song.
@@ -15,9 +12,8 @@ import javax.inject.Singleton
  * so it should be used for strictly metadata-based mapping or fallback.
  * The ViewModel should try lookup by ID first.
  */
-@Singleton
-class MediaMapper @Inject constructor(
-    @ApplicationContext private val context: Context
+class MediaMapper(
+    private val context: Context
 ) {
     fun resolveSongFromMediaItem(mediaItem: MediaItem): Song? {
         val metadata = mediaItem.mediaMetadata

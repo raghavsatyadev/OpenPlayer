@@ -147,20 +147,20 @@ import io.github.raghavsatyadev.openplayer.utils.CrashHandler
 import io.github.raghavsatyadev.openplayer.utils.LogUtils
 import io.github.raghavsatyadev.openplayer.utils.PhoneOrientationPolicy
 import io.github.raghavsatyadev.openplayer.utils.shouldKeepScreenAwake
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticsConfig
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
 import io.github.raghavsatyadev.openplayer.presentation.utils.NoOpHapticFeedback
 import io.github.raghavsatyadev.openplayer.utils.CrashLogData
-import javax.annotation.concurrent.Immutable
+import androidx.compose.runtime.Immutable
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -190,12 +190,11 @@ private data class DismissUndoBarSlice(
 private const val SYSTEM_SPLASH_HANDOFF_MS = 150L
 
 @androidx.annotation.OptIn(UnstableApi::class)
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val playerViewModel: PlayerViewModel by viewModels()
-    private val mainViewModel: MainViewModel by viewModels()
-    private val playerVideoViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerVideoViewModel by viewModels()
+    private val playerViewModel: PlayerViewModel by viewModel()
+    private val mainViewModel: MainViewModel by viewModel()
+    private val playerVideoViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerVideoViewModel by viewModel()
     private val videoPip by lazy {
         io.github.raghavsatyadev.openplayer.presentation.components.player.VideoPictureInPicture(
             this, playerVideoViewModel, playerViewModel.stablePlayerState.map { it.isPlaying },
@@ -203,12 +202,9 @@ class MainActivity : ComponentActivity() {
     }
     private var isUIVisiblyReady = false
     private var mediaControllerFuture: ListenableFuture<MediaController>? = null
-    @Inject
-    lateinit var userPreferencesRepository: UserPreferencesRepository
-    @Inject
-    lateinit var themePreferencesRepository: ThemePreferencesRepository
-    @Inject
-    lateinit var syncManager: SyncManager
+    private val userPreferencesRepository: UserPreferencesRepository by inject()
+    private val themePreferencesRepository: ThemePreferencesRepository by inject()
+    private val syncManager: SyncManager by inject()
     private val _pendingPlaylistNavigation = kotlinx.coroutines.flow.MutableStateFlow<String?>(null)
     private val _pendingShuffleAll = kotlinx.coroutines.flow.MutableStateFlow(false)
     private val _pendingUpdatesNavigation = kotlinx.coroutines.flow.MutableStateFlow(false)

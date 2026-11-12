@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * while the user is listening, prioritising thermal stability and battery over
  * background completion latency.
  *
- * Intentionally a singleton object with no Hilt wiring — it is read from
+ * Intentionally a singleton object with no DI wiring — it is read from
  * `CoroutineWorker.doWork()` where injected fields are awkward to coordinate
  * with a cross-cutting playback signal, and the read needs to be cheap.
  */

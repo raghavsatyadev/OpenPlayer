@@ -7,8 +7,6 @@ import io.github.raghavsatyadev.openplayer.data.equalizer.EqualizerPreset
 import io.github.raghavsatyadev.openplayer.data.preferences.EqualizerPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.service.player.DualPlayerEngine
-import io.github.raghavsatyadev.openplayer.di.AppScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +20,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlinx.serialization.json.Json
 import kotlinx.collections.immutable.ImmutableList
@@ -62,13 +59,12 @@ data class EqualizerUiState(
         get() = (EqualizerPreset.ALL_PRESETS + customPresets).toImmutableList()
 }
 
-@HiltViewModel
-class EqualizerViewModel @Inject constructor(
+class EqualizerViewModel(
     private val equalizerManager: EqualizerManager,
     private val equalizerPreferencesRepository: EqualizerPreferencesRepository,
     private val dualPlayerEngine: DualPlayerEngine,
-    @param:AppScope private val appScope: CoroutineScope,
-    @param:dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context
+    private val appScope: CoroutineScope,
+    private val context: android.content.Context
 ) : ViewModel() {
     
     companion object {

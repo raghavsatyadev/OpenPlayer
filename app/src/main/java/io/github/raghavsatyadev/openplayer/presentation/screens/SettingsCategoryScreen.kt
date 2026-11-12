@@ -128,7 +128,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.net.toUri
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import kotlin.math.roundToInt
@@ -185,10 +185,10 @@ fun SettingsCategoryScreen(
     highlightKey: String? = null,
     navController: NavController,
     playerViewModel: PlayerViewModel,
-    settingsViewModel: SettingsViewModel = hiltViewModel(),
-    m3uSyncViewModel: M3uSyncViewModel = hiltViewModel(),
-    statsViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.StatsViewModel = hiltViewModel(),
-    smartMixViewModel: SmartMixViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = koinViewModel(),
+    m3uSyncViewModel: M3uSyncViewModel = koinViewModel(),
+    statsViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.StatsViewModel = koinViewModel(),
+    smartMixViewModel: SmartMixViewModel = koinViewModel(),
     onBackClick: () -> Unit
 ) {
     val category = SettingsCategory.fromId(categoryId) ?: return

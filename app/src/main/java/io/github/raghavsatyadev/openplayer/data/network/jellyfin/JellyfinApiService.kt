@@ -11,8 +11,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Jellyfin API client.
@@ -20,8 +18,7 @@ import javax.inject.Singleton
  * Implements the Jellyfin REST API with token-based authentication.
  * API Reference: https://api.jellyfin.org/
  */
-@Singleton
-class JellyfinApiService @Inject constructor(
+class JellyfinApiService(
     baseOkHttpClient: OkHttpClient
 ) {
 

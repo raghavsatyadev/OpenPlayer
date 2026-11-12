@@ -9,17 +9,13 @@ import android.provider.MediaStore
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class MediaStoreObserver @Inject constructor(
-    @ApplicationContext private val context: Context
+class MediaStoreObserver(
+    private val context: Context
 ) : ContentObserver(Handler(Looper.getMainLooper())), DefaultLifecycleObserver {
 
     private val _mediaStoreChanges = MutableSharedFlow<Unit>(

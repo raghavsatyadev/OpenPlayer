@@ -8,11 +8,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.presentation.components.external.ExternalPlayerOverlay
 import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerTheme
@@ -21,19 +21,15 @@ import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.preferences.AppThemeMode
 import io.github.raghavsatyadev.openplayer.data.preferences.ThemePreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.preferences.ThemePreset
-import javax.inject.Inject
-
 @androidx.annotation.OptIn(UnstableApi::class)
-@AndroidEntryPoint
 class ExternalPlayerActivity : ComponentActivity() {
 
     override fun attachBaseContext(newBase: android.content.Context) {
         super.attachBaseContext(io.github.raghavsatyadev.openplayer.utils.AppLocaleManager.wrapContext(newBase))
     }
 
-    private val playerViewModel: PlayerViewModel by viewModels()
-    @Inject
-    lateinit var themePreferencesRepository: ThemePreferencesRepository
+    private val playerViewModel: PlayerViewModel by viewModel()
+    private val themePreferencesRepository: ThemePreferencesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(

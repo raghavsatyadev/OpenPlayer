@@ -21,8 +21,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicLong
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.FlowPreview
 
 /**
@@ -34,8 +32,7 @@ import kotlinx.coroutines.FlowPreview
  * - Search filter management
  * - Search history CRUD operations
  */
-@Singleton
-class SearchStateHolder @Inject constructor(
+class SearchStateHolder(
     private val musicRepository: MusicRepository,
 ) {
     private companion object {

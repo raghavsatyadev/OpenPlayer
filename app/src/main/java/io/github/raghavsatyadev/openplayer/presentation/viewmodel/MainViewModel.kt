@@ -7,17 +7,14 @@ import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.data.worker.SyncManager
 import io.github.raghavsatyadev.openplayer.data.worker.SyncProgress
 import io.github.raghavsatyadev.openplayer.utils.LogUtils
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
+class MainViewModel(
     private val syncManager: SyncManager,
     musicRepository: MusicRepository,
     userPreferencesRepository: UserPreferencesRepository

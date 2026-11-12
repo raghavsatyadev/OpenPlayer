@@ -11,9 +11,7 @@ import io.github.raghavsatyadev.openplayer.data.playlist.nlp.MixSuggestionPlays
 import io.github.raghavsatyadev.openplayer.data.preferences.MixPreferences
 import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
-import io.github.raghavsatyadev.openplayer.di.AppScope
 import io.github.raghavsatyadev.openplayer.presentation.components.requestText
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -29,8 +27,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** The composer's thinking animation stays on screen at least this long before a preview. */
 internal const val MIX_MIN_THINKING_MS = 4_000L
@@ -48,16 +44,15 @@ enum class SmartMixTarget {
  * single host that renders the sheet. A generated mix is only a preview: playing it, saving it
  * as a playlist or using it for today are separate, explicit actions.
  */
-@Singleton
-class SmartMixStateHolder @Inject constructor(
-    @ApplicationContext private val context: Context,
+class SmartMixStateHolder(
+    private val context: Context,
     private val generator: NlpPlaylistGenerator,
     private val musicRepository: MusicRepository,
     private val dailyMixManager: DailyMixManager,
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,
     private val dailyMixStateHolder: DailyMixStateHolder,
     private val mixPreferences: MixPreferences,
-    @AppScope private val scope: CoroutineScope,
+    private val scope: CoroutineScope,
 ) {
     private val _target = MutableStateFlow<SmartMixTarget?>(null)
     /** Null while the composer is closed. */

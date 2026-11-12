@@ -9,16 +9,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.random.Random
 
 /**
  * Feeds [SmartRuleEvaluator] with the library, play stats, user meta and favorites, once or as
  * a flow that re-evaluates whenever any of them changes.
  */
-@Singleton
-class SmartRuleResolver @Inject constructor(
+class SmartRuleResolver(
     private val musicRepository: MusicRepository,
     private val engagementDao: EngagementDao,
     private val songUserMetaRepository: SongUserMetaRepository,

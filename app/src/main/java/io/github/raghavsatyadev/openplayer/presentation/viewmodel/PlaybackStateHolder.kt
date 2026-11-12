@@ -11,9 +11,6 @@ import io.github.raghavsatyadev.openplayer.data.service.player.DualPlayerEngine
 import io.github.raghavsatyadev.openplayer.data.preferences.PreviousButtonBehavior
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.preferences.shouldRestartCurrentTrack
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,12 +31,11 @@ import io.github.raghavsatyadev.openplayer.utils.QueueUtils
 import io.github.raghavsatyadev.openplayer.utils.MediaItemBuilder
 import kotlin.math.abs
 
-@Singleton
-class PlaybackStateHolder @Inject constructor(
+class PlaybackStateHolder(
     private val dualPlayerEngine: DualPlayerEngine,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val queueStateHolder: QueueStateHolder,
-    @param:ApplicationContext private val appContext: Context
+    private val appContext: Context
 ) {
     companion object {
         private const val TAG = "PlaybackStateHolder"

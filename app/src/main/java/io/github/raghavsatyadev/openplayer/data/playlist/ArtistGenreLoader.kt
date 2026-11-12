@@ -2,10 +2,7 @@ package io.github.raghavsatyadev.openplayer.data.playlist
 
 import android.content.Context
 import io.github.raghavsatyadev.openplayer.data.playlist.nlp.ArtistGenreTable
-import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Reads the shipped [ArtistGenreTable] asset for the artists a library actually contains.
@@ -16,9 +13,8 @@ import javax.inject.Singleton
  *
  * Every failure path returns [ArtistGenreTable.EMPTY]; it never throws and never blocks a mix.
  */
-@Singleton
-class ArtistGenreLoader @Inject constructor(
-    @ApplicationContext private val context: Context,
+class ArtistGenreLoader(
+    private val context: Context,
 ) {
     /** Genres for [artistKeys] (as produced by `LibraryIndex.artistKeysOf`), where known. */
     fun load(artistKeys: Set<String>): ArtistGenreTable {

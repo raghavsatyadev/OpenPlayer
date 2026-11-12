@@ -124,7 +124,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.core.content.ContextCompat
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -168,7 +168,7 @@ import androidx.compose.ui.text.style.TextOverflow
 @OptIn(ExperimentalPermissionsApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 fun SetupScreen(
-    setupViewModel: SetupViewModel = hiltViewModel(),
+    setupViewModel: SetupViewModel = koinViewModel(),
     onSetupComplete: () -> Unit
 ) {
     val context = LocalContext.current

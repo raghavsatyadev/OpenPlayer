@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
@@ -27,7 +27,7 @@ fun SavedQueuesHost(
     playerViewModel: PlayerViewModel,
     onDismissSave: () -> Unit,
     onDismissList: () -> Unit,
-    viewModel: SavedQueuesViewModel = hiltViewModel()
+    viewModel: SavedQueuesViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()

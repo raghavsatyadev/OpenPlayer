@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.update
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -10,9 +9,6 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
-import io.github.raghavsatyadev.openplayer.di.AppScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -20,14 +16,11 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Daily background check that posts a notification once per newly found release. */
-@HiltWorker
-class UpdateCheckWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
+class UpdateCheckWorker(
+    appContext: Context,
+    workerParams: WorkerParameters,
     private val updateManager: AppUpdateManager,
     private val preferences: UserPreferencesRepository,
 ) : CoroutineWorker(appContext, workerParams) {
@@ -54,11 +47,10 @@ class UpdateCheckWorker @AssistedInject constructor(
 }
 
 /** Keeps the periodic update check in step with the user's auto-check preference. */
-@Singleton
-class UpdateCheckScheduler @Inject constructor(
+class UpdateCheckScheduler(
     private val workManager: WorkManager,
     private val updateManager: AppUpdateManager,
-    @AppScope private val scope: CoroutineScope,
+    private val scope: CoroutineScope,
 ) {
     private val started = AtomicBoolean(false)
 

@@ -95,7 +95,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.equalizer.EqualizerPreset
@@ -144,8 +144,8 @@ import kotlinx.collections.immutable.toImmutableList
 fun EqualizerScreen(
     navController: NavController,
     playerViewModel: PlayerViewModel = sharedPlayerViewModel(),
-    equalizerViewModel: EqualizerViewModel = hiltViewModel(),
-    parametricViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.ParametricEqViewModel = hiltViewModel()
+    equalizerViewModel: EqualizerViewModel = koinViewModel(),
+    parametricViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.ParametricEqViewModel = koinViewModel()
 ) {
     val uiState by equalizerViewModel.uiState.collectAsStateWithLifecycle()
     val parametricState by parametricViewModel.uiState.collectAsStateWithLifecycle()

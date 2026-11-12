@@ -7,13 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.random.Random
 
 /** Loads the listen history once per change and hands out the [HistoryPicks] built on it. */
-@Singleton
-class HistoryPicksRepository @Inject constructor(
+class HistoryPicksRepository(
     private val listenHistoryDao: ListenHistoryDao,
 ) {
     private val mutex = Mutex()

@@ -86,7 +86,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.listenbrainz.ListenBrainzProfileStats
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
@@ -110,7 +110,7 @@ fun AccountsScreen(
     onBackClick: () -> Unit,
     onOpenNavidromeDashboard: () -> Unit = {},
     onOpenJellyfinDashboard: () -> Unit = {},
-    viewModel: AccountsViewModel = hiltViewModel()
+    viewModel: AccountsViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

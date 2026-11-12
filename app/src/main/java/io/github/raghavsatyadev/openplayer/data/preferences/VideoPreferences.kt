@@ -10,8 +10,6 @@ import io.github.raghavsatyadev.openplayer.data.video.VideoMatchingMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
 data class VideoSettings(
     /** Show a matching local video in the full player instead of the album art. */
@@ -28,8 +26,7 @@ data class VideoSettings(
 )
 
 /** Settings for local music videos. */
-@Singleton
-class VideoPreferences @Inject constructor(
+class VideoPreferences(
     private val dataStore: DataStore<Preferences>
 ) {
     private object Keys {

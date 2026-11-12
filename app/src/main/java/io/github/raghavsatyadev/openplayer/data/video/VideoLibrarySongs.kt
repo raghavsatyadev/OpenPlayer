@@ -6,8 +6,6 @@ import io.github.raghavsatyadev.openplayer.data.database.SongEntity
 import io.github.raghavsatyadev.openplayer.data.preferences.VideoPreferences
 import kotlinx.coroutines.flow.first
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Adds music videos to the song library, so they show up in Songs, Artists, Albums and Search
@@ -18,8 +16,7 @@ import javax.inject.Singleton
  * and video, so they never collide with tracks) and its content URI points at the video, which
  * the music player plays audio-only.
  */
-@Singleton
-class VideoLibrarySongs @Inject constructor(
+class VideoLibrarySongs(
     private val videoRepository: LocalVideoRepository,
     private val videoPreferences: VideoPreferences,
     private val musicDao: MusicDao,

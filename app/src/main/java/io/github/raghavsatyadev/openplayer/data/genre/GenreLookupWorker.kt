@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.genre
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
@@ -13,8 +12,6 @@ import androidx.work.WorkerParameters
 import io.github.raghavsatyadev.openplayer.data.database.GenreFillDao
 import io.github.raghavsatyadev.openplayer.data.database.GenreLookupCacheEntity
 import io.github.raghavsatyadev.openplayer.data.preferences.OnlineGenrePreferences
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -25,10 +22,9 @@ import java.util.concurrent.TimeUnit
  * cached, so the network is asked once per album; a miss is asked again after [MISS_RETRY_MS].
  * A run stops after [MAX_RUN_MS] and queues the next one, keeping under WorkManager's time limit.
  */
-@HiltWorker
-class GenreLookupWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted params: WorkerParameters,
+class GenreLookupWorker(
+    appContext: Context,
+    params: WorkerParameters,
     private val filler: GenreFiller,
     private val source: OnlineGenreSource,
     private val dao: GenreFillDao,

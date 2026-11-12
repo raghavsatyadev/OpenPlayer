@@ -3,8 +3,6 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import io.github.raghavsatyadev.openplayer.data.jellyfin.JellyfinRepository
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -12,8 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
  * provider sheet. The dashboard ViewModels call the server and may start a full library sync
  * as soon as they are created, which Home must not do on every launch.
  */
-@HiltViewModel
-class StreamingProviderLoginViewModel @Inject constructor(
+class StreamingProviderLoginViewModel(
     navidromeRepository: NavidromeRepository,
     jellyfinRepository: JellyfinRepository,
 ) : ViewModel() {

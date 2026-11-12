@@ -10,8 +10,6 @@ import io.github.raghavsatyadev.openplayer.utils.GenreParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Gives local songs whose files carry no genre one, without touching the files:
@@ -21,8 +19,7 @@ import javax.inject.Singleton
  * 3. if the user turned it on, an online lookup in the background ([GenreLookupWorker]).
  * Songs with a genre tag and songs whose genre the user edited are never changed.
  */
-@Singleton
-class GenreFiller @Inject constructor(
+class GenreFiller(
     private val dao: GenreFillDao,
     private val artistGenres: ArtistGenreLoader,
     private val preferences: OnlineGenrePreferences,

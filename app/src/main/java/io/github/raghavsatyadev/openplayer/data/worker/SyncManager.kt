@@ -12,7 +12,6 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.utils.mediaStoreGenerationsChanged
 import io.github.raghavsatyadev.openplayer.utils.readExternalMediaStoreGenerations
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -25,8 +24,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import io.github.raghavsatyadev.openplayer.data.observer.MediaStoreObserver
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import timber.log.Timber
@@ -61,9 +58,8 @@ data class SyncProgress(
         get() = totalCount > 0
     }
 
-@Singleton
-class SyncManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+class SyncManager(
+    private val context: Context,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val mediaStoreObserver: MediaStoreObserver,
     private val localLibraryChangeTracker: LocalLibraryChangeTracker

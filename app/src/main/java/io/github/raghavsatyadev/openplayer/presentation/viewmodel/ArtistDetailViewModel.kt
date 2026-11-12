@@ -13,8 +13,6 @@ import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepos
 import io.github.raghavsatyadev.openplayer.data.repository.ArtistImageRepository
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.utils.GenreParser
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +26,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Holds the full UI state for ArtistDetailScreen.
@@ -60,9 +57,8 @@ data class ArtistAlbumSection(
     val genre: String? = null
 )
 
-@HiltViewModel
-class ArtistDetailViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+class ArtistDetailViewModel(
+    private val context: Context,
     private val musicRepository: MusicRepository,
     private val artistImageRepository: ArtistImageRepository,
     private val userPreferencesRepository: UserPreferencesRepository,

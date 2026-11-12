@@ -3,16 +3,13 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 import android.os.Environment
 import io.github.raghavsatyadev.openplayer.data.model.MusicFolder
 import io.github.raghavsatyadev.openplayer.data.model.Song
-import dagger.hilt.android.scopes.ViewModelScoped
 import java.io.File
 import java.util.ArrayDeque
-import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@ViewModelScoped
-class FolderNavigationStateHolder @Inject constructor() {
+class FolderNavigationStateHolder() {
     fun setFoldersPlaylistViewState(
         isPlaylistView: Boolean,
         updateUiState: (((PlayerUiState) -> PlayerUiState) -> Unit)

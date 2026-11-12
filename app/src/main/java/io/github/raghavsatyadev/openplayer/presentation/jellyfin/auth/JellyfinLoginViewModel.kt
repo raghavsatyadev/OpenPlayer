@@ -7,15 +7,12 @@ import androidx.work.WorkManager
 import io.github.raghavsatyadev.openplayer.data.jellyfin.JellyfinRepository
 import io.github.raghavsatyadev.openplayer.data.jellyfin.model.JellyfinLibrary
 import io.github.raghavsatyadev.openplayer.data.worker.JellyfinSyncWorker
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-
 sealed interface JellyfinLoginState {
     data object Idle : JellyfinLoginState
     data object Loading : JellyfinLoginState
@@ -33,8 +30,7 @@ sealed interface JellyfinLoginState {
     data class Error(val message: String) : JellyfinLoginState
 }
 
-@HiltViewModel
-class JellyfinLoginViewModel @Inject constructor(
+class JellyfinLoginViewModel(
     private val repository: JellyfinRepository,
     private val workManager: WorkManager
 ) : ViewModel() {

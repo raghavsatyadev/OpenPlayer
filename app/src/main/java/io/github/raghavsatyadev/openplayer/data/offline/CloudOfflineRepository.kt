@@ -13,13 +13,10 @@ import io.github.raghavsatyadev.openplayer.data.database.OfflineTrackDao
 import io.github.raghavsatyadev.openplayer.data.database.OfflineTrackEntity
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.worker.CloudTrackDownloadWorker
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.security.MessageDigest
 import java.util.Locale
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -55,9 +52,8 @@ data class OfflineDownload(
             ?.let { (bytesDownloaded.toDouble() / it.toDouble()).coerceIn(0.0, 1.0).toFloat() }
 }
 
-@Singleton
-class CloudOfflineRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+class CloudOfflineRepository(
+    private val context: Context,
     private val dao: OfflineTrackDao,
     private val workManager: WorkManager
 ) {

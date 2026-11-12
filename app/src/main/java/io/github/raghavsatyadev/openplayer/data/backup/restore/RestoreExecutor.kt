@@ -13,11 +13,8 @@ import io.github.raghavsatyadev.openplayer.data.backup.validation.ValidationPipe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class RestoreExecutor @Inject constructor(
+class RestoreExecutor(
     private val backupReader: BackupReader,
     private val validationPipeline: ValidationPipeline,
     private val handlers: Map<BackupSection, @JvmSuppressWildcards BackupModuleHandler>

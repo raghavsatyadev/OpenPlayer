@@ -6,11 +6,8 @@ import io.github.raghavsatyadev.openplayer.data.backup.model.BackupValidationRes
 import io.github.raghavsatyadev.openplayer.data.backup.model.Severity
 import io.github.raghavsatyadev.openplayer.data.backup.model.ValidationError
 import java.security.MessageDigest
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ManifestValidator @Inject constructor() {
+class ManifestValidator() {
 
     fun validate(manifest: BackupManifest): BackupValidationResult {
         val errors = mutableListOf<ValidationError>()

@@ -23,15 +23,12 @@ import io.github.raghavsatyadev.openplayer.utils.traceAsyncSection
 import io.github.raghavsatyadev.openplayer.ui.theme.clearExtractedColorCache
 import io.github.raghavsatyadev.openplayer.ui.theme.extractSeedColor
 import io.github.raghavsatyadev.openplayer.ui.theme.generateColorSchemeFromSeed
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Efficient color scheme processor for album art.
@@ -44,9 +41,8 @@ import javax.inject.Singleton
  * 
  * Extracted from PlayerViewModel to improve modularity.
  */
-@Singleton
-class ColorSchemeProcessor @Inject constructor(
-    @ApplicationContext private val context: Context,
+class ColorSchemeProcessor(
+    private val context: Context,
     private val albumArtThemeDao: AlbumArtThemeDao
 ) {
     private val memoryCache = LruCache<String, ColorSchemePair>(20)

@@ -47,7 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.R
@@ -74,7 +74,7 @@ fun DailyMixSection(
     onNavigateToArtist: (Song) -> Unit = {},
     onNavigateToGenre: (Song) -> Unit = {},
 ) {
-    val playlistViewModel: PlaylistViewModel = hiltViewModel()
+    val playlistViewModel: PlaylistViewModel = koinViewModel()
     val favoriteSongIds by playerViewModel.favoriteSongIds.collectAsStateWithLifecycle()
     val selectedSongForInfo by playerViewModel.selectedSongForInfo.collectAsStateWithLifecycle()
     val playlistUiState by playlistViewModel.uiState.collectAsStateWithLifecycle()

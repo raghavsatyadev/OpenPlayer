@@ -8,7 +8,6 @@ import androidx.media3.common.Player
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.exts.DeckController
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +15,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 data class DeckState(
     val song: Song? = null,
@@ -35,8 +33,7 @@ data class MashupUiState(
     val showSongPickerForDeck: Int? = null
 )
 
-@HiltViewModel
-class MashupViewModel @Inject constructor(
+class MashupViewModel(
     private val application: Application,
     private val musicRepository: MusicRepository
 ) : ViewModel() {

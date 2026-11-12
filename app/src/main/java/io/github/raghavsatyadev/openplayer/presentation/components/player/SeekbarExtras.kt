@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.preferences.SeekbarStyle
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioBookmarksViewModel
@@ -44,8 +44,8 @@ class SeekbarExtras(
 
 @Composable
 fun rememberSeekbarExtras(song: Song): SeekbarExtras {
-    val seekbarViewModel: SeekbarViewModel = hiltViewModel()
-    val bookmarksViewModel: AudioBookmarksViewModel = hiltViewModel()
+    val seekbarViewModel: SeekbarViewModel = koinViewModel()
+    val bookmarksViewModel: AudioBookmarksViewModel = koinViewModel()
     val style by seekbarViewModel.style.collectAsState()
     val allBookmarks by bookmarksViewModel.allBookmarks.collectAsState()
     val wantWaveform = style == SeekbarStyle.WAVEFORM

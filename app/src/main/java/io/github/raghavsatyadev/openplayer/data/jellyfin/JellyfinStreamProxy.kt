@@ -7,11 +7,8 @@ import kotlinx.coroutines.CancellationException
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class JellyfinStreamProxy @Inject constructor(
+class JellyfinStreamProxy(
     private val repository: JellyfinRepository,
     okHttpClient: OkHttpClient
 ) : CloudStreamProxy<String>(okHttpClient) {

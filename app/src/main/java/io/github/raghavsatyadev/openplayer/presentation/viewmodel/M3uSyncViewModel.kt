@@ -5,15 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.data.playlist.M3uSyncRepository
 import io.github.raghavsatyadev.openplayer.data.playlist.M3uSyncState
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-@HiltViewModel
-class M3uSyncViewModel @Inject constructor(
+class M3uSyncViewModel(
     private val repository: M3uSyncRepository,
 ) : ViewModel() {
     val state: StateFlow<M3uSyncState> = repository.state

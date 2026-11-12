@@ -39,7 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.model.isSmartPlaylist
@@ -60,7 +60,7 @@ fun PlaylistBottomSheet(
     onDismiss: () -> Unit,
     bottomBarHeight: Dp,
     playerViewModel: PlayerViewModel,
-    playlistViewModel: PlaylistViewModel = hiltViewModel(),
+    playlistViewModel: PlaylistViewModel = koinViewModel(),
     currentPlaylistId: String? = null
 ) {
     var showCreatePlaylistDialog by remember { mutableStateOf(false) }

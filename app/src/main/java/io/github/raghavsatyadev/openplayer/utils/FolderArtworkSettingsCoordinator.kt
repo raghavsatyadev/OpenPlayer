@@ -6,8 +6,6 @@ import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepos
 import io.github.raghavsatyadev.openplayer.data.repository.ArtistImageRepository
 import io.github.raghavsatyadev.openplayer.data.worker.SyncManager
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ColorSchemeProcessor
-import dagger.Lazy
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -15,13 +13,10 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Serializes settings, foreground permission checks, and backup restores against the same cache. */
-@Singleton
-class FolderArtworkSettingsCoordinator @Inject constructor(
-    @ApplicationContext private val context: Context,
+class FolderArtworkSettingsCoordinator(
+    private val context: Context,
     private val preferences: UserPreferencesRepository,
     private val imageCacheManager: ImageCacheManager,
     private val artistImageRepository: ArtistImageRepository,
@@ -72,7 +67,7 @@ class FolderArtworkSettingsCoordinator @Inject constructor(
         // Also retire readers/shrink jobs that observed an old file while deletion was running.
         AlbumArtUtils.bumpArtworkCacheGeneration()
         imageCacheManager.clearAllCoverArtCaches()
-        colorSchemeProcessor.get().invalidateLocalArtworkSchemes()
+        colorSchemeProcessor.value.invalidateLocalArtworkSchemes()
         artistImageRepository.clearCache()
         AlbumArtUtils.notifyArtworkCacheInvalidated()
 

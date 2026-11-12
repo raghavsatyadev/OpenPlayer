@@ -9,9 +9,7 @@ import coil.request.Options
 import io.github.raghavsatyadev.openplayer.data.image.online.OnlineCoverRepository
 import io.github.raghavsatyadev.openplayer.utils.AlbumArtUtils
 import io.github.raghavsatyadev.openplayer.utils.LocalArtworkUri
-import dagger.Lazy
 import okio.Path.Companion.toPath
-import javax.inject.Inject
 
 class LocalArtworkCoilFetcher(
     private val uri: Uri,
@@ -36,7 +34,7 @@ class LocalArtworkCoilFetcher(
             )
         }
 
-        val onlineFile = onlineCovers.get().coverFor(songId)
+        val onlineFile = onlineCovers.value.coverFor(songId)
         if (onlineFile != null) {
             return SourceResult(
                 source = coil.decode.ImageSource(
@@ -51,7 +49,7 @@ class LocalArtworkCoilFetcher(
         return null
     }
 
-    class Factory @Inject constructor(
+    class Factory(
         private val onlineCovers: Lazy<OnlineCoverRepository>
     ) : Fetcher.Factory<Uri> {
         override fun create(data: Uri, options: Options, imageLoader: ImageLoader): Fetcher? {

@@ -12,7 +12,6 @@ import okhttp3.Request
 import timber.log.Timber
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
-import javax.inject.Inject
 
 /**
  * Custom Coil Fetcher for Navidrome album art.
@@ -96,7 +95,7 @@ class NavidromeCoilFetcher(
      * Factory for creating NavidromeCoilFetcher instances.
      * Registered with Coil's ImageLoader to handle navidrome_cover:// URIs.
      */
-    class Factory @Inject constructor(
+    class Factory(
         private val repository: NavidromeRepository,
         private val okHttpClient: OkHttpClient
     ) : Fetcher.Factory<Uri> {

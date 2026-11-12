@@ -4,8 +4,6 @@ import io.github.raghavsatyadev.openplayer.data.model.Playlist
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -17,8 +15,7 @@ import kotlinx.collections.immutable.toImmutableList
  * Selection order is maintained - the first selected playlist is at index 0,
  * subsequent selections are appended in the order they were selected.
  */
-@Singleton
-class PlaylistSelectionStateHolder @Inject constructor() {
+class PlaylistSelectionStateHolder() {
 
     private val _selectedPlaylists = MutableStateFlow<ImmutableList<Playlist>>(persistentListOf())
     

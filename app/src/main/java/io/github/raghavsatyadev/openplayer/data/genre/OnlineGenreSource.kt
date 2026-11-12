@@ -9,8 +9,6 @@ import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Outcome of one online genre lookup. */
 sealed interface GenreLookupResult {
@@ -25,8 +23,7 @@ sealed interface GenreLookupResult {
  * track's album genres, two requests). A result only counts when title, artist and duration
  * match, the same check the online cover lookup uses.
  */
-@Singleton
-class OnlineGenreSource @Inject constructor(
+class OnlineGenreSource(
     private val itunes: ITunesSearchClient,
     private val deezer: DeezerApiService,
 ) {

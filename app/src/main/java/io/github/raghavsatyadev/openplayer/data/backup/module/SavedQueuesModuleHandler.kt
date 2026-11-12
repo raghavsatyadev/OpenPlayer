@@ -9,12 +9,9 @@ import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.database.SavedQueueCodec
 import io.github.raghavsatyadev.openplayer.data.database.SavedQueueDao
 import io.github.raghavsatyadev.openplayer.data.database.SavedQueueEntity
-import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Saved queues, as an array of
@@ -24,11 +21,10 @@ import javax.inject.Singleton
  * On restore a local song that cannot be matched is dropped from its queue (the saved position
  * moves with the songs that are kept); a queue left with no songs is skipped.
  */
-@Singleton
-class SavedQueuesModuleHandler @Inject constructor(
+class SavedQueuesModuleHandler(
     private val dao: SavedQueueDao,
     private val songResolver: BackupSongResolver,
-    @BackupGson private val gson: Gson
+    private val gson: Gson
 ) : BackupModuleHandler {
 
     override val section = BackupSection.SAVED_QUEUES

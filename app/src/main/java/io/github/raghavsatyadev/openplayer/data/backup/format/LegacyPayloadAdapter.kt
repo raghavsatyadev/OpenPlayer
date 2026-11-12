@@ -9,14 +9,11 @@ import io.github.raghavsatyadev.openplayer.data.backup.model.BackupModuleInfo
 import io.github.raghavsatyadev.openplayer.data.backup.model.DeviceInfo
 import io.github.raghavsatyadev.openplayer.data.backup.module.PlaylistsModuleHandler
 import java.security.MessageDigest
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Converts v1/v2 AppDataBackupPayload JSON into v3-compatible manifest + module map.
  */
-@Singleton
-class LegacyPayloadAdapter @Inject constructor() {
+class LegacyPayloadAdapter() {
 
     /**
      * Adapts a legacy backup JSON (v1 or v2) into a v3 manifest + per-module JSON map.

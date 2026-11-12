@@ -10,8 +10,6 @@ import android.content.pm.SigningInfo
 import android.os.Build
 import io.github.raghavsatyadev.openplayer.BuildConfig
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
-import io.github.raghavsatyadev.openplayer.di.AppScope
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,8 +31,6 @@ import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 
 sealed interface UpdateStatus {
     data object Idle : UpdateStatus
@@ -68,13 +64,12 @@ enum class UpdateError {
  * moving between channels installs in place. Builds that can't be updated in place (debug
  * builds) are only reported.
  */
-@Singleton
-class AppUpdateManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+class AppUpdateManager(
+    private val context: Context,
     private val releaseSource: AppReleaseSource,
     private val preferences: UserPreferencesRepository,
     baseClient: OkHttpClient,
-    @AppScope private val scope: CoroutineScope,
+    private val scope: CoroutineScope,
 ) {
     val installedVersionName: String = BuildConfig.VERSION_NAME
     val installedChannel: UpdateChannel = UpdateChannel.ofVersionName(installedVersionName)

@@ -60,7 +60,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtColorAccuracy
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtPaletteStyle
@@ -78,7 +78,7 @@ import kotlin.math.roundToInt
 @Composable
 fun PaletteStyleSettingsScreen(
     playerViewModel: PlayerViewModel,
-    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = koinViewModel(),
     onBackClick: () -> Unit
 ) {
     val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()

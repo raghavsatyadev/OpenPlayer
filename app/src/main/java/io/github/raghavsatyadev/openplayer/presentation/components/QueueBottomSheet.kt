@@ -120,7 +120,7 @@ import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.core.view.HapticFeedbackConstantsCompat
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.R
@@ -204,8 +204,8 @@ internal fun shouldReturnListDragToList(availableY: Float, queueSheetOffsetPx: F
 @Composable
 fun QueueBottomSheet(
     viewModel: PlayerViewModel = sharedPlayerViewModel(),
-    playlistViewModel: PlaylistViewModel = hiltViewModel(),
-    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    playlistViewModel: PlaylistViewModel = koinViewModel(),
+    settingsViewModel: SettingsViewModel = koinViewModel(),
     queue: ImmutableList<Song>,
     currentQueueSourceName: String,
     currentSongId: String?,

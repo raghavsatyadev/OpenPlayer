@@ -10,8 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Manages Android's built-in audio effects (Equalizer, BassBoost, Virtualizer).
@@ -21,8 +19,7 @@ import javax.inject.Singleton
  * Crossfade compatible: Effects are attached to the audio session, not the player instance.
  */
 @Suppress("DEPRECATION")
-@Singleton
-class EqualizerManager @Inject constructor() {
+class EqualizerManager() {
     
     companion object {
         private const val TAG = "EqualizerManager"
