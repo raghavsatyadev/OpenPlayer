@@ -6,17 +6,17 @@ OpenPlayer (a fork of PixelPlayerOSS) is licensed under the GNU General Public L
 
 | Asset | Upstream | License |
 | --- | --- | --- |
-| `app/src/main/res/font/gflex_variable.ttf` | Google Sans Flex, `https://fonts.google.com/specimen/Google+Sans+Flex/license?preview.script=Latn` | SIL Open Font License 1.1 |
-| `app/src/main/res/font/genre_variable.ttf` | Roboto Flex, `https://github.com/googlefonts/roboto-flex` | SIL Open Font License 1.1 |
+| `composeApp/src/androidMain/res/font/gflex_variable.ttf` | Google Sans Flex, `https://fonts.google.com/specimen/Google+Sans+Flex/license?preview.script=Latn` | SIL Open Font License 1.1 |
+| `composeApp/src/androidMain/res/font/genre_variable.ttf` | Roboto Flex, `https://github.com/googlefonts/roboto-flex` | SIL Open Font License 1.1 |
 
-The OFL text is included in `app/src/main/assets/licenses/texts/OFL-1.1.txt`, next to the full text of every other license the app shows under Licenses & attribution.
+The OFL text is included in `androidCMP/src/main/assets/licenses/texts/OFL-1.1.txt`, next to the full text of every other license the app shows under Licenses & attribution.
 
 ## Bundled Smart Mix Data Assets
 
 | Asset | Source | License |
 | --- | --- | --- |
-| `app/src/main/assets/nlp/artist-genres.txt` | Artist-to-genre labels derived from Wikidata, `https://www.wikidata.org` | CC0 1.0 (public domain dedication) |
-| `app/src/main/assets/nlp/concepts.txt` | Word-to-genre-family/mood concept table, generated offline with a locally run language model and shipped as static, reviewable text | Distributed under the project license (GPL-3.0) |
+| `androidCMP/src/main/assets/nlp/artist-genres.txt` | Artist-to-genre labels derived from Wikidata, `https://www.wikidata.org` | CC0 1.0 (public domain dedication) |
+| `androidCMP/src/main/assets/nlp/concepts.txt` | Word-to-genre-family/mood concept table, generated offline with a locally run language model and shipped as static, reviewable text | Distributed under the project license (GPL-3.0) |
 
 Both files are read only on the device by the offline Smart Mix engine. The app makes no network request and runs no AI model to use them.
 

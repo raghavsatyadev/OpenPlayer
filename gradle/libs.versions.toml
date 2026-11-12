@@ -1,6 +1,7 @@
 [versions]
 accompanistDrawablepainter = "0.37.3"
 agp = "9.6.0-alpha03"
+compose-multiplatform = "1.13.0-beta02"
 animation = "1.13.0-rc01"
 appcompat = "1.8.0"
 capturable = "3.0.1"
@@ -215,3 +216,7 @@ baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprof
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 androidx-room3 = { id = "androidx.room3", version.ref = "room3" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }

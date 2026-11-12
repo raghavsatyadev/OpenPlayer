@@ -29,5 +29,9 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "OpenPlayer"
-include(":app")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+include(":composeApp")
+include(":androidCMP")
+include(":desktopCMP")
 include(":baselineprofile")

@@ -71,9 +71,13 @@ Obtainium app id: `io.github.raghavsatyadev.openplayer` (enable "Include prerele
 ## Project Structure
 
 ```text
-app/src/main/java/io/github/raghavsatyadev/openplayer/
-- data/             Room, repositories, preferences, services, workers
-- di/               Hilt modules and qualifiers
+composeApp/          Shared code (KMP library; Android code in androidMain for now)
+androidCMP/          Android app: manifest entry, signing, build types, baseline profiles
+desktopCMP/          Desktop app (placeholder window)
+
+composeApp/src/androidMain/kotlin/io/github/raghavsatyadev/openplayer/
+- data/             Room 3, repositories, preferences, services, workers
+- di/               Koin modules and qualifiers
 - presentation/     Compose screens, components, navigation, ViewModels
 - ui/               Theme and Glance widgets
 - utils/            Shared utilities
