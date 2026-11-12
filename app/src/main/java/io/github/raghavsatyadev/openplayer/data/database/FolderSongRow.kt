@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.database
 
-import androidx.room.ColumnInfo
+import androidx.room3.ColumnInfo
 
 /**
  * Minimal projection used to build the folder tree without loading full song rows.

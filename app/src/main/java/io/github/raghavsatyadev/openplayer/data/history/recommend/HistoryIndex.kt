@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.history.recommend
 
-import androidx.room.ColumnInfo
+import androidx.room3.ColumnInfo
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId

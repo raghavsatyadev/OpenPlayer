@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.baselineprofile)
+    alias(libs.plugins.androidx.room3)
     id("kotlin-parcelize")
 }
 
@@ -173,10 +174,8 @@ baselineProfile {
     dexLayoutOptimization = true
 }
 
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-    arg("room.incremental", "true")
-    arg("room.generateKotlin", "true")
+room3 {
+    schemaDirectory("$projectDir/schemas")
 }
 
 kotlin {
@@ -233,10 +232,10 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.runtime.ktx)
 
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.paging)
+    implementation(libs.androidx.room3.runtime)
+    ksp(libs.androidx.room3.compiler)
+    implementation(libs.androidx.room3.paging)
+    implementation(libs.androidx.sqlite.bundled)
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.common)
@@ -308,7 +307,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.rules)
-    androidTestImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.androidx.room3.testing)
+    androidTestImplementation(libs.androidx.sqlite.bundled)
     androidTestImplementation(libs.truth)
     androidTestImplementation(libs.mockk.android)
     androidTestImplementation(libs.worktesting)

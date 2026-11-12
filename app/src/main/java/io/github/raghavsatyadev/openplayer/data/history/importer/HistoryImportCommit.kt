@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.history.importer
 
-import androidx.room.withTransaction
+import androidx.room3.withWriteTransaction
 import io.github.raghavsatyadev.openplayer.data.database.ListenHistoryDao
 import io.github.raghavsatyadev.openplayer.data.database.OpenPlayerDatabase
 import io.github.raghavsatyadev.openplayer.data.history.ListenCountRule
@@ -32,7 +32,7 @@ class HistoryImportCommit(
         onPhase(HistoryImportState.Phase.SAVING)
         plan.rows.chunked(INSERT_CHUNK).forEach { chunk ->
             currentCoroutineContext().ensureActive()
-            database.withTransaction { dao.insertAll(chunk) }
+            database.withWriteTransaction { dao.insertAll(chunk) }
         }
         return plan.summary
     }

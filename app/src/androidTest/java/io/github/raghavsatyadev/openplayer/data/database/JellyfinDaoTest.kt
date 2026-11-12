@@ -1,7 +1,8 @@
 package io.github.raghavsatyadev.openplayer.data.database
 
 import android.content.Context
-import androidx.room.Room
+import androidx.room3.Room
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.test.runTest
@@ -21,6 +22,7 @@ class JellyfinDaoTest {
     fun createDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(context, OpenPlayerDatabase::class.java)
+            .setDriver(BundledSQLiteDriver())
             .addCallback(OpenPlayerDatabase.createRuntimeArtifactsCallback())
             .allowMainThreadQueries()
             .build()
