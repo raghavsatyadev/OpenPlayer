@@ -138,10 +138,6 @@ android {
         buildConfig = true
     }
 
-    testOptions {
-        unitTests.isReturnDefaultValues = true
-        unitTests.all { it.useJUnitPlatform() }
-    }
 
     lint {
         checkReleaseBuilds = false
@@ -286,24 +282,10 @@ dependencies {
         exclude(group = "androidx.compose.ui")
     }
 
-    testImplementation(libs.koin.test)
-    testImplementation(libs.koin.test.junit5)
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.params)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(libs.junit)
-    testRuntimeOnly(libs.junit.vintage.engine)
-    testRuntimeOnly(libs.junitplatformlauncher)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockk)
-    testImplementation(libs.turbine)
-    testImplementation(libs.truth)
-    testImplementation(libs.org.json)
-    testImplementation(libs.androidx.test.core)
-    testImplementation(libs.androidx.junit)
-    testImplementation(kotlin("test"))
 
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.koin.test)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.rules)
@@ -335,6 +317,3 @@ dependencies {
 }
 
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
