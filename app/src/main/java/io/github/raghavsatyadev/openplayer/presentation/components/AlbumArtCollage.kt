@@ -21,7 +21,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.request.ImageRequest
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import coil3.request.error
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.preferences.CollagePattern
@@ -59,7 +61,7 @@ fun AlbumArtCollage(
             song?.albumArtUriString?.let {
                 ImageRequest.Builder(context)
                     .data(it)
-                    .dispatcher(Dispatchers.IO)
+                    .coroutineContext(Dispatchers.IO)
                     .crossfade(true)
                     .error(R.drawable.ic_music_placeholder)
                     .build()

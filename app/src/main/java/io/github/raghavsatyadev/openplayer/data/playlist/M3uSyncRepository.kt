@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 data class M3uSyncReport(
     val exported: Int = 0,
@@ -197,7 +197,7 @@ class M3uSyncRepository @Inject constructor(
             )
             report
         } catch (error: Throwable) {
-            Timber.e(error, "Automatic M3U synchronization failed")
+            Logger.e(error) { "Automatic M3U synchronization failed" }
             runtimeState.value = runtimeState.value.copy(
                 isSyncing = false,
                 error = error.message ?: error.javaClass.simpleName,
@@ -231,7 +231,7 @@ class M3uSyncRepository @Inject constructor(
                 val content = readBoundedText(document.uri)
                 ParsedM3uDocument(document, content, M3uManager.parseContent(content, songs))
             }.onFailure { error ->
-                Timber.w(error, "Skipping unreadable M3U document %s", document.name)
+                Logger.w(error) { String.format("Skipping unreadable M3U document %s", document.name) }
             }.getOrNull()
         }
         val filesByUri = parsedFiles.associateBy { it.document.uri.toString() }
@@ -273,11 +273,7 @@ class M3uSyncRepository @Inject constructor(
                 availableSongIds = exportableSongIds,
             )
             if (missing.isNotEmpty()) {
-                Timber.w(
-                    "Refusing to export playlist %s because %d song ids are unavailable",
-                    playlist.id,
-                    missing.size,
-                )
+                Logger.w { String.format("Refusing to export playlist %s because %d song ids are unavailable", playlist.id, missing.size) }
                 return null
             }
             return playlist.songIds.map(songsById::getValue)
@@ -637,12 +633,7 @@ class M3uSyncRepository @Inject constructor(
                 if (restored != null) {
                     replacement?.let { deleteBestEffort(it, "failed replacement") }
                 } else {
-                    Timber.e(
-                        error,
-                        "Could not restore %s; original content remains at %s",
-                        current.name,
-                        backup.uri,
-                    )
+                    Logger.e(error) { String.format("Could not restore %s; original content remains at %s", current.name, backup.uri) }
                 }
                 throw error
             }
@@ -695,7 +686,7 @@ class M3uSyncRepository @Inject constructor(
     private fun renameBestEffort(document: M3uDocument, desiredName: String): M3uDocument? =
         runCatching { renameRequired(document, desiredName) }
             .onFailure { error ->
-                Timber.e(error, "Unable to rename playlist document %s", document.uri)
+                Logger.e(error) { String.format("Unable to rename playlist document %s", document.uri) }
             }
             .getOrNull()
 
@@ -706,16 +697,16 @@ class M3uSyncRepository @Inject constructor(
             .plus(".bak")
         val hidden = renameBestEffort(backup, hiddenName)
         if (hidden == null) {
-            Timber.w("Original playlist backup remains recoverable at %s", backup.uri)
+            Logger.w { String.format("Original playlist backup remains recoverable at %s", backup.uri) }
         } else {
-            Timber.w("Original playlist backup remains recoverable at %s", hidden.uri)
+            Logger.w { String.format("Original playlist backup remains recoverable at %s", hidden.uri) }
         }
     }
 
     private fun deleteBestEffort(document: M3uDocument, purpose: String): Boolean =
         runCatching { DocumentsContract.deleteDocument(resolver, document.uri) }
             .onFailure { error ->
-                Timber.w(error, "Unable to remove %s document %s", purpose, document.uri)
+                Logger.w(error) { String.format("Unable to remove %s document %s", purpose, document.uri) }
             }
             .getOrDefault(false)
 
@@ -723,7 +714,7 @@ class M3uSyncRepository @Inject constructor(
         runCatching {
             resolver.releasePersistableUriPermission(treeUri, TREE_PERMISSION_FLAGS)
         }.onFailure { error ->
-            Timber.w(error, "Unable to release M3U tree permission %s", treeUri)
+            Logger.w(error) { String.format("Unable to release M3U tree permission %s", treeUri) }
         }
     }
 

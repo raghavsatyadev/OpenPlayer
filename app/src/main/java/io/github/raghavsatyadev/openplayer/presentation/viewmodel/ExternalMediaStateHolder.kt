@@ -14,7 +14,7 @@ import io.github.raghavsatyadev.openplayer.data.model.Song
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import javax.inject.Inject
 
@@ -95,10 +95,10 @@ class ExternalMediaStateHolder @Inject constructor(
                 }
             }
         } catch (securityException: SecurityException) {
-            Timber.w(securityException, "Unable to load sibling songs for uri: $originalUri")
+            Logger.w(securityException) { "Unable to load sibling songs for uri: $originalUri" }
             return@withContext emptyList()
         } catch (illegalArgumentException: IllegalArgumentException) {
-            Timber.w(illegalArgumentException, "Invalid query while loading sibling songs for uri: $originalUri")
+            Logger.w(illegalArgumentException) { "Invalid query while loading sibling songs for uri: $originalUri" }
             return@withContext emptyList()
         }
 
@@ -212,7 +212,7 @@ class ExternalMediaStateHolder @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            Timber.e(e, "Error querying MediaStore for uri: $uri")
+            Logger.e(e) { "Error querying MediaStore for uri: $uri" }
         }
 
         val metadata = AudioMetadataReader.read(context, uri) ?: return@withContext null
@@ -329,7 +329,7 @@ class ExternalMediaStateHolder @Inject constructor(
 
             file.takeIf { it.length() > 0L }
         }.onFailure { throwable ->
-            Timber.w(throwable, "Unable to persist external audio for playback uri: $uri")
+            Logger.w(throwable) { "Unable to persist external audio for playback uri: $uri" }
         }.getOrNull()
     }
 
@@ -355,7 +355,7 @@ class ExternalMediaStateHolder @Inject constructor(
             }
             Uri.fromFile(file).toString()
         }.onFailure { throwable ->
-            Timber.w(throwable, "Unable to persist album art for external uri: $uri")
+            Logger.w(throwable) { "Unable to persist album art for external uri: $uri" }
         }.getOrNull()
     }
 }

@@ -1,9 +1,9 @@
 package io.github.raghavsatyadev.openplayer.data.image
 
 import androidx.annotation.VisibleForTesting
-import coil.decode.DataSource
-import coil.decode.ImageSource
-import coil.fetch.SourceResult
+import coil3.decode.DataSource
+import coil3.decode.ImageSource
+import coil3.fetch.SourceFetchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
@@ -75,13 +75,13 @@ internal object RemoteArtworkCache {
     fun isCachedImage(file: File): Boolean =
         file.isFile && file.length() > 0L && hasImageSignature(readSignature(file))
 
-    suspend fun cachedResult(file: File): SourceResult? = withContext(Dispatchers.IO) {
+    suspend fun cachedResult(file: File): SourceFetchResult? = withContext(Dispatchers.IO) {
         if (!file.isFile || file.length() == 0L) return@withContext null
         // A body cached before this check existed is skipped, not deleted: the next successful
         // download renames over it, and deleting here could remove a fresh file another
         // request renamed into place after the signature was read.
         if (!hasImageSignature(readSignature(file))) return@withContext null
-        SourceResult(
+        SourceFetchResult(
             source = ImageSource(file = file.absolutePath.toPath(), fileSystem = FileSystem.SYSTEM),
             mimeType = "image/jpeg",
             dataSource = DataSource.DISK
@@ -97,7 +97,7 @@ internal object RemoteArtworkCache {
      * the next one in line downloads the cover itself.
      */
     @Throws(IOException::class)
-    suspend fun download(client: OkHttpClient, request: Request, file: File): SourceResult =
+    suspend fun download(client: OkHttpClient, request: Request, file: File): SourceFetchResult =
         withDownloadLock(file) {
             cachedResult(file) ?: fetchAndCache(client, request, file)
         }
@@ -126,7 +126,7 @@ internal object RemoteArtworkCache {
         }
     }
 
-    private suspend fun fetchAndCache(client: OkHttpClient, request: Request, file: File): SourceResult =
+    private suspend fun fetchAndCache(client: OkHttpClient, request: Request, file: File): SourceFetchResult =
         suspendCancellableCoroutine { continuation ->
             val call = client.newCall(request)
             continuation.invokeOnCancellation { call.cancel() }
@@ -144,7 +144,7 @@ internal object RemoteArtworkCache {
             })
         }
 
-    private fun cacheResponse(response: Response, file: File): SourceResult {
+    private fun cacheResponse(response: Response, file: File): SourceFetchResult {
         if (!response.isSuccessful) throw IOException("HTTP ${response.code}")
         val bytes = response.body.bytes()
         if (!hasImageSignature(bytes)) {
@@ -159,7 +159,7 @@ internal object RemoteArtworkCache {
             tempFile.delete()
         }
 
-        return SourceResult(
+        return SourceFetchResult(
             source = ImageSource(file = file.absolutePath.toPath(), fileSystem = FileSystem.SYSTEM),
             mimeType = response.header("Content-Type") ?: "image/jpeg",
             dataSource = DataSource.NETWORK

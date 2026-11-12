@@ -51,7 +51,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.R
 import java.net.URLEncoder
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlinx.coroutines.launch
@@ -220,7 +220,7 @@ private fun EditSongContent(
                         null
                     }
                 } catch (e: Exception) {
-                    Timber.e(e, "Failed to read embedded metadata for EditSongSheet")
+                    Logger.e(e) { "Failed to read embedded metadata for EditSongSheet" }
                     null
                 }
             }
@@ -1214,7 +1214,7 @@ fun CoverArtCropperDialog(
                                         )
                                     )
                                 } else {
-                                    Timber.w("Failed to convert captured cover art to JPEG")
+                                    Logger.w { "Failed to convert captured cover art to JPEG" }
                                 }
                                 isSaving = false
                             }
@@ -1268,7 +1268,7 @@ private fun imageBitmapToJpeg(imageBitmap: ImageBitmap): ByteArray? {
             outputStream.toByteArray()
         }
     } catch (error: Exception) {
-        Timber.e(error, "Unable to compress image bitmap to JPEG")
+        Logger.e(error) { "Unable to compress image bitmap to JPEG" }
         null
     }
 }
@@ -1291,7 +1291,7 @@ private fun decodeBitmapFromUri(context: Context, uri: Uri): Bitmap? {
             decoder.isMutableRequired = false
         }
     } catch (error: Exception) {
-        Timber.e(error, "Failed to decode bitmap from $uri")
+        Logger.e(error) { "Failed to decode bitmap from $uri" }
         null
     }
 }

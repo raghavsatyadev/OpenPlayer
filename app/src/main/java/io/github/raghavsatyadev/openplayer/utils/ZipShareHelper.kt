@@ -8,7 +8,7 @@ import androidx.core.net.toUri
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.File
@@ -88,7 +88,7 @@ object ZipShareHelper {
                             }
                         }
                     } catch (e: Exception) {
-                        Timber.w(e, "Failed to add song to ZIP: ${song.title}")
+                        Logger.w(e) { "Failed to add song to ZIP: ${song.title}" }
                     }
                     
                     onProgress?.invoke((index + 1).toFloat() / totalSongs)
@@ -107,7 +107,7 @@ object ZipShareHelper {
             
             Result.success(Unit)
         } catch (e: Exception) {
-            Timber.e(e, "Failed to create ZIP archive")
+            Logger.e(e) { "Failed to create ZIP archive" }
             Result.failure(e)
         }
     }
@@ -166,7 +166,7 @@ object ZipShareHelper {
                 zipDir.listFiles()?.forEach { it.delete() }
             }
         } catch (e: Exception) {
-            Timber.w(e, "Failed to cleanup ZIP cache")
+            Logger.w(e) { "Failed to cleanup ZIP cache" }
         }
     }
     
@@ -177,7 +177,7 @@ object ZipShareHelper {
                 it.delete() 
             }
         } catch (e: Exception) {
-            Timber.w(e, "Failed to cleanup old ZIP files")
+            Logger.w(e) { "Failed to cleanup old ZIP files" }
         }
     }
     

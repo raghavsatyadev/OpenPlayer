@@ -36,7 +36,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewMo
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.StablePlayerState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlin.math.roundToInt
 import kotlinx.collections.immutable.persistentListOf
 
@@ -366,7 +366,7 @@ internal fun UnifiedPlayerQueueAndSongInfoHost(
                 { enable: Boolean -> playerViewModel.setEndOfTrackTimer(enable) }
             }
             val onOpenCustomTimePicker: () -> Unit = remember {
-                { Timber.tag("TimerOptions").d("OpenCustomTimePicker clicked") }
+                { Logger.withTag("TimerOptions").d { "OpenCustomTimePicker clicked" } }
             }
             val onCancelTimer = remember(playerViewModel) { { playerViewModel.cancelSleepTimer() } }
             val onCancelCountedPlay = remember(playerViewModel) { playerViewModel::cancelCountedPlay }

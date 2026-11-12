@@ -57,17 +57,6 @@
 
 -keep class * extends androidx.glance.appwidget.action.ActionCallback { <init>(); }
 
--assumenosideeffects class timber.log.Timber {
-    public static void v(...);
-    public static void d(...);
-    public static void i(...);
-    public static timber.log.Timber$Tree tag(java.lang.String);
-}
--assumenosideeffects class timber.log.Timber$Tree {
-    public void v(...);
-    public void d(...);
-    public void i(...);
-}
 -assumenosideeffects class android.util.Log {
     public static int v(...);
     public static int d(...);

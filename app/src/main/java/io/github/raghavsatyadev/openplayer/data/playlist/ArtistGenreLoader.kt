@@ -3,7 +3,7 @@ package io.github.raghavsatyadev.openplayer.data.playlist
 import android.content.Context
 import io.github.raghavsatyadev.openplayer.data.playlist.nlp.ArtistGenreTable
 import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,10 +26,10 @@ class ArtistGenreLoader @Inject constructor(
         return try {
             context.assets.open(ASSET_PATH).bufferedReader().use { reader ->
                 ArtistGenreTable.parse(reader.lineSequence(), artistKeys)
-            }.also { Timber.tag(TAG).d("Artist genres resolved: ${it.size} of ${artistKeys.size}") }
+            }.also { Logger.withTag(TAG).d { "Artist genres resolved: ${it.size} of ${artistKeys.size}" } }
         } catch (e: Exception) {
             // Includes the asset simply not being present, which is a supported state.
-            Timber.tag(TAG).w(e, "Artist genre table unavailable; untagged songs stay unclassified")
+            Logger.withTag(TAG).w(e) { "Artist genre table unavailable; untagged songs stay unclassified" }
             ArtistGenreTable.EMPTY
         }
     }

@@ -7,7 +7,7 @@ import io.github.raghavsatyadev.openplayer.data.jellyfin.model.JellyfinPlaylist
 import io.github.raghavsatyadev.openplayer.data.jellyfin.model.JellyfinSong
 import io.github.raghavsatyadev.openplayer.utils.GenreParser
 import org.json.JSONObject
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Parser for Jellyfin API JSON responses.
@@ -75,7 +75,7 @@ object JellyfinResponseParser {
             try {
                 parseSong(json)
             } catch (e: Exception) {
-                Timber.w(e, "$TAG: Failed to parse song")
+                Logger.w(e) { "$TAG: Failed to parse song" }
                 null
             }
         }
@@ -197,7 +197,7 @@ object JellyfinResponseParser {
                     .toInstant()
                     .toEpochMilli()
             } catch (e2: Exception) {
-                Timber.w(e2, "$TAG: Failed to parse timestamp: $timestamp")
+                Logger.w(e2) { "$TAG: Failed to parse timestamp: $timestamp" }
                 0L
             }
         }

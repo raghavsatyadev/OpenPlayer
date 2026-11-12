@@ -11,7 +11,7 @@ import io.github.raghavsatyadev.openplayer.di.BackupGson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -67,7 +67,7 @@ class ArtistImagesModuleHandler @Inject constructor(
                     file.writeBytes(bytes)
                     musicDao.updateArtistCustomImage(artistId, file.absolutePath)
                 } catch (e: Exception) {
-                    Timber.tag(TAG).w(e, "Failed to restore custom image for artist: ${entry.artistName}")
+                    Logger.withTag(TAG).w(e) { "Failed to restore custom image for artist: ${entry.artistName}" }
                 }
             }
         }
@@ -96,7 +96,7 @@ class ArtistImagesModuleHandler @Inject constructor(
                     file.writeBytes(bytes)
                     musicDao.updateArtistCustomImage(artist.id, file.absolutePath)
                 } catch (e: Exception) {
-                    Timber.tag(TAG).w(e, "Failed to roll back custom image for artist: ${artist.name}")
+                    Logger.withTag(TAG).w(e) { "Failed to roll back custom image for artist: ${artist.name}" }
                 }
             } else {
                 File(context.filesDir, "artist_art_${artist.id}.jpg").delete()
@@ -112,7 +112,7 @@ class ArtistImagesModuleHandler @Inject constructor(
             val bytes = file.readBytes()
             Base64.encodeToString(bytes, Base64.NO_WRAP)
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Failed to read artist image: $path")
+            Logger.withTag(TAG).w(e) { "Failed to read artist image: $path" }
             null
         }
     }

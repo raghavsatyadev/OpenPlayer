@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -262,7 +262,7 @@ class LibraryStateHolder @Inject constructor(
             return
         }
 
-        Timber.tag("LibraryStateHolder").d("startObservingLibraryData called.")
+        Logger.withTag("LibraryStateHolder").d { "startObservingLibraryData called." }
         needsReloadAfterTrim = false
         observerScope = scope
 

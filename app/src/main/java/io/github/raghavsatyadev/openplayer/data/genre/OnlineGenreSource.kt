@@ -7,7 +7,7 @@ import io.github.raghavsatyadev.openplayer.data.network.deezer.DeezerError
 import io.github.raghavsatyadev.openplayer.data.network.itunes.ITunesSearchClient
 import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -44,10 +44,10 @@ class OnlineGenreSource @Inject constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: IOException) {
-            Timber.tag(TAG).d(e, "Genre lookup network error")
+            Logger.withTag(TAG).d(e) { "Genre lookup network error" }
             GenreLookupResult.TryLater
         } catch (e: HttpException) {
-            Timber.tag(TAG).d(e, "Genre lookup HTTP ${e.code()}")
+            Logger.withTag(TAG).d(e) { "Genre lookup HTTP ${e.code()}" }
             if (e.code() == 429 || e.code() >= 500) GenreLookupResult.TryLater else GenreLookupResult.NotFound
         }
     }

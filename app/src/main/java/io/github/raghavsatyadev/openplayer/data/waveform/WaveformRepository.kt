@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -51,7 +51,7 @@ class WaveformRepository @Inject constructor(
                 )
             }.onFailure {
                 if (it is kotlinx.coroutines.CancellationException) throw it
-                Timber.w(it, "Waveform extraction failed for %s", song.id)
+                Logger.w(it) { String.format("Waveform extraction failed for %s", song.id) }
             }.getOrNull()?.also { cache.write(key, it) }
         }
         emit(result)

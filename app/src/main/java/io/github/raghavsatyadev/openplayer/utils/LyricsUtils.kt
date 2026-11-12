@@ -48,7 +48,7 @@ import io.github.raghavsatyadev.openplayer.data.model.Lyrics
 import io.github.raghavsatyadev.openplayer.data.model.SyncedLine
 import io.github.raghavsatyadev.openplayer.data.model.SyncedWord
 import kotlinx.coroutines.flow.Flow
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 import java.text.Normalizer
 import java.util.Locale
@@ -63,7 +63,7 @@ object MultiLangRomanizer {
             Thread.currentThread().contextClassLoader = MultiLangRomanizer::class.java.classLoader
             Tokenizer()
         } catch (e: Throwable) {
-            Timber.e(e)
+            Logger.e(e) { (e).message ?: "" }
             null
         }
     }
@@ -235,7 +235,7 @@ object MultiLangRomanizer {
                 .trim()
 
         } catch (e: Throwable) {
-            Timber.e(e)
+            Logger.e(e) { (e).message ?: "" }
             null
         }
     }
@@ -349,7 +349,7 @@ object MultiLangRomanizer {
 
             sb.toString().replace(Regex("""\s+"""), " ").trim()
         } catch (e: Throwable) {
-            Timber.e(e)
+            Logger.e(e) { (e).message ?: "" }
             null
         }
     }

@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 
 /**
@@ -118,7 +118,7 @@ class ArtistDetailViewModel @Inject constructor(
         loadedArtistId = id
         currentLoadJob?.cancel()
         currentLoadJob = viewModelScope.launch {
-            Timber.tag("ArtistDebug").d("loadArtistData: id=$id")
+            Logger.withTag("ArtistDebug").d { "loadArtistData: id=$id" }
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
                 // "Start with": a page that is already open keeps its layout if the setting changes.
@@ -128,7 +128,7 @@ class ArtistDetailViewModel @Inject constructor(
                 val artistSongsFlow = musicRepository.getSongsForArtist(id)
 
                 combine(artistDetailsFlow, artistSongsFlow) { artist, songs ->
-                    Timber.tag("ArtistDebug").d("loadArtistData: id=$id found=${artist != null} songs=${songs.size}")
+                    Logger.withTag("ArtistDebug").d { "loadArtistData: id=$id found=${artist != null} songs=${songs.size}" }
                     artist to songs
                 }
                     .catch { e ->
@@ -156,7 +156,7 @@ class ArtistDetailViewModel @Inject constructor(
                                 artistName = artist.name
                             )
                         } catch (e: Exception) {
-                            Timber.tag("ArtistDebug").w("Failed to resolve effective artist image: ${e.message}")
+                            Logger.withTag("ArtistDebug").w { "Failed to resolve effective artist image: ${e.message}" }
                             artist.effectiveImageUrl
                         }
 
@@ -164,7 +164,7 @@ class ArtistDetailViewModel @Inject constructor(
                             try {
                                 themeStateHolder.getOrGenerateColorScheme(effectiveUrl)
                             } catch (e: Exception) {
-                                Timber.tag("ArtistDebug").w("Color scheme pre-warm failed: ${e.message}")
+                                Logger.withTag("ArtistDebug").w { "Color scheme pre-warm failed: ${e.message}" }
                                 null
                             }
                         } else null
@@ -218,7 +218,7 @@ class ArtistDetailViewModel @Inject constructor(
                         themeStateHolder.forceRegenerateColorScheme(internalPath)
                         themeStateHolder.getOrGenerateColorScheme(internalPath)
                     } catch (e: Exception) {
-                        Timber.tag("ArtistDebug").w("Failed to regenerate color scheme for custom image: ${e.message}")
+                        Logger.withTag("ArtistDebug").w { "Failed to regenerate color scheme for custom image: ${e.message}" }
                         null
                     }
 
@@ -232,7 +232,7 @@ class ArtistDetailViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                Timber.tag("ArtistDebug").e("Failed to set custom image: ${e.message}")
+                Logger.withTag("ArtistDebug").e { "Failed to set custom image: ${e.message}" }
             }
         }
     }
@@ -258,7 +258,7 @@ class ArtistDetailViewModel @Inject constructor(
                     try {
                         themeStateHolder.getOrGenerateColorScheme(newEffectiveUrl)
                     } catch (e: Exception) {
-                        Timber.tag("ArtistDebug").w("Failed to regenerate palette after clear: ${e.message}")
+                        Logger.withTag("ArtistDebug").w { "Failed to regenerate palette after clear: ${e.message}" }
                         null
                     }
                 } else null
@@ -272,7 +272,7 @@ class ArtistDetailViewModel @Inject constructor(
                 }
 
             } catch (e: Exception) {
-                Timber.tag("ArtistDebug").e("Failed to clear custom image: ${e.message}")
+                Logger.withTag("ArtistDebug").e { "Failed to clear custom image: ${e.message}" }
             }
         }
     }

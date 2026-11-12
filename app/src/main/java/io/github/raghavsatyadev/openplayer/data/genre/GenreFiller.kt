@@ -9,7 +9,7 @@ import io.github.raghavsatyadev.openplayer.data.preferences.OnlineGenrePreferenc
 import io.github.raghavsatyadev.openplayer.utils.GenreParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -54,7 +54,7 @@ class GenreFiller @Inject constructor(
             if (genre != null) genres[song.songId] = genre
         }
         dao.setInferredGenres(genres)
-        Timber.tag(TAG).d("Filled ${genres.size} of ${songs.size} songs with no genre")
+        Logger.withTag(TAG).d { "Filled ${genres.size} of ${songs.size} songs with no genre" }
         genres.size to songs.size
     }
 

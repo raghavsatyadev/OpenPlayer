@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -49,7 +49,7 @@ class FolderArtworkSettingsCoordinator @Inject constructor(
             throw error
         } catch (error: Exception) {
             // Leave the marker unchanged so the next foreground/settings event retries.
-            Timber.e(error, "Unable to reconcile folder artwork settings")
+            Logger.e(error) { "Unable to reconcile folder artwork settings" }
         }
     }
 

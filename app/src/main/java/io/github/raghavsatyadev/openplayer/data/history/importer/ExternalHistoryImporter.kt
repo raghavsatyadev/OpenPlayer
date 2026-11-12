@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -54,7 +54,7 @@ class ExternalHistoryImporter @Inject constructor(
             _state.value = HistoryImportState.Idle
             throw e
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "History import failed")
+            Logger.withTag(TAG).e(e) { "History import failed" }
             _state.value = HistoryImportState.Failed(source)
             return null
         } finally {
@@ -86,7 +86,7 @@ class ExternalHistoryImporter @Inject constructor(
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
-                Timber.tag(TAG).w(e, "Could not read %s", uri)
+                Logger.withTag(TAG).w(e) { String.format("Could not read %s", uri) }
                 failedFiles++
             }
         }
@@ -96,7 +96,7 @@ class ExternalHistoryImporter @Inject constructor(
         val summary = HistoryImportCommit(database, listenHistoryDao).commit(
             listens, source, matcher, preferences.currentRule(), unparseable, failedFiles
         ) { phase -> _state.value = HistoryImportState.Working(source, phase, listens.size) }
-        Timber.tag(TAG).i("Imported %d of %d plays from %s", summary.imported, listens.size, source)
+        Logger.withTag(TAG).i { String.format("Imported %d of %d plays from %s", summary.imported, listens.size, source) }
         return summary
     }
 

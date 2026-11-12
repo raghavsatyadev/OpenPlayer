@@ -18,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 
 class MetadataEditStateHolder @Inject constructor(
@@ -82,7 +82,7 @@ class MetadataEditStateHolder @Inject constructor(
         customMetadataChanges: CustomMetadataChanges = CustomMetadataChanges()
     ): MetadataEditResult = withContext(Dispatchers.IO) {
         
-        Timber.tag("MetadataEditStateHolder").d("Starting saveMetadata for: ${song.title}")
+        Logger.withTag("MetadataEditStateHolder").d { "Starting saveMetadata for: ${song.title}" }
 
         val finalCoverArtUpdate = if (coverArtUpdate == null) {
             val existingMetadata = try {
@@ -91,13 +91,13 @@ class MetadataEditStateHolder @Inject constructor(
                 null
             }
             if (existingMetadata?.artwork != null) {
-                Timber.tag("MetadataEditStateHolder").d("Preserving existing embedded artwork")
+                Logger.withTag("MetadataEditStateHolder").d { "Preserving existing embedded artwork" }
                 CoverArtUpdate(existingMetadata.artwork.bytes, existingMetadata.artwork.mimeType ?: "image/jpeg")
             } else {
                 null
             }
         } else if (coverArtUpdate.isDeletion) {
-            Timber.tag("MetadataEditStateHolder").d("Artwork deletion requested, skipping preservation")
+            Logger.withTag("MetadataEditStateHolder").d { "Artwork deletion requested, skipping preservation" }
             coverArtUpdate
         } else {
             coverArtUpdate
@@ -109,7 +109,7 @@ class MetadataEditStateHolder @Inject constructor(
         val resolvedSongId = resolveSongIdForMetadataEdit(song)
 
         if (resolvedSongId == null) {
-            Timber.tag("MetadataEditStateHolder").w("Cannot edit metadata for non-numeric song id: ${song.id}")
+            Logger.withTag("MetadataEditStateHolder").w { "Cannot edit metadata for non-numeric song id: ${song.id}" }
             return@withContext MetadataEditResult(
                 success = false,
                 error = MetadataEditError.INVALID_INPUT,
@@ -134,7 +134,7 @@ class MetadataEditStateHolder @Inject constructor(
             songId = resolvedSongId,
         )
 
-        Timber.tag("MetadataEditStateHolder").d("Editor result: success=${result.success}, error=${result.error}")
+        Logger.withTag("MetadataEditStateHolder").d { "Editor result: success=${result.success}, error=${result.error}" }
 
         if (result.success) {
             val refreshedAlbumArtUri = if (coverArtUpdate?.isDeletion == true) {
@@ -185,7 +185,7 @@ class MetadataEditStateHolder @Inject constructor(
                 parsedLyrics = parsedLyrics
             )
         } else {
-            Timber.tag("MetadataEditStateHolder").w("Metadata edit failed: ${result.error} - ${result.errorMessage}")
+            Logger.withTag("MetadataEditStateHolder").w { "Metadata edit failed: ${result.error} - ${result.errorMessage}" }
             MetadataEditResult(
                 success = false,
                 error = result.error,

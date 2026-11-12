@@ -153,7 +153,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import androidx.compose.runtime.produceState
 import kotlin.coroutines.cancellation.CancellationException
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 internal data class LyricsSheetColors(
     val container: Color,
@@ -441,7 +441,7 @@ fun LyricsSheet(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                Timber.w(e, "Failed to copy lyrics to the clipboard")
+                Logger.w(e) { "Failed to copy lyrics to the clipboard" }
                 return@launch
             }
             // Android 13+ confirms clipboard writes with its own overlay.

@@ -120,12 +120,12 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.yield
 import kotlinx.serialization.json.Json
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.util.Locale
 import javax.inject.Inject
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import coil.memory.MemoryCache
+import coil3.memory.MemoryCache
 import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceDiagnostics
 
 private const val ENABLE_FOLDERS_SOURCE_SWITCHING = true
@@ -265,8 +265,7 @@ private data class ResolvedAlbumSelection(
 )
 
 @androidx.annotation.OptIn(UnstableApi::class)
-@SuppressLint("LogNotTimber")
-@OptIn(coil.annotation.ExperimentalCoilApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(coil3.annotation.ExperimentalCoilApi::class, ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
@@ -638,7 +637,7 @@ class PlayerViewModel @Inject constructor(
                     sendToast(context.getString(R.string.player_song_not_found_in_list))
                 }
             } catch (e: Exception) {
-                Timber.e(e, "Failed to locate current song")
+                Logger.e(e) { "Failed to locate current song" }
                 sendToast(context.getString(R.string.player_could_not_locate_song))
             }
         }
@@ -739,7 +738,7 @@ class PlayerViewModel @Inject constructor(
                     return@launch
                 }
 
-                Timber.e(error, failureMessage, song.id)
+                Logger.e(error) { String.format(failureMessage, song.id) }
                 val fallbackQueue = libraryStateHolder.allSongs.value.takeIf { songs ->
                     songs.isNotEmpty() && songs.any { it.id == song.id }
                 } ?: listOf(song)
@@ -1367,7 +1366,7 @@ class PlayerViewModel @Inject constructor(
 
 
     fun shuffleAllSongs(queueName: String = context.getString(R.string.queue_name_all_songs_shuffled)) {
-        Timber.tag("ShuffleDebug").d("shuffleAllSongs called.")
+        Logger.withTag("ShuffleDebug").d { "shuffleAllSongs called." }
         
         viewModelScope.launch {
             val randomSongs = musicRepository.getRandomSongs(limit = SHUFFLE_ALL_SONG_LIMIT)
@@ -1386,15 +1385,15 @@ class PlayerViewModel @Inject constructor(
      * not depend on the eager in-memory song cache being populated first.
      */
     fun triggerShuffleAllFromTile() {
-        Timber.d("[TileDebug] triggerShuffleAllFromTile called. mediaController=${mediaController != null}")
+        Logger.d { "[TileDebug] triggerShuffleAllFromTile called. mediaController=${mediaController != null}" }
         val action: () -> Unit = {
-            Timber.d("[TileDebug] action() invoked")
+            Logger.d { "[TileDebug] action() invoked" }
             viewModelScope.launch {
                 var songs = musicRepository.getRandomSongs(limit = SHUFFLE_ALL_SONG_LIMIT)
-                Timber.d("[TileDebug] Repository returned ${songs.size} random songs immediately")
+                Logger.d { "[TileDebug] Repository returned ${songs.size} random songs immediately" }
 
                 if (songs.isEmpty()) {
-                    Timber.d("[TileDebug] No songs available yet, triggering sync and retrying repository sample")
+                    Logger.d { "[TileDebug] No songs available yet, triggering sync and retrying repository sample" }
                     syncManager.sync()
                     songs = withTimeoutOrNull(30_000L) {
                         var refreshedSongs = emptyList<Song>()
@@ -1407,28 +1406,28 @@ class PlayerViewModel @Inject constructor(
                         refreshedSongs
                     }
                         ?: emptyList()
-                    Timber.d("[TileDebug] After retry, repository returned ${songs.size} songs")
+                    Logger.d { "[TileDebug] After retry, repository returned ${songs.size} songs" }
                 }
 
                 if (songs.isNotEmpty()) {
-                    Timber.d("[TileDebug] Calling playSongsShuffled with ${songs.size} songs")
+                    Logger.d { "[TileDebug] Calling playSongsShuffled with ${songs.size} songs" }
                     playSongsShuffled(
                         songs,
                         context.getString(R.string.queue_name_all_songs_shuffled),
                         startAtZero = true
                     )
                 } else {
-                    Timber.w("[TileDebug] No songs found even after sync - library may be empty")
+                    Logger.w { "[TileDebug] No songs found even after sync - library may be empty" }
                     sendToast(context.getString(R.string.player_no_songs_in_library_toast))
                 }
             }
         }
 
         if (mediaController == null) {
-            Timber.d("[TileDebug] mediaController null, queuing as pendingPlaybackAction")
+            Logger.d { "[TileDebug] mediaController null, queuing as pendingPlaybackAction" }
             pendingPlaybackAction = action
         } else {
-            Timber.d("[TileDebug] mediaController ready, calling action immediately")
+            Logger.d { "[TileDebug] mediaController ready, calling action immediately" }
             action()
         }
     }
@@ -1447,7 +1446,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun shuffleFavoriteSongs() {
-        Timber.tag("ShuffleDebug").d("shuffleFavoriteSongs called.")
+        Logger.withTag("ShuffleDebug").d { "shuffleFavoriteSongs called." }
 
         viewModelScope.launch {
             val favSongs = musicRepository.getFavoriteSongsOnce(playerUiState.value.currentStorageFilter)
@@ -1571,7 +1570,7 @@ class PlayerViewModel @Inject constructor(
 
     init {
         traceSection("PlayerViewModel.init") {
-            Timber.tag("PlayerViewModel").i("init started.")
+            Logger.withTag("PlayerViewModel").i { "init started." }
 
 
             viewModelScope.launch {
@@ -1738,7 +1737,7 @@ class PlayerViewModel @Inject constructor(
                     _playerUiState.update { it.copy(isSyncingLibrary = isSyncing) }
 
                     if (oldSyncingLibraryState && !isSyncing) {
-                        Timber.tag("PlayerViewModel").i("Sync completed. Calling resetAndLoadInitialData from isSyncingStateFlow observer.")
+                        Logger.withTag("PlayerViewModel").i { "Sync completed. Calling resetAndLoadInitialData from isSyncingStateFlow observer." }
                         resetAndLoadInitialData("isSyncingStateFlow observer")
                     }
                 }
@@ -1746,7 +1745,7 @@ class PlayerViewModel @Inject constructor(
 
             viewModelScope.launch {
                 if (!isSyncingStateFlow.value && !_isInitialDataLoaded.value && libraryStateHolder.allSongs.value.isEmpty()) {
-                    Timber.tag("PlayerViewModel").i("Initial check: Sync not active and initial data not loaded. Calling resetAndLoadInitialData.")
+                    Logger.withTag("PlayerViewModel").i { "Initial check: Sync not active and initial data not loaded. Calling resetAndLoadInitialData." }
                     resetAndLoadInitialData("Initial Check")
                 }
             }
@@ -1765,7 +1764,7 @@ class PlayerViewModel @Inject constructor(
                     pendingPlaybackAction = null
                 } catch (e: Exception) {
                     _playerUiState.update { it.copy(isLoadingInitialSongs = false, isLoadingLibraryCategories = false) }
-                    Timber.tag("PlayerViewModel").e(e, "Error setting up MediaController")
+                    Logger.withTag("PlayerViewModel").e(e) { "Error setting up MediaController" }
                 }
             }, ContextCompat.getMainExecutor(context))
 
@@ -1927,7 +1926,7 @@ class PlayerViewModel @Inject constructor(
     private fun resetAndLoadInitialData(caller: String = "Unknown") {
         Trace.beginSection("PlayerViewModel.resetAndLoadInitialData")
         try {
-            Timber.tag("PlayerViewModel").d("resetAndLoadInitialData called by $caller")
+            Logger.withTag("PlayerViewModel").d { "resetAndLoadInitialData called by $caller" }
             loadInitialLibraryDataParallel()
             checkAndUpdateDailyMixIfNeeded()
         } finally {
@@ -2015,7 +2014,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun showAndPlaySong(song: Song) {
-        Timber.tag("ShuffleDebug").d("showAndPlaySong (single song overload) called for '${song.title}'")
+        Logger.withTag("ShuffleDebug").d { "showAndPlaySong (single song overload) called for '${song.title}'" }
         showAndPlaySong(song, listOf(song), context.getString(R.string.tab_library))
     }
 
@@ -2088,7 +2087,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun playAlbum(album: Album) {
-        Timber.tag("ShuffleDebug").d("playAlbum called for album: ${album.title}")
+        Logger.withTag("ShuffleDebug").d { "playAlbum called for album: ${album.title}" }
         viewModelScope.launch {
             try {
                 val songsList: List<Song> = withContext(dispatchers.io) {
@@ -2105,10 +2104,10 @@ class PlayerViewModel @Inject constructor(
                     playSongs(sortedSongs, sortedSongs.first(), album.title, null)
                     _isSheetVisible.value = true
                 } else {
-                    Timber.tag("PlayerViewModel").w("Album '${album.title}' has no playable songs.")
+                    Logger.withTag("PlayerViewModel").w { "Album '${album.title}' has no playable songs." }
                 }
             } catch (e: Exception) {
-                Timber.tag("PlayerViewModel").e(e, "Error playing album ${album.title}")
+                Logger.withTag("PlayerViewModel").e(e) { "Error playing album ${album.title}" }
             }
         }
     }
@@ -2145,7 +2144,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun playArtist(artist: Artist) {
-        Timber.tag("ShuffleDebug").d("playArtist called for artist: ${artist.name}")
+        Logger.withTag("ShuffleDebug").d { "playArtist called for artist: ${artist.name}" }
         viewModelScope.launch {
             try {
                 val songsList: List<Song> = withContext(dispatchers.io) {
@@ -2156,10 +2155,10 @@ class PlayerViewModel @Inject constructor(
                     playSongs(songsList, songsList.first(), artist.name, null)
                     _isSheetVisible.value = true
                 } else {
-                    Timber.tag("PlayerViewModel").w("Artist '${artist.name}' has no playable songs.")
+                    Logger.withTag("PlayerViewModel").w { "Artist '${artist.name}' has no playable songs." }
                 }
             } catch (e: Exception) {
-                Timber.tag("PlayerViewModel").e(e, "Error playing artist ${artist.name}")
+                Logger.withTag("PlayerViewModel").e(e) { "Error playing artist ${artist.name}" }
             }
         }
     }
@@ -2249,22 +2248,20 @@ class PlayerViewModel @Inject constructor(
 
     fun triggerAlbumNavigationFromPlayer(albumId: Long) {
         if (albumId == -1L) {
-            Timber.tag("AlbumDebug").d("triggerAlbumNavigationFromPlayer ignored invalid albumId=$albumId")
+            Logger.withTag("AlbumDebug").d { "triggerAlbumNavigationFromPlayer ignored invalid albumId=$albumId" }
             return
         }
 
         val existingJob = albumNavigationJob
         if (existingJob != null && existingJob.isActive) {
-            Timber.tag("AlbumDebug").d("triggerAlbumNavigationFromPlayer ignored; navigation already in progress for albumId=$albumId")
+            Logger.withTag("AlbumDebug").d { "triggerAlbumNavigationFromPlayer ignored; navigation already in progress for albumId=$albumId" }
             return
         }
 
         albumNavigationJob?.cancel()
         albumNavigationJob = viewModelScope.launch {
             val currentSong = playbackStateHolder.stablePlayerState.value.currentSong
-            Timber.tag("AlbumDebug").d(
-                "triggerAlbumNavigationFromPlayer: albumId=$albumId, songId=${currentSong?.id}, title=${currentSong?.title}"
-            )
+            Logger.withTag("AlbumDebug").d { "triggerAlbumNavigationFromPlayer: albumId=$albumId, songId=${currentSong?.id}, title=${currentSong?.title}" }
             collapsePlayerSheet()
 
             withTimeoutOrNull(900) {
@@ -2278,13 +2275,13 @@ class PlayerViewModel @Inject constructor(
 
     fun triggerArtistNavigationFromPlayer(artistId: Long) {
         if (artistId == 0L) {
-            Timber.tag("ArtistDebug").d("triggerArtistNavigationFromPlayer ignored invalid artistId=$artistId")
+            Logger.withTag("ArtistDebug").d { "triggerArtistNavigationFromPlayer ignored invalid artistId=$artistId" }
             return
         }
 
         val existingJob = artistNavigationJob
         if (existingJob != null && existingJob.isActive) {
-            Timber.tag("ArtistDebug").d("triggerArtistNavigationFromPlayer ignored; navigation already in progress for artistId=$artistId")
+            Logger.withTag("ArtistDebug").d { "triggerArtistNavigationFromPlayer ignored; navigation already in progress for artistId=$artistId" }
             return
         }
 
@@ -2301,13 +2298,11 @@ class PlayerViewModel @Inject constructor(
             }
 
             if (resolvedId == 0L || resolvedId == -1L) {
-                Timber.tag("ArtistDebug").d("triggerArtistNavigationFromPlayer: could not resolve artistId for name=${currentSong?.artist}")
+                Logger.withTag("ArtistDebug").d { "triggerArtistNavigationFromPlayer: could not resolve artistId for name=${currentSong?.artist}" }
                 return@launch
             }
 
-            Timber.tag("ArtistDebug").d(
-                "triggerArtistNavigationFromPlayer: artistId=$resolvedId, songId=${currentSong?.id}, title=${currentSong?.title}"
-            )
+            Logger.withTag("ArtistDebug").d { "triggerArtistNavigationFromPlayer: artistId=$resolvedId, songId=${currentSong?.id}, title=${currentSong?.title}" }
             collapsePlayerSheet()
 
             withTimeoutOrNull(900) {
@@ -2525,7 +2520,7 @@ class PlayerViewModel @Inject constructor(
             _playbackAudioMetadata.value = metadata
             maybeProbeMissingPlaybackAudioMetadata(player, metadata)
         }.onFailure { throwable ->
-            Timber.w(throwable, "Failed to refresh playback audio metadata")
+            Logger.w(throwable) { "Failed to refresh playback audio metadata" }
         }
     }
 
@@ -3212,7 +3207,7 @@ class PlayerViewModel @Inject constructor(
         }
 
         if (mediaController == null) {
-            Timber.w("MediaController not available. Queuing playback action.")
+            Logger.w { "MediaController not available. Queuing playback action." }
             pendingPlaybackAction = playSongsAction
         } else {
             playSongsAction()
@@ -3460,7 +3455,7 @@ class PlayerViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
-                Timber.tag("PlayerViewModel").e(e, "Error playing selected albums")
+                Logger.withTag("PlayerViewModel").e(e) { "Error playing selected albums" }
                 _toastEvents.emit(context.getString(R.string.player_could_not_queue_albums))
             }
         }
@@ -3485,7 +3480,7 @@ class PlayerViewModel @Inject constructor(
                     _toastEvents.emit(context.getString(R.string.player_albums_will_play_next_format, resolvedSelection.albums.size))
                 }
             } catch (e: Exception) {
-                Timber.tag("PlayerViewModel").e(e, "Error adding selected albums as next")
+                Logger.withTag("PlayerViewModel").e(e) { "Error adding selected albums as next" }
                 _toastEvents.emit(context.getString(R.string.player_could_not_add_albums_next))
             }
         }
@@ -3510,7 +3505,7 @@ class PlayerViewModel @Inject constructor(
                     _toastEvents.emit(context.getString(R.string.player_albums_added_to_queue_format, resolvedSelection.albums.size))
                 }
             } catch (e: Exception) {
-                Timber.tag("PlayerViewModel").e(e, "Error adding selected albums to queue")
+                Logger.withTag("PlayerViewModel").e(e) { "Error adding selected albums to queue" }
                 _toastEvents.emit(context.getString(R.string.player_could_not_add_albums_queue))
             }
         }
@@ -3541,7 +3536,7 @@ class PlayerViewModel @Inject constructor(
                     _toastEvents.emit(context.getString(R.string.player_no_playable_songs_in_genres))
                 }
             } catch (e: Exception) {
-                Timber.tag("PlayerViewModel").e(e, "Error playing selected genres")
+                Logger.withTag("PlayerViewModel").e(e) { "Error playing selected genres" }
                 _toastEvents.emit(context.getString(R.string.player_could_not_queue_genres))
             }
         }
@@ -3562,7 +3557,7 @@ class PlayerViewModel @Inject constructor(
                     _toastEvents.emit(context.getString(R.string.player_no_playable_songs_in_genres))
                 }
             } catch (e: Exception) {
-                Timber.tag("PlayerViewModel").e(e, "Error adding selected genres to queue")
+                Logger.withTag("PlayerViewModel").e(e) { "Error adding selected genres to queue" }
                 _toastEvents.emit(context.getString(R.string.player_could_not_queue_genres))
             }
         }
@@ -3583,7 +3578,7 @@ class PlayerViewModel @Inject constructor(
                     _toastEvents.emit(context.getString(R.string.player_no_playable_songs_in_genres))
                 }
             } catch (e: Exception) {
-                Timber.tag("PlayerViewModel").e(e, "Error adding selected genres as next")
+                Logger.withTag("PlayerViewModel").e(e) { "Error adding selected genres as next" }
                 _toastEvents.emit(context.getString(R.string.player_could_not_queue_genres))
             }
         }
@@ -3661,7 +3656,7 @@ class PlayerViewModel @Inject constructor(
                 _toastEvents.emit(
                     context.getString(R.string.player_share_zip_failed_format, error.localizedMessage ?: ""),
                 )
-                Timber.tag("PlayerViewModel").e(error, "Failed to share selection as zip")
+                Logger.withTag("PlayerViewModel").e(error) { "Failed to share selection as zip" }
             }
         }
     }
@@ -4005,7 +4000,7 @@ class PlayerViewModel @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            Timber.tag("MediaController").e("Error removing from queue: ${e.message}")
+            Logger.withTag("MediaController").e { "Error removing from queue: ${e.message}" }
         }
     }
 
@@ -4617,7 +4612,7 @@ class PlayerViewModel @Inject constructor(
         customMetadataChanges: CustomMetadataChanges = CustomMetadataChanges(),
     ) {
         viewModelScope.launch {
-            Timber.tag("PlayerViewModel").e("METADATA_EDIT_VM: Starting editSongMetadata via Holder")
+            Logger.withTag("PlayerViewModel").e { "METADATA_EDIT_VM: Starting editSongMetadata via Holder" }
 
             val songId = song.id.toLongOrNull()
             if (songId != null && songId > 0 && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
@@ -4823,7 +4818,7 @@ class PlayerViewModel @Inject constructor(
                     loadLyricsForCurrentSong()
                 }
             } catch (e: Exception) {
-                Timber.e(e, "Failed to save lyrics to file")
+                Logger.e(e) { "Failed to save lyrics to file" }
                 _toastEvents.emit(context.getString(R.string.lyrics_save_failed))
             }
         }
@@ -4864,7 +4859,7 @@ class PlayerViewModel @Inject constructor(
             customMetadataChanges = customMetadataChanges
         )
 
-        Timber.tag("PlayerViewModel").e("METADATA_EDIT_VM: Result success=${result.success}")
+        Logger.withTag("PlayerViewModel").e { "METADATA_EDIT_VM: Result success=${result.success}" }
 
         if (result.success && result.updatedSong != null) {
             val updatedSong = result.updatedSong
@@ -4923,7 +4918,7 @@ class PlayerViewModel @Inject constructor(
             _toastEvents.emit(context.getString(R.string.metadata_updated_successfully))
         } else {
             val errorMessage = result.getUserFriendlyErrorMessage()
-            Timber.tag("PlayerViewModel").e("METADATA_EDIT_VM: Failed - ${result.error}: $errorMessage")
+            Logger.withTag("PlayerViewModel").e { "METADATA_EDIT_VM: Failed - ${result.error}: $errorMessage" }
             _toastEvents.emit(errorMessage)
         }
     }
@@ -5059,19 +5054,17 @@ class PlayerViewModel @Inject constructor(
                 val songs = withContext(dispatchers.io) {
                     musicRepository.getAllSongsOnce()
                 }
-                Timber.tag("OpenPlayerBenchmark").i(
-                    "prepare player attempt=$attempt controllerReady=$controllerReady songs=${songs.size}"
-                )
+                Logger.withTag("OpenPlayerBenchmark").i { "prepare player attempt=$attempt controllerReady=$controllerReady songs=${songs.size}" }
                 if (controllerReady && songs.isNotEmpty()) {
                     playSongs(songs, songs.first(), "Benchmark Player")
                     delay(700L)
                     collapsePlayerSheet()
-                    Timber.tag("OpenPlayerBenchmark").i("Benchmark player prepared with ${songs.first().title}")
+                    Logger.withTag("OpenPlayerBenchmark").i { "Benchmark player prepared with ${songs.first().title}" }
                     return@launch
                 }
                 delay(500L)
             }
-            Timber.tag("OpenPlayerBenchmark").w("Unable to prepare benchmark player from library")
+            Logger.withTag("OpenPlayerBenchmark").w { "Unable to prepare benchmark player from library" }
         }
     }
 
@@ -5103,7 +5096,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     private suspend fun performBatchEditGenre(songs: List<Song>, newGenre: String) {
-            Timber.tag("PlayerViewModel").d("Starting batch genre update for ${songs.size} songs to '$newGenre'")
+            Logger.withTag("PlayerViewModel").d { "Starting batch genre update for ${songs.size} songs to '$newGenre'" }
             _toastEvents.emit(context.getString(R.string.player_updating_n_songs, songs.size))
 
             var successCount = 0

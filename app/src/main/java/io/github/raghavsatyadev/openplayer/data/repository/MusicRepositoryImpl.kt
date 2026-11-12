@@ -77,7 +77,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.CoroutineScope
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
@@ -701,7 +701,7 @@ class MusicRepositoryImpl @Inject constructor(
     }
 
     override suspend fun invalidateCachesDependentOnAllowedDirectories() {
-        Timber.tag("MusicRepo").i("invalidateCachesDependentOnAllowedDirectories called. Reactive flows will update automatically.")
+        Logger.withTag("MusicRepo").i { "invalidateCachesDependentOnAllowedDirectories called. Reactive flows will update automatically." }
     }
 
     override suspend fun getAllSongsOnce(): List<Song> = withContext(Dispatchers.IO) {

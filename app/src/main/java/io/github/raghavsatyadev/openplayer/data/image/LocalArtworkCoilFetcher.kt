@@ -1,11 +1,13 @@
 package io.github.raghavsatyadev.openplayer.data.image
 
 import android.net.Uri
-import coil.ImageLoader
-import coil.fetch.FetchResult
-import coil.fetch.Fetcher
-import coil.fetch.SourceResult
-import coil.request.Options
+import coil3.ImageLoader
+import coil3.decode.DataSource
+import coil3.decode.ImageSource
+import coil3.fetch.FetchResult
+import coil3.fetch.Fetcher
+import coil3.fetch.SourceFetchResult
+import coil3.request.Options
 import io.github.raghavsatyadev.openplayer.data.image.online.OnlineCoverRepository
 import io.github.raghavsatyadev.openplayer.utils.AlbumArtUtils
 import io.github.raghavsatyadev.openplayer.utils.LocalArtworkUri
@@ -26,25 +28,25 @@ class LocalArtworkCoilFetcher(
             songId = songId
         )
         if (cachedFile != null) {
-            return SourceResult(
-                source = coil.decode.ImageSource(
+            return SourceFetchResult(
+                source = ImageSource(
                     file = cachedFile.absolutePath.toPath(),
                     fileSystem = okio.FileSystem.SYSTEM
                 ),
                 mimeType = null,
-                dataSource = coil.decode.DataSource.DISK
+                dataSource = DataSource.DISK
             )
         }
 
         val onlineFile = onlineCovers.get().coverFor(songId)
         if (onlineFile != null) {
-            return SourceResult(
-                source = coil.decode.ImageSource(
+            return SourceFetchResult(
+                source = ImageSource(
                     file = onlineFile.absolutePath.toPath(),
                     fileSystem = okio.FileSystem.SYSTEM
                 ),
                 mimeType = null,
-                dataSource = coil.decode.DataSource.NETWORK
+                dataSource = DataSource.NETWORK
             )
         }
 

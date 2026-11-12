@@ -2,7 +2,7 @@ package io.github.raghavsatyadev.openplayer.data.media
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -120,7 +120,7 @@ internal class PendingWriteBackStore(
     fun stage(source: File, target: WriteBackTarget): PendingWriteBack? {
         if (!source.isFile) return null
         if (!directory.isDirectory && !directory.mkdirs()) {
-            Timber.tag(TAG).e("Could not create ${directory.path} for a pending write-back")
+            Logger.withTag(TAG).e { "Could not create ${directory.path} for a pending write-back" }
             return null
         }
         val baseName = "${target.songId}_${System.nanoTime()}"
@@ -142,7 +142,7 @@ internal class PendingWriteBackStore(
             RandomAccessFile(pending.copy, "rw").use { it.fd.sync() }
             pending
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Could not stage the edited copy ${source.path} for ${target.path}")
+            Logger.withTag(TAG).e(e) { "Could not stage the edited copy ${source.path} for ${target.path}" }
             if (pending.copy.exists() && !source.exists()) pending.copy.renameTo(source)
             pending.copy.delete()
             pending.record.delete()
@@ -162,7 +162,7 @@ internal class PendingWriteBackStore(
             .filter { it.isFile && it.extension == RECORD_EXTENSION }
             .mapNotNull { record ->
                 readEntry(record) ?: run {
-                    Timber.tag(TAG).w("Dropping incomplete pending write-back ${record.name}")
+                    Logger.withTag(TAG).w { "Dropping incomplete pending write-back ${record.name}" }
                     File(directory, "${record.nameWithoutExtension}.$COPY_EXTENSION").delete()
                     record.delete()
                     null
@@ -170,7 +170,7 @@ internal class PendingWriteBackStore(
             }
         val kept = entries.flatMapTo(HashSet()) { listOf(it.copy, it.record) }
         files.filter { it !in kept && it.exists() }.forEach { stray ->
-            Timber.tag(TAG).w("Deleting stray file ${stray.name} without a pending write-back record")
+            Logger.withTag(TAG).w { "Deleting stray file ${stray.name} without a pending write-back record" }
             stray.deleteRecursively()
         }
         return entries.sortedBy { it.createdAtMillis }
@@ -188,7 +188,7 @@ internal class PendingWriteBackStore(
             if (!temp.renameTo(pending.record)) throw IOException("Could not replace ${pending.record.name}")
             true
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Could not update pending write-back ${pending.record.name}")
+            Logger.withTag(TAG).w(e) { "Could not update pending write-back ${pending.record.name}" }
             temp.delete()
             false
         }
@@ -196,10 +196,10 @@ internal class PendingWriteBackStore(
 
     fun remove(pending: PendingWriteBack) {
         if (pending.copy.exists() && !pending.copy.delete()) {
-            Timber.tag(TAG).w("Could not delete pending copy ${pending.copy.path}")
+            Logger.withTag(TAG).w { "Could not delete pending copy ${pending.copy.path}" }
         }
         if (pending.record.exists() && !pending.record.delete()) {
-            Timber.tag(TAG).w("Could not delete pending record ${pending.record.path}")
+            Logger.withTag(TAG).w { "Could not delete pending record ${pending.record.path}" }
         }
     }
 
@@ -225,7 +225,7 @@ internal class PendingWriteBackStore(
         val properties = try {
             Properties().apply { record.inputStream().use { load(it) } }
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Unreadable pending write-back record ${record.name}")
+            Logger.withTag(TAG).w(e) { "Unreadable pending write-back record ${record.name}" }
             return null
         }
         val songId = properties.getProperty(KEY_SONG_ID)?.toLongOrNull() ?: return null
@@ -314,9 +314,7 @@ internal class PathResolvedSong<R : Any>(
     val row: R? by lazy {
         val found = findRowNamingPath() ?: return@lazy null
         if (expectedRowId != null && found.id != expectedRowId) {
-            Timber.tag(TAG).w(
-                "MediaStore row ${found.id} names ${file.path}, not song $expectedRowId; not writing through it"
-            )
+            Logger.withTag(TAG).w { "MediaStore row ${found.id} names ${file.path}, not song $expectedRowId; not writing through it" }
             null
         } else {
             found.handle
@@ -359,14 +357,12 @@ internal fun writeBackEditedCopy(
     openDestination: () -> OutputStream?
 ): WriteBackResult {
     if (!hasRoomToRewrite(source.length(), availableBytes, originalLength)) {
-        Timber.tag(TAG).e(
-            "Not overwriting the original: $availableBytes free + $originalLength freed cannot hold ${source.length()}"
-        )
+        Logger.withTag(TAG).e { "Not overwriting the original: $availableBytes free + $originalLength freed cannot hold ${source.length()}" }
         return WriteBackResult.NotStarted
     }
     val pending = if (target != null) {
         store.stage(source, target) ?: run {
-            Timber.tag(TAG).e("Edited copy ${source.path} could not be kept; original left untouched")
+            Logger.withTag(TAG).e { "Edited copy ${source.path} could not be kept; original left untouched" }
             return WriteBackResult.NotStarted
         }
     } else {
@@ -382,9 +378,7 @@ internal fun writeBackEditedCopy(
             WriteBackResult.NotStarted
         }
         CopyOutcome.FAILED_AFTER_TRUNCATE -> {
-            Timber.tag(TAG).e(
-                "Write-back failed after truncating the original; edited copy kept at ${pending?.copy?.path}"
-            )
+            Logger.withTag(TAG).e { "Write-back failed after truncating the original; edited copy kept at ${pending?.copy?.path}" }
             WriteBackResult.FailedAfterTruncate(pending)
         }
     }
@@ -422,7 +416,7 @@ internal fun resumePendingWriteBack(
         val now = store.now()
         val missingSince = pending.missingSinceMillis?.takeIf { it in pending.createdAtMillis..now } ?: now
         if (now - missingSince > MISSING_SONG_MAX_AGE_MILLIS) {
-            Timber.tag(TAG).w("Dropping the edited copy for ${pending.target.path}; the song has been gone too long")
+            Logger.withTag(TAG).w { "Dropping the edited copy for ${pending.target.path}; the song has been gone too long" }
             return drop(ResumeOutcome.EXPIRED)
         }
         return keep(pending.copy(missingSinceMillis = missingSince, cutOffStat = null), ResumeOutcome.UNAVAILABLE)
@@ -433,7 +427,7 @@ internal fun resumePendingWriteBack(
         val state = try {
             song.openForReading()?.use { current -> compareWithCopy(current, pending.copy) }
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Could not read ${pending.target.path} to resume its write-back")
+            Logger.withTag(TAG).w(e) { "Could not read ${pending.target.path} to resume its write-back" }
             null
         }
         when (state) {
@@ -446,7 +440,7 @@ internal fun resumePendingWriteBack(
     val cutOff = present.copy(cutOffStat = stat)
     val songLength = stat?.length ?: 0L
     if (!hasRoomToRewrite(pending.copy.length(), song.availableBytes(), songLength)) {
-        Timber.tag(TAG).w("Not enough free space to restore ${pending.target.path} yet")
+        Logger.withTag(TAG).w { "Not enough free space to restore ${pending.target.path} yet" }
         return keep(cutOff, ResumeOutcome.UNAVAILABLE)
     }
     return when (copyIntoDestination(pending.copy, song::openTruncated)) {
@@ -498,24 +492,24 @@ internal class PendingWriteBackGate(
         val pending = try {
             store.entries().filter(matches)
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Could not list pending write-backs")
+            Logger.withTag(TAG).e(e) { "Could not list pending write-backs" }
             return emptyList()
         }
         val resumed = pending.map { entry ->
             val outcome = try {
                 resumePendingWriteBack(entry, store, songFor(entry.target))
             } catch (e: Exception) {
-                Timber.tag(TAG).e(e, "Resuming the write-back for ${entry.target.path} failed")
+                Logger.withTag(TAG).e(e) { "Resuming the write-back for ${entry.target.path} failed" }
                 ResumeOutcome.UNAVAILABLE
             }
-            Timber.tag(TAG).w("Pending write-back ${entry.record.name} for song ${entry.target.songId}: $outcome")
+            Logger.withTag(TAG).w { "Pending write-back ${entry.record.name} for song ${entry.target.songId}: $outcome" }
             ResumedWriteBack(entry, outcome)
         }
         if (everySong || resumed.isNotEmpty()) {
             try {
                 onResumed(resumed, everySong)
             } catch (e: Exception) {
-                Timber.tag(TAG).e(e, "Handling resumed write-backs failed")
+                Logger.withTag(TAG).e(e) { "Handling resumed write-backs failed" }
             }
         }
         return resumed
@@ -532,7 +526,7 @@ private fun copyIntoDestination(editedCopy: File, openDestination: () -> OutputS
     val input = try {
         FileInputStream(editedCopy)
     } catch (e: IOException) {
-        Timber.tag(TAG).e(e, "Edited copy ${editedCopy.path} is unreadable; destination not opened")
+        Logger.withTag(TAG).e(e) { "Edited copy ${editedCopy.path} is unreadable; destination not opened" }
         return CopyOutcome.NOT_OPENED
     }
     input.use {
@@ -541,7 +535,7 @@ private fun copyIntoDestination(editedCopy: File, openDestination: () -> OutputS
             val destination = try {
                 openDestination()
             } catch (e: Exception) {
-                Timber.tag(TAG).w(e, "Write-back attempt $attempt could not open the destination")
+                Logger.withTag(TAG).w(e) { "Write-back attempt $attempt could not open the destination" }
                 null
             }
             if (destination == null) {
@@ -558,7 +552,7 @@ private fun copyIntoDestination(editedCopy: File, openDestination: () -> OutputS
                 }
                 return CopyOutcome.WRITTEN
             } catch (e: Exception) {
-                Timber.tag(TAG).w(e, "Write-back attempt $attempt failed after truncating the destination")
+                Logger.withTag(TAG).w(e) { "Write-back attempt $attempt failed after truncating the destination" }
             }
         }
         return CopyOutcome.FAILED_AFTER_TRUNCATE

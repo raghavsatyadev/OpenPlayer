@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import retrofit2.Response
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -92,12 +92,12 @@ class ListenBrainzRepository @Inject constructor(
     private fun createCredentialPrefs(): SharedPreferences = try {
         createEncryptedPrefs()
     } catch (e: Exception) {
-        Timber.e(e, "$TAG: EncryptedSharedPreferences unreadable, deleting and recreating")
+        Logger.e(e) { "$TAG: EncryptedSharedPreferences unreadable, deleting and recreating" }
         context.deleteSharedPreferences(PREFS_NAME)
         try {
             createEncryptedPrefs()
         } catch (e2: Exception) {
-            Timber.e(e2, "$TAG: Encrypted prefs unavailable, falling back to plain")
+            Logger.e(e2) { "$TAG: Encrypted prefs unavailable, falling back to plain" }
             context.getSharedPreferences("${PREFS_NAME}_plain", Context.MODE_PRIVATE)
         }
     }
@@ -121,7 +121,7 @@ class ListenBrainzRepository @Inject constructor(
             val overflow = listenBrainzDao.count() - MAX_QUEUE_SIZE
             if (overflow > 0) {
                 listenBrainzDao.deleteOldest(overflow)
-                Timber.w("ListenBrainz queue capped at %d, dropped %d oldest listens", MAX_QUEUE_SIZE, overflow)
+                Logger.w { String.format("ListenBrainz queue capped at %d, dropped %d oldest listens", MAX_QUEUE_SIZE, overflow) }
             }
             true
         }
@@ -179,7 +179,7 @@ class ListenBrainzRepository @Inject constructor(
                 Result.failure(IllegalStateException("Token rejected by ListenBrainz"))
             }
         } catch (e: Exception) {
-            Timber.e(e, "$TAG: Token validation failed")
+            Logger.e(e) { "$TAG: Token validation failed" }
             endpoint.setCustom(previousBase)
             Result.failure(e)
         }
@@ -266,7 +266,7 @@ class ListenBrainzRepository @Inject constructor(
                 else -> ListenBrainzSubmitResult.TransientError()
             }
         } catch (e: Exception) {
-            Timber.d(e, "$TAG: Submission failed, will retry")
+            Logger.d(e) { "$TAG: Submission failed, will retry" }
             ListenBrainzSubmitResult.TransientError()
         }
     }

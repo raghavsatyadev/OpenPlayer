@@ -16,7 +16,7 @@ import io.github.raghavsatyadev.openplayer.data.preferences.OnlineGenrePreferenc
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.util.concurrent.TimeUnit
 
 /**
@@ -70,13 +70,13 @@ class GenreLookupWorker @AssistedInject constructor(
                 GenreLookupResult.NotFound ->
                     dao.putCachedLookup(GenreLookupCacheEntity(key, null, System.currentTimeMillis()))
                 GenreLookupResult.TryLater -> {
-                    Timber.tag(TAG).d("Genre lookup paused after $looked albums; retrying later")
+                    Logger.withTag(TAG).d { "Genre lookup paused after $looked albums; retrying later" }
                     return Result.retry()
                 }
             }
             looked++
         }
-        Timber.tag(TAG).d("Genre lookup done: $looked albums looked up, ${known.size} songs from cache")
+        Logger.withTag(TAG).d { "Genre lookup done: $looked albums looked up, ${known.size} songs from cache" }
         return Result.success()
     }
 

@@ -169,7 +169,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import io.github.raghavsatyadev.openplayer.presentation.components.scoped.QueueItemDismissGestureHandler
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
-import coil.size.Size
+import coil3.size.Size
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import java.util.RandomAccess

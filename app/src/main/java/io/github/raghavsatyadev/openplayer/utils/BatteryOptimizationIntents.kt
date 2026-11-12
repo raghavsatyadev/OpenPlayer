@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.core.net.toUri
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /** Whether the system already exempts this app from battery optimization. */
 fun isIgnoringBatteryOptimizations(context: Context): Boolean {
@@ -29,10 +29,10 @@ fun openBatteryOptimizationSettings(context: Context): Boolean {
     }
     runCatching { context.startActivity(requestIntent) }
         .onSuccess { return true }
-        .onFailure { Timber.w(it, "Battery optimization request dialog unavailable") }
+        .onFailure { Logger.w(it) { "Battery optimization request dialog unavailable" } }
     return runCatching {
         context.startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
     }.onFailure {
-        Timber.w(it, "Battery optimization settings unavailable")
+        Logger.w(it) { "Battery optimization settings unavailable" }
     }.isSuccess
 }

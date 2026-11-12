@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 class WidgetUpdateReceiver : BroadcastReceiver() {
 
@@ -42,7 +42,7 @@ class WidgetUpdateReceiver : BroadcastReceiver() {
                     GridWidget2x2().update(context, glanceId)
                 }
             } catch (e: Exception) {
-                Timber.tag("WidgetUpdateReceiver").e(e, "Error updating widgets")
+                Logger.withTag("WidgetUpdateReceiver").e(e) { "Error updating widgets" }
             } finally {
                 pendingResult.finish()
                 scope.cancel()

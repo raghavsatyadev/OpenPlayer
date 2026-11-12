@@ -12,9 +12,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.WorkManager
-import coil.ImageLoader
-import coil.disk.DiskCache
-import coil.memory.MemoryCache
+import coil3.ImageLoader
+import coil3.disk.DiskCache
+import coil3.memory.MemoryCache
+import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import coil3.request.allowHardware
+import okio.Path.Companion.toOkioPath
 import io.github.raghavsatyadev.openplayer.BuildConfig
 import io.github.raghavsatyadev.openplayer.OpenPlayerApplication
 import io.github.raghavsatyadev.openplayer.data.database.AlbumArtThemeDao
@@ -268,21 +271,22 @@ object AppModule {
         okHttpClient: OkHttpClient
     ): ImageLoader {
         return ImageLoader.Builder(context)
-            .okHttpClient(okHttpClient)
-            .dispatcher(Dispatchers.Default)
+            .components {
+                add(OkHttpNetworkFetcherFactory(callFactory = { okHttpClient }))
+            }
+            .coroutineContext(Dispatchers.Default)
             .allowHardware(true)
             .memoryCache {
-                MemoryCache.Builder(context)
+                MemoryCache.Builder()
                     .maxSizeBytes(40 * 1024 * 1024)
                     .build()
             }
             .diskCache {
                 DiskCache.Builder()
-                    .directory(context.cacheDir.resolve("image_cache"))
+                    .directory(context.cacheDir.resolve("image_cache").toOkioPath())
                     .maxSizeBytes(100L * 1024 * 1024)
                     .build()
             }
-            .respectCacheHeaders(false)
             .build()
     }
 

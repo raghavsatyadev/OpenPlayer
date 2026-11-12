@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -44,12 +44,12 @@ class JellyfinApiService @Inject constructor(
 
     fun setCredentials(credentials: JellyfinCredentials) {
         this.credentials = credentials
-        Timber.d("$TAG: Credentials set for server: ${credentials.normalizedServerUrl}, user: ${credentials.username}")
+        Logger.d { "$TAG: Credentials set for server: ${credentials.normalizedServerUrl}, user: ${credentials.username}" }
     }
 
     fun clearCredentials() {
         this.credentials = null
-        Timber.d("$TAG: Credentials cleared")
+        Logger.d { "$TAG: Credentials cleared" }
     }
 
     fun hasCredentials(): Boolean = credentials?.hasToken == true
@@ -100,11 +100,11 @@ class JellyfinApiService @Inject constructor(
                         return@withContext Result.failure(Exception("Invalid authentication response"))
                     }
 
-                    Timber.d("$TAG: Authentication successful for user $username")
+                    Logger.d { "$TAG: Authentication successful for user $username" }
                     Result.success(Pair(accessToken, userId))
                 }
             } catch (e: Exception) {
-                Timber.e(e, "$TAG: Authentication failed")
+                Logger.e(e) { "$TAG: Authentication failed" }
                 Result.failure(e)
             }
         }
@@ -128,22 +128,22 @@ class JellyfinApiService @Inject constructor(
                     .get()
                     .build()
 
-                Timber.d("$TAG: >>> GET $path")
+                Logger.d { "$TAG: >>> GET $path" }
 
                 okHttpClient.newCall(request).execute().use { response ->
                     val code = response.code
                     val body = response.body.string()
 
                     if (!response.isSuccessful) {
-                        Timber.w("$TAG: <<< HTTP $code for $path")
+                        Logger.w { "$TAG: <<< HTTP $code for $path" }
                         return@withContext Result.failure(Exception("HTTP $code: ${response.message}"))
                     }
 
-                    Timber.d("$TAG: <<< HTTP $code for $path, body length: ${body.length}")
+                    Logger.d { "$TAG: <<< HTTP $code for $path, body length: ${body.length}" }
                     Result.success(body)
                 }
             } catch (e: Exception) {
-                Timber.e(e, "$TAG: !!! FAILED GET $path")
+                Logger.e(e) { "$TAG: !!! FAILED GET $path" }
                 Result.failure(e)
             }
         }

@@ -12,7 +12,7 @@ import io.github.raghavsatyadev.openplayer.data.database.SavedQueueEntity
 import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -63,7 +63,7 @@ class SavedQueuesModuleHandler @Inject constructor(
         val queues = JsonParser.parseString(payload).asJsonArray
             .filter { it.isJsonObject }
             .mapNotNull { parseQueue(it.asJsonObject, library) { dropped++ } }
-        if (dropped > 0) Timber.tag(TAG).i("Saved queue restore: $dropped songs dropped, not found")
+        if (dropped > 0) Logger.withTag(TAG).i { "Saved queue restore: $dropped songs dropped, not found" }
         dao.replaceAll(queues)
     }
 

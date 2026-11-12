@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import io.github.raghavsatyadev.openplayer.data.model.Playlist
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.AutoSizingTextToFill
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.TightWrapText

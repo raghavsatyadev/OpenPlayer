@@ -25,7 +25,7 @@ import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.size
 import androidx.glance.unit.ColorProvider
 import io.github.raghavsatyadev.openplayer.R
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 @Composable
 fun AlbumArtImage(
@@ -66,7 +66,7 @@ fun AlbumArtImage(
 
                 bitmap?.let { AlbumArtBitmapCache.putBitmap(cacheKey, it) }
             } catch (e: Exception) {
-                Timber.tag("WidgetImage").e(e, "Error decoding bitmap")
+                Logger.withTag("WidgetImage").e(e) { "Error decoding bitmap" }
                 bitmap = null
             }
         }

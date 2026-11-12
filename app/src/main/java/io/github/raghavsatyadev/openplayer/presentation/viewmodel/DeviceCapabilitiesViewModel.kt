@@ -37,7 +37,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 data class CodecInfo(
     val name: String,
@@ -188,7 +188,7 @@ class DeviceCapabilitiesViewModel @Inject constructor(
                     append(report.toJson())
                 }
             } catch (e: Exception) {
-                Timber.w(e, "Failed to generate performance report")
+                Logger.w(e) { "Failed to generate performance report" }
                 "Failed to generate performance report: ${e.message}"
             }
             _state.value = _state.value.copy(

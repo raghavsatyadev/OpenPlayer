@@ -129,7 +129,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.EnhancedSongListItem
 import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.core.animateDpAsState
@@ -488,8 +488,7 @@ fun SearchScreen(
                             GenreCategoriesGrid(
                                 genres = genres,
                                 onGenreClick = { genre ->
-                                    Timber.tag("SearchScreen")
-                                        .d("Genre clicked: ${genre.name} (ID: ${genre.id})")
+                                    Logger.withTag("SearchScreen").d { "Genre clicked: ${genre.name} (ID: ${genre.id})" }
                                     val encodedGenreId = java.net.URLEncoder.encode(genre.id, "UTF-8")
                                     navController.navigateSafely(Screen.GenreDetail.createRoute(encodedGenreId))
                                 },
@@ -1318,8 +1317,7 @@ fun SearchResultsList(
                             is SearchResultItem.AlbumItem -> {
                                 val onPlayClick = remember(item.album, playerViewModel, onItemSelected) {
                                     {
-                                        Timber.tag("SearchScreen")
-                                            .d("Album clicked: ${item.album.title}")
+                                        Logger.withTag("SearchScreen").d { "Album clicked: ${item.album.title}" }
                                         playerViewModel.playAlbum(item.album)
                                         onItemSelected()
                                     }
@@ -1351,8 +1349,7 @@ fun SearchResultsList(
                             is SearchResultItem.ArtistItem -> {
                                 val onPlayClick = remember(item.artist, playerViewModel, onItemSelected) {
                                     {
-                                        Timber.tag("SearchScreen")
-                                            .d("Artist clicked: ${item.artist.name}")
+                                        Logger.withTag("SearchScreen").d { "Artist clicked: ${item.artist.name}" }
                                         playerViewModel.playArtist(item.artist)
                                         onItemSelected()
                                     }

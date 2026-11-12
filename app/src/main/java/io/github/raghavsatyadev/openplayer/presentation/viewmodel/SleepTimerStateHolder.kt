@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -126,7 +126,7 @@ class SleepTimerStateHolder @Inject constructor(
 
     private fun sendToService(action: String, args: Bundle = Bundle.EMPTY): Boolean {
         val controller = mediaControllerProvider?.invoke() ?: run {
-            Timber.w("Sleep timer command %s dropped: no MediaController", action)
+            Logger.w { String.format("Sleep timer command %s dropped: no MediaController", action) }
             return false
         }
         controller.sendCustomCommand(SessionCommand(action, Bundle.EMPTY), args)

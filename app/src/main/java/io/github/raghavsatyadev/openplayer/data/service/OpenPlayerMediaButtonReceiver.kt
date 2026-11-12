@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.annotation.OptIn
 import androidx.media.session.MediaButtonReceiver
 import androidx.media3.common.util.UnstableApi
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 @Suppress("DEPRECATION")
 class OpenPlayerMediaButtonReceiver : MediaButtonReceiver() {
@@ -23,10 +23,10 @@ class OpenPlayerMediaButtonReceiver : MediaButtonReceiver() {
             super.onReceive(context, intent)
         } catch (e: IllegalStateException) {
             MusicService.unmarkPendingTemporaryForegroundStart()
-            Timber.tag(TAG).w(e, "Media button start denied while app cached")
+            Logger.withTag(TAG).w(e) { "Media button start denied while app cached" }
         } catch (throwable: Throwable) {
             MusicService.unmarkPendingTemporaryForegroundStart()
-            Timber.tag(TAG).w(throwable, "Media button dispatch failed before MusicService start")
+            Logger.withTag(TAG).w(throwable) { "Media button dispatch failed before MusicService start" }
             throw throwable
         }
     }

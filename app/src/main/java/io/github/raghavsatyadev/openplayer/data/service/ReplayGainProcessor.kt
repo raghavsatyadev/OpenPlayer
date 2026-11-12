@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlin.math.abs
 
 /**
@@ -142,7 +142,7 @@ class ReplayGainProcessor(
             ?.getString(MediaItemBuilder.EXTERNAL_EXTRA_FILE_PATH)
 
         if (filePath.isNullOrBlank()) {
-            Timber.tag(TAG).d("ReplayGain: No file path for track, keeping user-selected volume")
+            Logger.withTag(TAG).d { "ReplayGain: No file path for track, keeping user-selected volume" }
             if (!engine.isTransitionRunning()) {
                 setPlayerVolume(engine.masterPlayer, userSelectedVolume)
             }
@@ -169,7 +169,7 @@ class ReplayGainProcessor(
 
             val currentMediaId = currentSessionMediaItem()?.mediaId
             if (currentMediaId != mediaId) {
-                Timber.tag(TAG).d("ReplayGain: Ignoring stale result for mediaId=%s", mediaId)
+                Logger.withTag(TAG).d { String.format("ReplayGain: Ignoring stale result for mediaId=%s", mediaId) }
                 return@launch
             }
 
@@ -184,18 +184,14 @@ class ReplayGainProcessor(
                 // volume instead of hard-coding 1f, preventing the audible jump.
                 pendingVolume = volume
                 engine.incomingTrackReplayGainVolume = volume
-                Timber.tag(TAG).d("ReplayGain: Stored pending volume=%.2f for %s (transition running)",
-                    volume, mediaItem.mediaMetadata.title
-                )
+                Logger.withTag(TAG).d { String.format("ReplayGain: Stored pending volume=%.2f for %s (transition running)", volume, mediaItem.mediaMetadata.title) }
             } else {
                 pendingVolume = null
                 engine.incomingTrackReplayGainVolume = null
                 lastAppliedVolume = volume
                 lastMediaId = mediaId
                 setPlayerVolume(engine.masterPlayer, volume)
-                Timber.tag(TAG).d("ReplayGain: Applied volume=%.2f for %s",
-                    volume, mediaItem.mediaMetadata.title
-                )
+                Logger.withTag(TAG).d { String.format("ReplayGain: Applied volume=%.2f for %s", volume, mediaItem.mediaMetadata.title) }
             }
         }
     }
@@ -239,7 +235,7 @@ class ReplayGainProcessor(
 
         if (!enabled) {
             setPlayerVolume(player, userSelectedVolume)
-            Timber.tag(TAG).d("ReplayGain: Transition finished, RG disabled — restored userSelectedVolume=%.2f", userSelectedVolume)
+            Logger.withTag(TAG).d { String.format("ReplayGain: Transition finished, RG disabled — restored userSelectedVolume=%.2f", userSelectedVolume) }
             return
         }
 
@@ -250,11 +246,11 @@ class ReplayGainProcessor(
             // immediately instead of launching a new IO coroutine and causing a spike.
             lastAppliedVolume = pending
             setPlayerVolume(player, pending)
-            Timber.tag(TAG).d("ReplayGain: Transition finished, applied pending volume=%.2f", pending)
+            Logger.withTag(TAG).d { String.format("ReplayGain: Transition finished, applied pending volume=%.2f", pending) }
         } else {
             // No pending volume was computed during transition, trigger full computation
             apply(currentSessionMediaItem())
-            Timber.tag(TAG).d("ReplayGain: Transition finished, no pending volume — triggering full recomputation")
+            Logger.withTag(TAG).d { "ReplayGain: Transition finished, no pending volume — triggering full recomputation" }
         }
     }
 

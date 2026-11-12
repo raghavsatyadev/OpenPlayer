@@ -4,7 +4,7 @@ import io.github.raghavsatyadev.openplayer.data.jellyfin.JellyfinRepository
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
 import javax.inject.Inject
 import javax.inject.Singleton
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 @Singleton
 class CloudSyncCoordinator @Inject constructor(
@@ -27,28 +27,26 @@ class CloudSyncCoordinator @Inject constructor(
         val currentTime = System.currentTimeMillis()
 
         if (currentTime - lastSync < NavidromeRepository.SYNC_THRESHOLD_MS) {
-            Timber.tag(TAG).d("Skipping Navidrome server sync - last sync was recent.")
+            Logger.withTag(TAG).d { "Skipping Navidrome server sync - last sync was recent." }
             navidromeRepository.syncUnifiedLibrarySongsFromNavidrome()
             return
         }
 
-        Timber.tag(TAG).i("Syncing Navidrome data from server...")
+        Logger.withTag(TAG).i { "Syncing Navidrome data from server..." }
         try {
             val result = navidromeRepository.syncAllPlaylistsAndSongs()
             result.fold(
                 onSuccess = { summary ->
-                    Timber.tag(TAG).i(
-                        "Navidrome sync complete: ${summary.playlistCount} playlists, " +
-                            "${summary.syncedSongCount} songs synced (${summary.failedPlaylistCount} failed)"
-                    )
+                    Logger.withTag(TAG).i { "Navidrome sync complete: ${summary.playlistCount} playlists, " +
+                            "${summary.syncedSongCount} songs synced (${summary.failedPlaylistCount} failed)" }
                 },
                 onFailure = { error ->
-                    Timber.tag(TAG).w(error, "Navidrome server sync failed, falling back to local cache sync")
+                    Logger.withTag(TAG).w(error) { "Navidrome server sync failed, falling back to local cache sync" }
                     navidromeRepository.syncUnifiedLibrarySongsFromNavidrome()
                 }
             )
         } catch (error: Exception) {
-            Timber.tag(TAG).e(error, "Failed to sync Navidrome data")
+            Logger.withTag(TAG).e(error) { "Failed to sync Navidrome data" }
         }
     }
 
@@ -58,7 +56,7 @@ class CloudSyncCoordinator @Inject constructor(
         try {
             jellyfinRepository.syncUnifiedLibrarySongsFromJellyfinIfChanged()
         } catch (error: Exception) {
-            Timber.tag(TAG).e(error, "Failed to sync Jellyfin cached data")
+            Logger.withTag(TAG).e(error) { "Failed to sync Jellyfin cached data" }
         }
     }
 

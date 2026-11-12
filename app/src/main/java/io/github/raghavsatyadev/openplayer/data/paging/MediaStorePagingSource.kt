@@ -11,7 +11,7 @@ import io.github.raghavsatyadev.openplayer.utils.normalizeMetadataText
 import io.github.raghavsatyadev.openplayer.utils.normalizeMetadataTextOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlin.math.min
 
 /**
@@ -72,10 +72,7 @@ class MediaStorePagingSource(
                 nextKey = nextKey
             )
         } catch (e: Exception) {
-            Timber.tag(TAG).e(
-                e,
-                "Failed loading page (pageIndex=${params.key ?: 0}, loadSize=${params.loadSize}, totalIds=${filteredIds.size})"
-            )
+            Logger.withTag(TAG).e(e) { "Failed loading page (pageIndex=${params.key ?: 0}, loadSize=${params.loadSize}, totalIds=${filteredIds.size})" }
             LoadResult.Error(e)
         }
     }

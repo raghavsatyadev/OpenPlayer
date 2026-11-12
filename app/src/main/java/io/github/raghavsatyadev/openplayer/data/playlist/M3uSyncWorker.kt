@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 @HiltWorker
 class M3uSyncWorker @AssistedInject constructor(
@@ -40,10 +40,10 @@ class M3uSyncWorker @AssistedInject constructor(
         repository.syncNow()
         Result.success()
     } catch (error: IOException) {
-        Timber.w(error, "M3U sync hit a temporary storage error")
+        Logger.w(error) { "M3U sync hit a temporary storage error" }
         if (runAttemptCount < MAX_RETRIES) Result.retry() else Result.failure()
     } catch (error: SecurityException) {
-        Timber.w(error, "M3U sync folder permission was revoked")
+        Logger.w(error) { "M3U sync folder permission was revoked" }
         Result.failure()
     }
 

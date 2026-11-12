@@ -12,7 +12,7 @@ import io.github.raghavsatyadev.openplayer.data.preferences.ListenHistoryPrefere
 import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -65,7 +65,7 @@ class ListenHistoryModuleHandler @Inject constructor(
         val listens = json.asJsonArray
             .filter { it.isJsonObject }
             .flatMap { parseSong(it.asJsonObject, library) { count -> dropped += count } }
-        if (dropped > 0) Timber.tag(TAG).i("Listen history restore: $dropped listens dropped, not found")
+        if (dropped > 0) Logger.withTag(TAG).i { "Listen history restore: $dropped listens dropped, not found" }
         dao.replaceAll(listens)
         preferences.markImported()
     }

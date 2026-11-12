@@ -137,7 +137,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.util.Locale
 import kotlin.math.roundToLong
 import io.github.raghavsatyadev.openplayer.presentation.components.WavySliderExpressive
@@ -290,7 +290,7 @@ fun FullPlayerContent(
                         showFetchLyricsDialog = false
                         showLyricsSheet = true
                     } catch (e: Exception) {
-                        Timber.e(e, "Error reading imported lyrics file")
+                        Logger.e(e) { "Error reading imported lyrics file" }
                         playerViewModel.sendToast("Error reading file.")
                     }
                 }

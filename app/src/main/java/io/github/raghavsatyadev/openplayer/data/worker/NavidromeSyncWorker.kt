@@ -9,7 +9,7 @@ import androidx.work.workDataOf
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 @HiltWorker
 class NavidromeSyncWorker @AssistedInject constructor(
@@ -22,7 +22,7 @@ class NavidromeSyncWorker @AssistedInject constructor(
         val syncType = inputData.getString(KEY_SYNC_TYPE) ?: SYNC_TYPE_ALL
         val playlistId = inputData.getString(KEY_PLAYLIST_ID)
 
-        Timber.d("NavidromeSyncWorker: Starting sync (type=$syncType, playlistId=$playlistId)")
+        Logger.d { "NavidromeSyncWorker: Starting sync (type=$syncType, playlistId=$playlistId)" }
 
         return try {
             when (syncType) {
@@ -48,7 +48,7 @@ class NavidromeSyncWorker @AssistedInject constructor(
             }
             Result.success()
         } catch (e: Exception) {
-            Timber.e(e, "NavidromeSyncWorker: Sync failed")
+            Logger.e(e) { "NavidromeSyncWorker: Sync failed" }
             Result.failure(workDataOf(ERROR_MESSAGE to e.message))
         }
     }

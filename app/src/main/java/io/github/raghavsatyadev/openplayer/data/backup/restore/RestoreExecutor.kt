@@ -12,7 +12,7 @@ import io.github.raghavsatyadev.openplayer.data.backup.module.BackupModuleHandle
 import io.github.raghavsatyadev.openplayer.data.backup.validation.ValidationPipeline
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -46,7 +46,7 @@ class RestoreExecutor @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Snapshot phase failed")
+            Logger.withTag(TAG).e(e) { "Snapshot phase failed" }
             return@withContext RestoreResult.TotalFailure("Failed to capture current state: ${e.message}")
         }
 
@@ -98,7 +98,7 @@ class RestoreExecutor @Inject constructor(
                 restoredModules.add(section)
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Restore failed while processing backup module, rolling back")
+            Logger.withTag(TAG).e(e) { "Restore failed while processing backup module, rolling back" }
             var rollbackSuccess = true
             val rollbackOrder = (restoredModules + listOfNotNull(currentSection)).distinct().asReversed()
             rollbackOrder.forEach { section ->
@@ -108,7 +108,7 @@ class RestoreExecutor @Inject constructor(
                         handlers[section]?.rollback(snapshot)
                     }
                 } catch (rollbackError: Exception) {
-                    Timber.tag(TAG).e(rollbackError, "Rollback failed for ${section.key}")
+                    Logger.withTag(TAG).e(rollbackError) { "Rollback failed for ${section.key}" }
                     rollbackSuccess = false
                 }
             }

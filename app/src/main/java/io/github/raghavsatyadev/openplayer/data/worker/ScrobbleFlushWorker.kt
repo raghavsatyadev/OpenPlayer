@@ -15,7 +15,7 @@ import io.github.raghavsatyadev.openplayer.data.listenbrainz.ListenBrainzReposit
 import io.github.raghavsatyadev.openplayer.data.listenbrainz.ListenBrainzSubmitResult
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.util.concurrent.TimeUnit
 
 /**
@@ -51,7 +51,7 @@ class ScrobbleFlushWorker @AssistedInject constructor(
                     }
                 }
                 ListenBrainzSubmitResult.AuthFailed -> {
-                    Timber.w("ListenBrainz token rejected; pausing scrobble flush")
+                    Logger.w { "ListenBrainz token rejected; pausing scrobble flush" }
                     return Result.success()
                 }
                 is ListenBrainzSubmitResult.TransientError -> {
@@ -85,10 +85,7 @@ class ScrobbleFlushWorker @AssistedInject constructor(
                     progressed = true
                 }
                 ListenBrainzSubmitResult.InvalidPayload -> {
-                    Timber.w(
-                        "Dropping listen rejected by ListenBrainz: %s — %s",
-                        listen.artistName, listen.trackName
-                    )
+                    Logger.w { String.format("Dropping listen rejected by ListenBrainz: %s — %s", listen.artistName, listen.trackName) }
                     listenBrainzDao.deleteByIds(listOf(listen.id))
                     progressed = true
                 }

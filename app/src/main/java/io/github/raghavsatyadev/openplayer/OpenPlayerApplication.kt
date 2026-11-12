@@ -11,8 +11,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import coil.ImageLoader
-import coil.ImageLoaderFactory
+import co.touchlab.kermit.Logger
+import co.touchlab.kermit.Severity
+import co.touchlab.kermit.platformLogWriter
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.SingletonImageLoader
 import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceDiagnosticsController
 import io.github.raghavsatyadev.openplayer.data.media.SongMetadataEditor
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
@@ -32,11 +36,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltAndroidApp
-class OpenPlayerApplication : Application(), ImageLoaderFactory, Configuration.Provider {
+class OpenPlayerApplication : Application(), SingletonImageLoader.Factory, Configuration.Provider {
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
@@ -121,10 +124,11 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, Configuration.P
             CrashHandler.install(this)
         }
 
+        Logger.setLogWriters(platformLogWriter())
         if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+            Logger.setMinSeverity(Severity.Verbose)
         } else {
-            Timber.plant(ReleaseTree())
+            Logger.setMinSeverity(Severity.Warn)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -168,7 +172,7 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, Configuration.P
         }
     }
 
-    override fun newImageLoader(): ImageLoader {
+    override fun newImageLoader(context: PlatformContext): ImageLoader {
         return imageLoader.get().newBuilder()
             .components {
                 add(io.github.raghavsatyadev.openplayer.data.image.SharedCloudArtworkStringMapper(packageName))
@@ -184,7 +188,17 @@ class OpenPlayerApplication : Application(), ImageLoaderFactory, Configuration.P
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
 
-        imageLoader.get().memoryCache?.trimMemory(level)
+        val memoryCache = imageLoader.get().memoryCache
+        if (memoryCache != null) {
+            if (level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND) {
+                memoryCache.clear()
+            } else if (
+                level >= ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN ||
+                level == ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL
+            ) {
+                memoryCache.trimToSize(memoryCache.size / 2)
+            }
+        }
 
         if (
             level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_MODERATE ||

@@ -101,7 +101,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /** How long a slide stays before the story moves on by itself. */
 private const val SLIDE_DURATION_MS = 7_000
@@ -162,7 +162,7 @@ fun RecapScreen(
                         } catch (cancellation: CancellationException) {
                             throw cancellation
                         } catch (throwable: Exception) {
-                            Timber.e(throwable, "Failed to share the %d recap", state.model.year)
+                            Logger.e(throwable) { String.format("Failed to share the %d recap", state.model.year) }
                             Toast.makeText(context, shareFailed, Toast.LENGTH_SHORT).show()
                         }
                     }

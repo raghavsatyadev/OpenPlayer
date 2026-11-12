@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -325,8 +325,8 @@ class ThemeStateHolder @Inject constructor(
              return
          }
 
-         Timber.tag("ThemeStateHolder").d("forceRegenerateColorScheme called for: $uriString")
-         Timber.tag("ThemeStateHolder").d("Current tracked global URI: ${_currentAlbumArtUri.value}")
+         Logger.withTag("ThemeStateHolder").d { "forceRegenerateColorScheme called for: $uriString" }
+         Logger.withTag("ThemeStateHolder").d { "Current tracked global URI: ${_currentAlbumArtUri.value}" }
          
          colorSchemeProcessor.invalidateScheme(uriString)
 
@@ -359,10 +359,10 @@ class ThemeStateHolder @Inject constructor(
          }
          
          if (_currentAlbumArtUri.value == uriString) {
-             Timber.tag("ThemeStateHolder").d("Updating global color scheme flow directly.")
+             Logger.withTag("ThemeStateHolder").d { "Updating global color scheme flow directly." }
              _currentAlbumArtColorSchemePair.value = newScheme
          } else {
-             Timber.tag("ThemeStateHolder").d("Global URI did not match. Skipping global update.")
+             Logger.withTag("ThemeStateHolder").d { "Global URI did not match. Skipping global update." }
          }
     }
 

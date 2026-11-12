@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.audiofx.AudioEffect
 import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -69,9 +69,9 @@ class ExternalAudioEffectSession @Inject constructor(
         }
         try {
             context.sendBroadcast(intent)
-            Timber.tag(TAG).d("Broadcast %s for session %d", action, audioSessionId)
+            Logger.withTag(TAG).d { String.format("Broadcast %s for session %d", action, audioSessionId) }
         } catch (e: Exception) {
-            Timber.tag(TAG).w(e, "Failed to broadcast %s for session %d", action, audioSessionId)
+            Logger.withTag(TAG).w(e) { String.format("Failed to broadcast %s for session %d", action, audioSessionId) }
         }
     }
 }

@@ -14,7 +14,7 @@ import org.jaudiotagger.tag.id3.AbstractID3v2Tag
 import org.jaudiotagger.tag.mp4.Mp4Tag
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag
 import org.jaudiotagger.tag.wav.WavTag
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import java.io.File
 
 data class AudioMetadata(
@@ -74,7 +74,7 @@ object AudioMetadataReader {
     /**
      * Per-file diagnostic logging (TagLib property maps, parsed fields, fallback hits) runs on
      * the library-scan hot path, and each line interpolates the file name and, in one case, the
-     * whole TagLib property-key set. The templates are built before Timber checks whether the
+     * whole TagLib property-key set. The templates are built before Logger checks whether the
      * line is loggable, so it is gated off entirely. Flip to true only when actively diagnosing
      * tag parsing.
      */
@@ -82,7 +82,7 @@ object AudioMetadataReader {
 
     fun read(context: Context, uri: Uri): AudioMetadata? {
         val tempFile = createTempAudioFileFromUri(context, uri) ?: run {
-            Timber.tag(TAG).w("Unable to create temp file for uri: $uri")
+            Logger.withTag(TAG).w { "Unable to create temp file for uri: $uri" }
             return null
         }
 
@@ -92,7 +92,7 @@ object AudioMetadataReader {
             try {
                 tempFile.delete()
             } catch (e: Exception) {
-                Timber.tag(TAG).w(e, "Failed to delete temp file")
+                Logger.withTag(TAG).w(e) { "Failed to delete temp file" }
             }
         }
     }
@@ -114,7 +114,7 @@ object AudioMetadataReader {
                 val propertyMap = metadata?.propertyMap ?: emptyMap()
 
                 if (VERBOSE_LOGGING) {
-                    Timber.tag(TAG).d("TagLib propertyMap keys for ${file.name}: ${propertyMap.keys}")
+                    Logger.withTag(TAG).d { "TagLib propertyMap keys for ${file.name}: ${propertyMap.keys}" }
                 }
 
                 val title = propertyMap["TITLE"]?.firstOrNull()?.takeIf { it.isNotBlank() }
@@ -161,7 +161,7 @@ object AudioMetadataReader {
                 }
 
                 if (VERBOSE_LOGGING) {
-                    Timber.tag(TAG).d("TagLib result for ${file.name}: title=$title, artist=$artist, album=$album, genre=$genre")
+                    Logger.withTag(TAG).d { "TagLib result for ${file.name}: title=$title, artist=$artist, album=$album, genre=$genre" }
                 }
 
                 val artwork = if (readArtwork) {
@@ -184,7 +184,7 @@ object AudioMetadataReader {
                 val fallback = if (tagLibIncomplete || readCustomMetadata) {
                     if (tagLibIncomplete) {
                         if (VERBOSE_LOGGING) {
-                            Timber.tag(TAG).d("TagLib incomplete for ${file.name}, trying JAudioTagger fallback...")
+                            Logger.withTag(TAG).d { "TagLib incomplete for ${file.name}, trying JAudioTagger fallback..." }
                         }
                         PerformanceMetrics.increment(PerformanceMetrics.Counters.METADATA_FALLBACK_JAUDIOTAGGER)
                     }
@@ -220,7 +220,7 @@ object AudioMetadataReader {
                 )
             }
         } catch (error: Exception) {
-            Timber.tag(TAG).e(error, "Unable to read metadata from file: ${file.absolutePath}")
+            Logger.withTag(TAG).e(error) { "Unable to read metadata from file: ${file.absolutePath}" }
             null
         } finally {
             PerformanceMetrics.recordTiming(
@@ -250,8 +250,8 @@ object AudioMetadataReader {
             val header = audioFile.audioHeader
 
             if (VERBOSE_LOGGING) {
-                Timber.tag(TAG).d("JAudioTagger: tag class=${tag?.javaClass?.simpleName}, " +
-                        "header=${header?.format}, sampleRate=${header?.sampleRateAsNumber}")
+                Logger.withTag(TAG).d { "JAudioTagger: tag class=${tag?.javaClass?.simpleName}, " +
+                        "header=${header?.format}, sampleRate=${header?.sampleRateAsNumber}" }
             }
 
             val title = tag?.getFirst(FieldKey.TITLE)?.takeIf { it.isNotBlank() }
@@ -314,8 +314,8 @@ object AudioMetadataReader {
             }
 
             if (VERBOSE_LOGGING) {
-                Timber.tag(TAG).d("JAudioTagger result for ${file.name}: title=$title, artist=$artist, " +
-                        "album=$album, genre=$genre, artwork=${artwork != null}")
+                Logger.withTag(TAG).d { "JAudioTagger result for ${file.name}: title=$title, artist=$artist, " +
+                        "album=$album, genre=$genre, artwork=${artwork != null}" }
             }
 
             AudioMetadata(
@@ -337,7 +337,7 @@ object AudioMetadataReader {
                 rating = rating
             )
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "JAudioTagger fallback FAILED for: ${file.name}")
+            Logger.withTag(TAG).e(e) { "JAudioTagger fallback FAILED for: ${file.name}" }
             null
         }
     }

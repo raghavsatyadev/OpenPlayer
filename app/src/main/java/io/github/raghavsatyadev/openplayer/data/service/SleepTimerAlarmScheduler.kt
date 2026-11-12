@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /** Schedules and cancels the OS alarm backing the duration sleep timer. */
 interface SleepTimerAlarmScheduler {
@@ -53,7 +53,7 @@ class AlarmManagerSleepTimerScheduler(private val context: Context) : SleepTimer
                 )
             }
         } catch (e: SecurityException) {
-            Timber.tag(TAG).w(e, "Exact alarm denied; using inexact sleep timer")
+            Logger.withTag(TAG).w(e) { "Exact alarm denied; using inexact sleep timer" }
             alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
         }
     }

@@ -12,7 +12,7 @@ import io.github.raghavsatyadev.openplayer.data.repository.SongUserMeta
 import io.github.raghavsatyadev.openplayer.di.BackupGson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -72,7 +72,7 @@ class SongUserMetaModuleHandler @Inject constructor(
                 else -> row
             }
         }
-        if (skipped > 0) Timber.tag(TAG).i("Song meta restore: $skipped entries skipped, song not found")
+        if (skipped > 0) Logger.withTag(TAG).i { "Song meta restore: $skipped entries skipped, song not found" }
         // A song named twice keeps its latest entry.
         dao.replaceAll(resolved.groupBy { it.songId }.map { (_, rows) -> rows.maxBy { it.updatedAt } })
     }

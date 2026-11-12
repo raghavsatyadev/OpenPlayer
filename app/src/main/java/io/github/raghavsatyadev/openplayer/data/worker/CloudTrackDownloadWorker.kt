@@ -24,7 +24,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import kotlin.coroutines.coroutineContext
 
 @HiltWorker
@@ -160,7 +160,7 @@ class CloudTrackDownloadWorker @AssistedInject constructor(
             finalizedFile?.delete()
             val shouldRetry = runAttemptCount < MAX_RETRIES &&
                 (error is IOException || (error is DownloadHttpException && error.code >= 500))
-            Timber.tag(TAG).w(error, "Cloud track download failed for %s", sourceUri)
+            Logger.withTag(TAG).w(error) { String.format("Cloud track download failed for %s", sourceUri) }
             val updated = dao.updateState(
                 downloadId = downloadId,
                 attemptId = attemptId,

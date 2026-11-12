@@ -509,7 +509,7 @@ internal fun RecapArtwork(
             model = model,
             contentDescription = null,
             shape = shape,
-            targetSize = remember(targetSizePx) { coil.size.Size(targetSizePx, targetSizePx) },
+            targetSize = remember(targetSizePx) { coil3.size.Size(targetSizePx, targetSizePx) },
             placeHolderBackgroundColor = palette.accent,
             modifier = modifier
         )

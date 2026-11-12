@@ -7,7 +7,7 @@ import io.github.raghavsatyadev.openplayer.data.navidrome.model.NavidromePlaylis
 import io.github.raghavsatyadev.openplayer.data.navidrome.model.NavidromeSong
 import io.github.raghavsatyadev.openplayer.utils.GenreParser
 import org.json.JSONObject
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Parser for Subsonic API JSON responses.
@@ -136,7 +136,7 @@ object NavidromeResponseParser {
             try {
                 parseSong(songs.getJSONObject(index))
             } catch (e: Exception) {
-                Timber.w(e, "$TAG: Failed to parse song at index $index")
+                Logger.w(e) { "$TAG: Failed to parse song at index $index" }
                 null
             }
         }
@@ -179,7 +179,7 @@ object NavidromeResponseParser {
             try {
                 parseSong(entries.getJSONObject(index))
             } catch (e: Exception) {
-                Timber.w(e, "$TAG: Failed to parse playlist entry at index $index")
+                Logger.w(e) { "$TAG: Failed to parse playlist entry at index $index" }
                 null
             }
         }
@@ -198,7 +198,7 @@ object NavidromeResponseParser {
                 try {
                     parseArtist(array.getJSONObject(index))
                 } catch (e: Exception) {
-                    Timber.w(e, "$TAG: Failed to parse search artist at index $index")
+                    Logger.w(e) { "$TAG: Failed to parse search artist at index $index" }
                     null
                 }
             }
@@ -209,7 +209,7 @@ object NavidromeResponseParser {
                 try {
                     parseAlbum(array.getJSONObject(index))
                 } catch (e: Exception) {
-                    Timber.w(e, "$TAG: Failed to parse search album at index $index")
+                    Logger.w(e) { "$TAG: Failed to parse search album at index $index" }
                     null
                 }
             }
@@ -220,7 +220,7 @@ object NavidromeResponseParser {
                 try {
                     parseSong(array.getJSONObject(index))
                 } catch (e: Exception) {
-                    Timber.w(e, "$TAG: Failed to parse search song at index $index")
+                    Logger.w(e) { "$TAG: Failed to parse search song at index $index" }
                     null
                 }
             }
@@ -243,7 +243,7 @@ object NavidromeResponseParser {
                     .toInstant()
                     .toEpochMilli()
             } catch (e2: Exception) {
-                Timber.w(e2, "$TAG: Failed to parse timestamp: $timestamp")
+                Logger.w(e2) { "$TAG: Failed to parse timestamp: $timestamp" }
                 0L
             }
         }

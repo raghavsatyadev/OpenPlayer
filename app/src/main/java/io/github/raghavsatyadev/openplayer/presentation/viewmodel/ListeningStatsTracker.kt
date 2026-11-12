@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 /**
  * Tracks listening statistics for songs.
@@ -329,7 +329,7 @@ class ListeningStatsTracker @Inject constructor(
             runCatching {
                 persistPlaybackInternal(songId = songId, listened = listened, timestamp = timestamp)
             }.onFailure { throwable ->
-                Timber.e(throwable, "Failed to persist listening session for song=%s", songId)
+                Logger.e(throwable) { String.format("Failed to persist listening session for song=%s", songId) }
             }
         }
     }
@@ -373,7 +373,7 @@ class ListeningStatsTracker @Inject constructor(
         persistenceScope.launch {
             runCatching { listenHistoryRepository.record(listen) }
                 .onFailure { throwable ->
-                    Timber.e(throwable, "Failed to record listen for song=%s", listen.songId)
+                    Logger.e(throwable) { String.format("Failed to record listen for song=%s", listen.songId) }
                 }
         }
     }

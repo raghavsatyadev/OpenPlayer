@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 @ViewModelScoped
 class LibraryTabsStateHolder @Inject constructor() {
@@ -40,11 +40,11 @@ class LibraryTabsStateHolder @Inject constructor() {
         currentLibraryTabId.value = tabId
 
         if (loadedTabs.value.contains(tabIdentifier)) {
-            Timber.tag("PlayerViewModel").d("Tab '$tabIdentifier' already loaded. Skipping data load.")
+            Logger.withTag("PlayerViewModel").d { "Tab '$tabIdentifier' already loaded. Skipping data load." }
             return
         }
 
-        Timber.tag("PlayerViewModel").d("Tab '$tabIdentifier' selected. Attempting to load data.")
+        Logger.withTag("PlayerViewModel").d { "Tab '$tabIdentifier' selected. Attempting to load data." }
         scope.launch {
             traceSection("PlayerViewModel.onLibraryTabSelected_coroutine_load") {
                 when (tabId) {
@@ -55,7 +55,7 @@ class LibraryTabsStateHolder @Inject constructor() {
                     else -> Unit
                 }
                 loadedTabs.update { currentTabs -> currentTabs + tabIdentifier }
-                Timber.tag("PlayerViewModel").d("Tab '$tabIdentifier' marked as loaded. Current loaded tabs: ${loadedTabs.value}")
+                Logger.withTag("PlayerViewModel").d { "Tab '$tabIdentifier' marked as loaded. Current loaded tabs: ${loadedTabs.value}" }
             }
         }
     }

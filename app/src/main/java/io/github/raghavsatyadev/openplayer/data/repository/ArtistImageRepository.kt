@@ -33,7 +33,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 import androidx.core.graphics.scale
 
 /**
@@ -149,12 +149,12 @@ class ArtistImageRepository @Inject constructor(
                                 getArtistImageUrl(artistName, artistId)
                             }
                         } else {
-                            Timber.tag(TAG).d("Skipping prefetch for $artistName")
+                            Logger.withTag(TAG).d { "Skipping prefetch for $artistName" }
                         }
                     } catch (e: CancellationException) {
                         throw e
                     } catch (e: Exception) {
-                        Timber.tag(TAG).w("Failed to prefetch image for $artistName: ${e.message}")
+                        Logger.withTag(TAG).w { "Failed to prefetch image for $artistName: ${e.message}" }
                     }
                 }
             }.awaitAll()
@@ -193,13 +193,13 @@ class ArtistImageRepository @Inject constructor(
                         
                         musicDao.updateArtistImageUrl(artistId, imageUrl)
 
-                        Timber.tag(TAG).d("Fetched and cached image for $artistName: $imageUrl")
+                        Logger.withTag(TAG).d { "Fetched and cached image for $artistName: $imageUrl" }
                         imageUrl
                     } else {
                         null
                     }
                 } else {
-                    Timber.tag(TAG).d("No Deezer artist found for: $artistName")
+                    Logger.withTag(TAG).d { "No Deezer artist found for: $artistName" }
                     failedFetches.add(normalizedName)
                     null
                 }
@@ -207,7 +207,7 @@ class ArtistImageRepository @Inject constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
-            Timber.tag(TAG).e("Error fetching artist image for $artistName: ${e.message}")
+            Logger.withTag(TAG).e { "Error fetching artist image for $artistName: ${e.message}" }
             if(e !is java.net.SocketTimeoutException) {
                 failedFetches.add(normalizedName)
             }
@@ -231,8 +231,7 @@ class ArtistImageRepository @Inject constructor(
             initialDelayMs = initialDelayMs,
             shouldRetry = { throwable -> throwable.isRetryableNetworkError() },
             onRetry = { attempt, attempts, throwable ->
-                Timber.tag(TAG)
-                    .d("Retrying $operationName after failure ($attempt/$attempts): ${throwable.message}")
+                Logger.withTag(TAG).d { "Retrying $operationName after failure ($attempt/$attempts): ${throwable.message}" }
             },
             block = block
         )
@@ -321,7 +320,7 @@ class ArtistImageRepository @Inject constructor(
 
                     musicDao.updateArtistCustomImage(artistId, internalPath)
 
-                    Timber.tag(TAG).d("Custom artist image saved: $internalPath")
+                    Logger.withTag(TAG).d { "Custom artist image saved: $internalPath" }
                     internalPath
                 } finally {
                     if (scaledBitmap !== bitmap) {
@@ -330,8 +329,7 @@ class ArtistImageRepository @Inject constructor(
                     scaledBitmap.recycle()
                 }
             } catch (e: Exception) {
-                Timber.tag(TAG)
-                    .e("Failed to save custom artist image for id=$artistId: ${e.message}")
+                Logger.withTag(TAG).e { "Failed to save custom artist image for id=$artistId: ${e.message}" }
                 null
             }
         }
@@ -341,15 +339,14 @@ class ArtistImageRepository @Inject constructor(
         val resolver = context.contentResolver
         val mimeType = resolver.getType(sourceUri)?.lowercase()
         if (mimeType != null && !mimeType.startsWith("image/")) {
-            Timber.tag(TAG).w("Rejected custom artist image with unsupported MIME type: $mimeType")
+            Logger.withTag(TAG).w { "Rejected custom artist image with unsupported MIME type: $mimeType" }
             return null
         }
 
         runCatching { resolver.openAssetFileDescriptor(sourceUri, "r") }.getOrNull()?.use { descriptor ->
             val declaredLength = descriptor.length
             if (declaredLength > MAX_CUSTOM_IMAGE_SOURCE_BYTES) {
-                Timber.tag(TAG)
-                    .w("Rejected custom artist image larger than allowed source size: $declaredLength")
+                Logger.withTag(TAG).w { "Rejected custom artist image larger than allowed source size: $declaredLength" }
                 return null
             }
         }
@@ -365,18 +362,15 @@ class ArtistImageRepository @Inject constructor(
         val width = bounds.outWidth
         val height = bounds.outHeight
         if (width <= 0 || height <= 0) {
-            Timber.tag(TAG)
-                .w("Rejected custom artist image with invalid bounds: ${width}x${height}")
+            Logger.withTag(TAG).w { "Rejected custom artist image with invalid bounds: ${width}x${height}" }
             return null
         }
         if (width > MAX_CUSTOM_IMAGE_DIMENSION_PX || height > MAX_CUSTOM_IMAGE_DIMENSION_PX) {
-            Timber.tag(TAG)
-                .w("Rejected custom artist image with oversized bounds: ${width}x${height}")
+            Logger.withTag(TAG).w { "Rejected custom artist image with oversized bounds: ${width}x${height}" }
             return null
         }
         if (width.toLong() * height.toLong() > MAX_CUSTOM_IMAGE_TOTAL_PIXELS) {
-            Timber.tag(TAG)
-                .w("Rejected custom artist image with excessive pixel count: ${width}x${height}")
+            Logger.withTag(TAG).w { "Rejected custom artist image with excessive pixel count: ${width}x${height}" }
             return null
         }
 
@@ -390,7 +384,7 @@ class ArtistImageRepository @Inject constructor(
                 BitmapFactory.decodeStream(inputStream, null, decodeOptions)
             }
         } catch (oom: OutOfMemoryError) {
-            Timber.tag(TAG).e(oom, "Failed to decode custom artist image due to OOM")
+            Logger.withTag(TAG).e(oom) { "Failed to decode custom artist image due to OOM" }
             null
         }
     }
@@ -419,12 +413,11 @@ class ArtistImageRepository @Inject constructor(
                 val destFile = File(context.filesDir, "artist_art_${artistId}.jpg")
                 if (destFile.exists()) {
                     destFile.delete()
-                    Timber.tag(TAG).d("Deleted custom artist image file: ${destFile.absolutePath}")
+                    Logger.withTag(TAG).d { "Deleted custom artist image file: ${destFile.absolutePath}" }
                 }
                 musicDao.updateArtistCustomImage(artistId, null)
             } catch (e: Exception) {
-                Timber.tag(TAG)
-                    .e("Failed to clear custom artist image for id=$artistId: ${e.message}")
+                Logger.withTag(TAG).e { "Failed to clear custom artist image for id=$artistId: ${e.message}" }
             }
         }
     }

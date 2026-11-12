@@ -40,7 +40,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
-import timber.log.Timber
+import co.touchlab.kermit.Logger
 
 private data class SearchPrefs(
     val favoriteIds: Set<Long>,
@@ -259,7 +259,7 @@ class MediaStoreSongRepository @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            Timber.tag("MediaStoreSongRepository").e(e, "Error querying MediaStore")
+            Logger.withTag("MediaStoreSongRepository").e(e) { "Error querying MediaStore" }
         }
         songs
     }
@@ -296,13 +296,13 @@ class MediaStoreSongRepository @Inject constructor(
                                 }
                             }
                         } catch (e: Exception) {
-                            Timber.tag("MediaStoreSongRepository").w(e, "Error querying members for genreId=$genreId")
+                            Logger.withTag("MediaStoreSongRepository").w(e) { "Error querying members for genreId=$genreId" }
                         }
                     }
                 }
             }
         } catch (e: Exception) {
-            Timber.tag("MediaStoreSongRepository").e(e, "Error querying Genres")
+            Logger.withTag("MediaStoreSongRepository").e(e) { "Error querying Genres" }
         }
         return genreMap
     }
@@ -423,7 +423,7 @@ class MediaStoreSongRepository @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            Timber.tag("MediaStoreSongRepository").e(e, "Error getting IDs")
+            Logger.withTag("MediaStoreSongRepository").e(e) { "Error getting IDs" }
         }
         ids
     }
