@@ -1,14 +1,14 @@
 package io.github.raghavsatyadev.openplayer.data.database
 
-import androidx.room.Embedded
-import androidx.room.Relation
+import androidx.room3.Embedded
+import androidx.room3.Relation
 
 data class PlaylistWithSongsEntity(
     @Embedded
     val playlist: PlaylistEntity,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "playlist_id",
+        parentColumns = ["id"],
+        entityColumns = ["playlist_id"],
         entity = PlaylistSongEntity::class
     )
     val songs: List<PlaylistSongEntity>

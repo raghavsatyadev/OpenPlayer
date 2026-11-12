@@ -1,9 +1,12 @@
 package io.github.raghavsatyadev.openplayer.data.database
 
-import androidx.room.testing.MigrationTestHelper
+import androidx.room3.testing.MigrationTestHelper
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import androidx.sqlite.execSQL
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,26 +17,29 @@ class GenreLookupCacheMigrationTest {
     @get:Rule
     val migrationHelper = MigrationTestHelper(
         instrumentation = InstrumentationRegistry.getInstrumentation(),
-        databaseClass = OpenPlayerDatabase::class.java,
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(DATABASE_NAME),
+        driver = BundledSQLiteDriver(),
+        databaseClass = OpenPlayerDatabase::class,
     )
 
     @Test
-    fun migrationFromEightToNineAddsGenreLookupCache() {
-        migrationHelper.createDatabase(DATABASE_NAME, 8).close()
+    fun migrationFromEightToNineAddsGenreLookupCache() = runTest {
+        migrationHelper.createDatabase(8).close()
 
-        migrationHelper.runMigrationsAndValidate(
-            name = DATABASE_NAME,
+        val connection = migrationHelper.runMigrationsAndValidate(
             version = 9,
-            validateDroppedTables = true,
-            MIGRATION_8_9,
-        ).use { database ->
-            database.execSQL(
+            migrations = listOf(MIGRATION_8_9),
+        )
+        try {
+            connection.execSQL(
                 "INSERT INTO genre_lookup_cache (lookup_key, genre, checked_at) VALUES ('a|b', NULL, 1)"
             )
-            database.query("SELECT COUNT(*) FROM genre_lookup_cache WHERE genre IS NULL").use { cursor ->
-                cursor.moveToFirst()
-                assertThat(cursor.getInt(0)).isEqualTo(1)
+            connection.prepare("SELECT COUNT(*) FROM genre_lookup_cache WHERE genre IS NULL").use { statement ->
+                assertThat(statement.step()).isTrue()
+                assertThat(statement.getLong(0)).isEqualTo(1L)
             }
+        } finally {
+            connection.close()
         }
     }
 

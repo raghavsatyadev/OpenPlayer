@@ -1,9 +1,9 @@
 package io.github.raghavsatyadev.openplayer.data.database
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Fts4
-import androidx.room.PrimaryKey
+import androidx.room3.ColumnInfo
+import androidx.room3.Entity
+import androidx.room3.Fts4
+import androidx.room3.PrimaryKey
 
 @Fts4(tokenizer = "unicode61")
 @Entity(tableName = "songs_fts")

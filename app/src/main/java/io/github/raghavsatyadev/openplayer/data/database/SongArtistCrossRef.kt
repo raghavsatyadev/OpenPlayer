@@ -1,12 +1,12 @@
 package io.github.raghavsatyadev.openplayer.data.database
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.Junction
-import androidx.room.Relation
+import androidx.room3.ColumnInfo
+import androidx.room3.Embedded
+import androidx.room3.Entity
+import androidx.room3.ForeignKey
+import androidx.room3.Index
+import androidx.room3.Junction
+import androidx.room3.Relation
 
 /**
  * Junction table for many-to-many relationship between songs and artists.
@@ -49,12 +49,12 @@ data class SongArtistCrossRef(
 data class SongWithArtists(
     @Embedded val song: SongEntity,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
+        parentColumns = ["id"],
+        entityColumns = ["id"],
         associateBy = Junction(
             value = SongArtistCrossRef::class,
-            parentColumn = "song_id",
-            entityColumn = "artist_id"
+            parentColumns = ["song_id"],
+            entityColumns = ["artist_id"]
         )
     )
     val artists: List<ArtistEntity>
@@ -67,12 +67,12 @@ data class SongWithArtists(
 data class ArtistWithSongs(
     @Embedded val artist: ArtistEntity,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
+        parentColumns = ["id"],
+        entityColumns = ["id"],
         associateBy = Junction(
             value = SongArtistCrossRef::class,
-            parentColumn = "artist_id",
-            entityColumn = "song_id"
+            parentColumns = ["artist_id"],
+            entityColumns = ["song_id"]
         )
     )
     val songs: List<SongEntity>

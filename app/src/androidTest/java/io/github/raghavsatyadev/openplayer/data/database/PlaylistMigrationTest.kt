@@ -1,11 +1,13 @@
 package io.github.raghavsatyadev.openplayer.data.database
 
-import androidx.room.testing.MigrationTestHelper
-import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room3.testing.MigrationTestHelper
+import androidx.sqlite.SQLiteConnection
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import androidx.sqlite.execSQL
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
-import java.io.IOException
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,28 +18,30 @@ class PlaylistMigrationTest {
     @get:Rule
     val migrationHelper = MigrationTestHelper(
         instrumentation = InstrumentationRegistry.getInstrumentation(),
-        databaseClass = OpenPlayerDatabase::class.java,
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(DATABASE_NAME),
+        driver = BundledSQLiteDriver(),
+        databaseClass = OpenPlayerDatabase::class,
     )
 
     @Test
-    @Throws(IOException::class)
-    fun migrationFromFiveToSixPreservesRowsAndAllowsRepeatedSongs() {
-        migrationHelper.createDatabase(DATABASE_NAME, 5).apply {
-            execSQL(
+    fun migrationFromFiveToSixPreservesRowsAndAllowsRepeatedSongs() = runTest {
+        val initialDb = migrationHelper.createDatabase(5)
+        try {
+            initialDb.execSQL(
                 "INSERT INTO playlist_songs (playlist_id, song_id, sort_order) VALUES " +
                     "('playlist-1', 'intro', 0), " +
                     "('playlist-1', 'chorus', 1), " +
                     "('playlist-1', 'outro', 2)"
             )
-            close()
+        } finally {
+            initialDb.close()
         }
 
-        migrationHelper.runMigrationsAndValidate(
-            name = DATABASE_NAME,
+        val database = migrationHelper.runMigrationsAndValidate(
             version = 6,
-            validateDroppedTables = true,
-            MIGRATION_5_6,
-        ).use { database ->
+            migrations = listOf(MIGRATION_5_6),
+        )
+        try {
             database.execSQL(
                 "INSERT INTO playlist_songs (playlist_id, song_id, sort_order) " +
                     "VALUES ('playlist-1', 'chorus', 3)"
@@ -46,16 +50,18 @@ class PlaylistMigrationTest {
             assertThat(database.playlistSongIds("playlist-1"))
                 .containsExactly("intro", "chorus", "outro", "chorus")
                 .inOrder()
+        } finally {
+            database.close()
         }
     }
 
-    private fun SupportSQLiteDatabase.playlistSongIds(playlistId: String): List<String> {
-        return query(
-            "SELECT song_id FROM playlist_songs WHERE playlist_id = ? ORDER BY sort_order",
-            arrayOf(playlistId),
-        ).use { cursor ->
+    private fun SQLiteConnection.playlistSongIds(playlistId: String): List<String> {
+        return prepare("SELECT song_id FROM playlist_songs WHERE playlist_id = ? ORDER BY sort_order").use { statement ->
+            statement.bindText(1, playlistId)
             buildList {
-                while (cursor.moveToNext()) add(cursor.getString(0))
+                while (statement.step()) {
+                    add(statement.getText(0))
+                }
             }
         }
     }

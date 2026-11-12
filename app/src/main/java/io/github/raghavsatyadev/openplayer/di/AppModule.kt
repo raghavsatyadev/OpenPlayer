@@ -8,9 +8,6 @@ import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.WorkManager
 import coil.ImageLoader
 import coil.disk.DiskCache
@@ -24,14 +21,6 @@ import io.github.raghavsatyadev.openplayer.data.database.LyricsDao
 import io.github.raghavsatyadev.openplayer.data.database.LocalPlaylistDao
 import io.github.raghavsatyadev.openplayer.data.database.ListenBrainzDao
 import io.github.raghavsatyadev.openplayer.data.database.AudioBookmarkDao
-import io.github.raghavsatyadev.openplayer.data.database.MIGRATION_1_2
-import io.github.raghavsatyadev.openplayer.data.database.MIGRATION_2_3
-import io.github.raghavsatyadev.openplayer.data.database.MIGRATION_3_4
-import io.github.raghavsatyadev.openplayer.data.database.MIGRATION_4_5
-import io.github.raghavsatyadev.openplayer.data.database.MIGRATION_5_6
-import io.github.raghavsatyadev.openplayer.data.database.MIGRATION_6_7
-import io.github.raghavsatyadev.openplayer.data.database.MIGRATION_7_8
-import io.github.raghavsatyadev.openplayer.data.database.MIGRATION_8_9
 import io.github.raghavsatyadev.openplayer.data.database.GenreFillDao
 import io.github.raghavsatyadev.openplayer.data.database.SavedQueueDao
 import io.github.raghavsatyadev.openplayer.data.database.SongUserMetaDao
@@ -134,29 +123,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideOpenPlayerDatabase(@ApplicationContext context: Context): OpenPlayerDatabase {
-        val builder = Room.databaseBuilder(
-            context.applicationContext,
-            OpenPlayerDatabase::class.java,
-            "openplayer_database"
-        )
-            .addCallback(OpenPlayerDatabase.createRuntimeArtifactsCallback())
-            .addMigrations(
-                MIGRATION_1_2,
-                MIGRATION_2_3,
-                MIGRATION_3_4,
-                MIGRATION_4_5,
-                MIGRATION_5_6,
-                MIGRATION_6_7,
-                MIGRATION_7_8,
-                MIGRATION_8_9,
-            )
-            .setJournalMode(RoomDatabase.JournalMode.WRITE_AHEAD_LOGGING)
-
-        if (BuildConfig.DEBUG) {
-            builder.fallbackToDestructiveMigration(dropAllTables = true)
-        }
-
-        return builder.build()
+        return OpenPlayerDatabase.build(context)
     }
 
     @Singleton

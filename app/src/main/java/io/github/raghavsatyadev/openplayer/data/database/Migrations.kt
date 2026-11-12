@@ -1,7 +1,8 @@
 package io.github.raghavsatyadev.openplayer.data.database
 
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room3.migration.Migration
+import androidx.sqlite.SQLiteConnection
+import androidx.sqlite.execSQL
 
 /**
  * Returns true if [table] already has a column named [column].
@@ -10,18 +11,16 @@ import androidx.sqlite.db.SupportSQLiteDatabase
  * columns have drifted, so migrations guard each `ALTER` with this check instead of assuming a
  * bare `ADD COLUMN` is safe (see the migration notes in CLAUDE.md / CONTRIBUTING).
  */
-private fun SupportSQLiteDatabase.hasColumn(table: String, column: String): Boolean {
-    query("PRAGMA table_info(`$table`)").use { cursor ->
-        val nameIndex = cursor.getColumnIndex("name")
-        if (nameIndex < 0) return false
-        while (cursor.moveToNext()) {
-            if (cursor.getString(nameIndex) == column) return true
+private fun SQLiteConnection.hasColumn(table: String, column: String): Boolean {
+    prepare("PRAGMA table_info(`$table`)").use { statement ->
+        while (statement.step()) {
+            if (statement.getText(1) == column) return true
         }
     }
     return false
 }
 
-private fun SupportSQLiteDatabase.addColumnIfMissing(table: String, column: String, ddl: String) {
+private fun SQLiteConnection.addColumnIfMissing(table: String, column: String, ddl: String) {
     if (!hasColumn(table, column)) {
         execSQL("ALTER TABLE `$table` ADD COLUMN $ddl")
     }
@@ -41,14 +40,14 @@ private fun SupportSQLiteDatabase.addColumnIfMissing(table: String, column: Stri
  * next library sync recomputes precise values (e.g. collapsing compilations under one artist).
  */
 val MIGRATION_1_2 = object : Migration(1, 2) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.addColumnIfMissing("songs", "album_artist_id", "`album_artist_id` INTEGER NOT NULL DEFAULT 0")
-        db.addColumnIfMissing("navidrome_songs", "album_artist", "`album_artist` TEXT")
-        db.addColumnIfMissing("jellyfin_songs", "album_artist", "`album_artist` TEXT")
+    override suspend fun migrate(connection: SQLiteConnection) {
+        connection.addColumnIfMissing("songs", "album_artist_id", "`album_artist_id` INTEGER NOT NULL DEFAULT 0")
+        connection.addColumnIfMissing("navidrome_songs", "album_artist", "`album_artist` TEXT")
+        connection.addColumnIfMissing("jellyfin_songs", "album_artist", "`album_artist` TEXT")
 
-        db.execSQL("UPDATE songs SET album_artist_id = artist_id WHERE album_artist_id = 0")
+        connection.execSQL("UPDATE songs SET album_artist_id = artist_id WHERE album_artist_id = 0")
 
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_songs_album_artist_id` ON `songs` (`album_artist_id`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_songs_album_artist_id` ON `songs` (`album_artist_id`)")
     }
 }
 
@@ -64,8 +63,8 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
  * Additive and idempotent, per the Auto Backup drift guard above.
  */
 val MIGRATION_2_3 = object : Migration(2, 3) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
+    override suspend fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
             """
                 CREATE TABLE IF NOT EXISTS `listenbrainz_pending_listens` (
                     `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -82,9 +81,9 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
             """.trimIndent()
         )
 
-        db.addColumnIfMissing("songs", "mb_recording_id", "`mb_recording_id` TEXT")
-        db.addColumnIfMissing("songs", "mb_release_id", "`mb_release_id` TEXT")
-        db.addColumnIfMissing("songs", "mb_artist_id", "`mb_artist_id` TEXT")
+        connection.addColumnIfMissing("songs", "mb_recording_id", "`mb_recording_id` TEXT")
+        connection.addColumnIfMissing("songs", "mb_release_id", "`mb_release_id` TEXT")
+        connection.addColumnIfMissing("songs", "mb_artist_id", "`mb_artist_id` TEXT")
     }
 }
 
@@ -97,8 +96,8 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
  * drift guard above.
  */
 val MIGRATION_3_4 = object : Migration(3, 4) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
+    override suspend fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
             """
                 CREATE TABLE IF NOT EXISTS `audio_bookmarks` (
                     `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -117,8 +116,8 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
 
 /** v4 -> v5: app-private offline copies of Navidrome and Jellyfin tracks. */
 val MIGRATION_4_5 = object : Migration(4, 5) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
+    override suspend fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
             """
                 CREATE TABLE IF NOT EXISTS `offline_tracks` (
                     `download_id` TEXT NOT NULL,
@@ -139,15 +138,15 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
                 )
             """.trimIndent()
         )
-        db.execSQL(
+        connection.execSQL(
             "CREATE UNIQUE INDEX IF NOT EXISTS `index_offline_tracks_source_uri` " +
                 "ON `offline_tracks` (`source_uri`)"
         )
-        db.execSQL(
+        connection.execSQL(
             "CREATE INDEX IF NOT EXISTS `index_offline_tracks_song_id` " +
                 "ON `offline_tracks` (`song_id`)"
         )
-        db.execSQL(
+        connection.execSQL(
             "CREATE INDEX IF NOT EXISTS `index_offline_tracks_state` " +
                 "ON `offline_tracks` (`state`)"
         )
@@ -163,9 +162,9 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
  * databases with duplicate sort values migrate without dropping a song.
  */
 val MIGRATION_5_6 = object : Migration(5, 6) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("DROP TABLE IF EXISTS `playlist_songs_v6`")
-        db.execSQL(
+    override suspend fun migrate(connection: SQLiteConnection) {
+        connection.execSQL("DROP TABLE IF EXISTS `playlist_songs_v6`")
+        connection.execSQL(
             """
                 CREATE TABLE `playlist_songs_v6` (
                     `playlist_id` TEXT NOT NULL,
@@ -175,7 +174,7 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
                 )
             """.trimIndent()
         )
-        db.execSQL(
+        connection.execSQL(
             """
                 INSERT INTO `playlist_songs_v6` (`playlist_id`, `song_id`, `sort_order`)
                 SELECT
@@ -188,13 +187,13 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
                 FROM `playlist_songs`
             """.trimIndent()
         )
-        db.execSQL("DROP TABLE `playlist_songs`")
-        db.execSQL("ALTER TABLE `playlist_songs_v6` RENAME TO `playlist_songs`")
-        db.execSQL(
+        connection.execSQL("DROP TABLE `playlist_songs`")
+        connection.execSQL("ALTER TABLE `playlist_songs_v6` RENAME TO `playlist_songs`")
+        connection.execSQL(
             "CREATE INDEX `index_playlist_songs_playlist_id_sort_order` " +
                 "ON `playlist_songs` (`playlist_id`, `sort_order`)"
         )
-        db.execSQL(
+        connection.execSQL(
             "CREATE INDEX `index_playlist_songs_song_id` ON `playlist_songs` (`song_id`)"
         )
     }
@@ -202,8 +201,8 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
 
 /** Adds the per-listen history table; it is filled from the older stats on first run. */
 val MIGRATION_6_7 = object : Migration(6, 7) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
+    override suspend fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
             """
                 CREATE TABLE IF NOT EXISTS `listen_history` (
                     `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -216,15 +215,15 @@ val MIGRATION_6_7 = object : Migration(6, 7) {
                 )
             """.trimIndent()
         )
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_listen_history_song_id` ON `listen_history` (`song_id`)")
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_listen_history_ended_at` ON `listen_history` (`ended_at`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_listen_history_song_id` ON `listen_history` (`song_id`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_listen_history_ended_at` ON `listen_history` (`ended_at`)")
     }
 }
 
 /** Adds the per-song rating/moods/tags table and the saved (named) queues table. */
 val MIGRATION_7_8 = object : Migration(7, 8) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
+    override suspend fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
             """
                 CREATE TABLE IF NOT EXISTS `song_user_meta` (
                     `song_id` TEXT NOT NULL,
@@ -236,7 +235,7 @@ val MIGRATION_7_8 = object : Migration(7, 8) {
                 )
             """.trimIndent()
         )
-        db.execSQL(
+        connection.execSQL(
             """
                 CREATE TABLE IF NOT EXISTS `saved_queues` (
                     `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -253,8 +252,8 @@ val MIGRATION_7_8 = object : Migration(7, 8) {
 
 /** Adds the cache of online genre lookups (see GenreLookupCacheEntity). */
 val MIGRATION_8_9 = object : Migration(8, 9) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
+    override suspend fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
             """
                 CREATE TABLE IF NOT EXISTS `genre_lookup_cache` (
                     `lookup_key` TEXT NOT NULL,

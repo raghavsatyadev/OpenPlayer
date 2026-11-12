@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.model
 
-import androidx.room.Embedded
+import androidx.room3.Embedded
 
 /**
  * Defines the available transition modes between songs.
