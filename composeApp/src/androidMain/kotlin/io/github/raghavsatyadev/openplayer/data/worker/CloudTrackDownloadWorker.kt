@@ -9,6 +9,7 @@ import io.github.raghavsatyadev.openplayer.data.database.OfflineTrackDao
 import io.github.raghavsatyadev.openplayer.data.jellyfin.JellyfinRepository
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
 import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
+import io.github.raghavsatyadev.openplayer.platform.AndroidAppDirectories
 import io.github.raghavsatyadev.openplayer.data.offline.OfflineDownloadStatus
 import io.github.raghavsatyadev.openplayer.data.stream.CloudStreamSecurity
 import java.io.File
@@ -62,7 +63,7 @@ class CloudTrackDownloadWorker(
             updatedAt = now
         ) == 0) return@withContext Result.success()
 
-        val tempFile = CloudOfflineRepository.downloadDirectory(applicationContext)
+        val tempFile = CloudOfflineRepository.downloadDirectory(AndroidAppDirectories(applicationContext))
             .resolve("${CloudOfflineRepository.attemptFileStem(downloadId, attemptId)}.part")
         tempFile.delete()
         var finalizedFile: File? = null
@@ -86,7 +87,7 @@ class CloudTrackDownloadWorker(
                 val body = response.body
                 val total = body.contentLength().takeIf { it >= 0L }
                 val extension = extensionFor(response.header("Content-Type"), entity.mimeType)
-                val finalFile = CloudOfflineRepository.downloadDirectory(applicationContext)
+                val finalFile = CloudOfflineRepository.downloadDirectory(AndroidAppDirectories(applicationContext))
                     .resolve(
                         "${CloudOfflineRepository.attemptFileStem(downloadId, attemptId)}.$extension"
                     )

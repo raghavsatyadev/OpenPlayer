@@ -38,6 +38,7 @@ import androidx.media3.extractor.flac.FlacExtractor
 import io.github.raghavsatyadev.openplayer.data.model.AudioOutputMode
 import io.github.raghavsatyadev.openplayer.data.model.TransitionSettings
 import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
+import io.github.raghavsatyadev.openplayer.data.offline.resolveLocalUri
 import io.github.raghavsatyadev.openplayer.utils.MediaItemBuilder
 import io.github.raghavsatyadev.openplayer.utils.envelope
 import kotlinx.coroutines.CancellationException

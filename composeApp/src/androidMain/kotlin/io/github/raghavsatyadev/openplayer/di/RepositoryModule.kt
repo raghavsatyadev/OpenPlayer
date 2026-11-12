@@ -11,7 +11,9 @@ import io.github.raghavsatyadev.openplayer.data.listenbrainz.ListenBrainzReposit
 import io.github.raghavsatyadev.openplayer.data.media.TrackBpmRepository
 import io.github.raghavsatyadev.openplayer.data.musicbrainz.MusicBrainzRepository
 import io.github.raghavsatyadev.openplayer.data.navidrome.NavidromeRepository
+import io.github.raghavsatyadev.openplayer.data.offline.CloudDownloadScheduler
 import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
+import io.github.raghavsatyadev.openplayer.data.offline.WorkManagerCloudDownloadScheduler
 import io.github.raghavsatyadev.openplayer.data.playlist.ArtistGenreLoader
 import io.github.raghavsatyadev.openplayer.data.playlist.ConceptTableLoader
 import io.github.raghavsatyadev.openplayer.data.playlist.M3uManager
@@ -91,6 +93,7 @@ val repositoryModule = module {
     singleOf(::OnlineGenreSource)
     singleOf(::GenreFiller)
     singleOf(::MusicBrainzRepository)
+    single<CloudDownloadScheduler> { WorkManagerCloudDownloadScheduler(get()) }
     singleOf(::CloudOfflineRepository)
     singleOf(::SavedQueueRepository)
     singleOf(::SongUserMetaRepository)
