@@ -1,7 +1,8 @@
 package io.github.raghavsatyadev.openplayer.presentation.library
 
-import androidx.annotation.StringRes
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.Res
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.StringResource
 import io.github.raghavsatyadev.openplayer.data.model.SortOption
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -12,12 +13,12 @@ import kotlinx.serialization.json.Json
  */
 enum class LibraryTabId(
     val stableKey: String,
-    @StringRes val labelRes: Int,
+    val labelRes: StringResource,
     val sortOptions: List<SortOption>
 ) {
     Songs(
         stableKey = "SONGS",
-        labelRes = R.string.library_tab_songs,
+        labelRes = Res.string.library_tab_songs,
         sortOptions = listOf(
             SortOption.SongTitleAZ,
             SortOption.SongTitleZA,
@@ -33,7 +34,7 @@ enum class LibraryTabId(
     ),
     Albums(
         stableKey = "ALBUMS",
-        labelRes = R.string.library_tab_albums,
+        labelRes = Res.string.library_tab_albums,
         sortOptions = listOf(
             SortOption.AlbumTitleAZ,
             SortOption.AlbumTitleZA,
@@ -46,7 +47,7 @@ enum class LibraryTabId(
     ),
     Artists(
         stableKey = "ARTIST",
-        labelRes = R.string.library_tab_artists,
+        labelRes = Res.string.library_tab_artists,
         sortOptions = listOf(
             SortOption.ArtistNameAZ,
             SortOption.ArtistNameZA,
@@ -56,7 +57,7 @@ enum class LibraryTabId(
     ),
     Playlists(
         stableKey = "PLAYLISTS",
-        labelRes = R.string.library_tab_playlists,
+        labelRes = Res.string.library_tab_playlists,
         sortOptions = listOf(
             SortOption.PlaylistNameAZ,
             SortOption.PlaylistNameZA,
@@ -66,7 +67,7 @@ enum class LibraryTabId(
     ),
     Folders(
         stableKey = "FOLDERS",
-        labelRes = R.string.library_tab_folders,
+        labelRes = Res.string.library_tab_folders,
         sortOptions = listOf(
             SortOption.FolderNameAZ,
             SortOption.FolderNameZA,
@@ -78,7 +79,7 @@ enum class LibraryTabId(
     ),
     Liked(
         stableKey = "LIKED",
-        labelRes = R.string.library_tab_liked,
+        labelRes = Res.string.library_tab_liked,
         sortOptions = listOf(
             SortOption.LikedSongTitleAZ,
             SortOption.LikedSongTitleZA,
@@ -92,12 +93,12 @@ enum class LibraryTabId(
     ),
     Genres(
         stableKey = "GENRES",
-        labelRes = R.string.library_tab_genres,
+        labelRes = Res.string.library_tab_genres,
         sortOptions = SortOption.GENRES
     ),
     Videos(
         stableKey = "VIDEOS",
-        labelRes = R.string.library_tab_videos,
+        labelRes = Res.string.library_tab_videos,
         sortOptions = emptyList()
     );
 

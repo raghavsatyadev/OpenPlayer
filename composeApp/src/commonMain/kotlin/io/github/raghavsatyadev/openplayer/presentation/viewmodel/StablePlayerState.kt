@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
 import androidx.compose.runtime.Immutable
-import androidx.media3.common.Player
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.model.Lyrics
 
@@ -14,7 +13,7 @@ data class StablePlayerState(
     val totalDuration: Long = 0L,
     val isShuffleEnabled: Boolean = false,
     val isShuffleTransitionInProgress: Boolean = false,
-    val repeatMode: Int = Player.REPEAT_MODE_OFF,
+    val repeatMode: Int = 0, // Player.REPEAT_MODE_OFF
     val isLoadingLyrics: Boolean = false,
     val lyrics: Lyrics? = null,
     val isBuffering: Boolean = false
