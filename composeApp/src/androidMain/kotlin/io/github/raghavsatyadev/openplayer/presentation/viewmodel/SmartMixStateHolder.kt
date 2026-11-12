@@ -123,11 +123,10 @@ class SmartMixStateHolder(
                     .mapValues { (_, stats) -> MixSuggestionPlays(stats.playCount, stats.lastPlayedTimestamp) }
                 // Only offer what would actually produce a mix from this library.
                 val probe = generator.createMixProbe(songs)
-                val resources = context.resources
                 _mixSuggestions.value = MixSuggestionEngine.suggest(
                     songs, plays, mixPreferences.recentMixRequests(), System.currentTimeMillis(),
-                    canMix = { probe.canMix(it.requestText(resources)) },
-                    textOf = { it.requestText(resources) },
+                    canMix = { probe.canMix(it.requestText()) },
+                    textOf = { it.requestText() },
                 )
             } catch (cancelled: CancellationException) {
                 throw cancelled

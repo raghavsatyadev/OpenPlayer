@@ -66,14 +66,14 @@ object MixSuggestionEngine {
      * [textOf] is what a pill shows (and fills in), used to keep duplicates out; the UI passes the
      * localized text. [canMix] is called lazily, only for candidates that could still make the cut.
      */
-    fun suggest(
+    suspend fun suggest(
         songs: List<Song>,
         plays: Map<String, MixSuggestionPlays>,
         recentRequests: List<String>,
         nowMs: Long,
         calendar: Calendar = Calendar.getInstance().apply { timeInMillis = nowMs },
-        canMix: (MixSuggestion) -> Boolean = { true },
-        textOf: (MixSuggestion) -> String = ::defaultText,
+        canMix: suspend (MixSuggestion) -> Boolean = { true },
+        textOf: suspend (MixSuggestion) -> String = ::defaultText,
     ): List<List<MixSuggestion>> {
         val random = Random(calendar.get(Calendar.YEAR) * 1000L + calendar.get(Calendar.DAY_OF_YEAR))
         // Small libraries still get suggestions, just with a lower bar for "enough songs".
@@ -132,14 +132,14 @@ object MixSuggestionEngine {
         val chosen = LinkedHashMap<String, MixSuggestion>()
         val rejected = HashSet<String>()
         val shown = HashSet<String>()
-        fun tryAdd(candidate: MixSuggestion) {
+        suspend fun tryAdd(candidate: MixSuggestion) {
             if (chosen.size >= ROWS * MAX_PER_ROW || candidate.key in chosen || candidate.key in rejected) return
             val text = NlpText.normalize(textOf(candidate))
             if (text in shown) return
             if (canMix(candidate)) { chosen[candidate.key] = candidate; shown += text } else rejected += candidate.key
         }
-        (you + library + now).forEach(::tryAdd)
-        spare.forEach(::tryAdd)
+        for (candidate in you + library + now) tryAdd(candidate)
+        for (candidate in spare) tryAdd(candidate)
         return distribute(chosen.values.toList())
     }
 

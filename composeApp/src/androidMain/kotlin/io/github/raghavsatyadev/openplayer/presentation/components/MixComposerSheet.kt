@@ -2,9 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.annotation.DrawableRes
-
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -46,13 +43,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -69,7 +63,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
 import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.playlist.nlp.MixMoment
 import io.github.raghavsatyadev.openplayer.data.playlist.nlp.MixSuggestion
 import io.github.raghavsatyadev.openplayer.data.playlist.nlp.SmartMixRequest
@@ -78,8 +71,12 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.MixPreview
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlin.math.roundToInt
 import io.github.raghavsatyadev.openplayer.resources.*
+import io.github.raghavsatyadev.openplayer.resources.getString
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.getStringArray
 import org.jetbrains.compose.resources.vectorResource
 
 private enum class MixComposerPage { Request, Refine, Preview }
@@ -89,7 +86,7 @@ private data class MixSuggestionPill(
     val key: String,
     val label: String,
     val description: String?,
-    @DrawableRes val iconRes: Int,
+    val iconRes: DrawableResource,
     val polygon: RoundedPolygon,
 )
 
@@ -148,9 +145,9 @@ fun MixComposerSheet(
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent,
     )
-    val maxHeight = LocalConfiguration.current.screenHeightDp.dp * .94f
+    val maxHeight = with(LocalDensity.current) { LocalWindowInfo.current.containerSize.height.toDp() } * .94f
     val page = when { preview != null -> MixComposerPage.Preview; refining -> MixComposerPage.Refine; else -> MixComposerPage.Request }
-    val composerTitle = stringResource(if (isDailyMix) R.string.mix_tune_today else R.string.mix_title)
+    val composerTitle = stringResource(if (isDailyMix) Res.string.mix_tune_today else Res.string.mix_title)
     val requestScroll = rememberScrollState()
     val refineScroll = rememberScrollState()
     val stage = remember { NeuralMixStage() }
@@ -274,7 +271,7 @@ fun MixComposerSheet(
                                     AnimatedContent(isGenerating, transitionSpec = {
                                         fadeIn(motion.defaultEffectsSpec()) togetherWith fadeOut(motion.defaultEffectsSpec())
                                     }, label = "mix_status") { working ->
-                                        Text(if (working) thinkingLabel else stringResource(if (isDailyMix) R.string.mix_daily_subtitle else R.string.mix_library_subtitle),
+                                        Text(if (working) thinkingLabel else stringResource(if (isDailyMix) Res.string.mix_daily_subtitle else Res.string.mix_library_subtitle),
                                             style = MaterialTheme.typography.bodyMedium, color = colors.onSurfaceVariant, textAlign = TextAlign.Center,
                                             modifier = Modifier.padding(top = 8.dp, bottom = 4.dp).semantics { liveRegion = LiveRegionMode.Polite })
                                     }
@@ -355,7 +352,7 @@ fun MixComposerSheet(
                                 Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                     Text(stringResource(Res.string.mix_energy), style = MaterialTheme.typography.titleMedium)
                                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                        listOf(null to R.string.mix_auto, 85 to R.string.mix_energy_calm, 120 to R.string.mix_energy_steady, 165 to R.string.mix_energy_energetic).forEach { (bpm, label) ->
+                                        listOf(null to Res.string.mix_auto, 85 to Res.string.mix_energy_calm, 120 to Res.string.mix_energy_steady, 165 to Res.string.mix_energy_energetic).forEach { (bpm, label) ->
                                             NeuralMixChoice(stringResource(label), selectedEnergy == bpm, true,
                                                 onClick = { haptics.perform(MixHapticLevel.Tick); selectedEnergy = bpm; onClearError() })
                                         }
@@ -459,7 +456,7 @@ private fun MixRefineRow(selectedCount: Int?, selectedEnergy: Int?, enabled: Boo
     val colors = MaterialTheme.colorScheme
     val length = selectedCount?.let { stringResource(Res.string.mix_up_to, it) } ?: stringResource(Res.string.mix_auto)
     val energy = stringResource(when (selectedEnergy) {
-        85 -> R.string.mix_energy_calm; 120 -> R.string.mix_energy_steady; 165 -> R.string.mix_energy_energetic; else -> R.string.mix_auto
+        85 -> Res.string.mix_energy_calm; 120 -> Res.string.mix_energy_steady; 165 -> Res.string.mix_energy_energetic; else -> Res.string.mix_auto
     })
     val summary = stringResource(Res.string.mix_selection_summary, length, energy)
     // Anchored to the card's lower-left corner with the same 20 dp inset as the sides.
@@ -571,7 +568,7 @@ private fun MixPreviewActionBar(
     // Medium FAB corners (20 dp) round into a circle on press, on the expressive fast spatial spring.
     val fabCorner by animateDpAsState(if (fabPressed) PreviewFabSize / 2 else 20.dp, motion.fastSpatialSpec(), label = "mix_fab_shape")
     val fabShape = RoundedCornerShape(fabCorner.coerceAtLeast(0.dp))
-    val primaryLabel = stringResource(if (isDailyMix) R.string.mix_use_today else R.string.mix_play)
+    val primaryLabel = stringResource(if (isDailyMix) Res.string.mix_use_today else Res.string.mix_play)
     Row(modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         Surface(
             modifier = Modifier.weight(1f).height(PreviewBarHeight),
@@ -609,7 +606,7 @@ private fun MixPreviewActionBar(
                         }
                     }
                     Spacer(Modifier.width(8.dp))
-                    Text(stringResource(if (saved) R.string.mix_saved_action else R.string.mix_save), fontFamily = RoundedSans,
+                    Text(stringResource(if (saved) Res.string.mix_saved_action else Res.string.mix_save), fontFamily = RoundedSans,
                         maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
@@ -630,10 +627,9 @@ private fun MixPreviewActionBar(
 private fun MixSuggestionRows(
     suggestions: List<List<MixSuggestion>>, request: String, visible: Boolean, enabled: Boolean, onChoose: (String) -> Unit,
 ) {
-    val resources = LocalContext.current.resources
-    val configuration = LocalConfiguration.current
-    val rows = remember(suggestions, configuration) {
-        suggestions.map { row -> row.map { it.toPill(resources) } }.filter { it.isNotEmpty() }
+    val locale = androidx.compose.ui.text.intl.Locale.current
+    val rows by produceState(emptyList<List<MixSuggestionPill>>(), suggestions, locale) {
+        value = suggestions.map { row -> row.map { it.toPill() } }.filter { it.isNotEmpty() }
     }
     val motion = remember { MotionScheme.expressive() }
     // Built off the main thread on open; the first time, the rows grow in rather than pop.
@@ -644,57 +640,57 @@ private fun MixSuggestionRows(
         // Pills share one height and size to their labels; all rows start on the same line.
         StaggeredPillRows(rows, itemWidth = null, itemKey = { it.key },
             rowHeight = 48.dp, contentPadding = PaddingValues(horizontal = 20.dp)) { pill, modifier ->
-            MixSuggestionChip(pill.label, pill.description, ImageVector.vectorResource(pill.iconRes), pill.polygon, request == pill.label, enabled,
+            MixSuggestionChip(pill.label, pill.description, vectorResource(pill.iconRes), pill.polygon, request == pill.label, enabled,
                 { onChoose(pill.label) }, modifier)
         }
     }
 }
 
 /** The request text a suggestion fills in, which is also its pill label. */
-internal fun MixSuggestion.requestText(resources: android.content.res.Resources): String = when (this) {
+internal suspend fun MixSuggestion.requestText(): String = when (this) {
     is MixSuggestion.Recent -> text
     is MixSuggestion.Artist -> name
     is MixSuggestion.Genre -> name
-    is MixSuggestion.DecadeGenre -> resources.getStringArray(R.array.mix_decades).getOrNull((decade - 1950) / 10)
-        ?.let { resources.getString(R.string.mix_suggest_decade_genre, it, genre) } ?: genre
-    is MixSuggestion.Moment -> resources.getString(moment.label)
+    is MixSuggestion.DecadeGenre -> getStringArray(Res.array.mix_decades).getOrNull((decade - 1950) / 10)
+        ?.let { getString(Res.string.mix_suggest_decade_genre, it, genre) } ?: genre
+    is MixSuggestion.Moment -> getString(moment.label)
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-private fun MixSuggestion.toPill(resources: android.content.res.Resources): MixSuggestionPill {
-    val label = requestText(resources)
+private suspend fun MixSuggestion.toPill(): MixSuggestionPill {
+    val label = requestText()
     return when (this) {
-        is MixSuggestion.Recent -> MixSuggestionPill(key, label, resources.getString(R.string.mix_suggest_recent, text),
-            R.drawable.rounded_history_24, MaterialShapes.Circle)
+        is MixSuggestion.Recent -> MixSuggestionPill(key, label, getString(Res.string.mix_suggest_recent, text),
+            Res.drawable.rounded_history_24, MaterialShapes.Circle)
         is MixSuggestion.Artist -> if (rediscover) {
-            MixSuggestionPill(key, label, resources.getString(R.string.mix_suggest_rediscover, name), R.drawable.rounded_explore_filled_24, MaterialShapes.Cookie4Sided)
+            MixSuggestionPill(key, label, getString(Res.string.mix_suggest_rediscover, name), Res.drawable.rounded_explore_filled_24, MaterialShapes.Cookie4Sided)
         } else {
-            MixSuggestionPill(key, label, null, R.drawable.rounded_person_filled_24, MaterialShapes.Circle)
+            MixSuggestionPill(key, label, null, Res.drawable.rounded_person_filled_24, MaterialShapes.Circle)
         }
-        is MixSuggestion.Genre -> MixSuggestionPill(key, label, null, R.drawable.rounded_graphic_eq_24, MaterialShapes.PuffyDiamond)
-        is MixSuggestion.DecadeGenre -> MixSuggestionPill(key, label, null, R.drawable.rounded_album_filled_24, MaterialShapes.PuffyDiamond)
+        is MixSuggestion.Genre -> MixSuggestionPill(key, label, null, Res.drawable.rounded_graphic_eq_24, MaterialShapes.PuffyDiamond)
+        is MixSuggestion.DecadeGenre -> MixSuggestionPill(key, label, null, Res.drawable.rounded_album_filled_24, MaterialShapes.PuffyDiamond)
         is MixSuggestion.Moment -> MixSuggestionPill(key, label, null, moment.iconRes, MaterialShapes.Cookie4Sided)
     }
 }
 
-private val MixMoment.label: Int get() = when (this) {
-    MixMoment.MORNING -> R.string.mix_moment_morning
-    MixMoment.STUDY -> R.string.mix_moment_study
-    MixMoment.WORKOUT -> R.string.mix_moment_workout
-    MixMoment.FEEL_GOOD -> R.string.mix_moment_feel_good
-    MixMoment.CHILL_EVENING -> R.string.mix_moment_chill_evening
-    MixMoment.LATE_NIGHT -> R.string.mix_moment_late_night
-    MixMoment.PARTY -> R.string.mix_moment_party
+private val MixMoment.label: StringResource get() = when (this) {
+    MixMoment.MORNING -> Res.string.mix_moment_morning
+    MixMoment.STUDY -> Res.string.mix_moment_study
+    MixMoment.WORKOUT -> Res.string.mix_moment_workout
+    MixMoment.FEEL_GOOD -> Res.string.mix_moment_feel_good
+    MixMoment.CHILL_EVENING -> Res.string.mix_moment_chill_evening
+    MixMoment.LATE_NIGHT -> Res.string.mix_moment_late_night
+    MixMoment.PARTY -> Res.string.mix_moment_party
 }
 
-private val MixMoment.iconRes: Int get() = when (this) {
-    MixMoment.MORNING -> R.drawable.rounded_wb_sunny_filled_24
-    MixMoment.STUDY -> R.drawable.rounded_headphones_filled_24
-    MixMoment.WORKOUT -> R.drawable.rounded_directions_run_mirrored_24
-    MixMoment.FEEL_GOOD -> R.drawable.rounded_mood_filled_24
-    MixMoment.CHILL_EVENING -> R.drawable.rounded_nights_stay_filled_24
-    MixMoment.LATE_NIGHT -> R.drawable.rounded_bedtime_filled_24
-    MixMoment.PARTY -> R.drawable.rounded_celebration_filled_24
+private val MixMoment.iconRes: DrawableResource get() = when (this) {
+    MixMoment.MORNING -> Res.drawable.rounded_wb_sunny_filled_24
+    MixMoment.STUDY -> Res.drawable.rounded_headphones_filled_24
+    MixMoment.WORKOUT -> Res.drawable.rounded_directions_run_mirrored_24
+    MixMoment.FEEL_GOOD -> Res.drawable.rounded_mood_filled_24
+    MixMoment.CHILL_EVENING -> Res.drawable.rounded_nights_stay_filled_24
+    MixMoment.LATE_NIGHT -> Res.drawable.rounded_bedtime_filled_24
+    MixMoment.PARTY -> Res.drawable.rounded_celebration_filled_24
 }
 
 @Composable
