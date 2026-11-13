@@ -9,12 +9,6 @@ import java.io.File
 import java.util.Locale
 import co.touchlab.kermit.Logger
 
-data class AudioMeta(
-    val mimeType: String?,
-    val bitrate: Int?,
-    val sampleRate: Int?
-)
-
 object AudioMetaUtils {
 
     /**

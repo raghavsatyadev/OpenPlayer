@@ -1,9 +1,5 @@
 package io.github.raghavsatyadev.openplayer.ui.theme
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -11,67 +7,33 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+import androidx.compose.ui.graphics.luminance
 import io.github.raghavsatyadev.openplayer.data.preferences.ThemePreset
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ColorSchemePair
-import androidx.core.graphics.ColorUtils
 
 val LocalOpenPlayerDarkTheme = staticCompositionLocalOf { false }
 val LocalOpenPlayerAmoledTheme = staticCompositionLocalOf { false }
 val LocalShowScrollbar = staticCompositionLocalOf { true }
 
-private tailrec fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
-}
-
-@Suppress("DEPRECATION")
 @Composable
-fun OpenPlayerStatusBarStyle(
+expect fun OpenPlayerStatusBarStyle(
     color: Color,
-    useDarkIcons: Boolean = ColorUtils.calculateLuminance(color.toArgb()) > 0.55,
+    useDarkIcons: Boolean = color.luminance() > 0.55f,
     navigationColor: Color? = null,
     useDarkNavigationIcons: Boolean = navigationColor
-        ?.let { ColorUtils.calculateLuminance(it.toArgb()) > 0.55 }
+        ?.let { it.luminance() > 0.55f }
         ?: useDarkIcons
-) {
-    val view = LocalView.current
-    if (view.isInEditMode) return
+)
 
-    val updateNavigationBar = navigationColor != null
-    SideEffect {
-        val window = view.context.findActivity()?.window ?: return@SideEffect
-        window.statusBarColor = android.graphics.Color.TRANSPARENT
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            window.isStatusBarContrastEnforced = false
-        }
-
-        WindowCompat.getInsetsController(window, view).run {
-            isAppearanceLightStatusBars = useDarkIcons
-
-            if (updateNavigationBar) {
-                window.navigationBarColor = android.graphics.Color.TRANSPARENT
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    window.isNavigationBarContrastEnforced = false
-                }
-                isAppearanceLightNavigationBars = useDarkNavigationIcons
-            }
-        }
-    }
-}
+/** Wallpaper-based dynamic scheme where the platform has one (Android 12+), else null. */
+@Composable
+internal expect fun platformDynamicColorScheme(darkTheme: Boolean): ColorScheme?
 
 val DarkColorScheme = darkColorScheme(
     primary = OpenPlayerPurplePrimary,
@@ -138,21 +100,6 @@ internal fun resolveAmoledColorScheme(
     wallpaperDarkScheme: () -> ColorScheme,
 ): ColorScheme = (colorSchemePairOverride?.dark ?: wallpaperDarkScheme()).withAmoledSurfaces()
 
-fun getAmoledColorScheme(
-    context: Context,
-    colorSchemePairOverride: ColorSchemePair? = null,
-): ColorScheme = resolveAmoledColorScheme(colorSchemePairOverride) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        try {
-            dynamicDarkColorScheme(context)
-        } catch (e: Exception) {
-            DarkColorScheme
-        }
-    } else {
-        DarkColorScheme
-    }
-}
-
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun OpenPlayerTheme(
@@ -161,19 +108,17 @@ fun OpenPlayerTheme(
     themePreset: String = ThemePreset.DEFAULT,
     content: @Composable () -> Unit
 ) {
-    val context = LocalContext.current
     val isAmoled = isAmoledThemePreset(themePreset)
+    val dynamicScheme = if (isAmoled || colorSchemePairOverride == null) {
+        platformDynamicColorScheme(darkTheme = isAmoled || darkTheme)
+    } else {
+        null
+    }
     val finalColorScheme = when {
-        isAmoled -> remember(context, colorSchemePairOverride) {
-            getAmoledColorScheme(context, colorSchemePairOverride)
+        isAmoled -> remember(dynamicScheme, colorSchemePairOverride) {
+            resolveAmoledColorScheme(colorSchemePairOverride) { dynamicScheme ?: DarkColorScheme }
         }
-        colorSchemePairOverride == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            try {
-                if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-            } catch (e: Exception) {
-                if (darkTheme) DarkColorScheme else LightColorScheme
-            }
-        }
+        colorSchemePairOverride == null && dynamicScheme != null -> dynamicScheme
         colorSchemePairOverride != null -> {
             if (darkTheme) colorSchemePairOverride.dark else colorSchemePairOverride.light
         }
