@@ -1,12 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import android.graphics.Color as AndroidColor
-import android.os.Build
-import android.view.View
-import android.view.WindowManager
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.activity.compose.PredictiveBackHandler
-import androidx.activity.findViewTreeOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Animatable
@@ -66,7 +59,6 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.dismiss
 import androidx.compose.ui.semantics.paneTitle
@@ -79,18 +71,13 @@ import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.window.DialogWindowProvider
-import androidx.core.view.OneShotPreDrawListener
-import androidx.core.view.WindowCompat
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
-import kotlin.coroutines.resume
 import kotlin.math.roundToInt
 
 val LocalBottomFloatingCardDragModifier = compositionLocalOf<Modifier> { Modifier }
@@ -276,167 +263,137 @@ fun <Page : Any> BottomFloatingCard(
     MaterialTheme(motionScheme = motion) {
         Dialog(
             onDismissRequest = close,
-            properties = DialogProperties(
-                usePlatformDefaultWidth = false,
-                decorFitsSystemWindows = false,
-                dismissOnBackPress = false,
-                dismissOnClickOutside = false,
-            ),
+            properties = floatingDialogProperties(),
         ) {
-            val view = LocalView.current
-            val window = (view.parent as? DialogWindowProvider)?.window
-            // Use this dialog's dispatcher, even when the caller supplied an activity owner.
-            val dispatcherOwner = requireNotNull(view.findViewTreeOnBackPressedDispatcherOwner())
-            LaunchedEffect(window) {
-                window?.let {
-                    WindowCompat.setDecorFitsSystemWindows(it, false)
-                    @Suppress("DEPRECATION")
-                    it.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-                    it.setDimAmount(0f)
-                    it.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-                    // The card animates itself; a platform window animation would fight it.
-                    it.setWindowAnimations(0)
-                    @Suppress("DEPRECATION")
-                    it.navigationBarColor = AndroidColor.TRANSPARENT
-                    @Suppress("DEPRECATION")
-                    it.statusBarColor = AndroidColor.TRANSPARENT
-                    if (Build.VERSION.SDK_INT >= 29) it.isNavigationBarContrastEnforced = false
-                }
-            }
-            LaunchedEffect(view) {
+            val lightNavigation = neuralMixPalette().dark.not()
+            val dialogWindow = rememberFloatingDialogWindow(lightBars = lightNavigation)
+            LaunchedEffect(dialogWindow) {
                 // Start once the dialog window actually draws. Starting at composition spends the
                 // opening of the spring on frames nobody sees, which reads as a jump.
-                withTimeoutOrNull(250) { view.awaitPreDraw() }
+                withTimeoutOrNull(250) { dialogWindow.awaitFirstDraw() }
                 withFrameNanos { }
                 if (closing) return@LaunchedEffect
                 haptics.perform(MixHapticLevel.Medium)
                 launch { fade.animateTo(1f, motion.defaultEffectsSpec()) }
                 reveal.animateTo(1f, container)
             }
-            val lightNavigation = neuralMixPalette().dark.not()
-            LaunchedEffect(window, lightNavigation) {
-                window?.let {
-                    WindowCompat.getInsetsController(it, view).run {
-                        isAppearanceLightNavigationBars = lightNavigation
-                        isAppearanceLightStatusBars = lightNavigation
-                    }
-                }
-            }
             CompositionLocalProvider(
-                LocalOnBackPressedDispatcherOwner provides dispatcherOwner,
                 LocalBottomFloatingCardDragModifier provides headerDragModifier,
             ) {
-                PredictiveBackHandler {
-                    val from = page
-                    val destination = parentPage
-                    try {
-                        seekingBack = true
-                        // A gesture during a page change seeks from the settled page, not mid-flight.
-                        if (destination != null && (pages.currentState != from || pages.targetState != from)) pages.snapTo(from)
-                        it.collect { event ->
-                            if (dismissAllowed.value && !closing) {
-                                swipeFromLeft = event.swipeEdge == 0
-                                if (destination != null) pages.seekTo(event.progress, destination)
-                                else backProgress.snapTo(event.progress)
-                            }
-                        }
-                        if (dismissAllowed.value && !closing) {
-                            if (destination != null) {
-                                pages.animateTo(destination)
-                                navigateBack.value()
-                            } else close()
-                        }
-                    } catch (_: CancellationException) {
-                        // Cancellation is a gesture reversal, not a navigation request.
-                        withContext(NonCancellable) {
-                            if (destination != null) pages.animateTo(from)
-                            backProgress.animateTo(0f, spatial)
-                        }
-                    } finally {
-                        seekingBack = false
-                    }
-                }
-                val nav = maxOf(hostNav, with(density) { WindowInsets.navigationBars.getBottom(this).toDp() })
-                val ime = with(density) { WindowInsets.ime.getBottom(this).toDp() }
-                val top = maxOf(hostTop, with(density) { WindowInsets.safeDrawing.getTop(this).toDp() })
-                val keyboardGap = if (ime > 0.dp) ime + 12.dp else 0.dp
-                val bottomGap = maxOf(nav, keyboardGap, 8.dp)
-                val horizontalGap = nav.coerceIn(8.dp, 16.dp)
-                val scrim = MaterialTheme.colorScheme.scrim
-                Box(Modifier.fillMaxSize()) {
-                    Box(Modifier.fillMaxSize().drawBehind {
-                        drawRect(scrim.copy(alpha = .32f * fade.value.coerceIn(0f, 1f) * (1f - backProgress.value * .35f) * dragFade()))
-                    }.clickable(remember { MutableInteractionSource() }, indication = null, enabled = dismissEnabled && !closing, onClick = close)
-                        .clearAndSetSemantics {})
-                    Box(Modifier.fillMaxSize()
-                        .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
-                        .layout { measurable, constraints ->
-                            // Gutters recede with the expansion, read here so only layout reruns.
-                            val keep = 1f - currentExpansion.value().coerceIn(0f, 1f)
-                            val side = (horizontalGap.toPx() * keep).roundToInt()
-                            val above = (top.toPx() * keep).roundToInt()
-                            val below = (bottomGap.toPx() * keep).roundToInt()
-                            val placeable = measurable.measure(constraints.offset(-2 * side, -(above + below)))
-                            layout(constraints.maxWidth, constraints.maxHeight) { placeable.place(side, above) }
-                        },
-                        contentAlignment = Alignment.BottomCenter) {
-                        Surface(
-                            modifier = modifier.fillMaxWidth()
-                                .nestedScroll(nestedScrollConnection)
-                                .layout { measurable, constraints ->
-                                val e = currentExpansion.value().coerceIn(0f, 1f)
-                                if (e <= 0f) {
-                                    val placeable = measurable.measure(constraints)
-                                    collapsedHeight[0] = placeable.height
-                                    layout(placeable.width, placeable.height) { placeable.place(0, 0) }
-                                } else {
-                                    // Rise from the last resting height to the whole window, or settle
-                                    // onto the content's natural height when collapsing.
-                                    val base = currentRestingHeight.value?.invoke()?.takeIf { it > 0 } ?: collapsedHeight[0]
-                                    val height = lerp(base.toFloat(), constraints.maxHeight.toFloat(), e)
-                                        .roundToInt().coerceIn(constraints.minHeight, constraints.maxHeight)
-                                    val placeable = measurable.measure(constraints.copy(minHeight = height, maxHeight = height))
-                                    layout(placeable.width, placeable.height) { placeable.place(0, 0) }
+                FloatingDialogBackHandler(
+                    onBack = {
+                        val from = page
+                        val destination = parentPage
+                        try {
+                            seekingBack = true
+                            // A gesture during a page change seeks from the settled page, not mid-flight.
+                            if (destination != null && (pages.currentState != from || pages.targetState != from)) pages.snapTo(from)
+                            it.collect { event ->
+                                if (dismissAllowed.value && !closing) {
+                                    swipeFromLeft = event.fromLeftEdge
+                                    if (destination != null) pages.seekTo(event.progress, destination)
+                                    else backProgress.snapTo(event.progress)
                                 }
-                            }.graphicsLayer {
-                                val r = reveal.value
-                                val p = backProgress.value
+                            }
+                            if (dismissAllowed.value && !closing) {
+                                if (destination != null) {
+                                    pages.animateTo(destination)
+                                    navigateBack.value()
+                                } else close()
+                            }
+                        } catch (_: CancellationException) {
+                            // Cancellation is a gesture reversal, not a navigation request.
+                            withContext(NonCancellable) {
+                                if (destination != null) pages.animateTo(from)
+                                backProgress.animateTo(0f, spatial)
+                            }
+                        } finally {
+                            seekingBack = false
+                        }
+                    },
+                ) {
+                    val nav = maxOf(hostNav, with(density) { WindowInsets.navigationBars.getBottom(this).toDp() })
+                    val ime = with(density) { WindowInsets.ime.getBottom(this).toDp() }
+                    val top = maxOf(hostTop, with(density) { WindowInsets.safeDrawing.getTop(this).toDp() })
+                    val keyboardGap = if (ime > 0.dp) ime + 12.dp else 0.dp
+                    val bottomGap = maxOf(nav, keyboardGap, 8.dp)
+                    val horizontalGap = nav.coerceIn(8.dp, 16.dp)
+                    val scrim = MaterialTheme.colorScheme.scrim
+                    Box(Modifier.fillMaxSize()) {
+                        Box(Modifier.fillMaxSize().drawBehind {
+                            drawRect(scrim.copy(alpha = .32f * fade.value.coerceIn(0f, 1f) * (1f - backProgress.value * .35f) * dragFade()))
+                        }.clickable(remember { MutableInteractionSource() }, indication = null, enabled = dismissEnabled && !closing, onClick = close)
+                            .clearAndSetSemantics {})
+                        Box(Modifier.fillMaxSize()
+                            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+                            .layout { measurable, constraints ->
+                                // Gutters recede with the expansion, read here so only layout reruns.
                                 val keep = 1f - currentExpansion.value().coerceIn(0f, 1f)
-                                transformOrigin = TransformOrigin(.5f, 1f)
-                                scaleX = FloatingSurfaceMotion.scale(r, p)
-                                scaleY = scaleX
-                                // A short rise under a fade reads smoother than a full-height slide.
-                                translationY = size.height * FloatingSurfaceMotion.verticalTravel(r, p) + swipeY
-                                translationX = (if (swipeFromLeft) 1f else -1f) * FloatingSurfaceMotion.SwipeTravelDp.dp.toPx() * p
-                                alpha = fade.value.coerceIn(0f, 1f) * dragFade()
-                                // Corners and shadow recede in the draw phase as the card fills the screen.
-                                shape = RoundedCornerShape(FloatingSurfaceMotion.CornerRadiusDp.dp.toPx() * keep)
-                                clip = true
-                                shadowElevation = 6.dp.toPx() * keep
-                            }.semantics {
-                                paneTitle = title
-                                if (dismissEnabled && !closing) dismiss { close(); true }
+                                val side = (horizontalGap.toPx() * keep).roundToInt()
+                                val above = (top.toPx() * keep).roundToInt()
+                                val below = (bottomGap.toPx() * keep).roundToInt()
+                                val placeable = measurable.measure(constraints.offset(-2 * side, -(above + below)))
+                                layout(constraints.maxWidth, constraints.maxHeight) { placeable.place(side, above) }
                             },
-                            shape = RectangleShape,
-                            color = MaterialTheme.colorScheme.surface,
-                        ) {
-                            transition.AnimatedContent(
-                                modifier = Modifier.fillMaxWidth(),
-                                transitionSpec = {
-                                    val returning = pageOrder(targetState) < pageOrder(initialState)
-                                    val sign = if (returning) -1 else 1
-                                    // A predictive back gesture scrubs this transition. A bouncy spring
-                                    // would overshoot under the finger, so seeking uses a settled curve.
-                                    val seeking = seekingBack
-                                    val slide = if (seeking) tween<IntOffset>(SEEK_MILLIS, easing = FastOutSlowInEasing) else motion.defaultSpatialSpec()
-                                    val fadeSpec = if (seeking) tween<Float>(SEEK_MILLIS, easing = FastOutSlowInEasing) else motion.defaultEffectsSpec()
-                                    val sizeSpec = if (seeking) tween<IntSize>(SEEK_MILLIS, easing = FastOutSlowInEasing) else motion.defaultSpatialSpec()
-                                    (slideInHorizontally(slide) { sign * it / 4 } + fadeIn(fadeSpec)) togetherWith
-                                        (slideOutHorizontally(slide) { -sign * it / 4 } + fadeOut(fadeSpec)) using
-                                        SizeTransform { _, _ -> sizeSpec }
+                            contentAlignment = Alignment.BottomCenter) {
+                            Surface(
+                                modifier = modifier.fillMaxWidth()
+                                    .nestedScroll(nestedScrollConnection)
+                                    .layout { measurable, constraints ->
+                                    val e = currentExpansion.value().coerceIn(0f, 1f)
+                                    if (e <= 0f) {
+                                        val placeable = measurable.measure(constraints)
+                                        collapsedHeight[0] = placeable.height
+                                        layout(placeable.width, placeable.height) { placeable.place(0, 0) }
+                                    } else {
+                                        // Rise from the last resting height to the whole window, or settle
+                                        // onto the content's natural height when collapsing.
+                                        val base = currentRestingHeight.value?.invoke()?.takeIf { it > 0 } ?: collapsedHeight[0]
+                                        val height = lerp(base.toFloat(), constraints.maxHeight.toFloat(), e)
+                                            .roundToInt().coerceIn(constraints.minHeight, constraints.maxHeight)
+                                        val placeable = measurable.measure(constraints.copy(minHeight = height, maxHeight = height))
+                                        layout(placeable.width, placeable.height) { placeable.place(0, 0) }
+                                    }
+                                }.graphicsLayer {
+                                    val r = reveal.value
+                                    val p = backProgress.value
+                                    val keep = 1f - currentExpansion.value().coerceIn(0f, 1f)
+                                    transformOrigin = TransformOrigin(.5f, 1f)
+                                    scaleX = FloatingSurfaceMotion.scale(r, p)
+                                    scaleY = scaleX
+                                    // A short rise under a fade reads smoother than a full-height slide.
+                                    translationY = size.height * FloatingSurfaceMotion.verticalTravel(r, p) + swipeY
+                                    translationX = (if (swipeFromLeft) 1f else -1f) * FloatingSurfaceMotion.SwipeTravelDp.dp.toPx() * p
+                                    alpha = fade.value.coerceIn(0f, 1f) * dragFade()
+                                    // Corners and shadow recede in the draw phase as the card fills the screen.
+                                    shape = RoundedCornerShape(FloatingSurfaceMotion.CornerRadiusDp.dp.toPx() * keep)
+                                    clip = true
+                                    shadowElevation = 6.dp.toPx() * keep
+                                }.semantics {
+                                    paneTitle = title
+                                    if (dismissEnabled && !closing) dismiss { close(); true }
                                 },
-                                contentAlignment = Alignment.BottomCenter,
-                            ) { current -> savedPages.SaveableStateProvider(current) { content(current, back, close) } }
+                                shape = RectangleShape,
+                                color = MaterialTheme.colorScheme.surface,
+                            ) {
+                                transition.AnimatedContent(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    transitionSpec = {
+                                        val returning = pageOrder(targetState) < pageOrder(initialState)
+                                        val sign = if (returning) -1 else 1
+                                        // A predictive back gesture scrubs this transition. A bouncy spring
+                                        // would overshoot under the finger, so seeking uses a settled curve.
+                                        val seeking = seekingBack
+                                        val slide = if (seeking) tween<IntOffset>(SEEK_MILLIS, easing = FastOutSlowInEasing) else motion.defaultSpatialSpec()
+                                        val fadeSpec = if (seeking) tween<Float>(SEEK_MILLIS, easing = FastOutSlowInEasing) else motion.defaultEffectsSpec()
+                                        val sizeSpec = if (seeking) tween<IntSize>(SEEK_MILLIS, easing = FastOutSlowInEasing) else motion.defaultSpatialSpec()
+                                        (slideInHorizontally(slide) { sign * it / 4 } + fadeIn(fadeSpec)) togetherWith
+                                            (slideOutHorizontally(slide) { -sign * it / 4 } + fadeOut(fadeSpec)) using
+                                            SizeTransform { _, _ -> sizeSpec }
+                                    },
+                                    contentAlignment = Alignment.BottomCenter,
+                                ) { current -> savedPages.SaveableStateProvider(current) { content(current, back, close) } }
+                            }
                         }
                     }
                 }
@@ -457,9 +414,4 @@ private object FloatingSurfaceMotion {
 
     fun verticalTravel(reveal: Float, backProgress: Float): Float =
         .4f * (1f - reveal) + .12f * backProgress
-}
-
-private suspend fun View.awaitPreDraw() = suspendCancellableCoroutine { continuation ->
-    val listener = OneShotPreDrawListener.add(this) { if (continuation.isActive) continuation.resume(Unit) }
-    continuation.invokeOnCancellation { listener.removeListener() }
 }
