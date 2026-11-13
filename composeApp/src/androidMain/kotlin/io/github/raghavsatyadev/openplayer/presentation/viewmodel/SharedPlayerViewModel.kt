@@ -3,11 +3,9 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 import android.content.Context
 import android.content.ContextWrapper
 import androidx.activity.ComponentActivity
-import androidx.annotation.OptIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.media3.common.util.UnstableApi
 
 /**
  * Resolves the single, activity-scoped [PlayerViewModel].
@@ -22,7 +20,6 @@ import androidx.media3.common.util.UnstableApi
  * Any composable that needs a PlayerViewModel without receiving one as a parameter must use
  * this instead of koinViewModel().
  */
-@OptIn(UnstableApi::class)
 @Composable
 fun sharedPlayerViewModel(): PlayerViewModel {
     val activity = LocalContext.current.findComponentActivity()

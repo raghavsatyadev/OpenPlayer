@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.listenbrainz
 
-import android.os.SystemClock
+import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import io.github.raghavsatyadev.openplayer.data.database.ListenBrainzDao
 import io.github.raghavsatyadev.openplayer.data.database.ListenBrainzPendingListenEntity
 import io.github.raghavsatyadev.openplayer.data.database.ListenBrainzSource
@@ -59,7 +59,7 @@ class ScrobbleManager(
 
     fun onPlayingNow(songId: String) {
         if (!listenBrainzRepository.isAuthorized()) return
-        val now = SystemClock.elapsedRealtime()
+        val now = elapsedRealtimeMs()
         synchronized(this) {
             if (songId == lastPlayingNowSongId && now - lastPlayingNowRealtimeMs < PLAYING_NOW_DEBOUNCE_MS) {
                 return

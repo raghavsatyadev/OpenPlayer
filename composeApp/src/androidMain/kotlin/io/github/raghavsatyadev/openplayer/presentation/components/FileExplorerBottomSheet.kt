@@ -2,7 +2,7 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
@@ -239,7 +239,7 @@ fun FileExplorerContent(
         if (isShowingAllFolders) onRequestAllFolders(false)
     }
     // The flat list is a view, not a place in the tree: Back returns to the tree first.
-    BackHandler(enabled = isShowingAllFolders) {
+    AppBackHandler(enabled = isShowingAllFolders) {
         showAllFolders = false
     }
     val safeSelectedStorageIndex = remember(availableStorages, selectedStorageIndex) {

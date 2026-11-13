@@ -64,7 +64,6 @@ import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerStatusBarStyle
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.data.model.Artist
 import io.github.raghavsatyadev.openplayer.data.model.Song
@@ -112,7 +111,6 @@ import org.jetbrains.compose.resources.vectorResource
 
 private const val UseSharedCollapsibleTopBarProbe = true
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ArtistDetailScreen(

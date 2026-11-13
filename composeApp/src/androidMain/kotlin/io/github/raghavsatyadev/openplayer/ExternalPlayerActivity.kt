@@ -17,11 +17,9 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewMode
 import io.github.raghavsatyadev.openplayer.presentation.components.external.ExternalPlayerOverlay
 import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerTheme
 import android.content.Intent.EXTRA_STREAM
-import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.preferences.AppThemeMode
 import io.github.raghavsatyadev.openplayer.data.preferences.ThemePreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.preferences.ThemePreset
-@androidx.annotation.OptIn(UnstableApi::class)
 class ExternalPlayerActivity : ComponentActivity() {
 
     override fun attachBaseContext(newBase: android.content.Context) {

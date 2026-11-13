@@ -88,7 +88,6 @@ import androidx.compose.ui.unit.lerp as lerpDp
 import androidx.compose.ui.util.lerp as lerpFloat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import coil3.compose.AsyncImagePainter
 import coil3.request.ImageRequest
@@ -162,7 +161,6 @@ private data class ProjectLink(
     val onClick: () -> Unit,
 )
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Suppress("UNUSED_PARAMETER")
 @Composable
 fun AboutScreen(

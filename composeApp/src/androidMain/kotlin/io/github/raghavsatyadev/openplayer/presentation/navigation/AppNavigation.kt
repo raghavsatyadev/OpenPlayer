@@ -2,8 +2,6 @@ package io.github.raghavsatyadev.openplayer.presentation.navigation
 
 import DelimiterConfigScreen
 import io.github.raghavsatyadev.openplayer.presentation.screens.WordDelimiterConfigScreen
-import android.annotation.SuppressLint
-import androidx.annotation.OptIn
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.CubicBezierEasing
@@ -23,7 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -76,8 +73,6 @@ import io.github.raghavsatyadev.openplayer.presentation.settings.search.ProvideS
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 
-@OptIn(UnstableApi::class)
-@SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 fun AppNavigation(
     playerViewModel: PlayerViewModel,

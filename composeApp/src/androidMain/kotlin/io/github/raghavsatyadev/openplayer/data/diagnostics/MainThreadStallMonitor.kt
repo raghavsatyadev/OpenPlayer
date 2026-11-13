@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.diagnostics
 
-import android.os.SystemClock
+import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import android.view.Choreographer
 
 /**
@@ -25,7 +25,7 @@ class MainThreadStallMonitor(
                         type = AdvancedPerformanceDiagnostics.EventTypes.FRAME_STALL,
                         name = "main_thread_frame_gap",
                         details = mapOf("gapMs" to gapMs.toString()),
-                        elapsedRealtimeMs = SystemClock.elapsedRealtime()
+                        elapsedRealtimeMs = elapsedRealtimeMs()
                     )
                 }
             }

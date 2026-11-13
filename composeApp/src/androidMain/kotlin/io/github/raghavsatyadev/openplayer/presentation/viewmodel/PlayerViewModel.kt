@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.net.Uri
 import android.os.Trace
@@ -264,7 +263,6 @@ private data class ResolvedAlbumSelection(
 )
 
 @androidx.annotation.OptIn(UnstableApi::class)
-@SuppressLint("LogNotTimber")
 @OptIn(coil3.annotation.ExperimentalCoilApi::class, ExperimentalCoroutinesApi::class)
 class PlayerViewModel(
     private val context: Context,

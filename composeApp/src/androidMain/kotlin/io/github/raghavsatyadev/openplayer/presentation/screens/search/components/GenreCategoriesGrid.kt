@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens.search.components
 
-import androidx.annotation.OptIn
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -44,7 +43,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.model.Genre
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
@@ -67,7 +65,6 @@ import org.jetbrains.compose.resources.vectorResource
  * lives in the sort sheet there), shows each genre's song count, and passes its own
  * [horizontalPadding], [contentPadding] and [gridState] to line up with the other library tabs.
  */
-@OptIn(UnstableApi::class)
 @Composable
 fun GenreCategoriesGrid(
     genres: ImmutableList<Genre>,

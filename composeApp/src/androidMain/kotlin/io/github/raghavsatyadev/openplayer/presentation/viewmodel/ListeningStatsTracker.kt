@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
-import android.os.SystemClock
+import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import androidx.media3.common.C
 import io.github.raghavsatyadev.openplayer.data.DailyMixManager
 import io.github.raghavsatyadev.openplayer.data.history.CountedListen
@@ -109,7 +109,7 @@ class ListeningStatsTracker(
             return
         }
 
-        val nowRealtime = SystemClock.elapsedRealtime()
+        val nowRealtime = elapsedRealtimeMs()
         val nowEpoch = System.currentTimeMillis()
         val normalizedDuration = normalizeDuration(durationMs, fallbackDurationMs)
 
@@ -141,7 +141,7 @@ class ListeningStatsTracker(
     fun onPlayStateChanged(isPlaying: Boolean, positionMs: Long) {
         val session = currentSession ?: return
         val wasPlaying = session.isPlaying
-        val nowRealtime = SystemClock.elapsedRealtime()
+        val nowRealtime = elapsedRealtimeMs()
         val delta = accumulateRealtimeListening(session, nowRealtime)
         session.isPlaying = isPlaying
         session.lastRealtimeMs = nowRealtime
@@ -156,7 +156,7 @@ class ListeningStatsTracker(
     @Synchronized
     fun onProgress(positionMs: Long, isPlaying: Boolean) {
         val session = currentSession ?: return
-        val nowRealtime = SystemClock.elapsedRealtime()
+        val nowRealtime = elapsedRealtimeMs()
         val delta = accumulateRealtimeListening(session, nowRealtime)
         session.isPlaying = isPlaying
         session.lastRealtimeMs = nowRealtime
@@ -169,7 +169,7 @@ class ListeningStatsTracker(
     @Synchronized
     fun onSeek(fromPositionMs: Long, toPositionMs: Long, isPlaying: Boolean) {
         val session = currentSession ?: return
-        val nowRealtime = SystemClock.elapsedRealtime()
+        val nowRealtime = elapsedRealtimeMs()
         val delta = accumulateRealtimeListening(session, nowRealtime)
         session.lastRealtimeMs = nowRealtime
         session.lastUpdateEpochMs = System.currentTimeMillis()
@@ -228,7 +228,7 @@ class ListeningStatsTracker(
         if (existing?.songId == safeSongId) {
             val wasPlaying = existing.isPlaying
             updateDuration(normalizeDuration(durationMs, fallbackDurationMs))
-            val nowRealtime = SystemClock.elapsedRealtime()
+            val nowRealtime = elapsedRealtimeMs()
             val delta = accumulateRealtimeListening(existing, nowRealtime)
             existing.isPlaying = isPlaying
             existing.lastRealtimeMs = nowRealtime
@@ -260,7 +260,7 @@ class ListeningStatsTracker(
     @Synchronized
     fun finalizeCurrentSession(forceSynchronousPersistence: Boolean = false) {
         val session = currentSession ?: return
-        val nowRealtime = SystemClock.elapsedRealtime()
+        val nowRealtime = elapsedRealtimeMs()
         val nowEpoch = System.currentTimeMillis()
         val delta = accumulateRealtimeListening(session, nowRealtime)
         advanceListenPass(session, delta)

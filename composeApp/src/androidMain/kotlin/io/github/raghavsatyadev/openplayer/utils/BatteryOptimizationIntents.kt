@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.utils
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.PowerManager
@@ -22,7 +21,6 @@ fun isIgnoringBatteryOptimizations(context: Context): Boolean {
  *
  * @return false when no settings screen could be opened.
  */
-@SuppressLint("BatteryLife")
 fun openBatteryOptimizationSettings(context: Context): Boolean {
     val requestIntent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
         data = "package:${context.packageName}".toUri()

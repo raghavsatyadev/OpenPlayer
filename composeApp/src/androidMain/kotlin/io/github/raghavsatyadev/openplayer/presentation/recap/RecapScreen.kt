@@ -6,7 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.view.accessibility.AccessibilityManager
-import android.widget.Toast
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -137,6 +137,7 @@ fun RecapScreen(
 ) {
     val uiState by recapViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
     val onClose: () -> Unit = { navController.popBackStack() }
 
     when (val state = uiState) {
@@ -164,7 +165,7 @@ fun RecapScreen(
                             throw cancellation
                         } catch (throwable: Exception) {
                             Logger.e(throwable) { String.format("Failed to share the %d recap", state.model.year) }
-                            Toast.makeText(context, shareFailed, Toast.LENGTH_SHORT).show()
+                            toaster.show(shareFailed)
                         }
                     }
                 },

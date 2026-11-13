@@ -1,7 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.scoped
 
 import android.os.Build
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
@@ -68,7 +68,7 @@ internal fun QueuePredictiveBackHandler(
             }
         }
     } else {
-        BackHandler(enabled = enabled) {
+        AppBackHandler(enabled = enabled) {
             scope.launch { closeQueue() }
         }
     }

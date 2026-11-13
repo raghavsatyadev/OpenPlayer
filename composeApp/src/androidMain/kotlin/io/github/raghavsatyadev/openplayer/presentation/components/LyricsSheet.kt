@@ -3,11 +3,10 @@ package io.github.raghavsatyadev.openplayer.presentation.components
 import android.animation.ValueAnimator
 import android.content.ClipData
 import android.os.Build
-import android.widget.Toast
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.model.Lyrics
 import io.github.raghavsatyadev.openplayer.R
-import androidx.activity.compose.BackHandler
 import io.github.raghavsatyadev.openplayer.presentation.components.scoped.LyricsPredictiveBackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.ui.zIndex
@@ -331,6 +330,7 @@ fun LyricsSheet(
     }
 
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
 
     val lyricsAlignmentFlow = remember(context) {
         context.dataStore.data.map { it[stringPreferencesKey("lyrics_alignment")] ?: "left" }
@@ -446,7 +446,7 @@ fun LyricsSheet(
             }
             // Android 13+ confirms clipboard writes with its own overlay.
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                Toast.makeText(context, confirmation, Toast.LENGTH_SHORT).show()
+                toaster.show(confirmation)
             }
         }
     }

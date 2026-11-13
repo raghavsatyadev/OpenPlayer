@@ -121,7 +121,6 @@ import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.ui.theme.LocalOpenPlayerDarkTheme
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
@@ -338,7 +337,6 @@ private fun PlayerUiState.toLibraryScreenProjection(): LibraryScreenPlayerProjec
 
 @RequiresApi(Build.VERSION_CODES.R)
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun LibraryScreen(
     navController: NavController,
@@ -3426,7 +3424,6 @@ private fun MusicFolder.collectAllSongs(): List<Song> {
     return songs + subFolders.flatMap { it.collectAllSongs() }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun AlbumGridItemRedesigned(
     album: Album,
@@ -3629,7 +3626,6 @@ fun AlbumGridItemRedesigned(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun ArtistListItem(
     artist: Artist,
@@ -3772,7 +3768,6 @@ fun ArtistListItem(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun AlbumListItem(
     album: Album,

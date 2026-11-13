@@ -1,7 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.player
 
 import android.content.pm.ActivityInfo
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -75,7 +75,7 @@ fun FullscreenVideoOverlay(viewModel: PlayerVideoViewModel = activityPlayerVideo
     val aspect by viewModel.videoAspect.collectAsStateWithLifecycle()
     val landscape = (aspect ?: 1f) >= 1f
     ImmersiveWindow(landscape)
-    BackHandler { viewModel.setFullscreen(false) }
+    AppBackHandler { viewModel.setFullscreen(false) }
     LifecycleStartEffect(Unit) {
         viewModel.attach()
         onStopOrDispose { viewModel.detach() }

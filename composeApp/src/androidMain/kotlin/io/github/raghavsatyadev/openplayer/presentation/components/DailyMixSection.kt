@@ -48,7 +48,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.resolveNavBarOccupiedHeight
@@ -65,7 +64,6 @@ import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
 
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun DailyMixSection(
     songs: ImmutableList<Song>,
@@ -179,7 +177,6 @@ fun DailyMixSection(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 private fun DailyMixCard(
     songs: ImmutableList<Song>,
@@ -326,7 +323,6 @@ fun threeShapeSwitch(index: Int, thirdShapeCornerRadius: Dp = 16.dp): Shape {
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 private fun DailyMixSongList(
     songs: ImmutableList<Song>,

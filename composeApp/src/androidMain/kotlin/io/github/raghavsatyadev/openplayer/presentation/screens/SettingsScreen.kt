@@ -4,7 +4,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.MutableTransitionState
@@ -97,14 +97,12 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewMo
 import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.data.preferences.LaunchTab
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
@@ -227,7 +225,7 @@ fun SettingsScreen(
 
     // The search overlay is a state of this screen, not a destination, so the system Back
     // gesture has to dismiss it first instead of popping Settings entirely.
-    BackHandler(enabled = isSearchActive) {
+    AppBackHandler(enabled = isSearchActive) {
         isSearchActive = false
         searchFieldValue = TextFieldValue("")
     }

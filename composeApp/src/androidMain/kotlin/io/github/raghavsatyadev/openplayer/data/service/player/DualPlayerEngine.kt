@@ -7,7 +7,7 @@ import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
-import android.os.SystemClock
+import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import android.util.LruCache
 import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes as Media3AudioAttributes
@@ -424,7 +424,7 @@ class DualPlayerEngine(
     private val masterPlayerListener = object : Player.Listener, AnalyticsListener, ExoPlayer.AudioOffloadListener {
         override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
             if (playWhenReady) {
-                lastPlayWhenReadyAtMs = SystemClock.elapsedRealtime()
+                lastPlayWhenReadyAtMs = elapsedRealtimeMs()
                 requestAudioFocus()
                 scheduleAudioOffloadFallbackIfNeeded(playerA)
             } else {
@@ -442,7 +442,7 @@ class DualPlayerEngine(
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             if (isPlaying) {
-                lastPlayingAtMs = SystemClock.elapsedRealtime()
+                lastPlayingAtMs = elapsedRealtimeMs()
                 cancelAudioOffloadFallback()
             }
         }
@@ -484,7 +484,7 @@ class DualPlayerEngine(
         }
 
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-            lastMediaItemTransitionAtMs = SystemClock.elapsedRealtime()
+            lastMediaItemTransitionAtMs = elapsedRealtimeMs()
             cancelAudioOffloadFallback()
             
             if (reason != Player.MEDIA_ITEM_TRANSITION_REASON_AUTO) {
@@ -531,7 +531,7 @@ class DualPlayerEngine(
         override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
                 Player.STATE_BUFFERING -> {
-                    val now = SystemClock.elapsedRealtime()
+                    val now = elapsedRealtimeMs()
                     val timeSincePlayingMs = now - lastPlayingAtMs
                     val timeSinceSeekMs = now - lastSeekAtMs
                     val timeSinceTransitionMs = now - lastTransitionFinishedAtMs
@@ -571,7 +571,7 @@ class DualPlayerEngine(
             if (reason == Player.DISCONTINUITY_REASON_SEEK ||
                 reason == Player.DISCONTINUITY_REASON_SEEK_ADJUSTMENT
             ) {
-                lastSeekAtMs = SystemClock.elapsedRealtime()
+                lastSeekAtMs = elapsedRealtimeMs()
             }
         }
     }
@@ -619,7 +619,7 @@ class DualPlayerEngine(
      * batch and can race with onPlaybackStateChanged on some Media3 versions.
      */
     fun notifyExternalSeekInitiated() {
-        lastSeekAtMs = SystemClock.elapsedRealtime()
+        lastSeekAtMs = elapsedRealtimeMs()
     }
 
     fun removeTransitionFinishedListener(listener: () -> Unit) {
@@ -900,7 +900,7 @@ class DualPlayerEngine(
         _activeAudioSessionId.value = playerA.audioSessionId
         onPlayerSwappedListeners.forEach { it(playerA) }
         if (state.promotedPresentedAuxiliary) {
-            lastTransitionFinishedAtMs = SystemClock.elapsedRealtime()
+            lastTransitionFinishedAtMs = elapsedRealtimeMs()
             onTransitionFinishedListeners.forEach { it() }
         }
 
@@ -1498,7 +1498,7 @@ class DualPlayerEngine(
                     transitionJob = null
                     transitionRunning = false
                     auxiliaryPlayerPresented = false
-                    lastTransitionFinishedAtMs = SystemClock.elapsedRealtime()
+                    lastTransitionFinishedAtMs = elapsedRealtimeMs()
                     onTransitionFinishedListeners.forEach { it() }
                 }
             }
@@ -1539,10 +1539,10 @@ class DualPlayerEngine(
 
         val duration = settings.durationMs.toLong().coerceAtLeast(500L)
         val stepMs = 32L
-        val startedAtMs = SystemClock.elapsedRealtime()
+        val startedAtMs = elapsedRealtimeMs()
 
         while (true) {
-            val elapsed = (SystemClock.elapsedRealtime() - startedAtMs).coerceAtMost(duration)
+            val elapsed = (elapsedRealtimeMs() - startedAtMs).coerceAtMost(duration)
             val progress = (elapsed.toFloat() / duration).coerceIn(0f, 1f)
             val volIn = envelope(progress, settings.curveIn)
             val volOut = 1f - envelope(progress, settings.curveOut)

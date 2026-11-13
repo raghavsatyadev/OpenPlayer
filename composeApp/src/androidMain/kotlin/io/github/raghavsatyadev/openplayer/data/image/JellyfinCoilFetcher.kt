@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.image
 
 import android.net.Uri
-import androidx.annotation.VisibleForTesting
 import coil3.ImageLoader
 import coil3.fetch.FetchResult
 import coil3.fetch.Fetcher
@@ -48,7 +47,6 @@ class JellyfinCoilFetcher(
             serverUnreachableUntilNanos = 0L
         }
 
-        @VisibleForTesting
         internal fun resetServerReachability() = markServerReachable()
 
         /** Connect failures only: a read timeout means the server is up but slow. */

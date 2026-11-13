@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.annotation.OptIn
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.foundation.layout.Box
@@ -30,7 +29,6 @@ import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.preferences.FullPlayerLoadingTweaks
 import io.github.raghavsatyadev.openplayer.presentation.components.player.FullPlayerContent
@@ -45,7 +43,6 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.StablePlayerSt
 import io.github.raghavsatyadev.openplayer.presentation.components.player.LocalRepeatN
 import io.github.raghavsatyadev.openplayer.presentation.components.player.RepeatNUi
 
-@OptIn(UnstableApi::class)
 @Composable
 internal fun BoxScope.UnifiedPlayerMiniAndFullLayers(
     currentSong: Song?,
@@ -271,7 +268,6 @@ internal fun BoxScope.UnifiedPlayerMiniAndFullLayers(
     }
 }
 
-@OptIn(UnstableApi::class)
 @Composable
 internal fun UnifiedPlayerPrewarmLayer(
     prewarmFullPlayer: Boolean,

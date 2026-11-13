@@ -59,7 +59,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtColorAccuracy
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtPaletteStyle
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
@@ -74,7 +73,6 @@ import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaletteStyleSettingsScreen(

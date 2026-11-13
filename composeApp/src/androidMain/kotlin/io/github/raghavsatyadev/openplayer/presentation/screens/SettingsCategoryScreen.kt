@@ -3,6 +3,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.presentation.components.BackupModuleSelectionDialog
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -14,7 +15,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.os.SystemClock
+import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import android.text.format.Formatter
 import android.widget.Toast
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -127,7 +128,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.net.toUri
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
@@ -175,7 +175,6 @@ import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(
     ExperimentalMaterial3Api::class,
     ExperimentalMaterial3ExpressiveApi::class,
@@ -195,6 +194,7 @@ fun SettingsCategoryScreen(
 ) {
     val category = SettingsCategory.fromId(categoryId) ?: return
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
     
     val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
     val playbackSpeed by settingsViewModel.playbackSpeed.collectAsStateWithLifecycle()
@@ -245,7 +245,7 @@ fun SettingsCategoryScreen(
         stringResource(Res.string.setcat_folder_album_art_permission_required)
     val enableFolderAlbumArt: () -> Unit = {
         settingsViewModel.setUseFolderAlbumArt(true)
-        Toast.makeText(context, folderArtRefreshingMessage, Toast.LENGTH_SHORT).show()
+        toaster.show(folderArtRefreshingMessage)
     }
     val folderArtPermissions = remember {
         io.github.raghavsatyadev.openplayer.utils.folderArtworkPermissions(Build.VERSION.SDK_INT)
@@ -254,7 +254,7 @@ fun SettingsCategoryScreen(
         if (grants[folderArtPermissions.first()] == true) {
             enableFolderAlbumArt()
         } else {
-            Toast.makeText(context, folderArtPermissionMessage, Toast.LENGTH_LONG).show()
+            toaster.show(folderArtPermissionMessage, long = true)
         }
     }
     // Shown as off when the permission is gone even though the preference is still true: the
@@ -298,7 +298,7 @@ fun SettingsCategoryScreen(
     LaunchedEffect(settingsViewModel, lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             settingsViewModel.dataTransferEvents.collectLatest { message ->
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                toaster.show(message)
             }
         }
     }
@@ -306,7 +306,7 @@ fun SettingsCategoryScreen(
     LaunchedEffect(m3uSyncViewModel, lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             m3uSyncViewModel.messages.collectLatest { message ->
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                toaster.show(message, long = true)
             }
         }
     }
@@ -666,7 +666,7 @@ fun SettingsCategoryScreen(
                                     primaryActionLabel = stringResource(Res.string.setcat_smart_mix_history_action),
                                     onPrimaryAction = {
                                         smartMixViewModel.clearHistory {
-                                            Toast.makeText(context, smartMixHistoryCleared, Toast.LENGTH_SHORT).show()
+                                            toaster.show(smartMixHistoryCleared)
                                         }
                                     },
                                     modifier = Modifier.settingHighlight("item_library_smart_mix_history", highlightKey)
@@ -2196,7 +2196,7 @@ private fun BackupTransferProgressDialogHost(progress: BackupTransferProgressUpd
     LaunchedEffect(progress) {
         if (progress != null) {
             if (visibleProgress == null || isHoldingForMinimumTime) {
-                visibleSinceMs = SystemClock.elapsedRealtime()
+                visibleSinceMs = elapsedRealtimeMs()
             }
             isHoldingForMinimumTime = false
             visibleProgress = progress
@@ -2205,7 +2205,7 @@ private fun BackupTransferProgressDialogHost(progress: BackupTransferProgressUpd
 
         val currentVisibleProgress = visibleProgress ?: return@LaunchedEffect
         isHoldingForMinimumTime = true
-        val elapsed = SystemClock.elapsedRealtime() - visibleSinceMs
+        val elapsed = elapsedRealtimeMs() - visibleSinceMs
         val remaining = BackupTransferDialogMinimumVisibilityMs - elapsed
         if (remaining > 0) {
             delay(remaining)

@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.utils
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.pm.ActivityInfo
@@ -18,7 +17,6 @@ object PhoneOrientationPolicy : Application.ActivityLifecycleCallbacks {
     /** Set while a screen needs its own orientation (fullscreen video); null keeps the policy. */
     var override: Int? = null
 
-    @SuppressLint("SourceLockedOrientationActivity")
     fun apply(activity: Activity) {
         val isPhone = activity.resources.configuration.smallestScreenWidthDp < LargeScreenSmallestWidthDp
         val orientation = override ?: if (isPhone) {

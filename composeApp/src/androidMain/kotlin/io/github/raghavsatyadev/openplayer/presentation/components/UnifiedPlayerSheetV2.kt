@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import android.widget.Toast
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.Spring
@@ -30,7 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,7 +41,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
@@ -54,7 +52,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.media3.common.util.UnstableApi
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -110,7 +107,6 @@ private data class PlayerUiSheetSliceV2(
  * This path keeps behavior parity, but now owns its own runtime wiring so we can
  * profile and optimize V2 independently while preserving the Experimental switch.
  */
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun UnifiedPlayerSheetV2(
     playerViewModel: PlayerViewModel,
@@ -121,9 +117,8 @@ fun UnifiedPlayerSheetV2(
     hideMiniPlayer: Boolean = false,
     isNavBarHidden: Boolean = false
 ) {
-    val context = LocalContext.current
+    val toaster = rememberAppToaster()
     val lifecycleOwner = LocalLifecycleOwner.current
-    val latestContext by rememberUpdatedState(context)
 
     val writePermissionLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult()
@@ -141,7 +136,7 @@ fun UnifiedPlayerSheetV2(
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             launch {
                 playerViewModel.toastEvents.collect { message ->
-                    Toast.makeText(latestContext, message, Toast.LENGTH_SHORT).show()
+                    toaster.show(message)
                 }
             }
             launch {

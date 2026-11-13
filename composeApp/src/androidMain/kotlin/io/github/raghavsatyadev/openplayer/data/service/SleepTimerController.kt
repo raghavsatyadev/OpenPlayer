@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.service
 
-import android.os.SystemClock
+import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import io.github.raghavsatyadev.openplayer.data.service.SleepTimerSession.CountedPlay
@@ -33,7 +33,7 @@ internal class SleepTimerController(
     private val alarmScheduler: SleepTimerAlarmScheduler,
     /** The MediaSession's player, so a timed pause goes through the play/pause fade. */
     private val sessionPlayer: () -> Player,
-    private val elapsedRealtime: () -> Long = SystemClock::elapsedRealtime,
+    private val elapsedRealtime: () -> Long = ::elapsedRealtimeMs,
     private val wallClock: () -> Long = System::currentTimeMillis,
     /** True while another feature (repeat-N) needs crossfade off so loops stay REPEAT transitions. */
     private val extraSuppressCrossfade: () -> Boolean = { false },

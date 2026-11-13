@@ -3,6 +3,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
 import android.app.Activity
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -112,6 +113,7 @@ fun SongInfoBottomSheet(
     songInfoViewModel: SongInfoBottomSheetViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
     var showEditSheet by remember { mutableStateOf(false) }
     var showArtistPicker by remember { mutableStateOf(false) }
     var showTonePickerDialog by remember { mutableStateOf(false) }
@@ -140,7 +142,7 @@ fun SongInfoBottomSheet(
                     is SongInfoBottomSheetViewModel.ToneActionResult.Error -> result.message
                     is SongInfoBottomSheetViewModel.ToneActionResult.NeedsSystemWritePermission -> result.message
                 }
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                toaster.show(message, long = true)
             }
         } else {
             Toast.makeText(
@@ -154,7 +156,7 @@ fun SongInfoBottomSheet(
     fun requestToneSystemWritePermission(songToSet: Song, target: ToneTarget, message: String) {
         pendingTonePermissionSong = songToSet
         pendingTonePermissionTarget = target
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        toaster.show(message, long = true)
         try {
             ringtonePermissionLauncher.launch(songInfoViewModel.createSystemWriteSettingsIntent())
         } catch (_: ActivityNotFoundException) {
@@ -182,10 +184,10 @@ fun SongInfoBottomSheet(
     ) {
         when (result) {
             is SongInfoBottomSheetViewModel.ToneActionResult.Success -> {
-                Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
+                toaster.show(result.message, long = true)
             }
             is SongInfoBottomSheetViewModel.ToneActionResult.Error -> {
-                Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
+                toaster.show(result.message, long = true)
             }
             is SongInfoBottomSheetViewModel.ToneActionResult.NeedsSystemWritePermission -> {
                 requestToneSystemWritePermission(songToSet, target, result.message)

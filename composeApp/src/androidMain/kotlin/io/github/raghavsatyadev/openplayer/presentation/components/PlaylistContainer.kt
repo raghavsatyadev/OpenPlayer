@@ -78,7 +78,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.data.model.Playlist
 import io.github.raghavsatyadev.openplayer.data.model.Song
@@ -104,7 +103,6 @@ import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PlaylistContainer(
@@ -250,7 +248,6 @@ fun PlaylistContainer(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun PlaylistItems(
     bottomBarHeight: Dp,
@@ -359,7 +356,6 @@ fun PlaylistItems(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 private fun PlaylistGridItems(
     bottomBarHeight: Dp,
@@ -442,7 +438,6 @@ private fun PlaylistGridItems(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 private fun PlaylistGridItem(
     playlist: Playlist,
@@ -549,7 +544,6 @@ private fun PlaylistGridItem(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun PlaylistItem(
     playlist: Playlist,

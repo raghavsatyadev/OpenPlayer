@@ -3,7 +3,6 @@ package io.github.raghavsatyadev.openplayer.data.media
 import android.content.Context
 import android.net.Uri
 import android.os.ParcelFileDescriptor
-import androidx.annotation.VisibleForTesting
 import com.kyant.taglib.TagLib
 import io.github.raghavsatyadev.openplayer.data.diagnostics.PerformanceMetrics
 import io.github.raghavsatyadev.openplayer.utils.GenreParser
@@ -236,7 +235,6 @@ object AudioMetadataReader {
      * metadata is requested. Artwork is decoded only when [readArtwork] is set, so library scans
      * do not allocate multi-megabyte covers for poorly tagged files.
      */
-    @VisibleForTesting
     internal fun readWithJAudioTagger(
         file: File,
         readArtwork: Boolean,

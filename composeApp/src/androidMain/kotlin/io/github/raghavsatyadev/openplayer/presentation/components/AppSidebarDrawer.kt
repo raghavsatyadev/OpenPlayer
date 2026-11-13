@@ -1,7 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
 import android.os.Build
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.background
@@ -166,7 +166,7 @@ private fun AppSidebarBackHandler(
             }
         }
     } else {
-        BackHandler(enabled = drawerState.isOpen) {
+        AppBackHandler(enabled = drawerState.isOpen) {
             scope.launch { drawerState.close() }
         }
     }

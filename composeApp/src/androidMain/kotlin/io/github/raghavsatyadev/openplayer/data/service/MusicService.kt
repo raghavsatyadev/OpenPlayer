@@ -14,7 +14,7 @@ import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
+import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -1109,7 +1109,7 @@ class MusicService : MediaSessionService() {
                 !resumeOnHeadsetReconnectEnabled -> clearHeadsetReconnectResume()
                 reason == Player.PLAY_WHEN_READY_CHANGE_REASON_AUDIO_BECOMING_NOISY -> {
                     shouldResumeAfterHeadsetReconnect = true
-                    lastNoisyPauseRealtimeMs = SystemClock.elapsedRealtime()
+                    lastNoisyPauseRealtimeMs = elapsedRealtimeMs()
                     Logger.withTag(TAG).d { "Marked playback for headset reconnect resume" }
                 }
                 else -> clearHeadsetReconnectResume()
@@ -1354,7 +1354,7 @@ class MusicService : MediaSessionService() {
     private fun maybeResumeAfterHeadsetReconnect() {
         if (!resumeOnHeadsetReconnectEnabled || !shouldResumeAfterHeadsetReconnect) return
 
-        val elapsedSinceNoisyPause = SystemClock.elapsedRealtime() - lastNoisyPauseRealtimeMs
+        val elapsedSinceNoisyPause = elapsedRealtimeMs() - lastNoisyPauseRealtimeMs
         if (elapsedSinceNoisyPause > HEADSET_RECONNECT_RESUME_WINDOW_MS) {
             clearHeadsetReconnectResume()
             return
@@ -1940,7 +1940,7 @@ class MusicService : MediaSessionService() {
             return@withContext cachedWidgetArtBytes to (cachedWidgetArtResolvedUri ?: preferredUriString)
         }
         if (sourceKey != null && sourceKey == cachedWidgetArtLoadFailureKey) {
-            val failureAgeMs = SystemClock.elapsedRealtime() - cachedWidgetArtLoadFailureAtMs
+            val failureAgeMs = elapsedRealtimeMs() - cachedWidgetArtLoadFailureAtMs
             if (failureAgeMs < WIDGET_ART_FAILURE_RETRY_MS) {
                 return@withContext null to preferredUriString
             }
@@ -1972,7 +1972,7 @@ class MusicService : MediaSessionService() {
         }
 
         cachedWidgetArtLoadFailureKey = sourceKey
-        cachedWidgetArtLoadFailureAtMs = SystemClock.elapsedRealtime()
+        cachedWidgetArtLoadFailureAtMs = elapsedRealtimeMs()
         return@withContext null to (repositoryArtUriString ?: preferredUriString)
     }
 

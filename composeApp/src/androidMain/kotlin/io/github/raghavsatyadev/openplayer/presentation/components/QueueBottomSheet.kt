@@ -111,7 +111,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
@@ -267,7 +267,7 @@ fun QueueBottomSheet(
         }
     }
 
-    BackHandler(enabled = isVisible && isFabExpanded) {
+    AppBackHandler(enabled = isVisible && isFabExpanded) {
         isFabExpanded = false
     }
 
@@ -1555,7 +1555,7 @@ fun SaveQueueAsPlaylistSheet(
         focusRequester.requestFocus()
     }
 
-    BackHandler(onBack = { onDismiss() })
+    AppBackHandler(onBack = { onDismiss() })
 
     Dialog(
         onDismissRequest = { onDismiss() },

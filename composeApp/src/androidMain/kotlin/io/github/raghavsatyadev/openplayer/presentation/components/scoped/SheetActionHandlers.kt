@@ -2,11 +2,9 @@ package io.github.raghavsatyadev.openplayer.presentation.components.scoped
 
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
-import androidx.annotation.OptIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavHostController
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
@@ -28,7 +26,6 @@ internal data class SheetActionHandlers(
     val onNavigateToGenre: (Song) -> Unit
 )
 
-@OptIn(UnstableApi::class)
 @Composable
 internal fun rememberSheetActionHandlers(
     scope: CoroutineScope,

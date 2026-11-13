@@ -46,7 +46,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.media3.common.util.UnstableApi
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -74,7 +73,6 @@ import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun LibraryFavoritesTab(
     favoriteSongs: LazyPagingItems<Song>,
@@ -309,7 +307,6 @@ fun LibraryFavoritesTab(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun LibrarySongsTabPaginated(
     paginatedSongs: LazyPagingItems<Song>,

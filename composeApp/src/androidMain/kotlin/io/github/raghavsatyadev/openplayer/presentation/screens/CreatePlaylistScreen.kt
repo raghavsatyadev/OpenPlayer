@@ -4,7 +4,7 @@ package io.github.raghavsatyadev.openplayer.presentation.screens
 
 import android.net.Uri
 import java.util.Locale
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -128,7 +128,6 @@ import androidx.compose.ui.graphics.TransformOrigin
 import io.github.raghavsatyadev.openplayer.data.model.StorageFilter
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.sharedPlayerViewModel
-import androidx.media3.common.util.UnstableApi
 import androidx.compose.material3.MediumExtendedFloatingActionButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -262,7 +261,6 @@ fun EditPlaylistDialog(
     }
 }
 
-@OptIn(UnstableApi::class)
 @Composable
 private fun CreatePlaylistContent(
     onDismiss: () -> Unit,
@@ -332,7 +330,7 @@ private fun CreatePlaylistContent(
         }
     }
     
-    BackHandler(enabled = showCropUi || (currentStep == 1 && creationMode == PlaylistCreationMode.MANUAL)) {
+    AppBackHandler(enabled = showCropUi || (currentStep == 1 && creationMode == PlaylistCreationMode.MANUAL)) {
         when {
             showCropUi -> showCropUi = false
             currentStep == 1 -> currentStep = 0
@@ -763,7 +761,7 @@ fun EditPlaylistContent(
         }
     }
 
-    BackHandler(enabled = showCropUi) {
+    AppBackHandler(enabled = showCropUi) {
         showCropUi = false
     }
 

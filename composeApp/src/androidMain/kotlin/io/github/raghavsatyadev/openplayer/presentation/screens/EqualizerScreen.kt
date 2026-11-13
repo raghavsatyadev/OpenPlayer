@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.MutableTransitionState
@@ -110,7 +109,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.media3.common.util.UnstableApi
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -139,7 +137,6 @@ import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun EqualizerScreen(
@@ -943,7 +940,6 @@ internal fun resolveVerticalSliderFillColor(
     else -> active.copy(alpha = 0.3f).compositeOver(inactive)
 }
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun CustomVerticalSlider(
     value: Float,

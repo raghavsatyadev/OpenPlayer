@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.annotation.IntRange
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderState
 import androidx.compose.runtime.Composable
@@ -15,7 +14,7 @@ import androidx.compose.runtime.remember
 @Composable
 fun rememberSyncedSliderState(
     value: Float,
-    @IntRange(from = 0) steps: Int = 0,
+    steps: Int = 0,
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
 ): SliderState {
     val state = remember(steps, valueRange) { SliderState(value, steps, valueRange) }

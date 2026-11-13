@@ -2,7 +2,7 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -84,7 +84,7 @@ fun QuickFillContent(
     var selectedGenre by remember { mutableStateOf<String?>(null) }
     var searchQuery by remember { mutableStateOf("") }
     
-    BackHandler {
+    AppBackHandler {
         if (step > 0) step-- else onDismiss()
     }
 

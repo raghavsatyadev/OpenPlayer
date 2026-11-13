@@ -2,7 +2,7 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
 import android.content.Context
 import android.os.PowerManager
-import android.os.SystemClock
+import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import androidx.media3.session.MediaController
 import androidx.media3.common.Player
 import androidx.media3.common.C
@@ -242,7 +242,7 @@ class PlaybackStateHolder(
         pausedPositionOverrideMediaId = safeMediaId
         pausedPositionOverrideToken = activeToken
         pausedPositionOverrideMs = safePosition
-        pausedPositionOverrideSetAtMs = SystemClock.elapsedRealtime()
+        pausedPositionOverrideSetAtMs = elapsedRealtimeMs()
         _currentPosition.value = safePosition
     }
 
@@ -295,7 +295,7 @@ class PlaybackStateHolder(
         val pausedOverrideActive = pausedOverride != null
         val overrideIsStale = pausedOverrideActive &&
             pausedPositionOverrideSetAtMs > 0L &&
-            SystemClock.elapsedRealtime() - pausedPositionOverrideSetAtMs > PAUSED_OVERRIDE_MAX_AGE_MS
+            elapsedRealtimeMs() - pausedPositionOverrideSetAtMs > PAUSED_OVERRIDE_MAX_AGE_MS
         val coldStartPassed = !pausedOverrideActive && safeReportedPosition >= preferredPosition
         if (drift <= DURATION_MISMATCH_TOLERANCE_MS || overrideIsStale || coldStartPassed) {
             if (pausedOverrideOwnsThisToken) {
@@ -837,7 +837,7 @@ class PlaybackStateHolder(
         currentSong: Song?,
         updateQueueCallback: (List<Song>) -> Unit
     ) {
-        val nowMs = SystemClock.elapsedRealtime()
+        val nowMs = elapsedRealtimeMs()
         if (shuffleToggleJob?.isActive == true) return
         if ((nowMs - lastShuffleToggleFinishedAtMs) < SHUFFLE_TOGGLE_COOLDOWN_MS) return
 
@@ -1027,7 +1027,7 @@ class PlaybackStateHolder(
                         }
                     }
                 } finally {
-                    lastShuffleToggleFinishedAtMs = SystemClock.elapsedRealtime()
+                    lastShuffleToggleFinishedAtMs = elapsedRealtimeMs()
                     _stablePlayerState.update { it.copy(isShuffleTransitionInProgress = false) }
                     shuffleToggleJob = null
                 }

@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FilledIconButton
@@ -64,7 +64,7 @@ fun ExcludedDirectoriesScreen(
     }
 
     // Inside a subfolder, Back walks up the tree first, the same behaviour the dialog had.
-    BackHandler(enabled = !isAtRoot) {
+    AppBackHandler(enabled = !isAtRoot) {
         settingsViewModel.navigateUp()
     }
 

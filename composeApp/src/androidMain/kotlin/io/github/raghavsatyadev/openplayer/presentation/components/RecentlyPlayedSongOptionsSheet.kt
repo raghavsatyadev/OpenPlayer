@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewModel
@@ -25,7 +24,6 @@ import io.github.raghavsatyadev.openplayer.resources.stringResource
  * long press opens this sheet instead. Playing from here keeps the recently played queue, the
  * same as tapping the pill.
  */
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun RecentlyPlayedSongOptionsSheet(
     song: Song,

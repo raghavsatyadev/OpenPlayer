@@ -94,7 +94,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.R
@@ -147,7 +146,6 @@ import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(
     ExperimentalMaterial3ExpressiveApi::class, ExperimentalFoundationApi::class,
     ExperimentalMaterial3Api::class

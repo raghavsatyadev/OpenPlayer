@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.external
 
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -50,7 +50,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.media3.common.util.UnstableApi
 import coil3.size.Size
 import io.github.raghavsatyadev.openplayer.data.preferences.sanitizeNavBarCornerRadius
 import io.github.raghavsatyadev.openplayer.presentation.components.OptimizedAlbumArt
@@ -64,7 +63,6 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ExternalPlayerOverlay(
@@ -112,7 +110,7 @@ fun ExternalPlayerOverlay(
         }
     }
 
-    BackHandler(enabled = sheetVisible) {
+    AppBackHandler(enabled = sheetVisible) {
         onDismiss()
     }
 

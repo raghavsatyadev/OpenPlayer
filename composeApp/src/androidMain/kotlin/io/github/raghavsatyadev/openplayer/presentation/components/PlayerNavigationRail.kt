@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import android.os.SystemClock
+import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
@@ -93,7 +93,7 @@ fun PlayerNavigationRail(
                     val isAlreadySelected = latestCurrentRoute == itemRoute
 
                     if (isSearchTab) {
-                        val now = SystemClock.elapsedRealtime()
+                        val now = elapsedRealtimeMs()
                         val isDoubleTap = now - lastSearchTapTimestamp <= 350L
                         lastSearchTapTimestamp = now
 

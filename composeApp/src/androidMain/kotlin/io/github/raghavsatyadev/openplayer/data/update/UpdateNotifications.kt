@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.data.update
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -51,7 +50,6 @@ internal object UpdateNotifications {
             .build()
     }
 
-    @SuppressLint("MissingPermission") // Checked in canPost.
     fun updateDownloadProgress(context: Context, versionName: String, progress: Float?) {
         if (!canPost(context)) return
         NotificationManagerCompat.from(context).notify(DOWNLOAD_ID, downloadProgress(context, versionName, progress))
@@ -96,7 +94,6 @@ internal object UpdateNotifications {
         .setSmallIcon(R.drawable.monochrome_player)
         .setAutoCancel(true)
 
-    @SuppressLint("MissingPermission") // Checked in canPost.
     private fun post(context: Context, id: Int, notification: Notification): Boolean {
         if (!canPost(context)) return false
         NotificationManagerCompat.from(context).notify(id, notification)

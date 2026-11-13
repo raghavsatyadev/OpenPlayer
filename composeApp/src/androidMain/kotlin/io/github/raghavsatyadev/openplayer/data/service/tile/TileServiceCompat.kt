@@ -1,12 +1,10 @@
 package io.github.raghavsatyadev.openplayer.data.service.tile
 
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
 import android.service.quicksettings.TileService
 
-@SuppressLint("StartActivityAndCollapseDeprecated")
 internal fun TileService.startActivityAndCollapseCompat(
     intent: Intent,
     requestCode: Int

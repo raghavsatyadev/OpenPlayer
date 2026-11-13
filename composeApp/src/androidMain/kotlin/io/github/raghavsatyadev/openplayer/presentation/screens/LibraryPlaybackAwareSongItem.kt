@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.annotation.OptIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
@@ -10,7 +9,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.EnhancedSongListItem
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
@@ -23,7 +21,6 @@ internal data class LibrarySongPlaybackUiState(
     val isPlaying: Boolean = false
 )
 
-@OptIn(UnstableApi::class)
 @Composable
 internal fun LibraryPlaybackAwareSongItem(
     song: Song,

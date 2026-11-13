@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.model.Genre
 import io.github.raghavsatyadev.openplayer.data.model.LibraryTabId
 import io.github.raghavsatyadev.openplayer.data.model.StorageFilter
@@ -34,7 +33,6 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewMode
  * The Library's Genres tab: the same genre tiles as Search, with song counts, in the sort chosen
  * from the library sort sheet. [state] is null until the genres have loaded.
  */
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun LibraryGenresTab(
     state: LibraryGenresState?,

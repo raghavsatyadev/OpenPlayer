@@ -3,15 +3,12 @@ package io.github.raghavsatyadev.openplayer.data.service
 
 import android.content.Context
 import android.content.Intent
-import androidx.annotation.OptIn
 import androidx.media.session.MediaButtonReceiver
-import androidx.media3.common.util.UnstableApi
 import co.touchlab.kermit.Logger
 
 @Suppress("DEPRECATION")
 class OpenPlayerMediaButtonReceiver : MediaButtonReceiver() {
 
-    @OptIn(UnstableApi::class)
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != Intent.ACTION_MEDIA_BUTTON) {
             super.onReceive(context, intent)

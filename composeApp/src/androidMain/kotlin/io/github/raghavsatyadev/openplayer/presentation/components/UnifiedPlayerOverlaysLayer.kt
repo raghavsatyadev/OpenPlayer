@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
 import android.widget.Toast
-import androidx.annotation.OptIn
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.foundation.background
@@ -29,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewModel
@@ -165,7 +163,6 @@ internal fun UnifiedPlayerQueueLayer(
     }
 }
 
-@OptIn(UnstableApi::class)
 @Composable
 internal fun UnifiedPlayerSongInfoLayer(
     selectedSongForInfo: Song?,
@@ -268,7 +265,6 @@ internal fun UnifiedPlayerSongInfoLayer(
     }
 }
 
-@OptIn(UnstableApi::class)
 @Composable
 internal fun UnifiedPlayerQueueAndSongInfoHost(
     shouldRenderHost: Boolean,

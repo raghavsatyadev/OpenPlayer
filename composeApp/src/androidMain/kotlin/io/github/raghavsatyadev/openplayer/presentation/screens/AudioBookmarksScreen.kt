@@ -6,8 +6,8 @@ import androidx.annotation.DrawableRes
 
 import androidx.compose.ui.res.vectorResource
 import android.content.ClipData
-import android.widget.Toast
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
@@ -106,7 +106,6 @@ import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.ExperimentalTextApi
@@ -125,7 +124,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
@@ -158,7 +156,6 @@ import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AudioBookmarksScreen(
@@ -237,11 +234,11 @@ fun AudioBookmarksScreen(
 
         // Back collapses the FAB menu before leaving the screen. Registered before the
         // selection handler so clearing a selection still wins when both could apply.
-        BackHandler(enabled = fabMenuExpanded && !isSelecting) {
+        AppBackHandler(enabled = fabMenuExpanded && !isSelecting) {
             fabMenuExpanded = false
         }
 
-        BackHandler(enabled = isSelecting) {
+        AppBackHandler(enabled = isSelecting) {
             selectedSongIds = emptySet()
         }
 
@@ -440,7 +437,7 @@ fun AudioBookmarkFolderScreen(
     playerViewModel: PlayerViewModel,
     bookmarksViewModel: AudioBookmarksViewModel = koinViewModel()
 ) {
-    val context = LocalContext.current
+    val toaster = rememberAppToaster()
     val clipboard = LocalClipboard.current
     val coroutineScope = rememberCoroutineScope()
     val bookmarks by bookmarksViewModel.allBookmarks.collectAsStateWithLifecycle()
@@ -464,7 +461,7 @@ fun AudioBookmarkFolderScreen(
     }
     val isSelecting = selection.isNotEmpty()
     var confirmDeleteSelection by remember { mutableStateOf(false) }
-    BackHandler(enabled = isSelecting) { selectedIds = emptySet() }
+    AppBackHandler(enabled = isSelecting) { selectedIds = emptySet() }
 
     ScreenWrapper(
         navController = navController,
@@ -531,7 +528,7 @@ fun AudioBookmarkFolderScreen(
                                     ) {
                                         playerViewModel.playSongAtPosition(song, bookmark.timestampMs)
                                     } else {
-                                        Toast.makeText(context, "Audio file not found", Toast.LENGTH_SHORT).show()
+                                        toaster.show("Audio file not found")
                                     }
                                 },
                                 onLongClick = {
@@ -605,7 +602,7 @@ fun AudioBookmarkFolderScreen(
                             clipboard.setClipEntry(ClipEntry(ClipData.newPlainText("Bookmark cue", cueText)))
                         }
                         actionsBookmark = null
-                        Toast.makeText(context, "Cue copied", Toast.LENGTH_SHORT).show()
+                        toaster.show("Cue copied")
                     },
                     onDelete = {
                         actionsBookmark = null
@@ -1543,7 +1540,6 @@ private fun ConfirmDeleteBookmarksDialog(
     )
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 private fun BookmarkFolderCard(
     folder: AudioBookmarkFolder,

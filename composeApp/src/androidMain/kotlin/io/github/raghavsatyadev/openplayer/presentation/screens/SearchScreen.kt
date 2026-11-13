@@ -1,6 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.SearchTapModeViewModel
+import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.execute
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.planSearchTap
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.searchTapActions
@@ -101,7 +102,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavHostController
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceDiagnostics
@@ -165,7 +165,6 @@ private data class SearchUiSlice(
 
 private const val MAX_ALBUM_MULTI_SELECTION = 6
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SearchScreen(
@@ -176,7 +175,7 @@ fun SearchScreen(
     onSearchBarActiveChange: (Boolean) -> Unit = {},
     cloudDownloadsViewModel: CloudDownloadsViewModel = koinViewModel()
 ) {
-    val searchScreenEnteredAt = remember { android.os.SystemClock.elapsedRealtime() }
+    val searchScreenEnteredAt = remember { elapsedRealtimeMs() }
     var searchQuery by rememberSaveable { mutableStateOf(playerViewModel.searchQuery) }
     val statusBarTopInset = WindowInsets.systemBars.asPaddingValues().calculateTopPadding()
     val systemNavBarInset = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -281,7 +280,7 @@ fun SearchScreen(
         ) {
             mapOf(
                 "durationMs" to
-                    (android.os.SystemClock.elapsedRealtime() - searchScreenEnteredAt).toString(),
+                    (elapsedRealtimeMs() - searchScreenEnteredAt).toString(),
                 "genreCount" to genres.size.toString(),
             )
         }
@@ -1117,7 +1116,6 @@ fun EmptySearchResults(searchQuery: String, colorScheme: ColorScheme) {
 }
 
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun SearchResultsList(
     results: ImmutableList<SearchResultItem>,
@@ -1767,7 +1765,6 @@ private fun SearchSelectionBadge(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SearchFilterChip(

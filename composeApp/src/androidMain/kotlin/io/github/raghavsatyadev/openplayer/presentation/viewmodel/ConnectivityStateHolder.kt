@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothA2dp
 import android.bluetooth.BluetoothClass
@@ -284,7 +283,6 @@ class ConnectivityStateHolder(
         updateBluetoothName(connectedDevices.map(BluetoothAudioDeviceState::name))
     }
 
-    @SuppressLint("MissingPermission")
     private fun safeGetConnectedDevices(profile: Int): List<BluetoothDevice> {
         if (!hasBluetoothConnectPermission()) return emptyList()
         return safeBluetoothCall(emptyList()) { bluetoothManager.getConnectedDevices(profile) }
@@ -407,7 +405,6 @@ class ConnectivityStateHolder(
         return address?.takeIf { it.isNotBlank() } ?: "name:${name.lowercase()}"
     }
 
-    @SuppressLint("MissingPermission")
     private fun BluetoothDevice.toBluetoothAudioDeviceState(isConnected: Boolean): BluetoothAudioDeviceState? {
         if (!hasBluetoothConnectPermission()) return null
 
@@ -440,7 +437,6 @@ class ConnectivityStateHolder(
         }.getOrNull()?.takeIf { it in 0..100 }
     }
 
-    @SuppressLint("MissingPermission")
     private fun BluetoothDevice.isAudioOutputCandidate(): Boolean {
         if (!hasBluetoothConnectPermission()) return false
 
@@ -449,7 +445,6 @@ class ConnectivityStateHolder(
             deviceClass.hasService(BluetoothClass.Service.RENDER)
     }
 
-    @SuppressLint("MissingPermission")
     private fun readConnectedWifiSsid(): String? {
         if (!hasFineLocationPermission()) return null
 
@@ -463,14 +458,12 @@ class ConnectivityStateHolder(
         return ssid
     }
 
-    @SuppressLint("MissingPermission")
     private fun readBluetoothEnabledState(): Boolean {
         if (!hasBluetoothConnectPermission()) return false
 
         return safeBluetoothCall(false) { bluetoothAdapter?.isEnabled ?: false }
     }
 
-    @SuppressLint("MissingPermission")
     private fun readLocalBluetoothAdapterName(): String? {
         if (!hasBluetoothConnectPermission()) return null
 
@@ -478,14 +471,12 @@ class ConnectivityStateHolder(
             .takeIf { it.isNotEmpty() }
     }
 
-    @SuppressLint("MissingPermission")
     private fun isBluetoothDiscoveryActive(adapter: BluetoothAdapter): Boolean {
         if (!hasBluetoothScanPermission()) return false
 
         return runCatching { adapter.isDiscovering }.getOrDefault(false)
     }
 
-    @SuppressLint("MissingPermission")
     private fun cancelBluetoothDiscovery(adapter: BluetoothAdapter) {
         if (!hasBluetoothScanPermission()) return
 

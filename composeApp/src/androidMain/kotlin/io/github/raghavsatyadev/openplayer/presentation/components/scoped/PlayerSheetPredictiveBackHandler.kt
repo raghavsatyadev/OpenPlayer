@@ -1,23 +1,20 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.scoped
 
 import android.os.Build
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.activity.compose.PredictiveBackHandler
-import androidx.annotation.OptIn
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.util.lerp
-import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerSheetState
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 
-@OptIn(UnstableApi::class)
 @Composable
 internal fun PlayerSheetPredictiveBackHandler(
     enabled: Boolean,
@@ -71,7 +68,7 @@ internal fun PlayerSheetPredictiveBackHandler(
                 }
             }
         } else {
-            BackHandler(enabled = enabled) {
+            AppBackHandler(enabled = enabled) {
                 playerViewModel.collapsePlayerSheet()
             }
         }

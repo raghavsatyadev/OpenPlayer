@@ -2,7 +2,7 @@ package io.github.raghavsatyadev.openplayer.presentation.components
 
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateToTopLevelSafely
 
-import android.os.SystemClock
+import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -169,7 +169,7 @@ private fun PlayerInternalNavigationItemsRow(
                     val isAlreadySelected = latestCurrentRoute == itemRoute
 
                     if (isSearchTab) {
-                        val now = SystemClock.elapsedRealtime()
+                        val now = elapsedRealtimeMs()
                         val isDoubleTap = now - lastSearchTapTimestamp <= 350L
                         lastSearchTapTimestamp = now
 

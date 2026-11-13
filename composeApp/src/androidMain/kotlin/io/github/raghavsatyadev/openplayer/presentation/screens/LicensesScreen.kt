@@ -8,7 +8,7 @@ import androidx.compose.ui.res.vectorResource
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.widget.Toast
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -622,6 +622,7 @@ private fun LicenseDetailDialog(
     onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
     val sectionLabel = stringResource(Res.string.licenses_detail_section)
     val sourceLabel = stringResource(Res.string.licenses_detail_source)
     val licenseLabel = stringResource(Res.string.licenses_detail_license)
@@ -703,7 +704,7 @@ private fun LicenseDetailDialog(
                             onClick = {
                                 val clipboard = context.getSystemService(ClipboardManager::class.java)
                                 clipboard?.setPrimaryClip(ClipData.newPlainText(item.name, noticeText))
-                                Toast.makeText(context, copiedMessage, Toast.LENGTH_SHORT).show()
+                                toaster.show(copiedMessage)
                             },
                         ) {
                             Icon(

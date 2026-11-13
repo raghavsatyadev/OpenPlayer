@@ -364,7 +364,6 @@ object AlbumArtUtils {
     }
 
     /** Both image access and legacy shared-storage access can be revoked in system settings. */
-    @android.annotation.SuppressLint("InlinedApi") // Guarded by the SDK argument, injectable for tests.
     internal fun canReadImageFiles(
         appContext: Context,
         sdkInt: Int = Build.VERSION.SDK_INT

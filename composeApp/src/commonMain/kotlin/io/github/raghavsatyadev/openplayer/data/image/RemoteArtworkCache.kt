@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.data.image
 
-import androidx.annotation.VisibleForTesting
 import coil3.decode.DataSource
 import coil3.decode.ImageSource
 import coil3.fetch.SourceFetchResult
@@ -108,7 +107,6 @@ internal object RemoteArtworkCache {
     }
 
     /** Number of fetches that hold or are waiting for [file]'s download lock. */
-    @VisibleForTesting
     internal fun fetchesQueuedFor(file: File): Int =
         synchronized(downloadLocks) { downloadLocks[file.path]?.holders ?: 0 }
 

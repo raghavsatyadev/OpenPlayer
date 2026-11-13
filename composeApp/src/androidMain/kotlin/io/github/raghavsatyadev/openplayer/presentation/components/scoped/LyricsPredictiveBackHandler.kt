@@ -1,7 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.scoped
 
 import android.os.Build
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -46,6 +46,6 @@ fun LyricsPredictiveBackHandler(
             }
         }
     } else {
-        BackHandler(enabled = enabled, onBack = onBack)
+        AppBackHandler(enabled = enabled, onBack = onBack)
     }
 }

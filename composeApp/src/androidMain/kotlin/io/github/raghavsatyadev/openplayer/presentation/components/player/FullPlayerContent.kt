@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.player
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.net.Uri
@@ -183,7 +182,6 @@ private suspend fun validateLyricsImport(
 }
 
 @androidx.annotation.OptIn(UnstableApi::class)
-@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FullPlayerContent(
@@ -916,7 +914,6 @@ fun FullPlayerContent(
 }
 
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun FullPlayerAlbumCoverSection(
     song: Song,

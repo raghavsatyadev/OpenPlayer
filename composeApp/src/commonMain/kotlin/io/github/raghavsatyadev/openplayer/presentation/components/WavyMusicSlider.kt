@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -62,7 +61,6 @@ import androidx.compose.ui.util.lerp
  * @param isPlaying Whether the associated content is currently playing
  * @param thumbLineHeight Height of the thumb's vertical line when in the interaction state
  */
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun WavyMusicSlider(
     value: Float,

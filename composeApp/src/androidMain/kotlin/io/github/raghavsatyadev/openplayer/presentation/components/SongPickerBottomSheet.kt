@@ -70,7 +70,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.util.UnstableApi
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -94,7 +93,6 @@ import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 
-@OptIn(UnstableApi::class)
 @ExperimentalMaterial3Api
 @Composable
 fun SongPickerBottomSheet(
@@ -124,7 +122,6 @@ fun SongPickerBottomSheet(
     }
 }
 
-@OptIn(UnstableApi::class)
 @Composable
 fun SongPickerContent(
     selectedSongIds: MutableMap<String, Boolean>,
@@ -280,7 +277,6 @@ fun SongPickerContent(
         )
     }
 }
-@OptIn(UnstableApi::class)
 @Composable
 fun SongPickerSelectionPane(
     selectedSongIds: MutableMap<String, Boolean>,
@@ -466,7 +462,6 @@ private fun SongPickerSearchField(
     )
 }
 
-@OptIn(UnstableApi::class)
 @kotlin.OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SongPickerPagingList(

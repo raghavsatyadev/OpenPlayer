@@ -41,7 +41,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -85,7 +84,6 @@ private val AlbumGridSpacing = 6.dp
 /** Radius of the album grid's four outer corners; every inner corner is 8dp. */
 private val AlbumGridOuterCornerRadius = SegmentedItemShapeDefaults.LibraryOuterCornerRadius
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun LibraryAlbumsTab(
     albums: LazyPagingItems<Album>,
@@ -456,7 +454,6 @@ fun LibraryAlbumsTab(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun LibraryArtistsTab(
     artists: LazyPagingItems<Artist>,
@@ -636,7 +633,6 @@ fun LibraryArtistsTab(
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun LibraryPlaylistsTab(
     playlistUiState: PlaylistUiState,

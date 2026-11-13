@@ -4,7 +4,7 @@ package io.github.raghavsatyadev.openplayer.presentation.screens
 
 import android.content.Intent
 import android.text.format.Formatter
-import android.widget.Toast
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import androidx.annotation.OptIn
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -81,7 +81,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
@@ -108,7 +107,6 @@ import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
-@OptIn(UnstableApi::class)
 @kotlin.OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DeviceCapabilitiesScreen(
@@ -302,6 +300,7 @@ private fun PerformanceReportCard(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
     val clipboardManager = LocalClipboardManager.current
     val copiedMessage = stringResource(Res.string.device_capabilities_report_copied)
     val shareTitle = stringResource(Res.string.device_capabilities_report_share_title)
@@ -329,7 +328,7 @@ private fun PerformanceReportCard(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     onMarkLagNow()
-                    Toast.makeText(context, lagMarkedMessage, Toast.LENGTH_SHORT).show()
+                    toaster.show(lagMarkedMessage)
                 }
             ) {
                 Text(stringResource(Res.string.device_capabilities_advanced_diagnostics_mark_lag))
@@ -366,7 +365,7 @@ private fun PerformanceReportCard(
                     modifier = Modifier.weight(1f),
                     onClick = {
                         clipboardManager.setText(AnnotatedString(report))
-                        Toast.makeText(context, copiedMessage, Toast.LENGTH_SHORT).show()
+                        toaster.show(copiedMessage)
                     }
                 ) {
                     Icon(

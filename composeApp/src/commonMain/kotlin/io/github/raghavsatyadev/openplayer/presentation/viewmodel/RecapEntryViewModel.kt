@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
@@ -43,7 +42,6 @@ class RecapEntryViewModel(
 ) : ViewModel() {
 
     /** Source of "now"; null follows the system clock and zone. Replaced in tests before collecting. */
-    @VisibleForTesting
     internal var clock: Clock? = null
 
     /**

@@ -2,6 +2,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
 import android.Manifest
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -11,7 +12,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.Settings
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -175,6 +176,7 @@ fun SetupScreen(
     onSetupComplete: () -> Unit
 ) {
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
     val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
     val uiState by setupViewModel.uiState.collectAsStateWithLifecycle()
     val currentPath by setupViewModel.currentPath.collectAsStateWithLifecycle()
@@ -235,10 +237,10 @@ fun SetupScreen(
             setupViewModel.events.collectLatest { event ->
                 when (event) {
                     is SetupEvent.Message -> {
-                        Toast.makeText(context, event.value, Toast.LENGTH_LONG).show()
+                        toaster.show(event.value, long = true)
                     }
                     is SetupEvent.RestoreCompleted -> {
-                        Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
+                        toaster.show(event.message, long = true)
                         val targetPageIndex = when {
                             batteryOptimizationPageIndex >= 0 && !isIgnoringBatteryOptimizations(context) ->
                                 batteryOptimizationPageIndex
@@ -280,7 +282,7 @@ fun SetupScreen(
             setupViewModel.loadMusicDirectories()
         }
     }
-    BackHandler {
+    AppBackHandler {
         if (pagerState.currentPage > 0) {
             navigateToPage(pagerState.currentPage - 1)
         }
@@ -442,7 +444,7 @@ fun SetupScreen(
         enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
         exit = slideOutVertically(targetOffsetY = { it }) + fadeOut()
     ) {
-        BackHandler {
+        AppBackHandler {
             showCornerRadiusOverlay = false
         }
         NavBarCornerRadiusContent(
