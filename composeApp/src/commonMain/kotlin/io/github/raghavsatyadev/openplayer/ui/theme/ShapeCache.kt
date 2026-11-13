@@ -7,12 +7,11 @@ import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
-import androidx.graphics.shapes.toPath
+import io.github.raghavsatyadev.openplayer.presentation.components.toComposePath
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 
 /**
@@ -77,7 +76,7 @@ object ShapeCache {
  * so the shape can be cached here like the other ShapeCache entries.
  */
 private class RoundedPolygonShape(polygon: RoundedPolygon) : Shape {
-    private val basePath = polygon.toPath().asComposePath()
+    private val basePath = polygon.toComposePath()
 
     override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
         val matrix = Matrix()

@@ -1,9 +1,5 @@
-@file:android.annotation.SuppressLint("RestrictedApi")
-
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import android.graphics.Matrix
-import android.graphics.RectF
 import androidx.compose.animation.core.Animatable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -67,10 +63,10 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
@@ -82,11 +78,10 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.Morph
 import androidx.graphics.shapes.RoundedPolygon
-import androidx.graphics.shapes.toPath
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.currentStateAsState
-import com.google.android.material.color.utilities.Hct
+import com.materialkolor.hct.Hct
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import kotlin.math.PI
 import kotlin.math.cos
@@ -129,13 +124,16 @@ internal fun neuralMixPalette(): NeuralMixPalette {
 /** Library polygons, used by controls as well as the morphing artwork. */
 internal class MixPolygonShape(private val polygon: RoundedPolygon) : Shape {
     override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
-        val path = polygon.toPath()
-        val bounds = RectF()
-        path.computeBounds(bounds, true)
-        val matrix = Matrix()
-        matrix.setRectToRect(bounds, RectF(0f, 0f, size.width, size.height), Matrix.ScaleToFit.FILL)
-        path.transform(matrix)
-        return Outline.Generic(path.asComposePath())
+        val path = polygon.toComposePath()
+        val bounds = path.getBounds()
+        if (bounds.width > 0f && bounds.height > 0f) {
+            val matrix = Matrix().apply {
+                scale(x = size.width / bounds.width, y = size.height / bounds.height)
+                translate(x = -bounds.left, y = -bounds.top)
+            }
+            path.transform(matrix)
+        }
+        return Outline.Generic(path)
     }
 }
 
@@ -342,9 +340,8 @@ internal fun NeuralMixThinking(
     Spacer(modifier.onGloballyPositioned { canvas = it }.drawWithCache {
         val dotSpacing = 10.dp.toPx()
         val dotRadius = .65.dp.toPx()
-        val path = android.graphics.Path()
+        val path = Path()
         val transform = Matrix()
-        val bounds = RectF()
         val layerPaint = Paint()
         onDrawBehind {
             stage.moves.intValue
@@ -391,24 +388,25 @@ internal fun NeuralMixThinking(
                         center = center, radius = glow), glow, center)
                     // Expressive library shapes morph into one another, turning as they change.
                     val morph = bubble.morph
-                    if (morph != null) morph.toPath(bubble.progress.value, path)
-                    else ThinkingShapes[bubble.to].toPath(path)
+                    if (morph != null) morph.toComposePath(bubble.progress.value, path)
+                    else ThinkingShapes[bubble.to].toComposePath(path)
+                    val angle = bubble.rotation.value + a * sin(pulse - offset) * 12f
                     transform.reset()
-                    transform.setScale(radius * 2, radius * 2)
-                    transform.postRotate(bubble.rotation.value + a * sin(pulse - offset) * 12f, radius, radius)
-                    transform.postTranslate(center.x - radius, center.y - radius)
+                    transform.translate(center.x, center.y)
+                    transform.rotateZ(angle)
+                    transform.scale(radius * 2f, radius * 2f)
+                    transform.translate(-0.5f, -0.5f)
                     path.transform(transform)
                     // Rotation can extend the morph beyond its original square. Paint its
                     // actual bounds so the mesh never cuts a flat edge into the volume.
-                    path.computeBounds(bounds, true)
-                    val area = Rect(bounds.left, bounds.top, bounds.right, bounds.bottom)
+                    val area = path.getBounds()
                     // A lighter feather than before, so each new silhouette still reads.
                     val feather = a * .38f
                     layerPaint.alpha = visible
                     drawContext.canvas.saveLayer(area, layerPaint)
-                    clipPath(path.asComposePath()) {
-                        translate(bounds.left, bounds.top) {
-                            with(meshes[i]) { draw(Size(bounds.width(), bounds.height())) }
+                    clipPath(path) {
+                        translate(area.left, area.top) {
+                            with(meshes[i]) { draw(Size(area.width, area.height)) }
                         }
                         drawCircle(Brush.radialGradient(listOf(light.copy(alpha = .20f), Color.Transparent),
                             center - Offset(radius * .2f, radius * .35f), radius * 1.4f), radius * 1.5f, center)

@@ -2,7 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,10 +44,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.library.LibraryTabId
 import io.github.raghavsatyadev.openplayer.presentation.utils.AppHapticType
 import io.github.raghavsatyadev.openplayer.presentation.utils.LocalAppHapticsConfig
@@ -60,12 +57,12 @@ import kotlinx.coroutines.launch
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -340,7 +337,7 @@ private fun VisibleTabRow(
             ) {
                 if (tabId != null) {
                     Icon(
-                        painter = painterResource(id = tabId.iconRes()),
+                        painter = painterResource(tabId.iconRes()),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
@@ -396,7 +393,7 @@ private fun HiddenTabRow(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    painter = painterResource(id = tabId.iconRes()),
+                    painter = painterResource(tabId.iconRes()),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -421,16 +418,15 @@ private fun HiddenTabRow(
     }
 }
 
-@DrawableRes
-private fun LibraryTabId.iconRes(): Int = when (this) {
-    LibraryTabId.Songs -> R.drawable.rounded_music_note_24
-    LibraryTabId.Albums -> R.drawable.rounded_album_24
-    LibraryTabId.Artists -> R.drawable.rounded_artist_24
-    LibraryTabId.Playlists -> R.drawable.rounded_playlist_play_24
-    LibraryTabId.Folders -> R.drawable.rounded_folder_24
-    LibraryTabId.Liked -> R.drawable.round_favorite_24
-    LibraryTabId.Genres -> R.drawable.rounded_category_24
-    LibraryTabId.Videos -> R.drawable.rounded_movie_24
+private fun LibraryTabId.iconRes(): DrawableResource = when (this) {
+    LibraryTabId.Songs -> Res.drawable.rounded_music_note_24
+    LibraryTabId.Albums -> Res.drawable.rounded_album_24
+    LibraryTabId.Artists -> Res.drawable.rounded_artist_24
+    LibraryTabId.Playlists -> Res.drawable.rounded_playlist_play_24
+    LibraryTabId.Folders -> Res.drawable.rounded_folder_24
+    LibraryTabId.Liked -> Res.drawable.round_favorite_24
+    LibraryTabId.Genres -> Res.drawable.rounded_category_24
+    LibraryTabId.Videos -> Res.drawable.rounded_movie_24
 }
 
 @Composable

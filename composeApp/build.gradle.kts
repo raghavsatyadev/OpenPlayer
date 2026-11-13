@@ -92,6 +92,7 @@ kotlin {
             implementation(libs.vorbisjava.core)
             implementation(libs.wavy.slider)
             implementation(libs.androidx.graphics.shapes)
+            implementation(libs.materialkolor.color.utilities)
             implementation(libs.reorderables)
 
             // Plain JVM libraries: commonMain sees the JDK and JVM jars because every target is JVM-based.
@@ -152,7 +153,6 @@ kotlin {
             implementation(libs.androidx.work.runtime.ktx)
             implementation(libs.androidx.security.crypto)
 
-            implementation(libs.smooth.corner.rect.android.compose)
             implementation(libs.androidx.glance)
             implementation(libs.androidx.glance.appwidget)
             implementation(libs.androidx.glance.material3)
