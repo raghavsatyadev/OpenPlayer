@@ -11,9 +11,9 @@ import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicLong
 
 class AdvancedPerformanceDiagnosticsController(
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val userPreferencesRepository: UserPreferencesRepository,
+    private val stallMonitor: StallMonitor,
 ) {
-    private val stallMonitor = MainThreadStallMonitor()
     private var observerJob: Job? = null
     private var expiryJob: Job? = null
     private var controllerScope: CoroutineScope? = null

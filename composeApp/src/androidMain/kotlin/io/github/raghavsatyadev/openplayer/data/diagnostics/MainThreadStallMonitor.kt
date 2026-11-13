@@ -10,7 +10,7 @@ import android.view.Choreographer
  */
 class MainThreadStallMonitor(
     private val thresholdMs: Long = AdvancedPerformanceDiagnostics.FRAME_STALL_THRESHOLD_MS
-) {
+) : StallMonitor {
     private var running = false
     private var lastFrameNanos = 0L
 
@@ -34,14 +34,14 @@ class MainThreadStallMonitor(
         }
     }
 
-    fun start() {
+    override fun start() {
         if (running) return
         running = true
         lastFrameNanos = 0L
         Choreographer.getInstance().postFrameCallback(callback)
     }
 
-    fun stop() {
+    override fun stop() {
         if (!running) return
         running = false
         lastFrameNanos = 0L

@@ -3,6 +3,8 @@ package io.github.raghavsatyadev.openplayer.di
 import io.github.raghavsatyadev.openplayer.data.DailyMixManager
 import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceDiagnosticsController
 import io.github.raghavsatyadev.openplayer.data.diagnostics.DebugPerformanceReportCollector
+import io.github.raghavsatyadev.openplayer.data.diagnostics.MainThreadStallMonitor
+import io.github.raghavsatyadev.openplayer.data.diagnostics.StallMonitor
 import io.github.raghavsatyadev.openplayer.data.equalizer.EqualizerManager
 import io.github.raghavsatyadev.openplayer.data.equalizer.ExternalAudioEffectSession
 import io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricEqPreferences
@@ -43,6 +45,7 @@ val serviceModule = module {
     singleOf(::RepeatNSession)
     singleOf(::ListeningStatsTracker)
     singleOf(::DailyMixManager)
+    single<StallMonitor> { MainThreadStallMonitor() }
     singleOf(::AdvancedPerformanceDiagnosticsController)
     singleOf(::DebugPerformanceReportCollector)
     singleOf(::M3uSyncCoordinator)

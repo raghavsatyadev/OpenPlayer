@@ -1,8 +1,8 @@
 package io.github.raghavsatyadev.openplayer.data.musicbrainz
 
-import android.os.SystemClock
 import io.github.raghavsatyadev.openplayer.AppBuildInfo
 import java.io.IOException
+import kotlin.time.TimeSource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -42,6 +42,8 @@ class MusicBrainzApiService(
             )
         }
         .build()
+    private val clockStart = TimeSource.Monotonic.markNow()
+    private fun nowMs(): Long = clockStart.elapsedNow().inWholeMilliseconds
     private val requestMutex = Mutex()
     private var lastRequestStartedAt = 0L
 
@@ -51,11 +53,11 @@ class MusicBrainzApiService(
         album: String?,
         durationMs: Long?
     ): List<MusicBrainzMatch> = requestMutex.withLock {
-        val elapsed = SystemClock.elapsedRealtime() - lastRequestStartedAt
+        val elapsed = nowMs() - lastRequestStartedAt
         if (elapsed in 0 until MIN_REQUEST_INTERVAL_MS) {
             delay(MIN_REQUEST_INTERVAL_MS - elapsed)
         }
-        lastRequestStartedAt = SystemClock.elapsedRealtime()
+        lastRequestStartedAt = nowMs()
 
         val query = buildRecordingQuery(title, artist, album)
         val url = API_ROOT.toHttpUrl().newBuilder()

@@ -1,22 +1,23 @@
 package io.github.raghavsatyadev.openplayer.data.backup.module
 
-import android.content.Context
-import android.util.Base64
+import co.touchlab.kermit.Logger
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
+import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
+import io.github.raghavsatyadev.openplayer.data.database.MusicDao
 import io.github.raghavsatyadev.openplayer.data.model.Playlist
 import io.github.raghavsatyadev.openplayer.data.model.SmartPlaylistRule
 import io.github.raghavsatyadev.openplayer.data.model.SortOption
-import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleCodec
 import io.github.raghavsatyadev.openplayer.data.model.fromPlaylistSource
 import io.github.raghavsatyadev.openplayer.data.model.isSmartPlaylistSource
-import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
-import io.github.raghavsatyadev.openplayer.data.database.MusicDao
+import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleCodec
 import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.preferences.PreferenceBackupEntry
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.worker.SyncManager
+import io.github.raghavsatyadev.openplayer.platform.AppDirectories
+import java.io.File
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,11 +28,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import co.touchlab.kermit.Logger
-import java.io.File
-import java.io.FileOutputStream
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
 
 /**
  * Playlists and their ordering preferences.
@@ -40,10 +36,10 @@ import java.nio.file.StandardCopyOption
  * restore made before the library scan has indexed the songs can't match them yet, so the songs
  * left unmatched are kept in [PENDING_RESTORE_FILE_NAME] and added to the restored playlists as
  * later library syncs find them, until every song the backup has metadata for resolves. Songs
- * it has none for aren't waited on (see [resolvableSongIds]).
+ * it has none for aren't waited on (see [PlaylistsBackupPendingRestore.resolvableSongIds]).
  */
 class PlaylistsModuleHandler(
-    private val context: Context,
+    private val appDirectories: AppDirectories,
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val musicDao: MusicDao,
@@ -55,7 +51,7 @@ class PlaylistsModuleHandler(
 
     private val pendingRestoreMutex = Mutex()
     private val pendingRestoreFile: File
-        get() = File(context.filesDir, PENDING_RESTORE_FILE_NAME)
+        get() = File(appDirectories.filesDir, PENDING_RESTORE_FILE_NAME)
 
     init {
         appScope.launch { retryPendingWhenIdle() }
@@ -78,7 +74,7 @@ class PlaylistsModuleHandler(
         val coverImages = mutableMapOf<String, String>()
         filteredPlaylists.forEach { playlist ->
             val uri = playlist.coverImageUri ?: return@forEach
-            readFileAsBase64(uri)?.let { coverImages[playlist.id] = it }
+            PlaylistsBackupArtwork.readFileAsBase64(uri)?.let { coverImages[playlist.id] = it }
         }
 
         val payload = PlaylistsBackupPayload(
@@ -135,14 +131,14 @@ class PlaylistsModuleHandler(
                 PlaylistsResolution(backupPlaylists, resolvedSongIds = emptyMap())
             }
             val pending = songMetadata?.let {
-                pendingRestoreOf(backupPlaylists, it, resolution.unresolvedSongIds)
+                PlaylistsBackupPendingRestore.pendingRestoreOf(backupPlaylists, it, resolution.unresolvedSongIds)
             }
             // An earlier restore's pending file left in place would fill these playlists in
             // from the other backup.
             if (!writePendingRestore(pending)) writePendingRestore(null)
 
             val finalPlaylists = if (coverImages != null && coverImages.isNotEmpty()) {
-                restoreCoverImages(resolution.playlists, coverImages)
+                PlaylistsBackupArtwork.restoreCoverImages(resolution.playlists, coverImages, appDirectories.filesDir)
             } else {
                 resolution.playlists
             }
@@ -193,67 +189,13 @@ class PlaylistsModuleHandler(
      * @return false when [pending] couldn't be saved; the earlier pending restore, if any, is
      * left as it was.
      */
-    private fun writePendingRestore(pending: PendingPlaylistRestore?): Boolean {
-        val pendingFile = pendingRestoreFile
-        if (pending == null) {
-            if (pendingFile.exists()) pendingFile.delete()
-            return true
-        }
-        val tempFile = File(context.filesDir, "$PENDING_RESTORE_FILE_NAME.tmp")
-        return try {
-            FileOutputStream(tempFile).use { out ->
-                out.write(gson.toJson(pending).toByteArray())
-                out.fd.sync()
-            }
-            Files.move(
-                tempFile.toPath(), pendingFile.toPath(),
-                StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING
-            )
-            Logger.withTag(TAG).i { "Saved pending playlist restore for songs not in the library yet" }
-            true
-        } catch (e: Exception) {
-            Logger.withTag(TAG).e(e) { "Failed to save pending playlist restore file" }
-            tempFile.delete()
-            false
-        }
-    }
-
-    /**
-     * What a restore of [playlists] still has to fill in once the library has the
-     * [unresolvedSongIds], or null when no playlist is missing a song that can still resolve.
-     */
-    private fun pendingRestoreOf(
-        playlists: List<Playlist>,
-        songMetadata: Map<String, BackupSongMetadata>,
-        unresolvedSongIds: Set<String>
-    ): PendingPlaylistRestore? {
-        val resolvable = resolvableSongIds(unresolvedSongIds, songMetadata)
-        val waiting = playlists.filter { playlist -> playlist.songIds.any { it in resolvable } }
-        if (waiting.isEmpty()) return null
-        val waitingSongIds = waiting.flatMapTo(HashSet()) { it.songIds }
-        return PendingPlaylistRestore(
-            playlists = waiting,
-            songMetadata = songMetadata.filterKeys { it in waitingSongIds },
-            unresolvedSongIds = resolvable.filter { it in waitingSongIds }
+    private fun writePendingRestore(pending: PendingPlaylistRestore?): Boolean =
+        PlaylistsBackupPendingRestore.writePendingRestore(
+            pending = pending,
+            filesDir = appDirectories.filesDir,
+            pendingFile = pendingRestoreFile,
+            gson = gson
         )
-    }
-
-    /**
-     * The [songIds] that [songMetadata] describes, in order. The backup only has metadata for
-     * songs that were in its library, so the others can only ever match a library song by id,
-     * with nothing to check it against. On the device the backup came from, that can be the
-     * right song, such as one on an SD card that was out when the backup was made, which keeps
-     * its id when the card is scanned again. On any other device it's whatever song is given
-     * that id, and new songs keep taking ids for as long as the restore would wait. The two
-     * can't be told apart, so these songs aren't waited on: a restore keeps one only when the
-     * library already has its id, and loses the SD card's songs when made before they're
-     * scanned. A playlist entry for a song deleted before the backup then doesn't keep the
-     * pending restore around forever either.
-     */
-    private fun resolvableSongIds(
-        songIds: Collection<String>,
-        songMetadata: Map<String, BackupSongMetadata>
-    ): Set<String> = songIds.filterTo(LinkedHashSet()) { it in songMetadata }
 
     /**
      * Re-matches the pending restore's unresolved songs against the library and adds the ones it
@@ -276,7 +218,7 @@ class PlaylistsModuleHandler(
         // restore left out, so filling them in could bring back songs the user removed since.
         val pending = runCatching { gson.fromJson(json, PendingPlaylistRestore::class.java) }.getOrNull()
         val songMetadata = pending?.songMetadata.orEmpty()
-        val unresolvedSongIds = resolvableSongIds(pending?.unresolvedSongIds.orEmpty(), songMetadata)
+        val unresolvedSongIds = PlaylistsBackupPendingRestore.resolvableSongIds(pending?.unresolvedSongIds.orEmpty(), songMetadata)
         if (pending == null || unresolvedSongIds.isEmpty()) {
             pendingFile.delete()
             Logger.withTag(TAG).i { "Pending playlist restore: dropped, nothing it can still fill in" }
@@ -299,7 +241,7 @@ class PlaylistsModuleHandler(
         if (newlyResolved.isNotEmpty()) {
             waiting.forEach { backup ->
                 val current = currentById.getValue(backup.id)
-                val songIds = insertNewlyResolvedSongs(
+                val songIds = PlaylistsBackupPendingRestore.insertNewlyResolvedSongs(
                     current.songIds, backup.songIds, newlyResolved, resolution.resolvedSongIds
                 )
                 // Only this playlist's songs are written: its name, cover and lastModified, and
@@ -312,7 +254,7 @@ class PlaylistsModuleHandler(
             }
         }
 
-        val stillPending = pendingRestoreOf(waiting, songMetadata, unresolvedSongIds - newlyResolved)
+        val stillPending = PlaylistsBackupPendingRestore.pendingRestoreOf(waiting, songMetadata, unresolvedSongIds - newlyResolved)
         if (grownCount > 0) {
             Logger.withTag(TAG).i { "Pending playlist restore: $grownCount playlists grew, " +
                     "${stillPending?.unresolvedSongIds.orEmpty().size} songs still unresolved" }
@@ -324,96 +266,6 @@ class PlaylistsModuleHandler(
             // When this fails, the next retry reads the earlier file again, and counts the songs
             // this one added as the backup's copies instead of adding them twice.
             writePendingRestore(stillPending)
-        }
-    }
-
-    /**
-     * [current] plus a copy of its song for each [newlyResolved] position of [backupSongIds], so
-     * a song the backup repeats is repeated here too. Each goes right after the copy that the
-     * nearest earlier backup position put in the playlist, or first when there is none. Copies
-     * the user added before the song resolved count as backup copies instead of getting another.
-     * An unedited playlist ends up in backup order; songs the user removed, moved or added
-     * stay as they are.
-     */
-    private fun insertNewlyResolvedSongs(
-        current: List<String>,
-        backupSongIds: List<String>,
-        newlyResolved: Set<String>,
-        resolvedSongIds: Map<String, String?>
-    ): List<String> {
-        val resolved = backupSongIds.map { resolvedSongIds[it] }
-        // The copies of each song beyond the ones the backup's earlier resolved positions put
-        // there were added by the user.
-        val userCopies = HashMap<String, Int>()
-        current.forEach { userCopies.merge(it, 1, Int::plus) }
-        backupSongIds.forEachIndexed { index, backupId ->
-            val songId = resolved[index]
-            if (songId != null && backupId !in newlyResolved) userCopies.merge(songId, -1, Int::plus)
-        }
-
-        val songIds = current.toMutableList()
-        // Which copy of its song each backup position stands for: 1 for the first, and so on.
-        val copyNumbers = IntArray(backupSongIds.size)
-        val copiesSoFar = HashMap<String, Int>()
-        backupSongIds.forEachIndexed { index, backupId ->
-            val songId = resolved[index] ?: return@forEachIndexed
-            copyNumbers[index] = copiesSoFar.merge(songId, 1, Int::plus) ?: 1
-            if (backupId !in newlyResolved) return@forEachIndexed
-            val spare = userCopies[songId] ?: 0
-            if (spare > 0) {
-                userCopies[songId] = spare - 1
-                return@forEachIndexed
-            }
-            val anchor = (index - 1 downTo 0).asSequence()
-                .mapNotNull { previous ->
-                    resolved[previous]?.let { songIds.indexOfCopy(it, copyNumbers[previous]) }
-                }
-                .firstOrNull { it >= 0 }
-            songIds.add(anchor?.plus(1) ?: 0, songId)
-        }
-        return songIds
-    }
-
-    /** The index of copy [copy] of [songId], of its last copy when there are fewer, or -1. */
-    private fun List<String>.indexOfCopy(songId: String, copy: Int): Int {
-        var lastIndex = -1
-        var seen = 0
-        forEachIndexed { index, id ->
-            if (id != songId) return@forEachIndexed
-            lastIndex = index
-            if (++seen == copy) return index
-        }
-        return lastIndex
-    }
-
-    private fun readFileAsBase64(path: String): String? {
-        return try {
-            val file = File(path)
-            if (!file.exists() || file.length() == 0L) return null
-            val bytes = file.readBytes()
-            Base64.encodeToString(bytes, Base64.NO_WRAP)
-        } catch (e: Exception) {
-            Logger.withTag(TAG).w(e) { "Failed to read cover image: $path" }
-            null
-        }
-    }
-
-    private fun restoreCoverImages(
-        playlists: List<Playlist>,
-        coverImages: Map<String, String>
-    ): List<Playlist> {
-        return playlists.map { playlist ->
-            val base64 = coverImages[playlist.id] ?: return@map playlist
-            try {
-                val bytes = Base64.decode(base64, Base64.NO_WRAP)
-                val fileName = "playlist_cover_${playlist.id}.jpg"
-                val file = File(context.filesDir, fileName)
-                file.writeBytes(bytes)
-                playlist.copy(coverImageUri = file.absolutePath)
-            } catch (e: Exception) {
-                Logger.withTag(TAG).w(e) { "Failed to restore cover image for playlist ${playlist.id}" }
-                playlist.copy(coverImageUri = null)
-            }
         }
     }
 
@@ -522,18 +374,8 @@ class PlaylistsModuleHandler(
         val coverImages: Map<String, String>? = null
     )
 
-    /** The part of a restore kept in [PENDING_RESTORE_FILE_NAME] until its songs resolve. */
-    private data class PendingPlaylistRestore(
-        /** The backed-up playlists still missing songs, with their backup song ids. */
-        val playlists: List<Playlist>? = null,
-        val songMetadata: Map<String, BackupSongMetadata>? = null,
-        /** Backup song ids [songMetadata] describes that no library song has matched yet. */
-        val unresolvedSongIds: List<String>? = null
-    )
-
     companion object {
         private const val TAG = "PlaylistsModuleHandler"
-        private const val PENDING_RESTORE_FILE_NAME = "pending_playlists_restore.json"
 
         /** Playlist sources that are backed up. Cloud-sourced playlists are excluded. */
         private fun isBackedUpPlaylistSource(source: String): Boolean =

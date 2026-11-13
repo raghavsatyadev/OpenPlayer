@@ -1,19 +1,15 @@
 package io.github.raghavsatyadev.openplayer.data.preferences
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-
-private val Context.smartMixDataStore: DataStore<Preferences> by preferencesDataStore(name = "smart_mix")
 
 /**
  * Smart Mix memory: requests that produced a mix (for the composer's suggestions), the songs of
@@ -23,10 +19,9 @@ private val Context.smartMixDataStore: DataStore<Preferences> by preferencesData
  * Kept in its own store, not the shared settings store, because it is device-local listening
  * history: song ids from a backup would not match another library.
  */
-class MixPreferences internal constructor(
+class MixPreferences(
     private val dataStore: DataStore<Preferences>,
 ) {
-    constructor(context: Context) : this(context.smartMixDataStore)
 
     private object Keys {
         val MIX_IDS = (0 until GENERATIONS).map { stringSetPreferencesKey("offline_mix_ids_v1_$it") }

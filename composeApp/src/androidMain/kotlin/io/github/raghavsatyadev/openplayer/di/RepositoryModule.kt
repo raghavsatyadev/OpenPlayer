@@ -49,10 +49,16 @@ import io.github.raghavsatyadev.openplayer.data.stats.PlaybackStatsRepository
 import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
 import io.github.raghavsatyadev.openplayer.data.video.VideoLibrarySongs
 import io.github.raghavsatyadev.openplayer.data.waveform.WaveformRepository
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
+
+private val Context.smartMixDataStore: DataStore<Preferences> by preferencesDataStore(name = "smart_mix")
 
 val repositoryModule = module {
     singleOf(::UserPreferencesRepository)
@@ -65,7 +71,7 @@ val repositoryModule = module {
     singleOf(::OnlineCoverPreferences)
     singleOf(::OnlineGenrePreferences)
     singleOf(::VideoPreferences)
-    single { MixPreferences(androidContext()) }
+    single { MixPreferences(androidContext().smartMixDataStore) }
     singleOf(::FolderTreeBuilder)
 
     singleOf(::MediaStoreSongRepository)

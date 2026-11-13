@@ -1,11 +1,12 @@
 package io.github.raghavsatyadev.openplayer.di
 
 import io.github.raghavsatyadev.openplayer.data.database.OpenPlayerDatabase
+import io.github.raghavsatyadev.openplayer.data.database.createOpenPlayerDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val dataModule = module {
-    single { OpenPlayerDatabase.build(androidContext()) }
+    single { createOpenPlayerDatabase(androidContext()) }
 
     single { get<OpenPlayerDatabase>().albumArtThemeDao() }
     single { get<OpenPlayerDatabase>().searchHistoryDao() }

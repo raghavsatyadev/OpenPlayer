@@ -1,10 +1,10 @@
 package io.github.raghavsatyadev.openplayer.data.database
 
-import android.content.Context
+import androidx.room3.ConstructedBy
 import androidx.room3.DaoReturnTypeConverters
 import androidx.room3.Database
-import androidx.room3.Room
 import androidx.room3.RoomDatabase
+import androidx.room3.RoomDatabaseConstructor
 import androidx.room3.paging.PagingSourceDaoReturnTypeConverter
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
@@ -43,6 +43,7 @@ import kotlinx.coroutines.Dispatchers
     exportSchema = true
 )
 @DaoReturnTypeConverters(PagingSourceDaoReturnTypeConverter::class)
+@ConstructedBy(OpenPlayerDatabaseConstructor::class)
 abstract class OpenPlayerDatabase : RoomDatabase() {
     abstract fun albumArtThemeDao(): AlbumArtThemeDao
     abstract fun searchHistoryDao(): SearchHistoryDao
@@ -65,12 +66,8 @@ abstract class OpenPlayerDatabase : RoomDatabase() {
     companion object {
         const val DATABASE_NAME = "openplayer_database"
 
-        fun build(context: Context): OpenPlayerDatabase {
-            val dbFile = context.getDatabasePath(DATABASE_NAME)
-            return Room.databaseBuilder<OpenPlayerDatabase>(
-                context = context.applicationContext,
-                name = dbFile.absolutePath,
-            )
+        fun build(builder: RoomDatabase.Builder<OpenPlayerDatabase>): OpenPlayerDatabase {
+            return builder
                 .setDriver(BundledSQLiteDriver())
                 .setQueryCoroutineContext(Dispatchers.IO)
                 .addCallback(createRuntimeArtifactsCallback())
@@ -193,4 +190,9 @@ abstract class OpenPlayerDatabase : RoomDatabase() {
             }
         }
     }
+}
+
+@Suppress("KotlinNoActualForExpect")
+expect object OpenPlayerDatabaseConstructor : RoomDatabaseConstructor<OpenPlayerDatabase> {
+    override fun initialize(): OpenPlayerDatabase
 }

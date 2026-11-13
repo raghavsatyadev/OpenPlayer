@@ -56,7 +56,7 @@ val backupModule = module {
 
     single {
         PlaylistsModuleHandler(
-            context = androidContext(),
+            appDirectories = get(),
             playlistPreferencesRepository = get(),
             userPreferencesRepository = get(),
             musicDao = get(),
