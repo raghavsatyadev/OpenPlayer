@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.data.backup
 
-import android.content.Context
-import android.net.Uri
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import io.github.raghavsatyadev.openplayer.data.database.EngagementDao
@@ -117,7 +115,7 @@ data class AppDataBackupPayload(
 
 @Deprecated("Use BackupManager instead. This class is retained for legacy format reference only.")
 class AppDataBackupManager(
-    private val context: Context,
+    private val documentStreams: BackupDocumentStreams,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val favoritesDao: FavoritesDao,
     private val lyricsDao: LyricsDao,
@@ -141,7 +139,7 @@ class AppDataBackupManager(
     private val gzipMagic = byteArrayOf(0x1f, 0x8b.toByte())
 
     suspend fun exportToUri(
-        uri: Uri,
+        document: String,
         sections: Set<BackupSection>,
         onProgress: (BackupTransferProgressUpdate) -> Unit = {}
     ): Result<Unit> = withContext(Dispatchers.IO) {
@@ -239,7 +237,7 @@ class AppDataBackupManager(
                 title = "Writing file",
                 detail = "Saving backup to selected location."
             )
-            context.contentResolver.openOutputStream(uri)?.use { output ->
+            documentStreams.openOutput(document)?.use { output ->
                 output.write(bytes)
                 output.flush()
             } ?: error("Unable to open output stream")
@@ -256,7 +254,7 @@ class AppDataBackupManager(
     }
 
     suspend fun importFromUri(
-        uri: Uri,
+        document: String,
         sections: Set<BackupSection>,
         onProgress: (BackupTransferProgressUpdate) -> Unit = {}
     ): Result<Unit> = withContext(Dispatchers.IO) {
@@ -274,7 +272,7 @@ class AppDataBackupManager(
                 detail = "Reading selected backup file."
             )
 
-            val rawBytes = context.contentResolver.openInputStream(uri)?.use { input ->
+            val rawBytes = documentStreams.openInput(document)?.use { input ->
                 input.readBytes()
             } ?: error("Unable to open backup file")
 

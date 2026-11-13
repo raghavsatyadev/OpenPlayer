@@ -1,9 +1,9 @@
 package io.github.raghavsatyadev.openplayer.ui.theme
 
 import android.graphics.Bitmap
-import android.util.LruCache
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.scale
+import io.github.raghavsatyadev.openplayer.utils.LruCache
 import kotlin.math.max
 import kotlin.math.roundToInt
 

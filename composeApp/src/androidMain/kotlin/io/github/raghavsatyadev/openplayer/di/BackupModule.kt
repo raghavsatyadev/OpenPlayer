@@ -1,7 +1,9 @@
 package io.github.raghavsatyadev.openplayer.di
 
 import com.google.gson.GsonBuilder
+import io.github.raghavsatyadev.openplayer.data.backup.AndroidBackupDocumentStreams
 import io.github.raghavsatyadev.openplayer.data.backup.AppDataBackupManager
+import io.github.raghavsatyadev.openplayer.data.backup.BackupDocumentStreams
 import io.github.raghavsatyadev.openplayer.data.backup.BackupManager
 import io.github.raghavsatyadev.openplayer.data.backup.format.BackupFormatDetector
 import io.github.raghavsatyadev.openplayer.data.backup.format.BackupReader
@@ -190,5 +192,6 @@ val backupModule = module {
     singleOf(::RestorePlanner)
     singleOf(::BackupFileValidator)
     singleOf(::BackupManager)
+    single<BackupDocumentStreams> { AndroidBackupDocumentStreams(androidContext()) }
     singleOf(::AppDataBackupManager)
 }

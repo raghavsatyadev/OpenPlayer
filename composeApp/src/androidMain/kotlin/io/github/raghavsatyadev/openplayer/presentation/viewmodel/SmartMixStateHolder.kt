@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
-import android.content.Context
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.DailyMixManager
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.playlist.NlpPlaylistGenerator
@@ -12,6 +10,12 @@ import io.github.raghavsatyadev.openplayer.data.preferences.MixPreferences
 import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.presentation.components.requestText
+import io.github.raghavsatyadev.openplayer.resources.Res
+import io.github.raghavsatyadev.openplayer.resources.getString
+import io.github.raghavsatyadev.openplayer.resources.mix_no_matches
+import io.github.raghavsatyadev.openplayer.resources.mix_saved
+import io.github.raghavsatyadev.openplayer.resources.mix_save_failed
+import io.github.raghavsatyadev.openplayer.resources.mix_title
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -45,7 +49,6 @@ enum class SmartMixTarget {
  * as a playlist or using it for today are separate, explicit actions.
  */
 class SmartMixStateHolder(
-    private val context: Context,
     private val generator: NlpPlaylistGenerator,
     private val musicRepository: MusicRepository,
     private val dailyMixManager: DailyMixManager,
@@ -167,7 +170,7 @@ class SmartMixStateHolder(
                 thinkingWindow.join()
                 if (requestId != mixRequestId) return@launch
                 if (songs.isEmpty()) {
-                    _error.value = context.getString(R.string.mix_no_matches)
+                    _error.value = getString(Res.string.mix_no_matches)
                     return@launch
                 }
                 val request = prompt.replace(DIRECTIVE, " ").trim()
@@ -197,7 +200,7 @@ class SmartMixStateHolder(
                 thinkingWindow.join()
                 if (requestId == mixRequestId) {
                     Logger.withTag(TAG).e(error) { "Mix preview failed" }
-                    _error.value = context.getString(R.string.mix_no_matches)
+                    _error.value = getString(Res.string.mix_no_matches)
                 }
             } finally {
                 if (requestId == mixRequestId) _isGenerating.value = false
@@ -229,12 +232,12 @@ class SmartMixStateHolder(
                 if (_mixPreview.value?.requestId == preview.requestId) {
                     _mixPreview.value = preview.copy(savedName = resolvedName)
                 }
-                _messages.tryEmit(context.getString(R.string.mix_saved, resolvedName))
+                _messages.tryEmit(getString(Res.string.mix_saved, resolvedName))
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
                 Logger.withTag(TAG).e(error) { "Saving mix failed" }
-                _error.value = context.getString(R.string.mix_save_failed)
+                _error.value = getString(Res.string.mix_save_failed)
             } finally {
                 _mixActionInProgress.value = false
             }
@@ -283,9 +286,9 @@ class SmartMixStateHolder(
         _mixSuggestions.value = emptyList()
     }
 
-    private fun uniqueName(requested: String, existingNames: Set<String>): String {
+    private suspend fun uniqueName(requested: String, existingNames: Set<String>): String {
         val normalizedExisting = existingNames.mapTo(HashSet()) { it.lowercase() }
-        val base = requested.ifBlank { context.getString(R.string.mix_title) }
+        val base = requested.ifBlank { getString(Res.string.mix_title) }
         if (base.lowercase() !in normalizedExisting) return base
         var counter = 2
         while ("$base $counter".lowercase() in normalizedExisting) counter++

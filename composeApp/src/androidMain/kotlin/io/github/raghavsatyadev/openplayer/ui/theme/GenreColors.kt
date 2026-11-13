@@ -1,11 +1,11 @@
 package io.github.raghavsatyadev.openplayer.ui.theme
 
-import android.util.LruCache
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import io.github.raghavsatyadev.openplayer.data.model.Genre
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtPaletteStyle
+import io.github.raghavsatyadev.openplayer.utils.LruCache
 import kotlin.math.abs
 
 data class GenreThemeColor(
