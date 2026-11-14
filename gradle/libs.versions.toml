@@ -6,6 +6,7 @@ compose-material3-mp = "1.13.0-beta02"
 adaptive-mp = "1.4.0-alpha01"
 lifecycle-mp = "2.11.0"
 navigation-mp = "2.10.0"
+navigation3-mp = "1.2.0"
 animation = "1.13.0-rc01"
 appcompat = "1.8.0"
 capturable = "3.0.1"
@@ -66,7 +67,7 @@ snakeYaml = "2.7"
 koin = "4.3.0-Beta1"
 
 # Annotations procesing
-ksp = "2.3.13"
+ksp = "2.3.14"
 materialKolorUtilities = "6.0.0"
 wavySlider = "2.2.0"
 workRuntimeKtx = "2.12.0"
@@ -81,7 +82,7 @@ okhttp = "5.5.1"
 navigationRuntimeKtx = "2.10.2"
 uiautomator = "2.4.1"
 benchmarkMacroJunit4 = "1.6.0-alpha01"
-baselineprofile = "1.5.0-beta01"
+baselineprofile = "1.6.0-alpha01"
 profileinstaller = "1.4.1"
 
 
@@ -216,6 +217,9 @@ jetbrains-compose-material3-adaptive = { module = "org.jetbrains.compose.materia
 jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-mp" }
 jetbrains-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-mp" }
 jetbrains-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation-mp" }
+jetbrains-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3-mp" }
+jetbrains-lifecycle-viewmodel-navigation3 = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycle-mp" }
+koin-compose-navigation3 = { module = "io.insert-koin:koin-compose-navigation3", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
