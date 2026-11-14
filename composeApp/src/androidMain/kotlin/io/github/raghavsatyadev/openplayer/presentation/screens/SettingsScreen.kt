@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
@@ -58,13 +57,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -76,8 +75,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.painterResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -89,6 +87,7 @@ import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCo
 import io.github.raghavsatyadev.openplayer.presentation.components.ExpressiveTopBarContent
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.model.SettingsCategory
+import io.github.raghavsatyadev.openplayer.presentation.settings.search.SearchResultSection
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.SettingsFuzzySearchEngine
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.SettingsRegistry
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.SettingsSearchResultsContent
@@ -203,7 +202,6 @@ fun SettingsScreen(
         }
     }
 
-    val context = LocalContext.current
     // Kept as a TextFieldValue so the caret survives navigating into a result and back;
     // a plain String restored the field with the cursor parked at the start.
     var searchFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
@@ -230,14 +228,13 @@ fun SettingsScreen(
         searchFieldValue = TextFieldValue("")
     }
 
-    val searchResults = remember(searchQuery) {
-        if (searchQuery.isNotBlank()) {
-            SettingsFuzzySearchEngine.search(context, searchQuery, SettingsRegistry.allSettings)
+    val searchResults by produceState(emptyList<SearchResultSection>(), searchQuery) {
+        value = if (searchQuery.isNotBlank()) {
+            SettingsFuzzySearchEngine.search(searchQuery, SettingsRegistry.allSettings)
         } else {
             emptyList()
         }
     }
-
     Box(
             modifier =
                     Modifier.nestedScroll(nestedScrollConnection).fillMaxSize().graphicsLayer {
@@ -307,7 +304,7 @@ fun SettingsScreen(
                             is MainSettingsEntry.Destination -> ExpressiveNavigationItem(
                                 title = stringResource(entry.titleRes),
                                 subtitle = stringResource(entry.subtitleRes),
-                                icon = ImageVector.vectorResource(entry.iconRes),
+                                icon = vectorResource(entry.iconRes),
                                 colors = colors,
                                 onClick = { navController.navigateSafely(entry.route) },
                                 shape = shape
@@ -522,7 +519,7 @@ fun ExpressiveCategoryItem(
                     .background(customColors?.first ?: MaterialTheme.colorScheme.primaryContainer)
             ) {
                 Icon(
-                    painter = painterResource(id = category.iconRes),
+                    painter = painterResource(category.iconRes),
                     contentDescription = null,
                     tint = customColors?.second ?: MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.size(24.dp)

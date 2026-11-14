@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,7 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.raghavsatyadev.openplayer.utils.CrashLogData
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -49,6 +48,11 @@ fun CrashReportDialog(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
+    val clipboardLabel = stringResource(Res.string.crash_report_clipboard_label)
+    val copiedToast = stringResource(Res.string.toast_crash_log_copied)
+    val shareSubject = stringResource(Res.string.crash_report_share_subject)
+    val shareChooser = stringResource(Res.string.crash_report_share_chooser)
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -146,11 +150,11 @@ fun CrashReportDialog(
                         onClick = {
                             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                             val clip = ClipData.newPlainText(
-                                context.getString(R.string.crash_report_clipboard_label),
+                                clipboardLabel,
                                 crashLog.getFullLog(),
                             )
                             clipboard.setPrimaryClip(clip)
-                            Toast.makeText(context, context.getString(R.string.toast_crash_log_copied), Toast.LENGTH_SHORT).show()
+                            toaster.show(copiedToast)
                         },
                         modifier = Modifier.weight(1f)
                     ) {
@@ -167,11 +171,11 @@ fun CrashReportDialog(
                         onClick = {
                             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                                 type = "text/plain"
-                                putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.crash_report_share_subject))
+                                putExtra(Intent.EXTRA_SUBJECT, shareSubject)
                                 putExtra(Intent.EXTRA_TEXT, crashLog.getFullLog())
                             }
                             context.startActivity(
-                                Intent.createChooser(shareIntent, context.getString(R.string.crash_report_share_chooser)),
+                                Intent.createChooser(shareIntent, shareChooser),
                             )
                         },
                         modifier = Modifier.weight(1f)

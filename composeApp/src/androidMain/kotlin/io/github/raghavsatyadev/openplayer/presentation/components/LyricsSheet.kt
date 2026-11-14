@@ -4,9 +4,9 @@ import android.animation.ValueAnimator
 import android.content.ClipData
 import android.os.Build
 import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
+import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.model.Lyrics
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.scoped.LyricsPredictiveBackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.ui.zIndex
@@ -65,7 +65,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.onLongClick
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -873,8 +872,8 @@ fun LyricsSheet(
                                     if (lyrics?.areFromRemote == true) {
                                         item(key = "provider_text") {
                                             ProviderText(
-                                                providerText = context.resources.getString(R.string.lyrics_provided_by),
-                                                uri = context.resources.getString(R.string.lrclib_uri),
+                                                providerText = stringResource(Res.string.lyrics_provided_by),
+                                                uri = stringResource(Res.string.lrclib_uri),
                                                 textAlign = TextAlign.Center,
                                                 accentColor = lyricHighlightColor,
                                                 modifier = Modifier

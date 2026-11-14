@@ -9,7 +9,7 @@ import android.util.LruCache
 import androidx.core.net.toUri
 import com.google.gson.Gson
 import com.kyant.taglib.TagLib
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.data.database.MusicDao
 import io.github.raghavsatyadev.openplayer.data.model.Lyrics
 import io.github.raghavsatyadev.openplayer.data.model.SyncedLine
@@ -1160,7 +1160,7 @@ class LyricsRepositoryImpl(
             }
 
             if (!isExternalLyricsEnabled()) {
-                return@withContext Result.failure(LyricsException(context.getString(R.string.lyrics_remote_disabled)))
+                return@withContext Result.failure(LyricsException(getString(Res.string.lyrics_remote_disabled)))
             }
 
             val searchResult = searchRemote(song)
@@ -1238,11 +1238,11 @@ class LyricsRepositoryImpl(
             LogUtils.e(this@LyricsRepositoryImpl, e, "Error fetching lyrics from remote")
             when {
                 e is HttpException && e.code() == 404 -> Result.failure(NoLyricsFoundException())
-                e is SocketTimeoutException -> Result.failure(LyricsException(context.getString(R.string.lyrics_fetch_timeout), e))
-                e is UnknownHostException -> Result.failure(LyricsException(context.getString(R.string.lyrics_network_error), e))
-                e is IOException -> Result.failure(LyricsException(context.getString(R.string.lyrics_network_error), e))
-                e is HttpException -> Result.failure(LyricsException(context.getString(R.string.lyrics_server_error, e.code()), e))
-                else -> Result.failure(LyricsException(context.getString(R.string.failed_to_fetch_lyrics_from_remote), e))
+                e is SocketTimeoutException -> Result.failure(LyricsException(getString(Res.string.lyrics_fetch_timeout), e))
+                e is UnknownHostException -> Result.failure(LyricsException(getString(Res.string.lyrics_network_error), e))
+                e is IOException -> Result.failure(LyricsException(getString(Res.string.lyrics_network_error), e))
+                e is HttpException -> Result.failure(LyricsException(getString(Res.string.lyrics_server_error, e.code()), e))
+                else -> Result.failure(LyricsException(getString(Res.string.failed_to_fetch_lyrics_from_remote), e))
             }
         }
     }
@@ -1250,7 +1250,7 @@ class LyricsRepositoryImpl(
     override suspend fun searchRemote(song: Song): Result<Pair<String, List<LyricsSearchResult>>> = withContext(Dispatchers.IO) {
         try {
             if (!isExternalLyricsEnabled()) {
-                return@withContext Result.failure(LyricsException(context.getString(R.string.lyrics_remote_disabled)))
+                return@withContext Result.failure(LyricsException(getString(Res.string.lyrics_remote_disabled)))
             }
 
             LogUtils.d(this@LyricsRepositoryImpl, "Searching remote for lyrics for: ${song.title} by ${song.displayArtist}")
@@ -1319,11 +1319,11 @@ class LyricsRepositoryImpl(
         } catch (e: Exception) {
             LogUtils.e(this@LyricsRepositoryImpl, e, "Error searching remote for lyrics")
             when {
-                e is SocketTimeoutException -> Result.failure(LyricsException(context.getString(R.string.lyrics_fetch_timeout), e))
-                e is UnknownHostException -> Result.failure(LyricsException(context.getString(R.string.lyrics_network_error), e))
-                e is IOException -> Result.failure(LyricsException(context.getString(R.string.lyrics_network_error), e))
-                e is HttpException -> Result.failure(LyricsException(context.getString(R.string.lyrics_server_error, e.code()), e))
-                else -> Result.failure(LyricsException(context.getString(R.string.failed_to_search_for_lyrics), e))
+                e is SocketTimeoutException -> Result.failure(LyricsException(getString(Res.string.lyrics_fetch_timeout), e))
+                e is UnknownHostException -> Result.failure(LyricsException(getString(Res.string.lyrics_network_error), e))
+                e is IOException -> Result.failure(LyricsException(getString(Res.string.lyrics_network_error), e))
+                e is HttpException -> Result.failure(LyricsException(getString(Res.string.lyrics_server_error, e.code()), e))
+                else -> Result.failure(LyricsException(getString(Res.string.failed_to_search_for_lyrics), e))
             }
         }
     }
@@ -1331,7 +1331,7 @@ class LyricsRepositoryImpl(
     override suspend fun searchRemoteByQuery(title: String, artist: String?): Result<Pair<String, List<LyricsSearchResult>>> = withContext(Dispatchers.IO) {
         try {
             if (!isExternalLyricsEnabled()) {
-                return@withContext Result.failure(LyricsException(context.getString(R.string.lyrics_remote_disabled)))
+                return@withContext Result.failure(LyricsException(getString(Res.string.lyrics_remote_disabled)))
             }
 
             val cleanTitle = title.trim()
@@ -1375,7 +1375,7 @@ class LyricsRepositoryImpl(
             }
         } catch (e: Exception) {
             LogUtils.e(this@LyricsRepositoryImpl, e, "Manual search failed")
-            Result.failure(LyricsException(context.getString(R.string.failed_to_search_for_lyrics), e)
+            Result.failure(LyricsException(getString(Res.string.failed_to_search_for_lyrics), e)
             )
         }
     }

@@ -102,7 +102,6 @@ import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
@@ -119,7 +118,6 @@ import androidx.compose.ui.unit.lerp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.AutoScrollingText
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
@@ -248,7 +246,11 @@ fun QueueBottomSheet(
     shape: RoundedCornerShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
 ) {
     val colors = MaterialTheme.colorScheme
-    val context = LocalContext.current
+    val defaultSaveQueueName = if (currentQueueSourceName.isNotBlank()) {
+        stringResource(Res.string.presentation_batch_e_queue_named_suffix, currentQueueSourceName)
+    } else {
+        stringResource(Res.string.presentation_batch_e_queue_current)
+    }
     var showTimerOptions by rememberSaveable { mutableStateOf(false) }
     var showSpeedSheet by rememberSaveable { mutableStateOf(false) }
     var showClearQueueDialog by remember { mutableStateOf(false) }
@@ -1066,18 +1068,9 @@ fun QueueBottomSheet(
                                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                 onClick = {
                                     isFabExpanded = false
-                                    val res = context.resources
-                                    val defaultName = if (currentQueueSourceName.isNotBlank()) {
-                                        res.getString(
-                                            R.string.presentation_batch_e_queue_named_suffix,
-                                            currentQueueSourceName
-                                        )
-                                    } else {
-                                        res.getString(R.string.presentation_batch_e_queue_current)
-                                    }
                                     onRequestSaveAsPlaylist(
                                         queue,
-                                        defaultName
+                                        defaultSaveQueueName
                                     ) { name, selectedIds ->
                                         val orderedSelection = queue
                                             .filter { selectedIds.contains(it.id) }

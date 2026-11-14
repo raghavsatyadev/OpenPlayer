@@ -76,8 +76,6 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
  * @param onDeleteAll Delete all from device (with confirmation)
  */
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.AutoSizingTextToFill
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.TightWrapText
 import kotlinx.collections.immutable.ImmutableList
@@ -291,7 +289,7 @@ fun MultiSelectionBottomSheet(
                                     else
                                         vectorResource(Res.drawable.rounded_favorite_24),
                                     contentDescription = stringResource(
-                                        if (allAreLiked) R.string.cd_unlike_all else R.string.cd_like_all
+                                        if (allAreLiked) Res.string.cd_unlike_all else Res.string.cd_like_all
                                     )
                                 )
                             }

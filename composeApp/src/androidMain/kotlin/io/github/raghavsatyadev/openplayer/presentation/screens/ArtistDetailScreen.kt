@@ -100,8 +100,6 @@ import coil3.request.allowHardware
 import coil3.request.crossfade
 import coil3.size.Size
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
-import androidx.compose.ui.res.stringResource
-import io.github.raghavsatyadev.openplayer.R
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.ImmutableList
@@ -748,7 +746,7 @@ private fun ArtistAlbumsExpandAllButton(
         Spacer(modifier = Modifier.width(ButtonDefaults.iconSpacingFor(height)))
         Text(
             text = stringResource(
-                if (anyExpanded) R.string.artist_page_collapse_all_albums else R.string.artist_page_expand_all_albums
+                if (anyExpanded) Res.string.artist_page_collapse_all_albums else Res.string.artist_page_expand_all_albums
             ),
             style = ButtonDefaults.textStyleFor(height),
             maxLines = 1

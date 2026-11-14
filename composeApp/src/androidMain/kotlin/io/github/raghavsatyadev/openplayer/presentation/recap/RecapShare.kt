@@ -8,7 +8,7 @@ import android.graphics.Bitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.core.content.FileProvider
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -39,12 +39,12 @@ internal suspend fun shareRecapImage(context: Context, layer: GraphicsLayer, yea
     val send = Intent(Intent.ACTION_SEND).apply {
         type = "image/png"
         putExtra(Intent.EXTRA_STREAM, uri)
-        putExtra(Intent.EXTRA_TEXT, context.getString(R.string.recap_share_text, year))
+        putExtra(Intent.EXTRA_TEXT, getString(Res.string.recap_share_text, year))
         // ClipData lets the share sheet preview the image and carries the read grant.
         clipData = ClipData.newRawUri(null, uri)
         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
-    val chooser = Intent.createChooser(send, context.getString(R.string.recap_share_chooser_title))
+    val chooser = Intent.createChooser(send, getString(Res.string.recap_share_chooser_title))
     if (context !is Activity) chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     context.startActivity(chooser)
 }

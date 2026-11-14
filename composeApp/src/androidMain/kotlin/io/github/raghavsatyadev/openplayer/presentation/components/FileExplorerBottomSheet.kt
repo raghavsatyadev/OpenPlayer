@@ -88,8 +88,6 @@ import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.stringResource
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -810,7 +808,7 @@ private fun FileExplorerItem(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = stringResource(if (isBlocked) R.string.folder_state_excluded else R.string.folder_state_included),
+                text = stringResource(if (isBlocked) Res.string.folder_state_excluded else Res.string.folder_state_included),
                 style = MaterialTheme.typography.labelMedium,
                 color = if (isBlocked) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onSurfaceVariant
             )

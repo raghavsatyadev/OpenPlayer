@@ -103,7 +103,6 @@ import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.navigation.NavHostController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceDiagnostics
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
@@ -128,7 +127,6 @@ import kotlinx.coroutines.withContext
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import co.touchlab.kermit.Logger
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.EnhancedSongListItem
-import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.border
@@ -156,6 +154,7 @@ import androidx.compose.ui.unit.Dp
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.vectorResource
 
 private data class SearchUiSlice(
@@ -228,10 +227,9 @@ fun SearchScreen(
         selectedGenres = persistentListOf()
     }
 
+    val maxAlbumsMessage = stringResource(Res.string.presentation_batch_d_max_albums_selection, MAX_ALBUM_MULTI_SELECTION)
     val showMaxAlbumsToast: () -> Unit = {
-        playerViewModel.sendToast(
-            context.getString(R.string.presentation_batch_d_max_albums_selection, MAX_ALBUM_MULTI_SELECTION)
-        )
+        playerViewModel.sendToast(maxAlbumsMessage)
     }
     val toggleAlbumSelection: (Album) -> Unit = { album ->
         when {
@@ -812,13 +810,15 @@ fun SearchScreen(
                 val cloudSongCount = CloudOfflineRepository.downloadCandidates(selectedSongs).size
                 cloudDownloadsViewModel.downloadSelected(selectedSongs)
                 multiSelectionState.clearSelection()
-                playerViewModel.sendToast(
-                    context.resources.getQuantityString(
-                        R.plurals.cloud_download_selected_started,
-                        cloudSongCount,
-                        cloudSongCount
+                scope.launch {
+                    playerViewModel.sendToast(
+                        getPluralString(
+                            Res.plurals.cloud_download_selected_started,
+                            cloudSongCount,
+                            cloudSongCount
+                        )
                     )
-                )
+                }
                 showMultiSelectionSheet = false
             },
             onDeleteAll = { deleteActivity, onComplete ->
@@ -889,7 +889,7 @@ fun SearchScreen(
                         playlistSheetSongs = songs.toImmutableList()
                         showPlaylistBottomSheet = true
                     } else {
-                        playerViewModel.sendToast(context.getString(R.string.player_no_playable_songs_in_albums))
+                        playerViewModel.sendToast(getString(Res.string.player_no_playable_songs_in_albums))
                     }
                 }
             }
@@ -972,7 +972,7 @@ fun SearchScreen(
                         playlistSheetSongs = songs.toImmutableList()
                         showPlaylistBottomSheet = true
                     } else {
-                        playerViewModel.sendToast(context.getString(R.string.player_no_playable_songs_in_genres))
+                        playerViewModel.sendToast(getString(Res.string.player_no_playable_songs_in_genres))
                     }
                 }
             }
@@ -1197,8 +1197,7 @@ fun SearchResultsList(
     }
     val searchTapModeViewModel: SearchTapModeViewModel = koinViewModel()
     val searchTapMode by searchTapModeViewModel.mode.collectAsStateWithLifecycle()
-    val tapContext = androidx.compose.ui.platform.LocalContext.current
-    val searchTapActions = remember(playerViewModel) { playerViewModel.searchTapActions { tapContext.getString(it) } }
+    val searchTapActions = remember(playerViewModel) { playerViewModel.searchTapActions() }
     val onSongResultClick = remember(searchTapActions, onItemSelected, songResultsQueue, searchQueueName, searchTapMode) {
         { song: Song ->
             val plan = planSearchTap(searchTapMode, song, songResultsQueue, searchQueueName)
@@ -1832,10 +1831,10 @@ internal fun SearchResultsHeader(
     }
 }
 
-private fun searchFilterLabelRes(filterType: SearchFilterType): Int = when (filterType) {
-    SearchFilterType.ALL -> R.string.search_filter_all
-    SearchFilterType.SONGS -> R.string.library_tab_songs
-    SearchFilterType.ALBUMS -> R.string.library_tab_albums
-    SearchFilterType.ARTISTS -> R.string.library_tab_artists
-    SearchFilterType.PLAYLISTS -> R.string.library_tab_playlists
+private fun searchFilterLabelRes(filterType: SearchFilterType): StringResource = when (filterType) {
+    SearchFilterType.ALL -> Res.string.search_filter_all
+    SearchFilterType.SONGS -> Res.string.library_tab_songs
+    SearchFilterType.ALBUMS -> Res.string.library_tab_albums
+    SearchFilterType.ARTISTS -> Res.string.library_tab_artists
+    SearchFilterType.PLAYLISTS -> Res.string.library_tab_playlists
 }

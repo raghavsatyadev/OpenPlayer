@@ -11,7 +11,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
-import android.widget.Toast
 import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -109,8 +108,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -131,7 +128,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupTransferProgressUpdate
 import io.github.raghavsatyadev.openplayer.data.backup.model.RestorePlan
@@ -164,8 +160,10 @@ import java.util.Locale
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -177,6 +175,8 @@ fun SetupScreen(
 ) {
     val context = LocalContext.current
     val toaster = rememberAppToaster()
+    val msgGrantPermissionFirst = stringResource(Res.string.toast_grant_permission_first)
+    val msgGrantAllPermissions = stringResource(Res.string.toast_grant_all_permissions)
     val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
     val uiState by setupViewModel.uiState.collectAsStateWithLifecycle()
     val currentPath by setupViewModel.currentPath.collectAsStateWithLifecycle()
@@ -272,7 +272,7 @@ fun SetupScreen(
                 setupViewModel.checkPermissions(context)
                 pagerState.scrollToPage(blockedPageIndex)
                 previousPageIndex = blockedPageIndex
-                Toast.makeText(context, context.getString(R.string.toast_grant_permission_first), Toast.LENGTH_SHORT).show()
+                toaster.show(msgGrantPermissionFirst)
                 return@LaunchedEffect
             }
         }
@@ -300,7 +300,7 @@ fun SetupScreen(
                         navigateToPage(pagerState.currentPage + 1)
                     } else {
                         setupViewModel.checkPermissions(context)
-                        Toast.makeText(context, context.getString(R.string.toast_grant_permission_first), Toast.LENGTH_SHORT).show()
+                        toaster.show(msgGrantPermissionFirst)
                     }
                 },
                 onFinishClicked = {
@@ -309,7 +309,7 @@ fun SetupScreen(
                         onSetupComplete()
                     } else {
                         setupViewModel.checkPermissions(context)
-                        Toast.makeText(context, context.getString(R.string.toast_grant_all_permissions), Toast.LENGTH_SHORT).show()
+                        toaster.show(msgGrantAllPermissions)
                     }
                 }
             )
@@ -481,7 +481,8 @@ fun DirectorySelectionPage(
     onStorageSelected: (Int) -> Unit
 ) {
     var showDirectoryPicker by remember { mutableStateOf(false) }
-    val context = LocalContext.current
+    val toaster = rememberAppToaster()
+    val msgGrantStorageFirst = stringResource(Res.string.toast_grant_storage_first)
 
     val hasMediaPermission = uiState.mediaPermissionGranted
     val canOpenDirectoryPicker = hasMediaPermission
@@ -502,15 +503,15 @@ fun DirectorySelectionPage(
                 showDirectoryPicker = true
                 onOpenExplorer()
             } else {
-                Toast.makeText(context, context.getString(R.string.toast_grant_storage_first), Toast.LENGTH_SHORT).show()
+                toaster.show(msgGrantStorageFirst)
             }
         },
         icons = persistentListOf(
-            R.drawable.rounded_folder_24,
-            R.drawable.rounded_music_note_24,
-            R.drawable.rounded_create_new_folder_24,
-            R.drawable.rounded_folder_open_24,
-            R.drawable.rounded_audio_file_24
+            Res.drawable.rounded_folder_24,
+            Res.drawable.rounded_music_note_24,
+            Res.drawable.rounded_create_new_folder_24,
+            Res.drawable.rounded_folder_open_24,
+            Res.drawable.rounded_audio_file_24
         )
     ) {
         TextButton(onClick = onSkip) {
@@ -821,7 +822,7 @@ private fun SetupLanguagePill() {
     }
 
     if (showLanguageSheet) {
-        val languageOptions = remember(context) { AppLanguage.getLanguageOptions(context) }
+        val languageOptions = AppLanguage.getLanguageOptions()
         OptionSelectionSheet(
             title = languageLabel,
             options = languageOptions,
@@ -851,11 +852,11 @@ fun MediaPermissionPage(
     }
     val permissionState = rememberMultiplePermissionsState(permissions = permissions)
     val mediaIcons = persistentListOf(
-        R.drawable.rounded_music_note_24,
-        R.drawable.rounded_album_24,
-        R.drawable.rounded_library_music_24,
-        R.drawable.rounded_artist_24,
-        R.drawable.rounded_playlist_play_24
+        Res.drawable.rounded_music_note_24,
+        Res.drawable.rounded_album_24,
+        Res.drawable.rounded_library_music_24,
+        Res.drawable.rounded_artist_24,
+        Res.drawable.rounded_playlist_play_24
     )
 
     val isGranted = uiState.mediaPermissionGranted || permissionState.allPermissionsGranted
@@ -889,11 +890,11 @@ fun NotificationsPermissionPage(
 
     val permissionState = rememberMultiplePermissionsState(permissions = listOf(Manifest.permission.POST_NOTIFICATIONS))
     val notificationIcons = persistentListOf(
-        R.drawable.rounded_circle_notifications_24,
-        R.drawable.rounded_skip_next_24,
-        R.drawable.rounded_play_arrow_24,
-        R.drawable.rounded_pause_24,
-        R.drawable.rounded_skip_previous_24
+        Res.drawable.rounded_circle_notifications_24,
+        Res.drawable.rounded_skip_next_24,
+        Res.drawable.rounded_play_arrow_24,
+        Res.drawable.rounded_pause_24,
+        Res.drawable.rounded_skip_previous_24
     )
 
     val isGranted = uiState.notificationsPermissionGranted || permissionState.allPermissionsGranted
@@ -926,11 +927,11 @@ fun AlarmsPermissionPage(
 
     val context = LocalContext.current
     val icons = persistentListOf(
-        R.drawable.rounded_alarm_24,
-        R.drawable.rounded_schedule_24,
-        R.drawable.rounded_timer_24,
-        R.drawable.rounded_hourglass_empty_24,
-        R.drawable.rounded_notifications_active_24
+        Res.drawable.rounded_alarm_24,
+        Res.drawable.rounded_schedule_24,
+        Res.drawable.rounded_timer_24,
+        Res.drawable.rounded_hourglass_empty_24,
+        Res.drawable.rounded_notifications_active_24
     )
 
     val isGranted = uiState.alarmsPermissionGranted
@@ -964,6 +965,8 @@ fun BatteryOptimizationPage(
     onSkip: () -> Unit
 ) {
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
+    val msgBatterySettingsUnavailable = stringResource(Res.string.setcat_toast_battery_settings_unavailable)
     val lifecycleOwner = LocalLifecycleOwner.current
     var isIgnoringOptimizations by remember { mutableStateOf(isIgnoringBatteryOptimizations(context)) }
 
@@ -979,11 +982,11 @@ fun BatteryOptimizationPage(
     }
 
     val icons = persistentListOf(
-        R.drawable.rounded_all_inclusive_24,
-        R.drawable.rounded_headphones_24,
-        R.drawable.rounded_play_arrow_24,
-        R.drawable.rounded_timer_24,
-        R.drawable.rounded_music_note_24
+        Res.drawable.rounded_all_inclusive_24,
+        Res.drawable.rounded_headphones_24,
+        Res.drawable.rounded_play_arrow_24,
+        Res.drawable.rounded_timer_24,
+        Res.drawable.rounded_music_note_24
     )
 
     PermissionPageLayout(
@@ -995,7 +998,7 @@ fun BatteryOptimizationPage(
         icons = icons,
         onGrantClicked = {
             if (!isIgnoringOptimizations && !openBatteryOptimizationSettings(context)) {
-                Toast.makeText(context, context.getString(R.string.setcat_toast_battery_settings_unavailable), Toast.LENGTH_SHORT).show()
+                toaster.show(msgBatterySettingsUnavailable)
             }
         }
     ) {
@@ -1027,11 +1030,11 @@ fun BackupRestorePage(
         },
         buttonEnabled = !isBusy,
         icons = persistentListOf(
-            R.drawable.rounded_upload_file_24,
-            R.drawable.rounded_playlist_play_24,
-            R.drawable.rounded_settings_24,
-            R.drawable.rounded_lyrics_24,
-            R.drawable.rounded_monitoring_24
+            Res.drawable.rounded_upload_file_24,
+            Res.drawable.rounded_playlist_play_24,
+            Res.drawable.rounded_settings_24,
+            Res.drawable.rounded_lyrics_24,
+            Res.drawable.rounded_monitoring_24
         ),
         onGrantClicked = onImportClicked
     ) {
@@ -1598,7 +1601,7 @@ fun LibraryHeaderPreview(isCompact: Boolean, previewHeight: Dp = 180.dp) {
                             LibraryNavigationPillSetupShow(
                                 title = stringResource(Res.string.setup_preview_songs_label),
                                 isExpanded = false,
-                                iconRes = R.drawable.rounded_music_note_24,
+                                iconRes = Res.drawable.rounded_music_note_24,
                                 pageIndex = 0,
                                 onClick = {},
                                 onArrowClick = {}
@@ -1720,11 +1723,11 @@ fun LibraryHeaderPreview(isCompact: Boolean, previewHeight: Dp = 180.dp) {
 @Composable
 fun FinishPage() {
     val finishIcons = persistentListOf(
-        R.drawable.rounded_check_circle_24,
-        R.drawable.round_favorite_24,
-        R.drawable.rounded_celebration_24,
-        R.drawable.round_favorite_24,
-        R.drawable.rounded_explosion_24
+        Res.drawable.rounded_check_circle_24,
+        Res.drawable.round_favorite_24,
+        Res.drawable.rounded_celebration_24,
+        Res.drawable.round_favorite_24,
+        Res.drawable.rounded_explosion_24
     )
 
     Column(
@@ -1751,7 +1754,7 @@ fun PermissionPageLayout(
     granted: Boolean = false,
     description: String,
     buttonText: String,
-    icons: ImmutableList<Int>,
+    icons: ImmutableList<DrawableResource>,
     buttonEnabled: Boolean = true,
     onGrantClicked: () -> Unit,
     content: @Composable () -> Unit = {}
@@ -1906,7 +1909,6 @@ private fun SetupRestoreDialog(
     onSelectionChanged: (Set<BackupSection>) -> Unit,
     onConfirm: () -> Unit
 ) {
-    val context = LocalContext.current
     val dateText = remember(plan.manifest.createdAt) {
         SimpleDateFormat("MMM d, yyyy 'at' h:mm a", Locale.getDefault())
             .format(Date(plan.manifest.createdAt))
@@ -2018,7 +2020,7 @@ private fun SetupRestoreDialog(
                             )
                             Text(
                                 text = stringResource(Res.string.setup_backup_from_version,
-                                    plan.manifest.appVersion.ifEmpty { context.getString(R.string.unknown_version) }
+                                    plan.manifest.appVersion.ifEmpty { stringResource(Res.string.unknown_version) }
                                 ),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -2167,12 +2169,12 @@ private fun SetupRestoreSectionRow(
 fun LibraryNavigationPillSetupShow(
     title: String,
     isExpanded: Boolean,
-    iconRes: Int,
+    iconRes: DrawableResource,
     pageIndex: Int,
     onClick: () -> Unit,
     onArrowClick: () -> Unit
 ) {
-    data class PillState(val pageIndex: Int, val iconRes: Int, val title: String)
+    data class PillState(val pageIndex: Int, val iconRes: DrawableResource, val title: String)
 
     val pillRadius = 26.dp
     val innerRadius = 4.dp
@@ -2236,7 +2238,7 @@ fun LibraryNavigationPillSetupShow(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            painter = painterResource(id = targetState.iconRes),
+                            painter = painterResource(targetState.iconRes),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )

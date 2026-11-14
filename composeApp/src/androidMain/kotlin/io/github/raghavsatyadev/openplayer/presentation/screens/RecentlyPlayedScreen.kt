@@ -101,6 +101,8 @@ fun RecentlyPlayedScreen(
     navController: NavController
 ) = traceSection("RecentlyPlayedScreen.Composition") {
     val context = LocalContext.current
+    val dateTodayLabel = stringResource(Res.string.presentation_batch_b_date_today)
+    val dateYesterdayLabel = stringResource(Res.string.presentation_batch_b_date_yesterday)
     val queueRecentlyPlayed = stringResource(Res.string.presentation_batch_b_queue_recently_played)
     val shuffleLabel = stringResource(Res.string.shortcut_shuffle_short)
     val playbackHistory by playerViewModel.playbackHistory.collectAsStateWithLifecycle()
@@ -144,9 +146,11 @@ fun RecentlyPlayedScreen(
             maxItems = Int.MAX_VALUE
         ).toImmutableList()
     }
-    val groupedSongs = remember(recentlyPlayedSongs, selectedRange, context) {
+    val groupedSongs = remember(recentlyPlayedSongs, selectedRange, context, dateTodayLabel, dateYesterdayLabel) {
         groupRecentlyPlayedSongs(
             context = context,
+            todayLabel = dateTodayLabel,
+            yesterdayLabel = dateYesterdayLabel,
             songs = recentlyPlayedSongs,
             range = selectedRange
         )
@@ -650,6 +654,8 @@ private data class TimestampGroup(
 
 private fun groupRecentlyPlayedSongs(
     context: android.content.Context,
+    todayLabel: String,
+    yesterdayLabel: String,
     songs: List<RecentlyPlayedSongUiModel>,
     range: StatsTimeRange
 ): List<TimestampGroup> {
@@ -666,6 +672,8 @@ private fun groupRecentlyPlayedSongs(
     sorted.forEach { item ->
         val timeBucket = resolveTimestampBucket(
             context = context,
+            todayLabel = todayLabel,
+            yesterdayLabel = yesterdayLabel,
             timestamp = item.lastPlayedTimestamp,
             range = range,
             zoneId = zoneId
@@ -709,6 +717,8 @@ private data class TimestampBucket(
 
 private fun resolveTimestampBucket(
     context: android.content.Context,
+    todayLabel: String,
+    yesterdayLabel: String,
     timestamp: Long,
     range: StatsTimeRange,
     zoneId: ZoneId
@@ -740,14 +750,14 @@ private fun resolveTimestampBucket(
         date == nowDate -> {
             TimestampBucket(
                 key = date.toString(),
-                label = context.getString(R.string.presentation_batch_b_date_today),
+                label = todayLabel,
                 isHourBucket = false
             )
         }
         date == nowDate.minusDays(1) -> {
             TimestampBucket(
                 key = date.toString(),
-                label = context.getString(R.string.presentation_batch_b_date_yesterday),
+                label = yesterdayLabel,
                 isHourBucket = false
             )
         }

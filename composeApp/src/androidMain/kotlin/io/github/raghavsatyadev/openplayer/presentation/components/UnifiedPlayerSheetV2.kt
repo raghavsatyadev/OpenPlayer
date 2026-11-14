@@ -43,7 +43,6 @@ import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -603,15 +602,8 @@ fun UnifiedPlayerSheetV2(
 
     if (!actuallyShowSheetContent) return
 
-    val sheetResources = LocalResources.current
     val currentSongTitle = infrequentPlayerState.currentSong?.title
-    val playerSheetSemanticsDescription = remember(
-        sheetResources,
-        currentSheetContentState,
-        currentSongTitle
-    ) {
-        playerSheetContentDescription(sheetResources, currentSheetContentState, currentSongTitle)
-    }
+    val playerSheetSemanticsDescription = playerSheetContentDescription(currentSheetContentState, currentSongTitle)
 
     Surface(
         modifier = Modifier

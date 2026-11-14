@@ -8,7 +8,7 @@ import io.github.raghavsatyadev.openplayer.data.model.Album
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -50,10 +50,14 @@ class AlbumDetailViewModel(
                 loadedAlbumId = albumId
                 loadAlbumData(albumId)
             } else {
-                _uiState.update { it.copy(error = context.getString(R.string.invalid_album_id), isLoading = false) }
+                viewModelScope.launch {
+                    _uiState.update { it.copy(error = getString(Res.string.invalid_album_id), isLoading = false) }
+                }
             }
         } else {
-            _uiState.update { it.copy(error = context.getString(R.string.album_id_not_found), isLoading = false) }
+            viewModelScope.launch {
+                _uiState.update { it.copy(error = getString(Res.string.album_id_not_found), isLoading = false) }
+            }
         }
     }
 
@@ -77,7 +81,7 @@ class AlbumDetailViewModel(
                         )
                     } else {
                         AlbumDetailUiState(
-                            error = context.getString(R.string.album_not_found),
+                            error = getString(Res.string.album_not_found),
                             isLoading = false
                         )
                     }
@@ -85,7 +89,7 @@ class AlbumDetailViewModel(
                     .catch { e ->
                         emit(
                             AlbumDetailUiState(
-                                error = context.getString(R.string.error_loading_album, e.localizedMessage ?: ""),
+                                error = getString(Res.string.error_loading_album, e.localizedMessage ?: ""),
                                 isLoading = false
                             )
                         )
@@ -97,7 +101,7 @@ class AlbumDetailViewModel(
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(
-                        error = context.getString(R.string.error_loading_album, e.localizedMessage ?: ""),
+                        error = getString(Res.string.error_loading_album, e.localizedMessage ?: ""),
                         isLoading = false
                     )
                 }

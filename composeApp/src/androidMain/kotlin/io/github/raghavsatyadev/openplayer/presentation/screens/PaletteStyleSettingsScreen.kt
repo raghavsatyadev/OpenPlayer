@@ -56,8 +56,6 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.stringResource
-import io.github.raghavsatyadev.openplayer.R
 import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtColorAccuracy
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtPaletteStyle
@@ -722,10 +720,10 @@ private fun PaletteAccuracySlider(
 private fun albumArtPaletteStyleDescription(style: AlbumArtPaletteStyle): String =
     stringResource(
         when (style) {
-            AlbumArtPaletteStyle.TONAL_SPOT -> R.string.presentation_batch_f_palette_style_tonal_spot_desc
-            AlbumArtPaletteStyle.VIBRANT -> R.string.presentation_batch_f_palette_style_vibrant_desc
-            AlbumArtPaletteStyle.EXPRESSIVE -> R.string.presentation_batch_f_palette_style_expressive_desc
-            AlbumArtPaletteStyle.FRUIT_SALAD -> R.string.presentation_batch_f_palette_style_fruit_salad_desc
+            AlbumArtPaletteStyle.TONAL_SPOT -> Res.string.presentation_batch_f_palette_style_tonal_spot_desc
+            AlbumArtPaletteStyle.VIBRANT -> Res.string.presentation_batch_f_palette_style_vibrant_desc
+            AlbumArtPaletteStyle.EXPRESSIVE -> Res.string.presentation_batch_f_palette_style_expressive_desc
+            AlbumArtPaletteStyle.FRUIT_SALAD -> Res.string.presentation_batch_f_palette_style_fruit_salad_desc
         }
     )
 
@@ -733,10 +731,10 @@ private fun albumArtPaletteStyleDescription(style: AlbumArtPaletteStyle): String
 private fun albumArtPaletteStyleLabel(style: AlbumArtPaletteStyle): String =
     stringResource(
         when (style) {
-            AlbumArtPaletteStyle.TONAL_SPOT -> R.string.presentation_batch_f_palette_label_tonal_spot
-            AlbumArtPaletteStyle.VIBRANT -> R.string.presentation_batch_f_palette_label_vibrant
-            AlbumArtPaletteStyle.EXPRESSIVE -> R.string.presentation_batch_f_palette_label_expressive
-            AlbumArtPaletteStyle.FRUIT_SALAD -> R.string.presentation_batch_f_palette_label_fruit_salad
+            AlbumArtPaletteStyle.TONAL_SPOT -> Res.string.presentation_batch_f_palette_label_tonal_spot
+            AlbumArtPaletteStyle.VIBRANT -> Res.string.presentation_batch_f_palette_label_vibrant
+            AlbumArtPaletteStyle.EXPRESSIVE -> Res.string.presentation_batch_f_palette_label_expressive
+            AlbumArtPaletteStyle.FRUIT_SALAD -> Res.string.presentation_batch_f_palette_label_fruit_salad
         }
     )
 

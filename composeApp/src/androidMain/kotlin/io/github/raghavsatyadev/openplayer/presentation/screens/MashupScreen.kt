@@ -44,13 +44,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.DeckState
@@ -244,7 +242,7 @@ private fun DeckUi(
                 ) {
                     OutlinedButton(onClick = { onNudge(-100) }, enabled = deckState.song != null) { Text("<<", maxLines = 1, overflow = TextOverflow.Ellipsis) }
                     IconButton(onClick = onPlayPause, enabled = deckState.song != null, modifier = Modifier.size(56.dp)) {
-                        Icon(painter = painterResource(if (deckState.isPlaying) R.drawable.rounded_pause_24 else R.drawable.rounded_play_arrow_24), contentDescription = stringResource(Res.string.mashup_cd_play_pause), modifier = Modifier.fillMaxSize())
+                        Icon(painter = painterResource(if (deckState.isPlaying) Res.drawable.rounded_pause_24 else Res.drawable.rounded_play_arrow_24), contentDescription = stringResource(Res.string.mashup_cd_play_pause), modifier = Modifier.fillMaxSize())
                     }
                     OutlinedButton(onClick = { onNudge(100) }, enabled = deckState.song != null) { Text(">>", maxLines = 1, overflow = TextOverflow.Ellipsis) }
                 }

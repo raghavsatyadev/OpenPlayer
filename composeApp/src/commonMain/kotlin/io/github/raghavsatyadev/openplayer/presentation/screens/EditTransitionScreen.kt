@@ -63,14 +63,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Curve
 import io.github.raghavsatyadev.openplayer.data.model.TransitionMode
 import io.github.raghavsatyadev.openplayer.data.model.TransitionSettings
@@ -93,7 +91,6 @@ fun EditTransitionScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-    val context = LocalContext.current
 
     val displayedSettings = if (uiState.useGlobalDefaults) {
         uiState.globalSettings
@@ -109,11 +106,11 @@ fun EditTransitionScreen(
     LaunchedEffect(uiState.isSaved, isPlaylistScope, uiState.useGlobalDefaults) {
         if (uiState.isSaved) {
             val messageRes = if (isPlaylistScope && uiState.useGlobalDefaults) {
-                R.string.presentation_batch_d_transition_snackbar_using_global
+                Res.string.presentation_batch_d_transition_snackbar_using_global
             } else {
-                R.string.presentation_batch_d_transition_snackbar_saved
+                Res.string.presentation_batch_d_transition_snackbar_saved
             }
-            snackbarHostState.showSnackbar(message = context.getString(messageRes))
+            snackbarHostState.showSnackbar(message = getString(messageRes))
         }
     }
 

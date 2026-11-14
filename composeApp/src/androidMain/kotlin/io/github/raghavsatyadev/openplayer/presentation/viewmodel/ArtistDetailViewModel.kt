@@ -6,7 +6,7 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.data.model.Artist
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
@@ -98,10 +98,10 @@ class ArtistDetailViewModel(
                     if (artistId != null) {
                         loadArtistData(artistId)
                     } else {
-                        _uiState.update { it.copy(error = context.getString(R.string.invalid_artist_id), isLoading = false) }
+                        _uiState.update { it.copy(error = getString(Res.string.invalid_artist_id), isLoading = false) }
                     }
                 } else {
-                    _uiState.update { it.copy(error = context.getString(R.string.artist_id_not_found), isLoading = false) }
+                    _uiState.update { it.copy(error = getString(Res.string.artist_id_not_found), isLoading = false) }
                 }
             }
             .launchIn(viewModelScope)
@@ -130,7 +130,7 @@ class ArtistDetailViewModel(
                     .catch { e ->
                         _uiState.update {
                             it.copy(
-                                error = context.getString(R.string.error_loading_artist, e.localizedMessage ?: ""),
+                                error = getString(Res.string.error_loading_artist, e.localizedMessage ?: ""),
                                 isLoading = false
                             )
                         }
@@ -138,7 +138,7 @@ class ArtistDetailViewModel(
                     .collect { (artist, songs) ->
                         if (artist == null) {
                             _uiState.update {
-                                it.copy(error = context.getString(R.string.could_not_find_artist), isLoading = false)
+                                it.copy(error = getString(Res.string.could_not_find_artist), isLoading = false)
                             }
                             return@collect
                         }
@@ -182,7 +182,7 @@ class ArtistDetailViewModel(
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(
-                        error = context.getString(R.string.error_loading_artist, e.localizedMessage ?: ""),
+                        error = getString(Res.string.error_loading_artist, e.localizedMessage ?: ""),
                         isLoading = false
                     )
                 }

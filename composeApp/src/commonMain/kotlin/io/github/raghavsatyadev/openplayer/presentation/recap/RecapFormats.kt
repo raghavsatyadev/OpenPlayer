@@ -1,10 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.recap
 
-import android.content.res.Resources
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.ui.platform.LocalResources
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.utils.formatListeningDurationCompact
 import java.util.concurrent.TimeUnit
 
@@ -15,13 +12,9 @@ import java.util.concurrent.TimeUnit
  * A listening duration as every recap slide writes it: the compact style the Stats screen
  * uses ("2h 19m"), so a recap figure reads exactly like the same figure in the Stats year view.
  */
-internal fun formatRecapDuration(resources: Resources, milliseconds: Long): String =
-    formatListeningDurationCompact(resources, milliseconds)
-
 @Composable
-@ReadOnlyComposable
 internal fun formatRecapDuration(milliseconds: Long): String =
-    formatRecapDuration(LocalResources.current, milliseconds)
+    formatListeningDurationCompact(milliseconds)
 
 /**
  * Whole minutes of listening, as the minutes slide counts up to and the share card shows.
@@ -34,8 +27,9 @@ internal fun recapListenedMinutes(milliseconds: Long): Long = TimeUnit.MILLISECO
  * entry of [values] with any listening as "label: duration", in chart order, so no amount is
  * only visible. [labels] names the entries of [values] position by position.
  */
-internal fun recapChartEntries(resources: Resources, labels: List<String>, values: List<Long>): List<String> =
+@Composable
+internal fun recapChartEntries(labels: List<String>, values: List<Long>): List<String> =
     labels.zip(values).mapNotNull { (label, milliseconds) ->
         if (milliseconds <= 0L) return@mapNotNull null
-        resources.getString(R.string.recap_cd_chart_entry, label, formatRecapDuration(resources, milliseconds))
+        stringResource(Res.string.recap_cd_chart_entry, label, formatRecapDuration(milliseconds))
     }

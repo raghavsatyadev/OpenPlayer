@@ -1,14 +1,13 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens.search.components
 
-import io.github.raghavsatyadev.openplayer.R
-import androidx.annotation.DrawableRes
+import org.jetbrains.compose.resources.DrawableResource
 import java.text.Normalizer
 import java.util.Locale
+import io.github.raghavsatyadev.openplayer.resources.*
 
-@DrawableRes
-fun getGenreImageResource(genreId: String): Int {
+fun getGenreImageResource(genreId: String): DrawableResource {
     val raw = genreId.trim()
-    if (raw.isEmpty()) return R.drawable.rounded_library_music_24
+    if (raw.isEmpty()) return Res.drawable.rounded_library_music_24
 
     val normalized = normalizeGenreKey(raw)
 
@@ -20,7 +19,7 @@ fun getGenreImageResource(genreId: String): Int {
 
     keywordFallback(normalized)?.let { return it }
 
-    return R.drawable.rounded_library_music_24
+    return Res.drawable.rounded_library_music_24
 }
 
 private fun splitGenreParts(normalized: String): List<String> {
@@ -30,53 +29,53 @@ private fun splitGenreParts(normalized: String): List<String> {
         .filter { it.isNotEmpty() }
 }
 
-private fun keywordFallback(key: String): Int? {
+private fun keywordFallback(key: String): DrawableResource? {
     return when {
-        "international" in key && ("hit" in key || "top" in key) -> R.drawable.pop_mic
+        "international" in key && ("hit" in key || "top" in key) -> Res.drawable.pop_mic
         "hit" in key || "hits" in key || "top " in key || "charts" in key || "chart" in key || "top50" in key || "top 50" in key ->
-            R.drawable.pop_mic
-        "music" == key || key.startsWith("music ") || key.endsWith(" music") -> R.drawable.rounded_library_music_24
+            Res.drawable.pop_mic
+        "music" == key || key.startsWith("music ") || key.endsWith(" music") -> Res.drawable.rounded_library_music_24
 
-        "metal" in key || "core" in key -> R.drawable.metal_guitar
-        "punk" in key || "grunge" in key || "emo" in key -> R.drawable.punk
-        "rock" in key -> R.drawable.rock
+        "metal" in key || "core" in key -> Res.drawable.metal_guitar
+        "punk" in key || "grunge" in key || "emo" in key -> Res.drawable.punk
+        "rock" in key -> Res.drawable.rock
 
-        "reggaeton" in key || "dembow" in key -> R.drawable.rapper
-        "hip hop" in key || "rap" in key || "trap" in key || "drill" in key || "grime" in key -> R.drawable.rapper
+        "reggaeton" in key || "dembow" in key -> Res.drawable.rapper
+        "hip hop" in key || "rap" in key || "trap" in key || "drill" in key || "grime" in key -> Res.drawable.rapper
 
-        "pop" in key -> R.drawable.pop_mic
+        "pop" in key -> Res.drawable.pop_mic
 
         "rnb" in key || "r&b" in key || "rhythm and blues" in key || "soul" in key || "funk" in key || "disco" in key ->
-            R.drawable.synth_piano
+            Res.drawable.synth_piano
 
         "edm" in key || "electronic" in key || "electronica" in key ||
                 "techno" in key || "house" in key || "trance" in key || "dubstep" in key ||
                 "drum and bass" in key || "dnb" in key || "jungle" in key || "garage" in key || "synthwave" in key ->
-            R.drawable.electronic_sound
+            Res.drawable.electronic_sound
 
-        "jazz" in key -> R.drawable.sax
+        "jazz" in key -> Res.drawable.sax
         "classical" in key || "orchestra" in key || "symph" in key || "opera" in key || "baroque" in key ->
-            R.drawable.clasic_piano
+            Res.drawable.clasic_piano
 
-        "country" in key || "americana" in key || "bluegrass" in key -> R.drawable.banjo
-        "folk" in key || "acoustic" in key || "singer songwriter" in key -> R.drawable.accordion
-        "blues" in key -> R.drawable.harmonica
-        "reggae" in key || "ska" in key || "dancehall" in key || "dub" in key -> R.drawable.maracas
+        "country" in key || "americana" in key || "bluegrass" in key -> Res.drawable.banjo
+        "folk" in key || "acoustic" in key || "singer songwriter" in key -> Res.drawable.accordion
+        "blues" in key -> Res.drawable.harmonica
+        "reggae" in key || "ska" in key || "dancehall" in key || "dub" in key -> Res.drawable.maracas
 
-        "latin" in key || "latino" in key || "urbano" in key -> R.drawable.star_angle
-        "salsa" in key -> R.drawable.conga
-        "bachata" in key -> R.drawable.bongos
-        "merengue" in key -> R.drawable.drum
-        "cumbia" in key -> R.drawable.maracas
+        "latin" in key || "latino" in key || "urbano" in key -> Res.drawable.star_angle
+        "salsa" in key -> Res.drawable.conga
+        "bachata" in key -> Res.drawable.bongos
+        "merengue" in key -> Res.drawable.drum
+        "cumbia" in key -> Res.drawable.maracas
 
-        "soundtrack" in key || "ost" in key || "score" in key -> R.drawable.rounded_tv_24
-        "game" in key || "vgm" in key || "video game" in key -> R.drawable.rounded_touch_app_24
+        "soundtrack" in key || "ost" in key || "score" in key -> Res.drawable.rounded_tv_24
+        "game" in key || "vgm" in key || "video game" in key -> Res.drawable.rounded_touch_app_24
         "ambient" in key || "sleep" in key || "relax" in key || "meditation" in key || "chill" in key ->
-            R.drawable.rounded_alarm_24
+            Res.drawable.rounded_alarm_24
 
-        "workout" in key || "gym" in key || "fitness" in key -> R.drawable.electronic_sound
-        "party" in key || "club" in key -> R.drawable.rounded_celebration_24
-        "focus" in key || "study" in key -> R.drawable.rounded_edit_24
+        "workout" in key || "gym" in key || "fitness" in key -> Res.drawable.electronic_sound
+        "party" in key || "club" in key -> Res.drawable.rounded_celebration_24
+        "focus" in key || "study" in key -> Res.drawable.rounded_edit_24
 
         else -> null
     }
@@ -117,25 +116,25 @@ private fun normalizeGenreKey(input: String): String {
 }
 
 private object GenreMapBuilder {
-    fun build(): Map<String, Int> {
-        val map = HashMap<String, Int>(900)
+    fun build(): Map<String, DrawableResource> {
+        val map = HashMap<String, DrawableResource>(900)
 
-        fun putAll(@DrawableRes icon: Int, vararg aliases: String) {
+        fun putAll(icon: DrawableResource, vararg aliases: String) {
             for (a in aliases) map[normalizeGenreKey(a)] = icon
         }
 
-        putAll(R.drawable.rounded_library_music_24,
+        putAll(Res.drawable.rounded_library_music_24,
             "music", "all music", "all", "general", "various", "various artists",
             "misc", "miscellaneous", "other", "unknown genre", "uncategorized"
         )
-        putAll(R.drawable.pop_mic,
+        putAll(Res.drawable.pop_mic,
             "hits", "international hits", "global hits", "world hits",
             "top hits", "top 40", "top40", "top 50", "top50",
             "charts", "chart", "trending", "viral", "best of", "popular",
             "radio", "radio hits", "mainstream"
         )
 
-        putAll(R.drawable.rock,
+        putAll(Res.drawable.rock,
             "rock", "new rock", "modern rock",
             "classic rock", "hard rock", "soft rock",
             "alternative rock", "alt rock", "alt-rock",
@@ -149,7 +148,7 @@ private object GenreMapBuilder {
             "math rock", "stoner rock"
         )
 
-        putAll(R.drawable.pop_mic,
+        putAll(Res.drawable.pop_mic,
             "pop", "pop rock", "dance pop", "electropop",
             "synthpop", "synth pop", "teen pop", "adult contemporary",
             "indie pop", "alt pop", "alternative pop",
@@ -157,13 +156,13 @@ private object GenreMapBuilder {
             "k pop", "k-pop", "j pop", "j-pop", "c pop", "c-pop"
         )
 
-        putAll(R.drawable.idk_indie_ig,
+        putAll(Res.drawable.idk_indie_ig,
             "indie", "indie rock", "indie pop",
             "lo fi", "lo-fi", "lofi",
             "bedroom pop", "chill pop"
         )
 
-        putAll(R.drawable.metal_guitar,
+        putAll(Res.drawable.metal_guitar,
             "metal", "heavy metal", "thrash metal", "death metal", "black metal",
             "doom metal", "sludge metal", "stoner metal",
             "power metal", "symphonic metal", "progressive metal",
@@ -172,7 +171,7 @@ private object GenreMapBuilder {
             "melodic death metal", "groove metal", "folk metal", "viking metal"
         )
 
-        putAll(R.drawable.punk,
+        putAll(Res.drawable.punk,
             "punk", "punk rock", "pop punk", "hardcore punk",
             "post punk", "post-punk",
             "grunge",
@@ -181,18 +180,18 @@ private object GenreMapBuilder {
             "ska punk"
         )
 
-        putAll(R.drawable.rapper,
+        putAll(Res.drawable.rapper,
             "hip hop", "hip-hop", "rap", "trap",
             "drill", "grime", "boom bap", "conscious hip hop",
             "gangsta rap", "g funk", "cloud rap"
         )
 
-        putAll(R.drawable.synth_piano,
+        putAll(Res.drawable.synth_piano,
             "rnb", "r&b", "r&b / soul",
             "soul", "neo soul", "funk", "disco", "motown", "quiet storm"
         )
 
-        putAll(R.drawable.electronic_sound,
+        putAll(Res.drawable.electronic_sound,
             "electronic", "electronica", "edm", "electro",
             "house", "deep house", "tech house", "progressive house",
             "techno", "trance", "psytrance",
@@ -202,55 +201,55 @@ private object GenreMapBuilder {
             "downtempo", "trip hop", "ambient"
         )
 
-        putAll(R.drawable.sax,
+        putAll(Res.drawable.sax,
             "jazz", "smooth jazz", "bebop", "swing", "big band",
             "cool jazz", "hard bop", "fusion", "acid jazz", "latin jazz"
         )
 
-        putAll(R.drawable.clasic_piano,
+        putAll(Res.drawable.clasic_piano,
             "classical", "orchestra", "orchestral",
             "symphony", "symphonic",
             "piano", "concerto", "sonata",
             "opera", "baroque", "romantic", "modern classical"
         )
 
-        putAll(R.drawable.banjo, "country", "americana", "bluegrass", "honky tonk", "alt country")
-        putAll(R.drawable.accordion, "folk", "acoustic", "singer-songwriter", "indie folk")
-        putAll(R.drawable.harmonica, "blues", "delta blues", "chicago blues", "electric blues")
-        putAll(R.drawable.maracas, "reggae", "ska", "dancehall", "dub")
+        putAll(Res.drawable.banjo, "country", "americana", "bluegrass", "honky tonk", "alt country")
+        putAll(Res.drawable.accordion, "folk", "acoustic", "singer-songwriter", "indie folk")
+        putAll(Res.drawable.harmonica, "blues", "delta blues", "chicago blues", "electric blues")
+        putAll(Res.drawable.maracas, "reggae", "ska", "dancehall", "dub")
 
-        putAll(R.drawable.star_angle,
+        putAll(Res.drawable.star_angle,
             "latin", "latino", "latin pop", "urbano latino", "latin urban",
             "world", "world music", "international", "international music",
             "afro", "afrobeats", "afrobeat", "afropop"
         )
-        putAll(R.drawable.rapper, "reggaeton", "latin trap", "trap latino")
-        putAll(R.drawable.conga, "salsa")
-        putAll(R.drawable.bongos, "bachata")
-        putAll(R.drawable.drum, "merengue")
-        putAll(R.drawable.maracas,
+        putAll(Res.drawable.rapper, "reggaeton", "latin trap", "trap latino")
+        putAll(Res.drawable.conga, "salsa")
+        putAll(Res.drawable.bongos, "bachata")
+        putAll(Res.drawable.drum, "merengue")
+        putAll(Res.drawable.maracas,
             "cumbia", "vallenato",
             "regional mexicano", "banda", "corridos", "mariachi", "ranchera", "norteno", "norteño"
         )
 
-        putAll(R.drawable.rounded_schedule_24,
+        putAll(Res.drawable.rounded_schedule_24,
             "oldies", "retro",
             "50s", "60s", "70s", "80s", "90s", "00s", "2000s",
             "throwback"
         )
 
-        putAll(R.drawable.rounded_tv_24, "soundtrack", "ost", "score", "film", "movie", "anime soundtrack")
-        putAll(R.drawable.rounded_touch_app_24, "gaming", "video game music", "vgm", "game soundtrack")
+        putAll(Res.drawable.rounded_tv_24, "soundtrack", "ost", "score", "film", "movie", "anime soundtrack")
+        putAll(Res.drawable.rounded_touch_app_24, "gaming", "video game music", "vgm", "game soundtrack")
 
-        putAll(R.drawable.rounded_alarm_24,
+        putAll(Res.drawable.rounded_alarm_24,
             "sleep", "relax", "relaxation", "meditation", "calm",
             "chill", "spa", "nature", "nature sounds", "white noise", "rain", "asmr"
         )
-        putAll(R.drawable.electronic_sound, "workout", "gym", "fitness", "training", "running")
-        putAll(R.drawable.rounded_celebration_24, "party", "club", "dance", "celebration")
-        putAll(R.drawable.rounded_edit_24, "focus", "study", "productivity")
+        putAll(Res.drawable.electronic_sound, "workout", "gym", "fitness", "training", "running")
+        putAll(Res.drawable.rounded_celebration_24, "party", "club", "dance", "celebration")
+        putAll(Res.drawable.rounded_edit_24, "focus", "study", "productivity")
 
-        putAll(R.drawable.rounded_question_mark_24,
+        putAll(Res.drawable.rounded_question_mark_24,
             "unknown", "none", "na", "n a", "unspecified"
         )
 
@@ -258,7 +257,7 @@ private object GenreMapBuilder {
     }
 }
 
-private val GENRE_ICON_BY_ALIAS: Map<String, Int> by lazy(LazyThreadSafetyMode.PUBLICATION) {
+private val GENRE_ICON_BY_ALIAS: Map<String, DrawableResource> by lazy(LazyThreadSafetyMode.PUBLICATION) {
     GenreMapBuilder.build()
 }
 

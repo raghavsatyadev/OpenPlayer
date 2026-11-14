@@ -16,22 +16,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.LibraryTabId
 import io.github.raghavsatyadev.openplayer.data.model.StorageFilter
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import io.github.raghavsatyadev.openplayer.resources.*
 
 private data class LibraryEmptySpec(
-    val iconRes: Int,
-    val titleRes: Int,
-    val subtitleRes: Int
+    val iconRes: DrawableResource,
+    val titleRes: StringResource,
+    val subtitleRes: StringResource
 )
 
 private fun libraryEmptySpec(
@@ -41,98 +42,98 @@ private fun libraryEmptySpec(
     return when (tabId) {
         LibraryTabId.SONGS -> when (storageFilter) {
             StorageFilter.ALL -> LibraryEmptySpec(
-                iconRes = R.drawable.rounded_music_off_24,
-                titleRes = R.string.lib_empty_songs_all_title,
-                subtitleRes = R.string.lib_empty_songs_all_subtitle
+                iconRes = Res.drawable.rounded_music_off_24,
+                titleRes = Res.string.lib_empty_songs_all_title,
+                subtitleRes = Res.string.lib_empty_songs_all_subtitle
             )
             StorageFilter.OFFLINE -> LibraryEmptySpec(
-                iconRes = R.drawable.rounded_music_off_24,
-                titleRes = R.string.lib_empty_songs_offline_title,
-                subtitleRes = R.string.lib_empty_songs_offline_subtitle
+                iconRes = Res.drawable.rounded_music_off_24,
+                titleRes = Res.string.lib_empty_songs_offline_title,
+                subtitleRes = Res.string.lib_empty_songs_offline_subtitle
             )
             StorageFilter.ONLINE -> LibraryEmptySpec(
-                iconRes = R.drawable.rounded_music_off_24,
-                titleRes = R.string.lib_empty_songs_online_title,
-                subtitleRes = R.string.lib_empty_songs_online_subtitle
+                iconRes = Res.drawable.rounded_music_off_24,
+                titleRes = Res.string.lib_empty_songs_online_title,
+                subtitleRes = Res.string.lib_empty_songs_online_subtitle
             )
         }
 
         LibraryTabId.ALBUMS -> when (storageFilter) {
             StorageFilter.ALL -> LibraryEmptySpec(
-                iconRes = R.drawable.rounded_album_24,
-                titleRes = R.string.lib_empty_albums_all_title,
-                subtitleRes = R.string.lib_empty_albums_all_subtitle
+                iconRes = Res.drawable.rounded_album_24,
+                titleRes = Res.string.lib_empty_albums_all_title,
+                subtitleRes = Res.string.lib_empty_albums_all_subtitle
             )
             StorageFilter.OFFLINE -> LibraryEmptySpec(
-                iconRes = R.drawable.rounded_album_24,
-                titleRes = R.string.lib_empty_albums_offline_title,
-                subtitleRes = R.string.lib_empty_albums_offline_subtitle
+                iconRes = Res.drawable.rounded_album_24,
+                titleRes = Res.string.lib_empty_albums_offline_title,
+                subtitleRes = Res.string.lib_empty_albums_offline_subtitle
             )
             StorageFilter.ONLINE -> LibraryEmptySpec(
-                iconRes = R.drawable.rounded_album_24,
-                titleRes = R.string.lib_empty_albums_online_title,
-                subtitleRes = R.string.lib_empty_albums_online_subtitle
+                iconRes = Res.drawable.rounded_album_24,
+                titleRes = Res.string.lib_empty_albums_online_title,
+                subtitleRes = Res.string.lib_empty_albums_online_subtitle
             )
         }
 
         LibraryTabId.ARTISTS -> when (storageFilter) {
             StorageFilter.ALL -> LibraryEmptySpec(
-                iconRes = R.drawable.rounded_artist_24,
-                titleRes = R.string.lib_empty_artists_all_title,
-                subtitleRes = R.string.lib_empty_artists_all_subtitle
+                iconRes = Res.drawable.rounded_artist_24,
+                titleRes = Res.string.lib_empty_artists_all_title,
+                subtitleRes = Res.string.lib_empty_artists_all_subtitle
             )
             StorageFilter.OFFLINE -> LibraryEmptySpec(
-                iconRes = R.drawable.rounded_artist_24,
-                titleRes = R.string.lib_empty_artists_offline_title,
-                subtitleRes = R.string.lib_empty_artists_offline_subtitle
+                iconRes = Res.drawable.rounded_artist_24,
+                titleRes = Res.string.lib_empty_artists_offline_title,
+                subtitleRes = Res.string.lib_empty_artists_offline_subtitle
             )
             StorageFilter.ONLINE -> LibraryEmptySpec(
-                iconRes = R.drawable.rounded_artist_24,
-                titleRes = R.string.lib_empty_artists_online_title,
-                subtitleRes = R.string.lib_empty_artists_online_subtitle
+                iconRes = Res.drawable.rounded_artist_24,
+                titleRes = Res.string.lib_empty_artists_online_title,
+                subtitleRes = Res.string.lib_empty_artists_online_subtitle
             )
         }
 
         LibraryTabId.LIKED -> when (storageFilter) {
             StorageFilter.ALL -> LibraryEmptySpec(
-                iconRes = R.drawable.round_favorite_24,
-                titleRes = R.string.lib_empty_liked_all_title,
-                subtitleRes = R.string.lib_empty_liked_all_subtitle
+                iconRes = Res.drawable.round_favorite_24,
+                titleRes = Res.string.lib_empty_liked_all_title,
+                subtitleRes = Res.string.lib_empty_liked_all_subtitle
             )
             StorageFilter.OFFLINE -> LibraryEmptySpec(
-                iconRes = R.drawable.round_favorite_24,
-                titleRes = R.string.lib_empty_liked_offline_title,
-                subtitleRes = R.string.lib_empty_liked_offline_subtitle
+                iconRes = Res.drawable.round_favorite_24,
+                titleRes = Res.string.lib_empty_liked_offline_title,
+                subtitleRes = Res.string.lib_empty_liked_offline_subtitle
             )
             StorageFilter.ONLINE -> LibraryEmptySpec(
-                iconRes = R.drawable.round_favorite_24,
-                titleRes = R.string.lib_empty_liked_online_title,
-                subtitleRes = R.string.lib_empty_liked_online_subtitle
+                iconRes = Res.drawable.round_favorite_24,
+                titleRes = Res.string.lib_empty_liked_online_title,
+                subtitleRes = Res.string.lib_empty_liked_online_subtitle
             )
         }
 
         LibraryTabId.FOLDERS -> LibraryEmptySpec(
-            iconRes = R.drawable.ic_folder,
-            titleRes = R.string.lib_empty_folders_title,
-            subtitleRes = R.string.lib_empty_folders_subtitle
+            iconRes = Res.drawable.ic_folder,
+            titleRes = Res.string.lib_empty_folders_title,
+            subtitleRes = Res.string.lib_empty_folders_subtitle
         )
 
         LibraryTabId.PLAYLISTS -> LibraryEmptySpec(
-            iconRes = R.drawable.rounded_playlist_play_24,
-            titleRes = R.string.lib_empty_playlists_title,
-            subtitleRes = R.string.lib_empty_playlists_subtitle
+            iconRes = Res.drawable.rounded_playlist_play_24,
+            titleRes = Res.string.lib_empty_playlists_title,
+            subtitleRes = Res.string.lib_empty_playlists_subtitle
         )
 
         LibraryTabId.GENRES -> LibraryEmptySpec(
-            iconRes = R.drawable.rounded_category_24,
-            titleRes = R.string.lib_empty_genres_title,
-            subtitleRes = R.string.lib_empty_genres_subtitle
+            iconRes = Res.drawable.rounded_category_24,
+            titleRes = Res.string.lib_empty_genres_title,
+            subtitleRes = Res.string.lib_empty_genres_subtitle
         )
 
         LibraryTabId.VIDEOS -> LibraryEmptySpec(
-            iconRes = R.drawable.rounded_movie_24,
-            titleRes = R.string.lib_empty_videos_title,
-            subtitleRes = R.string.lib_empty_videos_subtitle
+            iconRes = Res.drawable.rounded_movie_24,
+            titleRes = Res.string.lib_empty_videos_title,
+            subtitleRes = Res.string.lib_empty_videos_subtitle
         )
     }
 }
@@ -171,7 +172,7 @@ internal fun LibraryExpressiveEmptyState(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(id = spec.iconRes),
+                        painter = painterResource(spec.iconRes),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
                         tint = MaterialTheme.colorScheme.onSecondaryContainer

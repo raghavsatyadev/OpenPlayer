@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
@@ -51,7 +50,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
 import io.github.raghavsatyadev.openplayer.data.offline.OfflineDownloadStatus
@@ -71,10 +69,10 @@ import androidx.compose.ui.graphics.TransformOrigin
 import io.github.raghavsatyadev.openplayer.presentation.screens.TabAnimation
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.utils.AudioMetaUtils
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -114,6 +112,9 @@ fun SongInfoBottomSheet(
 ) {
     val context = LocalContext.current
     val toaster = rememberAppToaster()
+    val toastScope = androidx.compose.runtime.rememberCoroutineScope()
+    val ringtonePermissionMissingText = stringResource(Res.string.song_info_ringtone_permission_missing)
+    val shareChooserTitle = stringResource(Res.string.song_info_share_chooser_title)
     var showEditSheet by remember { mutableStateOf(false) }
     var showArtistPicker by remember { mutableStateOf(false) }
     var showTonePickerDialog by remember { mutableStateOf(false) }
@@ -145,11 +146,7 @@ fun SongInfoBottomSheet(
                 toaster.show(message, long = true)
             }
         } else {
-            Toast.makeText(
-                context,
-                context.getString(R.string.song_info_ringtone_permission_missing),
-                Toast.LENGTH_LONG
-            ).show()
+            toaster.show(ringtonePermissionMissingText, long = true)
         }
     }
 
@@ -165,14 +162,12 @@ fun SongInfoBottomSheet(
             } catch (e: Exception) {
                 pendingTonePermissionSong = null
                 pendingTonePermissionTarget = null
-                Toast.makeText(
-                    context,
-                    context.getString(
-                        R.string.song_info_ringtone_failed,
-                        e.localizedMessage ?: ""
-                    ),
-                    Toast.LENGTH_LONG
-                ).show()
+                toastScope.launch {
+                    toaster.show(
+                        getString(Res.string.song_info_ringtone_failed, e.localizedMessage ?: ""),
+                        long = true
+                    )
+                }
             }
         }
     }
@@ -282,11 +277,7 @@ fun SongInfoBottomSheet(
 
     LaunchedEffect(musicBrainzState) {
         if (musicBrainzState is SongInfoBottomSheetViewModel.MusicBrainzUiState.Applied) {
-            Toast.makeText(
-                context,
-                context.getString(R.string.musicbrainz_applied),
-                Toast.LENGTH_LONG
-            ).show()
+            toaster.show(getString(Res.string.musicbrainz_applied), long = true)
             songInfoViewModel.dismissMusicBrainz()
         }
     }
@@ -457,7 +448,7 @@ fun SongInfoBottomSheet(
                                                         modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize),
                                                         imageVector = if (isFavorite) vectorResource(Res.drawable.rounded_favorite_filled_24) else vectorResource(Res.drawable.rounded_favorite_24),
                                                         contentDescription = stringResource(
-                                                            if (isFavorite) R.string.cd_remove_from_favorites else R.string.cd_add_to_favorites
+                                                            if (isFavorite) Res.string.cd_remove_from_favorites else Res.string.cd_add_to_favorites
                                                         )
                                                     )
                                                 }
@@ -476,15 +467,16 @@ fun SongInfoBottomSheet(
                                                             context.startActivity(
                                                                 Intent.createChooser(
                                                                     shareIntent,
-                                                                    context.getString(R.string.song_info_share_chooser_title)
+                                                                    shareChooserTitle
                                                                 )
                                                             )
                                                         } catch (e: Exception) {
-                                                            Toast.makeText(
-                                                            context,
-                                                            context.getString(R.string.error_share_song_format, e.localizedMessage ?: ""),
-                                                            Toast.LENGTH_LONG
-                                                        ).show()
+                                                            toastScope.launch {
+                                                                toaster.show(
+                                                                    getString(Res.string.error_share_song_format, e.localizedMessage ?: ""),
+                                                                    long = true
+                                                                )
+                                                            }
                                                         }
                                                     },
                                                     shape = CircleShape
@@ -614,7 +606,7 @@ fun SongInfoBottomSheet(
                                                             else -> if (isCloudSong) vectorResource(Res.drawable.rounded_cloud_download_filled_24) else vectorResource(Res.drawable.rounded_delete_forever_filled_24)
                                                         },
                                                         contentDescription = stringResource(
-                                                            if (isCloudSong) R.string.cloud_download_action else R.string.delete_action
+                                                            if (isCloudSong) Res.string.cloud_download_action else Res.string.delete_action
                                                         )
                                                     )
                                                     Spacer(Modifier.width(8.dp))
@@ -750,9 +742,9 @@ fun SongInfoBottomSheet(
                                                     icon = if (songLocationInfo.isCloud) vectorResource(Res.drawable.rounded_cloud_filled_24) else vectorResource(Res.drawable.rounded_audio_file_filled_24),
                                                     iconDescription = stringResource(
                                                         if (songLocationInfo.isCloud) {
-                                                            R.string.cd_provider_icon
+                                                            Res.string.cd_provider_icon
                                                         } else {
-                                                            R.string.cd_file_icon
+                                                            Res.string.cd_file_icon
                                                         }
                                                     ),
                                                     shape = infoSegmentItemShape,
@@ -1225,7 +1217,7 @@ private fun RingtoneActionButton(
             Spacer(Modifier.width(if (compactText) 6.dp else 8.dp))
             Text(
                 text = stringResource(
-                    if (compactText) R.string.song_info_set_as_short else R.string.song_info_choose_tone
+                    if (compactText) Res.string.song_info_set_as_short else Res.string.song_info_choose_tone
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1250,25 +1242,25 @@ private fun RingtoneActionButton(
     }
 }
 
-private val ToneTarget.titleResId: Int
+private val ToneTarget.titleResId: StringResource
     get() = when (this) {
-        ToneTarget.Ringtone -> R.string.song_info_tone_ringtone_title
-        ToneTarget.Notification -> R.string.song_info_tone_notification_title
-        ToneTarget.Alarm -> R.string.song_info_tone_alarm_title
+        ToneTarget.Ringtone -> Res.string.song_info_tone_ringtone_title
+        ToneTarget.Notification -> Res.string.song_info_tone_notification_title
+        ToneTarget.Alarm -> Res.string.song_info_tone_alarm_title
     }
 
-private val ToneTarget.subtitleResId: Int
+private val ToneTarget.subtitleResId: StringResource
     get() = when (this) {
-        ToneTarget.Ringtone -> R.string.song_info_tone_ringtone_subtitle
-        ToneTarget.Notification -> R.string.song_info_tone_notification_subtitle
-        ToneTarget.Alarm -> R.string.song_info_tone_alarm_subtitle
+        ToneTarget.Ringtone -> Res.string.song_info_tone_ringtone_subtitle
+        ToneTarget.Notification -> Res.string.song_info_tone_notification_subtitle
+        ToneTarget.Alarm -> Res.string.song_info_tone_alarm_subtitle
     }
 
-private val ToneTarget.confirmLabelResId: Int
+private val ToneTarget.confirmLabelResId: StringResource
     get() = when (this) {
-        ToneTarget.Ringtone -> R.string.song_info_tone_ringtone_label
-        ToneTarget.Notification -> R.string.song_info_tone_notification_label
-        ToneTarget.Alarm -> R.string.song_info_tone_alarm_label
+        ToneTarget.Ringtone -> Res.string.song_info_tone_ringtone_label
+        ToneTarget.Notification -> Res.string.song_info_tone_notification_label
+        ToneTarget.Alarm -> Res.string.song_info_tone_alarm_label
     }
 
 @Composable

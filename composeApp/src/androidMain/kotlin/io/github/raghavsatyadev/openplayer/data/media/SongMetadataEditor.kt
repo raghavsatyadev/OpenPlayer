@@ -19,7 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.kyant.taglib.Picture
 import com.kyant.taglib.TagLib
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.data.database.ArtistEntity
 import io.github.raghavsatyadev.openplayer.data.database.MusicDao
 import io.github.raghavsatyadev.openplayer.data.database.SongArtistCrossRef
@@ -370,7 +370,7 @@ class SongMetadataEditor(
                         success = false,
                         updatedAlbumArtUri = null,
                         error = MetadataEditError.WRITE_INTERRUPTED,
-                        errorMessage = context.getString(R.string.metadata_edit_write_still_pending)
+                        errorMessage = getString(Res.string.metadata_edit_write_still_pending)
                     )
                 }
             ) {
@@ -578,7 +578,7 @@ class SongMetadataEditor(
                 success = false,
                 updatedAlbumArtUri = null,
                 error = MetadataEditError.WRITE_INTERRUPTED,
-                errorMessage = context.getString(R.string.metadata_edit_write_interrupted)
+                errorMessage = getString(Res.string.metadata_edit_write_interrupted)
             )
         } catch (e: SecurityException) {
             Logger.e(e) { "Security exception editing metadata for songId: $songId" }

@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import android.widget.Toast
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 
@@ -96,7 +95,6 @@ import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
 import coil3.size.Size
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.AutoScrollingText
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
@@ -141,6 +139,7 @@ import kotlinx.coroutines.launch
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
@@ -248,6 +247,7 @@ fun PlaylistDetailScreen(
 
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+    val toaster = rememberAppToaster()
     val haptics = rememberAppHapticPerformer()
     val appHapticsConfig = LocalAppHapticsConfig.current
     var lastMovedFrom by remember { mutableStateOf<Int?>(null) }
@@ -964,15 +964,15 @@ fun PlaylistDetailScreen(
                             onClick = {
                                 showPlaylistOptionsSheet = false
                                 cloudDownloadsViewModel.downloadSelected(cloudSongsInPlaylist)
-                                Toast.makeText(
-                                    context,
-                                    context.resources.getQuantityString(
-                                        R.plurals.cloud_download_selected_started,
-                                        cloudSongsInPlaylist.size,
-                                        cloudSongsInPlaylist.size,
-                                    ),
-                                    Toast.LENGTH_SHORT,
-                                ).show()
+                                scope.launch {
+                                    toaster.show(
+                                        getPluralString(
+                                            Res.plurals.cloud_download_selected_started,
+                                            cloudSongsInPlaylist.size,
+                                            cloudSongsInPlaylist.size,
+                                        )
+                                    )
+                                }
                             },
                         )
                     }

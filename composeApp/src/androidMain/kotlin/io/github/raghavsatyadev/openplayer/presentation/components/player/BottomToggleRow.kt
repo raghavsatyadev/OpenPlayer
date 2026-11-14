@@ -10,7 +10,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.Player
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.LocalMaterialTheme
 import io.github.raghavsatyadev.openplayer.presentation.components.ToggleSegmentButton
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
@@ -85,14 +84,14 @@ fun BottomToggleRow(
                 inactiveColor = inactiveColor,
                 inactiveContentColor = inactiveContentColor,
                 onClick = onShuffleToggle,
-                iconId = R.drawable.rounded_shuffle_24,
+                iconId = Res.drawable.rounded_shuffle_24,
                 contentDesc = stringResource(Res.string.cd_shuffle)
             )
             val repeatActive = repeatMode != Player.REPEAT_MODE_OFF
             val repeatIcon = when (repeatMode) {
-                Player.REPEAT_MODE_ONE -> R.drawable.rounded_repeat_one_24
-                Player.REPEAT_MODE_ALL -> R.drawable.rounded_repeat_24
-                else -> R.drawable.rounded_repeat_24
+                Player.REPEAT_MODE_ONE -> Res.drawable.rounded_repeat_one_24
+                Player.REPEAT_MODE_ALL -> Res.drawable.rounded_repeat_24
+                else -> Res.drawable.rounded_repeat_24
             }
             ToggleSegmentButton(
                 modifier = commonModifier,
@@ -115,7 +114,7 @@ fun BottomToggleRow(
                 inactiveColor = inactiveColor,
                 inactiveContentColor = inactiveContentColor,
                 onClick = onFavoriteToggle,
-                iconId = if (isFavorite) R.drawable.round_favorite_24 else R.drawable.rounded_favorite_24,
+                iconId = if (isFavorite) Res.drawable.round_favorite_24 else Res.drawable.rounded_favorite_24,
                 contentDesc = stringResource(Res.string.cd_favorite)
             )
         }

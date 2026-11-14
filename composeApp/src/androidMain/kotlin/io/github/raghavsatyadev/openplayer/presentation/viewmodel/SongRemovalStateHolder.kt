@@ -2,7 +2,7 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
 import android.app.Activity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
@@ -25,18 +25,17 @@ class SongRemovalStateHolder(
 
                 val userChoice = CompletableDeferred<Boolean>()
                 val dialog = MaterialAlertDialogBuilder(activity)
-                    .setTitle(activity.getString(R.string.dialog_delete_song_title))
+                    .setTitle(getString(Res.string.dialog_delete_song_title))
                     .setMessage(
-                        activity.getString(
-                            R.string.dialog_delete_song_message,
+                        getString(Res.string.dialog_delete_song_message,
                             song.title,
                             song.displayArtist
                         )
                     )
-                    .setPositiveButton(activity.getString(R.string.delete_action)) { _, _ ->
+                    .setPositiveButton(getString(Res.string.delete_action)) { _, _ ->
                         userChoice.complete(true)
                     }
-                    .setNegativeButton(activity.getString(R.string.cancel)) { _, _ ->
+                    .setNegativeButton(getString(Res.string.cancel)) { _, _ ->
                         userChoice.complete(false)
                     }
                     .setOnCancelListener {

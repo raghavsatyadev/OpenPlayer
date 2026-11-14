@@ -46,7 +46,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import java.net.URLEncoder
 import co.touchlab.kermit.Logger
 import io.github.raghavsatyadev.openplayer.data.model.Song
@@ -177,6 +176,7 @@ private fun EditSongContent(
 
     var showInfoDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val customMetadataInvalidText = stringResource(Res.string.edit_song_custom_metadata_invalid)
     val pickCoverArtLauncher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
             pendingCoverArtUri = uri
@@ -839,7 +839,7 @@ private fun EditSongContent(
                                     )
                                 }.onFailure { error ->
                                     customMetadataError = error.message
-                                        ?: context.getString(R.string.edit_song_custom_metadata_invalid)
+                                        ?: customMetadataInvalidText
                                 }
                             },
                             modifier = Modifier.height(48.dp)
@@ -1033,7 +1033,7 @@ fun CoverArtCropperDialog(
         if (bitmap != null) {
             loadedBitmap = bitmap.asImageBitmap()
         } else {
-            loadError = context.getString(R.string.edit_song_unable_to_load_image)
+            loadError = getString(Res.string.edit_song_unable_to_load_image)
         }
         isLoading = false
         scale = 1f

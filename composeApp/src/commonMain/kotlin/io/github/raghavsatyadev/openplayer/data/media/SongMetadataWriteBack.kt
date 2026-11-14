@@ -482,7 +482,7 @@ internal class PendingWriteBackGate(
      * reach their song: one whose old song id MediaStore has since given to another file has
      * nothing to do with that file, and must not keep it from being edited.
      */
-    suspend fun <T> writeSong(path: String, refused: () -> T, write: suspend () -> T): T =
+    suspend fun <T> writeSong(path: String, refused: suspend () -> T, write: suspend () -> T): T =
         lock.withLock {
             val resumed = resumeLocked(everySong = false) { it.target.path == path }
             if (resumed.any { it.outcome.keepsCopy }) refused() else write()

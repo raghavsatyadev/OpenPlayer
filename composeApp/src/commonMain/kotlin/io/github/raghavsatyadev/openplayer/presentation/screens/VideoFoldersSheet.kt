@@ -22,10 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
@@ -126,7 +124,7 @@ private fun FolderRow(
         ) {
             Icon(
                 painterResource(
-                    if (isExcluded) R.drawable.rounded_folder_off_filled_24 else R.drawable.rounded_folder_24
+                    if (isExcluded) Res.drawable.rounded_folder_off_filled_24 else Res.drawable.rounded_folder_24
                 ),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.secondary,

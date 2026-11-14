@@ -54,6 +54,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.data.preferences.NavBarStyle
 import io.github.raghavsatyadev.openplayer.data.preferences.LaunchTab
 import io.github.raghavsatyadev.openplayer.data.model.Song
@@ -1177,19 +1178,18 @@ class SettingsViewModel(
                 operation = BackupOperationType.EXPORT,
                 step = 0,
                 totalSteps = 1,
-                title = context.getString(R.string.backup_progress_preparing_backup),
-                detail = context.getString(R.string.backup_progress_starting_backup_task),
+                title = getString(Res.string.backup_progress_preparing_backup),
+                detail = getString(Res.string.backup_progress_starting_backup_task),
             )
             val result = backupManager.export(uri, sections, passphrase) { progress ->
                 _dataTransferProgress.value = progress
             }
             result.fold(
-                onSuccess = { _dataTransferEvents.send(context.getString(R.string.data_exported_successfully)) },
+                onSuccess = { _dataTransferEvents.send(getString(Res.string.data_exported_successfully)) },
                 onFailure = {
                     _dataTransferEvents.send(
-                        context.getString(
-                            R.string.export_failed_format,
-                            it.localizedMessage ?: context.getString(R.string.error_unknown),
+                        getString(Res.string.export_failed_format,
+                            it.localizedMessage ?: getString(Res.string.error_unknown),
                         ),
                     )
                 },
@@ -1237,9 +1237,8 @@ class SettingsViewModel(
                         }
                         else -> {
                             _dataTransferEvents.send(
-                                context.getString(
-                                    R.string.backup_invalid_format,
-                                    error.localizedMessage ?: context.getString(R.string.error_unknown),
+                                getString(Res.string.backup_invalid_format,
+                                    error.localizedMessage ?: getString(Res.string.error_unknown),
                                 ),
                             )
                             _uiState.update { it.copy(isInspectingBackup = false) }
@@ -1277,28 +1276,28 @@ class SettingsViewModel(
                 operation = BackupOperationType.IMPORT,
                 step = 0,
                 totalSteps = 1,
-                title = context.getString(R.string.backup_progress_preparing_restore),
-                detail = context.getString(R.string.backup_progress_starting_task),
+                title = getString(Res.string.backup_progress_preparing_restore),
+                detail = getString(Res.string.backup_progress_starting_task),
             )
             val result = backupManager.restore(uri, plan) { progress ->
                 _dataTransferProgress.value = progress
             }
             when (result) {
                 is RestoreResult.Success -> {
-                    _dataTransferEvents.send(context.getString(R.string.data_restored_successfully))
+                    _dataTransferEvents.send(getString(Res.string.data_restored_successfully))
                     syncManager.sync()
                 }
                 is RestoreResult.PartialFailure -> {
                     val failedNames = result.failed.entries.joinToString { "${it.key.label}: ${it.value}" }
                     _dataTransferEvents.send(
-                        context.getString(R.string.restore_partial_unresolved_format, failedNames),
+                        getString(Res.string.restore_partial_unresolved_format, failedNames),
                     )
                     if (result.succeeded.isNotEmpty() || !result.rolledBack) {
                         syncManager.sync()
                     }
                 }
                 is RestoreResult.TotalFailure -> {
-                    _dataTransferEvents.send(context.getString(R.string.restore_failed_format, result.error))
+                    _dataTransferEvents.send(getString(Res.string.restore_failed_format, result.error))
                 }
             }
             delay(300)

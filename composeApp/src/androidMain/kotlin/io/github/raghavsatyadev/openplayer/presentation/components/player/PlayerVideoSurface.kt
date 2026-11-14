@@ -26,8 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LifecycleStartEffect
@@ -85,9 +85,9 @@ internal fun PlayerVideoCover(
 
     val toggleButton: @Composable () -> Unit = {
         if (!isOwnVideo) CoverButton(
-            iconRes = R.drawable.rounded_movie_24,
+            iconRes = Res.drawable.rounded_movie_24,
             description = stringResource(
-                if (showVideo) R.string.video_show_artwork else R.string.video_show_video
+                if (showVideo) Res.string.video_show_artwork else Res.string.video_show_video
             ),
             selected = showVideo,
             onClick = {
@@ -125,7 +125,7 @@ internal fun PlayerVideoCover(
                         .padding(end = 12.dp, bottom = 12.dp)
                 ) {
                     CoverButton(
-                        iconRes = R.drawable.rounded_fullscreen_24,
+                        iconRes = Res.drawable.rounded_fullscreen_24,
                         description = stringResource(Res.string.video_fullscreen),
                         onClick = { viewModel.setFullscreen(true) },
                     )
@@ -152,7 +152,7 @@ internal fun PlayerVideoCover(
 
 @Composable
 private fun CoverButton(
-    iconRes: Int,
+    iconRes: DrawableResource,
     description: String,
     onClick: () -> Unit,
     selected: Boolean = false,

@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -13,18 +12,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import io.github.raghavsatyadev.openplayer.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.presentation.components.brickbreaker.BrickBreakerOverlay
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
+import io.github.raghavsatyadev.openplayer.resources.*
 
 @Composable
 fun EasterEggScreen(
     viewModel: PlayerViewModel,
     onNavigationIconClick: () -> Unit,
 ) {
-    val context = LocalContext.current
+    val toaster = rememberAppToaster()
+    val toastEasterEggThankYou = stringResource(Res.string.easter_egg_thank_you)
     var isVisible by rememberSaveable { mutableStateOf(false) }
     var hasShownFanToast by rememberSaveable { mutableStateOf(false) }
 
@@ -37,7 +37,7 @@ fun EasterEggScreen(
 
     LaunchedEffect(hasShownFanToast) {
         if (hasShownFanToast) return@LaunchedEffect
-        Toast.makeText(context, context.getString(R.string.easter_egg_thank_you), Toast.LENGTH_SHORT).show()
+        toaster.show(toastEasterEggThankYou)
         hasShownFanToast = true
     }
 

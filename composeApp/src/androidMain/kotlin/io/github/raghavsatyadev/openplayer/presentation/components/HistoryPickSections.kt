@@ -13,9 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.model.RecentlyPlayedSongUiModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.HistoryPicksState
@@ -23,6 +21,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SeedPickMode
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ThemeStateHolder
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.StringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 /** What the history sections need from the Home screen. */
@@ -130,7 +129,7 @@ private fun PickSection(
         contentPadding = PaddingValues(start = 8.dp, end = 24.dp),
         modifier = modifier,
         title = title,
-        actionIconRes = R.drawable.rounded_play_arrow_24,
+        actionIconRes = Res.drawable.rounded_play_arrow_24,
         actionDescription = stringResource(Res.string.history_picks_play_all),
         minSongs = 1,
         headerContent = chips,
@@ -162,10 +161,10 @@ private fun <T> ChoiceChips(
     }
 }
 
-private val SeedPickMode.labelRes: Int
+private val SeedPickMode.labelRes: StringResource
     get() = when (this) {
-        SeedPickMode.ALONGSIDE -> R.string.history_picks_mode_alongside
-        SeedPickMode.TIME_RANGE -> R.string.history_picks_mode_time_range
-        SeedPickMode.DISCOVERED -> R.string.history_picks_mode_discovered
-        SeedPickMode.ERA -> R.string.history_picks_mode_era
+        SeedPickMode.ALONGSIDE -> Res.string.history_picks_mode_alongside
+        SeedPickMode.TIME_RANGE -> Res.string.history_picks_mode_time_range
+        SeedPickMode.DISCOVERED -> Res.string.history_picks_mode_discovered
+        SeedPickMode.ERA -> Res.string.history_picks_mode_era
     }

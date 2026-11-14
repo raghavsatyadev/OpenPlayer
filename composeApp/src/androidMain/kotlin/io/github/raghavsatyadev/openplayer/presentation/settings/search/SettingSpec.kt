@@ -1,10 +1,10 @@
 package io.github.raghavsatyadev.openplayer.presentation.settings.search
 
-import androidx.annotation.StringRes
 import androidx.navigation.NavController
 import io.github.raghavsatyadev.openplayer.presentation.model.SettingsCategory
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsUiState
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewModel
+import org.jetbrains.compose.resources.StringResource
 
 enum class SettingType {
     SWITCH,
@@ -15,27 +15,19 @@ enum class SettingType {
 data class SettingSpec(
     val id: String,
     val itemKey: String = "setting_$id",
-    @StringRes val titleRes: Int? = null,
+    val titleRes: StringResource? = null,
     val titleStatic: String? = null,
-    @StringRes val subtitleRes: Int? = null,
+    val subtitleRes: StringResource? = null,
     val subtitleStatic: String? = null,
     val category: SettingsCategory,
     val subscreenRoute: String,
     val type: SettingType,
-    @StringRes val keywordsRes: List<Int> = emptyList(),
+    val keywordsRes: List<StringResource> = emptyList(),
     val keywordsStatic: List<String> = emptyList(),
     val getValue: ((SettingsUiState) -> Boolean)? = null,
     val onToggle: ((SettingsViewModel, Boolean) -> Unit)? = null,
     val onAction: ((NavController) -> Unit)? = null
 ) {
-    fun getTitle(context: android.content.Context): String {
-        return titleStatic ?: titleRes?.let { context.getString(it) } ?: ""
-    }
-
-    fun getSubtitle(context: android.content.Context): String? {
-        return subtitleStatic ?: subtitleRes?.let { context.getString(it) }
-    }
-
     fun createNavigationRoute(): String {
         return if (subscreenRoute.contains("?")) {
             "$subscreenRoute&highlightKey=$itemKey"
@@ -53,6 +45,6 @@ data class SearchResultItem(
 )
 
 data class SearchResultSection(
-    val titleRes: Int,
+    val titleRes: StringResource,
     val items: List<SearchResultItem>
 )

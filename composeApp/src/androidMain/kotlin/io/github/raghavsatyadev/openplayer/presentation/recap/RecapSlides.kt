@@ -55,8 +55,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontWeight
@@ -65,7 +63,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.stats.ListeningPersonality
 import io.github.raghavsatyadev.openplayer.ui.theme.ShapeCache
 import java.text.NumberFormat
@@ -82,6 +79,7 @@ import kotlin.math.sin
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.vectorResource
 
 /** Bars on the listening clock, one per hour. */
@@ -180,7 +178,7 @@ private fun IntroSlide(
         Spacer(Modifier.height(28.dp))
         RecapHeadline(
             text = stringResource(
-                if (slide.isSoFar) R.string.recap_intro_title_so_far else R.string.recap_intro_title
+                if (slide.isSoFar) Res.string.recap_intro_title_so_far else Res.string.recap_intro_title
             ),
             color = palette.content,
             textAlign = TextAlign.Center,
@@ -328,14 +326,12 @@ private fun MonthsSlide(
     }
     val peakMs = slide.monthlyMs[slide.peakMonthIndex]
     // The bars and their one-letter labels are hidden from screen readers; this reads them out.
-    val resources = LocalResources.current
-    val chartDescription = remember(slide.monthlyMs, locale, resources) {
-        val monthNames = Month.entries.map { it.getDisplayName(TextStyle.FULL_STANDALONE, locale) }
-        resources.getString(
-            R.string.recap_cd_months_chart,
-            ListFormatter.getInstance(locale).format(recapChartEntries(resources, monthNames, slide.monthlyMs))
+    val chartDescription = stringResource(
+        Res.string.recap_cd_months_chart,
+        ListFormatter.getInstance(locale).format(
+            recapChartEntries(Month.entries.map { it.getDisplayName(TextStyle.FULL_STANDALONE, locale) }, slide.monthlyMs)
         )
-    }
+    )
 
     RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState) {
         RecapKicker(
@@ -457,13 +453,10 @@ private fun ClockSlide(
         }
     }
     // The clock face is one node for screen readers, which hear every hour's listening.
-    val resources = LocalResources.current
-    val clockDescription = remember(slide.hourlyMs, hourLabels, locale, resources) {
-        resources.getString(
-            R.string.recap_cd_clock_chart,
-            ListFormatter.getInstance(locale).format(recapChartEntries(resources, hourLabels, slide.hourlyMs))
-        )
-    }
+    val clockDescription = stringResource(
+        Res.string.recap_cd_clock_chart,
+        ListFormatter.getInstance(locale).format(recapChartEntries(hourLabels, slide.hourlyMs))
+    )
     val favoriteDay = slide.favoriteDay?.let { day -> rememberDayName(day, locale) }
 
     RecapSlideColumn(contentPadding = contentPadding, scrollState = scrollState, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -587,20 +580,20 @@ private val ListeningPersonality.icon: ImageVector
         ListeningPersonality.NIGHT_OWL -> vectorResource(Res.drawable.rounded_bedtime_filled_24)
     }
 
-internal val ListeningPersonality.titleRes: Int
+internal val ListeningPersonality.titleRes: StringResource
     get() = when (this) {
-        ListeningPersonality.EARLY_BIRD -> R.string.recap_personality_early_bird
-        ListeningPersonality.DAYTIME -> R.string.recap_personality_daytime
-        ListeningPersonality.EVENING -> R.string.recap_personality_evening
-        ListeningPersonality.NIGHT_OWL -> R.string.recap_personality_night_owl
+        ListeningPersonality.EARLY_BIRD -> Res.string.recap_personality_early_bird
+        ListeningPersonality.DAYTIME -> Res.string.recap_personality_daytime
+        ListeningPersonality.EVENING -> Res.string.recap_personality_evening
+        ListeningPersonality.NIGHT_OWL -> Res.string.recap_personality_night_owl
     }
 
-private val ListeningPersonality.descriptionRes: Int
+private val ListeningPersonality.descriptionRes: StringResource
     get() = when (this) {
-        ListeningPersonality.EARLY_BIRD -> R.string.recap_personality_early_bird_desc
-        ListeningPersonality.DAYTIME -> R.string.recap_personality_daytime_desc
-        ListeningPersonality.EVENING -> R.string.recap_personality_evening_desc
-        ListeningPersonality.NIGHT_OWL -> R.string.recap_personality_night_owl_desc
+        ListeningPersonality.EARLY_BIRD -> Res.string.recap_personality_early_bird_desc
+        ListeningPersonality.DAYTIME -> Res.string.recap_personality_daytime_desc
+        ListeningPersonality.EVENING -> Res.string.recap_personality_evening_desc
+        ListeningPersonality.NIGHT_OWL -> Res.string.recap_personality_night_owl_desc
     }
 
 @Composable

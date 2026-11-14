@@ -1,7 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
 import android.content.Context
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -146,7 +146,7 @@ class PlaylistDismissUndoStateHolder(
                 }
                 setSheetVisible(true)
                 setSheetCollapsed()
-                emitToast(context.getString(R.string.playlist_restored_toast))
+                emitToast(getString(Res.string.playlist_restored_toast))
             } else {
                 updateUiState { it.copy(showDismissUndoBar = false) }
             }

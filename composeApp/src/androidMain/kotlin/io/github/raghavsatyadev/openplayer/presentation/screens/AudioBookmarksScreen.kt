@@ -2,9 +2,7 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.annotation.DrawableRes
 
-import androidx.compose.ui.res.vectorResource
 import android.content.ClipData
 import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
@@ -125,7 +123,6 @@ import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.database.AudioBookmarkEntity
 import io.github.raghavsatyadev.openplayer.data.database.backupSongIdOfRestoredBookmark
@@ -154,6 +151,7 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -782,22 +780,22 @@ private fun formatBookmarkMomentCount(count: Int): String =
 private enum class BookmarkFolderSortMode(
     val label: String,
     val contentDescription: String,
-    @DrawableRes val iconRes: Int
+    val iconRes: DrawableResource
 ) {
     MostMoments(
         label = "Most moments",
         contentDescription = "Sort bookmarks by most moments",
-        iconRes = R.drawable.rounded_bookmark_filled_24
+        iconRes = Res.drawable.rounded_bookmark_filled_24
     ),
     Recent(
         label = "Recent",
         contentDescription = "Sort bookmarks by recent moments",
-        iconRes = R.drawable.rounded_schedule_filled_24
+        iconRes = Res.drawable.rounded_schedule_filled_24
     ),
     Title(
         label = "A-Z",
         contentDescription = "Sort bookmarks alphabetically",
-        iconRes = R.drawable.rounded_sort_by_alpha_24
+        iconRes = Res.drawable.rounded_sort_by_alpha_24
     );
 
     fun next(): BookmarkFolderSortMode =
@@ -1288,7 +1286,7 @@ private fun BookmarkActionFabMenu(
                     imageVector = if (sortMode == BookmarkFolderSortMode.MostMoments) {
                         vectorResource(Res.drawable.rounded_check_24)
                     } else {
-                        ImageVector.vectorResource(BookmarkFolderSortMode.MostMoments.iconRes)
+                        vectorResource(BookmarkFolderSortMode.MostMoments.iconRes)
                     },
                     contentDescription = null
                 )
@@ -1312,7 +1310,7 @@ private fun BookmarkActionFabMenu(
                     imageVector = if (sortMode == BookmarkFolderSortMode.Recent) {
                         vectorResource(Res.drawable.rounded_check_24)
                     } else {
-                        ImageVector.vectorResource(BookmarkFolderSortMode.Recent.iconRes)
+                        vectorResource(BookmarkFolderSortMode.Recent.iconRes)
                     },
                     contentDescription = null
                 )
@@ -1336,7 +1334,7 @@ private fun BookmarkActionFabMenu(
                     imageVector = if (sortMode == BookmarkFolderSortMode.Title) {
                         vectorResource(Res.drawable.rounded_check_24)
                     } else {
-                        ImageVector.vectorResource(BookmarkFolderSortMode.Title.iconRes)
+                        vectorResource(BookmarkFolderSortMode.Title.iconRes)
                     },
                     contentDescription = null
                 )
@@ -1475,7 +1473,7 @@ private fun BookmarkSelectionTopBar(
                 Icon(
                     imageVector = vectorResource(Res.drawable.rounded_select_all_24),
                     contentDescription = stringResource(
-                        if (allSelected) R.string.presentation_batch_e_deselect_all else R.string.cd_select_all
+                        if (allSelected) Res.string.presentation_batch_e_deselect_all else Res.string.cd_select_all
                     )
                 )
             }

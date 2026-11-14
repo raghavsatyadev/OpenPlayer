@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.settings.search
 
-import android.content.Context
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import java.text.Normalizer
 import java.util.Locale
 import kotlin.math.max
@@ -9,8 +8,7 @@ import kotlin.math.min
 
 object SettingsFuzzySearchEngine {
 
-    fun search(
-        context: Context,
+    suspend fun search(
         query: String,
         registry: List<SettingSpec>
     ): List<SearchResultSection> {
@@ -21,12 +19,12 @@ object SettingsFuzzySearchEngine {
         val queryTokens = normalizedQuery.split("\\s+".toRegex()).filter { it.isNotBlank() }
 
         val scoredResults = registry.mapNotNull { spec ->
-            val title = spec.getTitle(context)
-            val subtitle = spec.getSubtitle(context) ?: ""
-            val categoryTitle = runCatching { context.getString(spec.category.titleRes) }.getOrDefault("")
+            val title = spec.titleStatic ?: spec.titleRes?.let { getString(it) } ?: ""
+            val subtitle = spec.subtitleStatic ?: spec.subtitleRes?.let { getString(it) } ?: ""
+            val categoryTitle = runCatching { getString(spec.category.titleRes) }.getOrDefault("")
 
             val keywordStrings = spec.keywordsRes.mapNotNull { id ->
-                runCatching { context.getString(id) }.getOrNull()
+                runCatching { getString(id) }.getOrNull()
             } + spec.keywordsStatic
 
             val score = calculateScore(
@@ -59,7 +57,7 @@ object SettingsFuzzySearchEngine {
         if (topMatches.isNotEmpty()) {
             sections.add(
                 SearchResultSection(
-                    titleRes = R.string.settings_search_section_top_matches,
+                    titleRes = Res.string.settings_search_section_top_matches,
                     items = topMatches
                 )
             )
@@ -67,7 +65,7 @@ object SettingsFuzzySearchEngine {
         if (relatedMatches.isNotEmpty()) {
             sections.add(
                 SearchResultSection(
-                    titleRes = R.string.settings_search_section_related,
+                    titleRes = Res.string.settings_search_section_related,
                     items = relatedMatches
                 )
             )

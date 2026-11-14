@@ -2,14 +2,11 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.annotation.DrawableRes
 
-import androidx.compose.ui.res.vectorResource
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
-import androidx.annotation.StringRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.MutableTransitionState
@@ -82,7 +79,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -91,7 +87,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.SineWaveLine
@@ -104,21 +99,23 @@ import co.touchlab.kermit.Logger
 import kotlin.math.roundToInt
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.vectorResource
 
 private const val NoticesAssetPath = "licenses/THIRD_PARTY_NOTICES.md"
 
 private enum class LicenseTab(
-    @StringRes val titleRes: Int,
-    @DrawableRes val iconRes: Int,
+    val titleRes: StringResource,
+    val iconRes: DrawableResource,
     val category: LicenseCategory?,
 ) {
-    ALL(R.string.licenses_tab_all, R.drawable.rounded_category_filled_24, null),
-    LIBRARIES(R.string.licenses_tab_libraries, R.drawable.rounded_code_24, LicenseCategory.LIBRARIES),
-    FONTS(R.string.licenses_tab_fonts, R.drawable.rounded_font_download_filled_24, LicenseCategory.FONTS),
-    CONTRIBUTORS(R.string.licenses_tab_contributors, R.drawable.rounded_groups_filled_24, LicenseCategory.CONTRIBUTORS),
-    DATA(R.string.licenses_tab_data, R.drawable.rounded_dataset_filled_24, LicenseCategory.DATA),
-    RAW_NOTICE(R.string.licenses_tab_raw_notice, R.drawable.rounded_article_filled_mirrored_24, null),
+    ALL(Res.string.licenses_tab_all, Res.drawable.rounded_category_filled_24, null),
+    LIBRARIES(Res.string.licenses_tab_libraries, Res.drawable.rounded_code_24, LicenseCategory.LIBRARIES),
+    FONTS(Res.string.licenses_tab_fonts, Res.drawable.rounded_font_download_filled_24, LicenseCategory.FONTS),
+    CONTRIBUTORS(Res.string.licenses_tab_contributors, Res.drawable.rounded_groups_filled_24, LicenseCategory.CONTRIBUTORS),
+    DATA(Res.string.licenses_tab_data, Res.drawable.rounded_dataset_filled_24, LicenseCategory.DATA),
+    RAW_NOTICE(Res.string.licenses_tab_raw_notice, Res.drawable.rounded_article_filled_mirrored_24, null),
 }
 
 @Immutable
@@ -367,7 +364,7 @@ fun LicensesScreen(
                                 label = { Text(stringResource(tab.titleRes)) },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = ImageVector.vectorResource(tab.iconRes),
+                                        imageVector = vectorResource(tab.iconRes),
                                         contentDescription = null,
                                         modifier = Modifier.size(16.dp),
                                     )

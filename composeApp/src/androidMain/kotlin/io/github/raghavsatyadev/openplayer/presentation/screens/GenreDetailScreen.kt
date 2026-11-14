@@ -36,7 +36,6 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -50,7 +49,6 @@ import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Artist
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
@@ -115,7 +113,6 @@ fun GenreDetailScreen(
     val playlistUiState by playlistViewModel.uiState.collectAsStateWithLifecycle()
     val libraryGenres by playerViewModel.genres.collectAsStateWithLifecycle()
 
-    val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
 
     // Song selection is shared with Library and Search through the player view model.
@@ -720,13 +717,15 @@ fun GenreDetailScreen(
                         val cloudSongCount = CloudOfflineRepository.downloadCandidates(selectedSongs).size
                         cloudDownloadsViewModel.downloadSelected(selectedSongs)
                         multiSelectionState.clearSelection()
-                        playerViewModel.sendToast(
-                            context.resources.getQuantityString(
-                                R.plurals.cloud_download_selected_started,
-                                cloudSongCount,
-                                cloudSongCount
+                        coroutineScope.launch {
+                            playerViewModel.sendToast(
+                                getPluralString(
+                                    Res.plurals.cloud_download_selected_started,
+                                    cloudSongCount,
+                                    cloudSongCount
+                                )
                             )
-                        )
+                        }
                         showMultiSelectionSheet = false
                     },
                     onDeleteAll = { deleteActivity, onComplete ->

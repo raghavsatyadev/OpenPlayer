@@ -2,7 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.recap
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,20 +30,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.ui.theme.ShapeCache
 import kotlinx.collections.immutable.ImmutableList
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.vectorResource
 
-@StringRes
-private fun RecapEntry.titleRes(): Int =
-    if (isSoFar) R.string.recap_card_title_so_far else R.string.recap_card_title
+private fun RecapEntry.titleRes(): StringResource =
+    if (isSoFar) Res.string.recap_card_title_so_far else Res.string.recap_card_title
 
 /**
  * Stats screen entry to the recaps in [entries] (most relevant first): the first one as the
@@ -100,7 +97,7 @@ fun RecapStatsCard(
                 )
                 Text(
                     text = stringResource(
-                        if (primary.isSoFar) R.string.recap_card_subtitle_so_far else R.string.recap_card_subtitle
+                        if (primary.isSoFar) Res.string.recap_card_subtitle_so_far else Res.string.recap_card_subtitle
                     ),
                     style = MaterialTheme.typography.bodyMedium,
                     color = content.copy(alpha = 0.8f)

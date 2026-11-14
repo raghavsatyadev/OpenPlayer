@@ -5,7 +5,6 @@ package io.github.raghavsatyadev.openplayer.presentation.screens
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -77,7 +76,6 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -85,7 +83,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.listenbrainz.ListenBrainzProfileStats
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
@@ -102,6 +99,8 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import kotlinx.collections.immutable.ImmutableList
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppToaster
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
@@ -115,6 +114,8 @@ fun AccountsScreen(
     viewModel: AccountsViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
+    val unableToOpenMessage = stringResource(Res.string.accounts_unable_open_screen)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val listenBrainzConnectState by viewModel.listenBrainzConnectState.collectAsStateWithLifecycle()
     var showListenBrainzDialog by remember { mutableStateOf(false) }
@@ -196,6 +197,8 @@ fun AccountsScreen(
         } else {
             openService(
                 context = context,
+                toaster = toaster,
+                unableToOpenMessage = unableToOpenMessage,
                 service = service,
                 onOpenNavidromeDashboard = onOpenNavidromeDashboard,
                 onOpenJellyfinDashboard = onOpenJellyfinDashboard,
@@ -238,6 +241,8 @@ fun AccountsScreen(
                         onManage = {
                             openService(
                                 context = context,
+                                toaster = toaster,
+                                unableToOpenMessage = unableToOpenMessage,
                                 service = account.service,
                                 onOpenNavidromeDashboard = onOpenNavidromeDashboard,
                                 onOpenJellyfinDashboard = onOpenJellyfinDashboard,
@@ -655,6 +660,8 @@ private fun serviceDisplayName(service: ExternalServiceAccount): String {
 
 private fun openService(
     context: Context,
+    toaster: AppToaster,
+    unableToOpenMessage: String,
     service: ExternalServiceAccount,
     onOpenNavidromeDashboard: () -> Unit,
     onOpenJellyfinDashboard: () -> Unit,
@@ -667,6 +674,8 @@ private fun openService(
             } else {
                 safeStartActivity(
                     context = context,
+                    toaster = toaster,
+                    unableToOpenMessage = unableToOpenMessage,
                     intent = Intent(context, NavidromeLoginActivity::class.java)
                 )
             }
@@ -677,6 +686,8 @@ private fun openService(
             } else {
                 safeStartActivity(
                     context = context,
+                    toaster = toaster,
+                    unableToOpenMessage = unableToOpenMessage,
                     intent = Intent(context, JellyfinLoginActivity::class.java)
                 )
             }
@@ -684,6 +695,8 @@ private fun openService(
         ExternalServiceAccount.LISTENBRAINZ -> {
             safeStartActivity(
                 context = context,
+                toaster = toaster,
+                unableToOpenMessage = unableToOpenMessage,
                 intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://listenbrainz.org"))
             )
         }
@@ -692,11 +705,13 @@ private fun openService(
 
 private fun safeStartActivity(
     context: Context,
+    toaster: AppToaster,
+    unableToOpenMessage: String,
     intent: Intent
 ) {
     runCatching { context.startActivity(intent) }
         .onFailure {
-            Toast.makeText(context, context.getString(R.string.accounts_unable_open_screen), Toast.LENGTH_SHORT).show()
+            toaster.show(unableToOpenMessage)
         }
 }
 
@@ -1033,6 +1048,8 @@ private fun ListenBrainzTokenDialog(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
+    val unableToOpenMessage = stringResource(Res.string.accounts_unable_open_screen)
     var token by remember { mutableStateOf("") }
     var serverUrl by remember { mutableStateOf(initialServerUrl.orEmpty()) }
     val failedState = connectState as? ListenBrainzConnectState.Failed
@@ -1072,9 +1089,9 @@ private fun ListenBrainzTokenDialog(
                     Text(
                         text = stringResource(
                             if (failedState.invalidUrl) {
-                                R.string.accounts_listenbrainz_invalid_url
+                                Res.string.accounts_listenbrainz_invalid_url
                             } else {
-                                R.string.accounts_listenbrainz_connect_failed
+                                Res.string.accounts_listenbrainz_connect_failed
                             }
                         ),
                         style = MaterialTheme.typography.bodySmall,
@@ -1085,6 +1102,8 @@ private fun ListenBrainzTokenDialog(
                     onClick = {
                         safeStartActivity(
                             context = context,
+                            toaster = toaster,
+                            unableToOpenMessage = unableToOpenMessage,
                             intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://listenbrainz.org/settings/"))
                         )
                     }

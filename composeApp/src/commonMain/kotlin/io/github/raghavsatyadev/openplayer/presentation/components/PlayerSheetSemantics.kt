@@ -1,8 +1,8 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import android.content.res.Resources
-import androidx.annotation.StringRes
-import io.github.raghavsatyadev.openplayer.R
+import androidx.compose.runtime.Composable
+import org.jetbrains.compose.resources.StringResource
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerSheetState
 
 /**
@@ -22,28 +22,27 @@ internal fun playerSheetTestTag(state: PlayerSheetState): String =
 /**
  * TalkBack description of the player sheet card, naming [songTitle] when there is one.
  *
- * Takes the caller's [resources] so it follows the in-app language.
+ * Resolved through Compose resources so it follows the in-app language.
  */
+@Composable
 internal fun playerSheetContentDescription(
-    resources: Resources,
     state: PlayerSheetState,
     songTitle: String?
 ): String {
     val title = songTitle?.takeIf { it.isNotBlank() }
     val descriptionRes = playerSheetContentDescriptionRes(state, hasTitle = title != null)
     return if (title != null) {
-        resources.getString(descriptionRes, title)
+        stringResource(descriptionRes, title)
     } else {
-        resources.getString(descriptionRes)
+        stringResource(descriptionRes)
     }
 }
 
 /** The variants with a title take it as their only format argument. */
-@StringRes
-internal fun playerSheetContentDescriptionRes(state: PlayerSheetState, hasTitle: Boolean): Int =
+internal fun playerSheetContentDescriptionRes(state: PlayerSheetState, hasTitle: Boolean): StringResource =
     when (state) {
         PlayerSheetState.COLLAPSED ->
-            if (hasTitle) R.string.cd_player_sheet_collapsed else R.string.cd_player_sheet_collapsed_no_track
+            if (hasTitle) Res.string.cd_player_sheet_collapsed else Res.string.cd_player_sheet_collapsed_no_track
         PlayerSheetState.EXPANDED ->
-            if (hasTitle) R.string.cd_player_sheet_expanded else R.string.cd_player_sheet_expanded_no_track
+            if (hasTitle) Res.string.cd_player_sheet_expanded else Res.string.cd_player_sheet_expanded_no_track
     }

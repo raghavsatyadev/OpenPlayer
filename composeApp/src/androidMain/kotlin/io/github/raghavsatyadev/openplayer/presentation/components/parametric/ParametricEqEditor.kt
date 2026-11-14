@@ -29,9 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricBand
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ParametricEqUiState
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ParametricEqViewModel
@@ -187,10 +185,10 @@ fun ParametricEqEditor(
             Text(
                 text = stringResource(
                     when (msg) {
-                        ParametricMessage.IMPORT_NO_FILTERS -> R.string.parametric_eq_message_no_filters
-                        ParametricMessage.IMPORT_FAILED -> R.string.parametric_eq_message_import_failed
-                        ParametricMessage.EXPORT_FAILED -> R.string.parametric_eq_message_export_failed
-                        else -> R.string.parametric_eq_message_exported
+                        ParametricMessage.IMPORT_NO_FILTERS -> Res.string.parametric_eq_message_no_filters
+                        ParametricMessage.IMPORT_FAILED -> Res.string.parametric_eq_message_import_failed
+                        ParametricMessage.EXPORT_FAILED -> Res.string.parametric_eq_message_export_failed
+                        else -> Res.string.parametric_eq_message_exported
                     },
                 ),
                 color = if (failed) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,

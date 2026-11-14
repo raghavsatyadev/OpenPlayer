@@ -1,17 +1,15 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import androidx.annotation.DrawableRes
-import androidx.compose.ui.res.vectorResource
-import androidx.annotation.StringRes
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.model.SettingsCategory
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
+import io.github.raghavsatyadev.openplayer.resources.*
 
 /**
  * The accent family a settings row is tinted with. Rows name a role of the active [ColorScheme]
@@ -71,38 +69,38 @@ internal sealed interface MainSettingsEntry {
 
     /** A row for a settings screen that is not a [SettingsCategory]. */
     enum class Destination(
-        @StringRes val titleRes: Int,
-        @StringRes val subtitleRes: Int,
-        @DrawableRes val iconRes: Int,
+        val titleRes: StringResource,
+        val subtitleRes: StringResource,
+        val iconRes: DrawableResource,
         override val iconTone: SettingsIconTone,
         override val route: String
     ) : MainSettingsEntry {
         // Settings search groups the lyrics options under Playback, so the row shares its tone.
         LYRICS(
-            titleRes = R.string.setcat_lyrics_title,
-            subtitleRes = R.string.setcat_lyrics_subtitle,
-            iconRes = R.drawable.rounded_lyrics_filled_24,
+            titleRes = Res.string.setcat_lyrics_title,
+            subtitleRes = Res.string.setcat_lyrics_subtitle,
+            iconRes = Res.drawable.rounded_lyrics_filled_24,
             iconTone = SettingsIconTone.SECONDARY,
             route = Screen.LyricsSettings.createRoute()
         ),
         DOWNLOADS(
-            titleRes = R.string.cloud_downloads_title,
-            subtitleRes = R.string.cloud_downloads_settings_subtitle,
-            iconRes = R.drawable.rounded_cloud_download_filled_24,
+            titleRes = Res.string.cloud_downloads_title,
+            subtitleRes = Res.string.cloud_downloads_settings_subtitle,
+            iconRes = Res.drawable.rounded_cloud_download_filled_24,
             iconTone = SettingsIconTone.PRIMARY,
             route = Screen.CloudDownloads.route
         ),
         ACCOUNTS(
-            titleRes = R.string.settings_accounts_row_title,
-            subtitleRes = R.string.settings_accounts_row_subtitle,
-            iconRes = R.drawable.rounded_account_circle_filled_24,
+            titleRes = Res.string.settings_accounts_row_title,
+            subtitleRes = Res.string.settings_accounts_row_subtitle,
+            iconRes = Res.drawable.rounded_account_circle_filled_24,
             iconTone = SettingsIconTone.TERTIARY,
             route = Screen.Accounts.createRoute()
         ),
         UPDATES(
-            titleRes = R.string.updates_title,
-            subtitleRes = R.string.updates_settings_subtitle,
-            iconRes = R.drawable.rounded_system_update_filled_24,
+            titleRes = Res.string.updates_title,
+            subtitleRes = Res.string.updates_settings_subtitle,
+            iconRes = Res.drawable.rounded_system_update_filled_24,
             iconTone = SettingsIconTone.PRIMARY,
             route = Screen.Updates.route
         )

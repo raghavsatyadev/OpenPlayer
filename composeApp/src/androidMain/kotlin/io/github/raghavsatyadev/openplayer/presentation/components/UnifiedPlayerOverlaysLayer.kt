@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.foundation.background
@@ -21,14 +20,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import io.github.raghavsatyadev.openplayer.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.data.model.Song
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.StablePlayerState
@@ -176,7 +175,9 @@ internal fun UnifiedPlayerSongInfoLayer(
     onNavigateToGenre: (Song) -> Unit
 ) {
     selectedSongForInfo?.let { staticSong ->
-        val context = LocalContext.current
+        val toaster = rememberAppToaster()
+        val addedToQueueToast = stringResource(Res.string.toast_added_to_queue)
+        val playingNextToast = stringResource(Res.string.toast_playing_next)
         var showPlaylistBottomSheet by remember(staticSong.id) { mutableStateOf(false) }
         val playlistViewModel: PlaylistViewModel = koinViewModel()
         val playlistUiState by playlistViewModel.uiState.collectAsStateWithLifecycle()
@@ -210,12 +211,12 @@ internal fun UnifiedPlayerSongInfoLayer(
                 onAddToQueue = {
                     playerViewModel.addSongToQueue(liveSong)
                     onDismissSongInfo()
-                    Toast.makeText(context, context.getString(R.string.toast_added_to_queue), Toast.LENGTH_SHORT).show()
+                    toaster.show(addedToQueueToast)
                 },
                 onAddNextToQueue = {
                     playerViewModel.addSongNextToQueue(liveSong)
                     onDismissSongInfo()
-                    Toast.makeText(context, context.getString(R.string.toast_playing_next), Toast.LENGTH_SHORT).show()
+                    toaster.show(playingNextToast)
                 },
                 onAddToPlayList = {
                     showPlaylistBottomSheet = true

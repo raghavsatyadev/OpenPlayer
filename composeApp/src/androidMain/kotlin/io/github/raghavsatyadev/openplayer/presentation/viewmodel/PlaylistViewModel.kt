@@ -37,7 +37,7 @@ import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.provider.MediaStore
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -938,7 +938,7 @@ class PlaylistViewModel(
 
                 if (playlistsWithSongs.isEmpty()) {
                     Logger.withTag("PlaylistViewModel").w { "No playlists found to share" }
-                    Toast.makeText(context, context.getString(R.string.playlist_none_to_share), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(Res.string.playlist_none_to_share), Toast.LENGTH_SHORT).show()
                     return@launch
                 }
 
@@ -999,14 +999,14 @@ class PlaylistViewModel(
                 }
 
                 Logger.withTag("PlaylistViewModel").d { "Launching share intent for: $shareFileName" }
-                activity.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.playlist_share_chooser_title)))
+                activity.startActivity(Intent.createChooser(shareIntent, getString(Res.string.playlist_share_chooser_title)))
                 val n = playlistsWithSongs.size
-                val sharingMsg = context.resources.getQuantityString(R.plurals.sharing_playlists_message, n, n)
+                val sharingMsg = getPluralString(Res.plurals.sharing_playlists_message, n, n)
                 Toast.makeText(context, sharingMsg, Toast.LENGTH_SHORT).show()
 
             } catch (e: Exception) {
                 Logger.withTag("PlaylistViewModel").e(e) { "Error sharing playlists" }
-                Toast.makeText(context, context.getString(R.string.playlist_share_failed, e.message ?: ""), Toast.LENGTH_LONG).show()
+                Toast.makeText(context, getString(Res.string.playlist_share_failed, e.message ?: ""), Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -1076,7 +1076,7 @@ class PlaylistViewModel(
                 val playlistsWithSongs = getPlaylistsWithSongs(playlistIds)
                 if (playlistsWithSongs.isEmpty()) {
                     Logger.withTag("PlaylistViewModel").w { "No playlists found to export" }
-                    Toast.makeText(context, context.getString(R.string.playlist_none_to_export), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(Res.string.playlist_none_to_export), Toast.LENGTH_SHORT).show()
                     return@launch
                 }
 
@@ -1095,13 +1095,13 @@ class PlaylistViewModel(
 
                 Logger.withTag("PlaylistViewModel").d { "Successfully exported ${playlistIds.size} playlists to $exportDir" }
                 val count = playlistsWithSongs.size
-                val folderLabel = context.getString(R.string.playlist_export_folder_display)
-                val exportedMsg = context.resources.getQuantityString(R.plurals.exported_playlists_message, count, count, folderLabel)
+                val folderLabel = getString(Res.string.playlist_export_folder_display)
+                val exportedMsg = getPluralString(Res.plurals.exported_playlists_message, count, count, folderLabel)
                 Toast.makeText(context, exportedMsg, Toast.LENGTH_SHORT).show()
 
             } catch (e: Exception) {
                 Logger.withTag("PlaylistViewModel").e(e) { "Error exporting playlists" }
-                Toast.makeText(context, context.getString(R.string.playlist_export_failed, e.message ?: ""), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(Res.string.playlist_export_failed, e.message ?: ""), Toast.LENGTH_SHORT).show()
             }
         }
     }

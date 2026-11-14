@@ -23,9 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricBand
 import io.github.raghavsatyadev.openplayer.data.equalizer.parametric.ParametricBandType
 import java.util.Locale
@@ -38,9 +36,9 @@ import org.jetbrains.compose.resources.vectorResource
 @Composable
 internal fun bandTypeLabel(type: ParametricBandType): String = stringResource(
     when (type) {
-        ParametricBandType.PEAK -> R.string.parametric_eq_band_type_peak
-        ParametricBandType.LOW_SHELF -> R.string.parametric_eq_band_type_low_shelf
-        ParametricBandType.HIGH_SHELF -> R.string.parametric_eq_band_type_high_shelf
+        ParametricBandType.PEAK -> Res.string.parametric_eq_band_type_peak
+        ParametricBandType.LOW_SHELF -> Res.string.parametric_eq_band_type_low_shelf
+        ParametricBandType.HIGH_SHELF -> Res.string.parametric_eq_band_type_high_shelf
     },
 )
 

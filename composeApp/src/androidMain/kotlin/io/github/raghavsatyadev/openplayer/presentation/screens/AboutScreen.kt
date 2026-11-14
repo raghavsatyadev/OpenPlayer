@@ -3,7 +3,6 @@ package io.github.raghavsatyadev.openplayer.presentation.screens
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.MutableTransitionState
@@ -78,7 +77,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -94,7 +92,6 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.size.Size
 import coil3.toBitmap
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
@@ -117,7 +114,7 @@ private data class Contributor(
     val detail: String? = null,
     val badge: String? = null,
     val avatarUrl: String? = null,
-    @DrawableRes val iconRes: Int? = null,
+    val iconRes: DrawableResource? = null,
     val githubUrl: String? = null,
     val telegramUrl: String? = null,
     val contributions: Int? = null,
@@ -129,7 +126,7 @@ private val CoreMaintainer = Contributor(
     role = "FOSS Maintainer",
     detail = "Created PixelPlayerOSS, which OpenPlayer is based on. GitHub and Telegram: @lostf1sh.",
     avatarUrl = "https://github.com/lostf1sh.png",
-    iconRes = R.drawable.round_developer_board_24,
+    iconRes = Res.drawable.round_developer_board_24,
     githubUrl = "https://github.com/lostf1sh",
     telegramUrl = "https://t.me/lostf1sh",
 )
@@ -141,7 +138,7 @@ private val NonFossMaintainer = Contributor(
     detail = "Author and maintainer of the original Google Play / non-FOSS OpenPlayer release.",
     badge = "Original app",
     avatarUrl = "https://github.com/theovilardo.png",
-    iconRes = R.drawable.round_developer_board_24,
+    iconRes = Res.drawable.round_developer_board_24,
     githubUrl = "https://github.com/theovilardo",
 )
 
@@ -762,7 +759,7 @@ private fun ContributorCard(
             ContributorAvatar(
                 name = contributor.displayName,
                 avatarUrl = contributor.avatarUrl,
-                iconRes = contributor.iconRes ?: R.drawable.rounded_person_24,
+                iconRes = contributor.iconRes ?: Res.drawable.rounded_person_24,
             )
 
             Spacer(Modifier.width(12.dp))
@@ -819,12 +816,12 @@ private fun ContributorCard(
             }
 
             SocialIconButton(
-                painterRes = R.drawable.github,
+                painterRes = Res.drawable.github,
                 contentDescription = stringResource(Res.string.cd_open_github_profile),
                 url = contributor.githubUrl,
             )
             SocialIconButton(
-                painterRes = R.drawable.telegram,
+                painterRes = Res.drawable.telegram,
                 contentDescription = stringResource(Res.string.cd_open_telegram_profile),
                 url = contributor.telegramUrl,
             )
@@ -853,7 +850,7 @@ private fun ContributorLabel(text: String) {
 private fun ContributorAvatar(
     name: String,
     avatarUrl: String?,
-    @DrawableRes iconRes: Int?,
+    iconRes: DrawableResource?,
     modifier: Modifier = Modifier,
 ) {
     val containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
@@ -931,16 +928,16 @@ private fun ContributorAvatar(
     }
 }
 
-private fun contributorPlaceholderResource(iconRes: Int?): DrawableResource =
+private fun contributorPlaceholderResource(iconRes: DrawableResource?): DrawableResource =
     when (iconRes) {
         null -> Res.drawable.ic_music_placeholder
-        R.drawable.round_developer_board_24 -> Res.drawable.round_developer_board_24
+        Res.drawable.round_developer_board_24 -> Res.drawable.round_developer_board_24
         else -> Res.drawable.rounded_person_24
     }
 
 @Composable
 private fun SocialIconButton(
-    painterRes: Int,
+    painterRes: DrawableResource,
     contentDescription: String,
     url: String?,
     modifier: Modifier = Modifier,

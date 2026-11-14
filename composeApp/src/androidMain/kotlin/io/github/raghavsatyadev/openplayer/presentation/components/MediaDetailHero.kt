@@ -79,7 +79,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -88,7 +87,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import io.github.raghavsatyadev.openplayer.utils.formatSongCount
 import kotlin.math.roundToInt
@@ -709,9 +707,9 @@ private fun HeroActionGroup(
                             glyphInsets = if (isPause) PauseGlyphInsets else PlayGlyphInsets,
                             text = stringResource(
                                 when (state) {
-                                    HeroPlayState.Idle -> R.string.detail_hero_play
-                                    HeroPlayState.Playing -> R.string.detail_hero_pause
-                                    HeroPlayState.Paused -> R.string.detail_hero_resume
+                                    HeroPlayState.Idle -> Res.string.detail_hero_play
+                                    HeroPlayState.Playing -> Res.string.detail_hero_pause
+                                    HeroPlayState.Paused -> Res.string.detail_hero_resume
                                 }
                             )
                         )

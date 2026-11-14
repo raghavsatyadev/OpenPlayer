@@ -1,4 +1,3 @@
-import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -57,10 +56,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
@@ -68,7 +65,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.ExpressiveTopBarContent
@@ -76,6 +72,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ArtistSettings
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -87,7 +84,11 @@ fun DelimiterConfigScreen(
     viewModel: ArtistSettingsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+    val toaster = rememberAppToaster()
+    val toastDelimiterToastAtLeastOne = stringResource(Res.string.delimiter_toast_at_least_one)
+    val toastDelimiterToastAdded = stringResource(Res.string.delimiter_toast_added)
+    val toastDelimiterToastInvalid = stringResource(Res.string.delimiter_toast_invalid)
+    val toastDelimiterToastReset = stringResource(Res.string.delimiter_toast_reset)
     val keyboardController = LocalSoftwareKeyboardController.current
 
     var newDelimiter by remember { mutableStateOf("") }
@@ -205,11 +206,7 @@ fun DelimiterConfigScreen(
                                         if (uiState.artistDelimiters.size > 1) {
                                             viewModel.removeDelimiter(delimiter)
                                         } else {
-                                            Toast.makeText(
-                                                context,
-                                                context.getString(R.string.delimiter_toast_at_least_one),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            toaster.show(toastDelimiterToastAtLeastOne)
                                         }
                                     }
                                 )
@@ -259,17 +256,9 @@ fun DelimiterConfigScreen(
                                             if (success) {
                                                 newDelimiter = ""
                                                 keyboardController?.hide()
-                                                Toast.makeText(
-                                                    context,
-                                                    context.getString(R.string.delimiter_toast_added),
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
+                                                toaster.show(toastDelimiterToastAdded)
                                             } else {
-                                                Toast.makeText(
-                                                    context,
-                                                    context.getString(R.string.delimiter_toast_invalid),
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
+                                                toaster.show(toastDelimiterToastInvalid)
                                             }
                                         }
                                     }
@@ -291,17 +280,9 @@ fun DelimiterConfigScreen(
                                         if (success) {
                                             newDelimiter = ""
                                             keyboardController?.hide()
-                                            Toast.makeText(
-                                                context,
-                                                context.getString(R.string.delimiter_toast_added),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            toaster.show(toastDelimiterToastAdded)
                                         } else {
-                                            Toast.makeText(
-                                                context,
-                                                context.getString(R.string.delimiter_toast_invalid),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            toaster.show(toastDelimiterToastInvalid)
                                         }
                                     }
                                 },
@@ -410,7 +391,7 @@ fun DelimiterConfigScreen(
                     Button(
                         onClick = {
                             viewModel.resetDelimitersToDefault()
-                            Toast.makeText(context, context.getString(R.string.delimiter_toast_reset), Toast.LENGTH_SHORT).show()
+                            toaster.show(toastDelimiterToastReset)
                             showResetDialog = false
                         },
                         colors = ButtonDefaults.buttonColors(

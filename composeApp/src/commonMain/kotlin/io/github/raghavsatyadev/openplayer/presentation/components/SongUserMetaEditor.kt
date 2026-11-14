@@ -31,12 +31,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import org.jetbrains.compose.resources.vectorResource
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.repository.SongUserMeta
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SongUserMetaViewModel
@@ -61,8 +59,8 @@ fun SongUserMetaEntryButton(
         onClick = { showEditor = true }
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(
-                if ((meta?.rating ?: 0) > 0) R.drawable.rounded_star_filled_24 else R.drawable.rounded_star_24
+            imageVector = vectorResource(
+                if ((meta?.rating ?: 0) > 0) Res.drawable.rounded_star_filled_24 else Res.drawable.rounded_star_24
             ),
             contentDescription = null
         )
@@ -239,8 +237,8 @@ fun StarRatingRow(
                 label = "starScale"
             )
             Icon(
-                imageVector = ImageVector.vectorResource(
-                    if (filled) R.drawable.rounded_star_filled_24 else R.drawable.rounded_star_24
+                imageVector = vectorResource(
+                    if (filled) Res.drawable.rounded_star_filled_24 else Res.drawable.rounded_star_24
                 ),
                 contentDescription = stringResource(Res.string.user_meta_cd_star, star),
                 tint = tint,

@@ -42,8 +42,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -52,7 +52,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.ui.AspectRatioFrameLayout
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerVideoViewModel
 import io.github.raghavsatyadev.openplayer.utils.PhoneOrientationPolicy
 import kotlinx.coroutines.delay
@@ -171,7 +170,7 @@ private fun FullscreenControls(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            OverlayIcon(R.drawable.rounded_fullscreen_exit_24, stringResource(Res.string.video_exit_fullscreen), onExit)
+            OverlayIcon(Res.drawable.rounded_fullscreen_exit_24, stringResource(Res.string.video_exit_fullscreen), onExit)
         }
 
         Row(
@@ -179,7 +178,7 @@ private fun FullscreenControls(
             horizontalArrangement = Arrangement.spacedBy(28.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            OverlayIcon(R.drawable.rounded_skip_previous_24, stringResource(Res.string.video_previous)) {
+            OverlayIcon(Res.drawable.rounded_skip_previous_24, stringResource(Res.string.video_previous)) {
                 onInteract(); audio?.seekToPrevious()
             }
             FilledIconButton(
@@ -194,12 +193,12 @@ private fun FullscreenControls(
                 ),
             ) {
                 Icon(
-                    painterResource(if (state.isPlaying) R.drawable.rounded_pause_24 else R.drawable.rounded_play_arrow_24),
-                    contentDescription = stringResource(if (state.isPlaying) R.string.video_pause else R.string.video_play),
+                    painterResource(if (state.isPlaying) Res.drawable.rounded_pause_24 else Res.drawable.rounded_play_arrow_24),
+                    contentDescription = stringResource(if (state.isPlaying) Res.string.video_pause else Res.string.video_play),
                     modifier = Modifier.size(36.dp),
                 )
             }
-            OverlayIcon(R.drawable.rounded_skip_next_24, stringResource(Res.string.video_next)) {
+            OverlayIcon(Res.drawable.rounded_skip_next_24, stringResource(Res.string.video_next)) {
                 onInteract(); audio?.seekToNext()
             }
         }
@@ -235,7 +234,7 @@ private fun FullscreenControls(
 }
 
 @Composable
-private fun OverlayIcon(iconRes: Int, description: String, onClick: () -> Unit) {
+private fun OverlayIcon(iconRes: DrawableResource, description: String, onClick: () -> Unit) {
     IconButton(
         onClick = onClick,
         modifier = Modifier.size(52.dp),

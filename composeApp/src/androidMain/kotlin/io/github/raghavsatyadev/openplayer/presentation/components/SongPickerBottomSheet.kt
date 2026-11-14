@@ -62,8 +62,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -75,7 +73,6 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import coil3.size.Size
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.LibraryTabId
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.screens.TabAnimation
@@ -166,8 +163,8 @@ fun SongPickerContent(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     val tabs = listOf(
-                        StorageFilter.OFFLINE to R.string.library_storage_filter_offline,
-                        StorageFilter.ONLINE to R.string.library_storage_filter_online
+                        StorageFilter.OFFLINE to Res.string.library_storage_filter_offline,
+                        StorageFilter.ONLINE to Res.string.library_storage_filter_online
                     )
                     val selectedTabIndex = tabs.indexOfFirst { it.first == storageFilter }.coerceAtLeast(0)
 
@@ -372,8 +369,8 @@ fun SongPickerSelectionPane(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(
-                            if (favoritesOnly) R.drawable.round_favorite_24
-                            else R.drawable.round_favorite_border_24
+                            if (favoritesOnly) Res.drawable.round_favorite_24
+                            else Res.drawable.round_favorite_border_24
                         ),
                         contentDescription = null,
                         modifier = Modifier.size(FilterChipDefaults.IconSize)
@@ -710,14 +707,14 @@ fun SongPickerEmptyState(
 ) {
     val spec = when (tabId) {
         LibraryTabId.LIKED -> when (storageFilter) {
-            StorageFilter.ALL -> Triple(R.drawable.round_favorite_24, R.string.lib_empty_liked_all_title, R.string.lib_empty_liked_all_subtitle)
-            StorageFilter.OFFLINE -> Triple(R.drawable.round_favorite_24, R.string.lib_empty_liked_offline_title, R.string.lib_empty_liked_offline_subtitle)
-            StorageFilter.ONLINE -> Triple(R.drawable.round_favorite_24, R.string.lib_empty_liked_online_title, R.string.lib_empty_liked_online_subtitle)
+            StorageFilter.ALL -> Triple(Res.drawable.round_favorite_24, Res.string.lib_empty_liked_all_title, Res.string.lib_empty_liked_all_subtitle)
+            StorageFilter.OFFLINE -> Triple(Res.drawable.round_favorite_24, Res.string.lib_empty_liked_offline_title, Res.string.lib_empty_liked_offline_subtitle)
+            StorageFilter.ONLINE -> Triple(Res.drawable.round_favorite_24, Res.string.lib_empty_liked_online_title, Res.string.lib_empty_liked_online_subtitle)
         }
         else -> when (storageFilter) {
-            StorageFilter.ALL -> Triple(R.drawable.rounded_music_off_24, R.string.lib_empty_songs_all_title, R.string.lib_empty_songs_all_subtitle)
-            StorageFilter.OFFLINE -> Triple(R.drawable.rounded_music_off_24, R.string.lib_empty_songs_offline_title, R.string.lib_empty_songs_offline_subtitle)
-            StorageFilter.ONLINE -> Triple(R.drawable.rounded_music_off_24, R.string.lib_empty_songs_online_title, R.string.lib_empty_songs_online_subtitle)
+            StorageFilter.ALL -> Triple(Res.drawable.rounded_music_off_24, Res.string.lib_empty_songs_all_title, Res.string.lib_empty_songs_all_subtitle)
+            StorageFilter.OFFLINE -> Triple(Res.drawable.rounded_music_off_24, Res.string.lib_empty_songs_offline_title, Res.string.lib_empty_songs_offline_subtitle)
+            StorageFilter.ONLINE -> Triple(Res.drawable.rounded_music_off_24, Res.string.lib_empty_songs_online_title, Res.string.lib_empty_songs_online_subtitle)
         }
     }
 
@@ -741,7 +738,7 @@ fun SongPickerEmptyState(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(id = spec.first),
+                        painter = painterResource(spec.first),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
                         tint = MaterialTheme.colorScheme.onSecondaryContainer

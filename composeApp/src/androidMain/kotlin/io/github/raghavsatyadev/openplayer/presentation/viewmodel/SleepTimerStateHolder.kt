@@ -4,7 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionCommand
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.StringResource
 import io.github.raghavsatyadev.openplayer.data.service.MusicNotificationProvider
 import io.github.raghavsatyadev.openplayer.data.service.SleepTimerSession
 import kotlinx.coroutines.CoroutineScope
@@ -88,31 +89,29 @@ class SleepTimerStateHolder(
         }
     }
 
-    private fun renderTimer(timer: SleepTimerSession.Timer?) {
+    private suspend fun renderTimer(timer: SleepTimerSession.Timer?) {
         _isEndOfTrackTimerActive.value = timer is SleepTimerSession.Timer.EndOfTrack
         _activeTimerDurationMinutes.value = (timer as? SleepTimerSession.Timer.Duration)?.minutes
         _activeTimerValueDisplay.value = when (timer) {
             is SleepTimerSession.Timer.Duration ->
-                context.getString(R.string.sleep_timer_n_minutes_format, timer.minutes)
+                getString(Res.string.sleep_timer_n_minutes_format, timer.minutes)
             is SleepTimerSession.Timer.EndOfTrack ->
-                context.getString(R.string.sleep_timer_display_eot)
+                getString(Res.string.sleep_timer_display_eot)
             null -> null
         }
     }
 
     private suspend fun toastFor(event: SleepTimerSession.Event) {
         val message = when (event) {
-            is SleepTimerSession.Event.EndOfTrackReached -> context.getString(
-                R.string.player_playback_stopped_eot,
+            is SleepTimerSession.Event.EndOfTrackReached -> getString(Res.string.player_playback_stopped_eot,
                 songTitleResolver?.invoke(event.songId)
-                    ?: context.getString(R.string.player_default_track_title)
+                    ?: getString(Res.string.player_default_track_title)
             )
-            is SleepTimerSession.Event.EndOfTrackCancelledBySongChange -> context.getString(
-                R.string.sleep_timer_eot_song_changed_toast,
+            is SleepTimerSession.Event.EndOfTrackCancelledBySongChange -> getString(Res.string.sleep_timer_eot_song_changed_toast,
                 songTitleResolver?.invoke(event.targetSongId)
-                    ?: context.getString(R.string.sleep_timer_label_previous_track),
+                    ?: getString(Res.string.sleep_timer_label_previous_track),
                 songTitleResolver?.invoke(event.newSongId)
-                    ?: context.getString(R.string.sleep_timer_label_current_track)
+                    ?: getString(Res.string.sleep_timer_label_current_track)
             )
             SleepTimerSession.Event.DurationExpired,
             is SleepTimerSession.Event.CountedPlayFinished -> null
@@ -134,6 +133,11 @@ class SleepTimerStateHolder(
         scope.launch { toastEmitter?.invoke(message) }
     }
 
+    private fun toast(res: StringResource, vararg args: Any) {
+        val scope = this.scope ?: return
+        scope.launch { toastEmitter?.invoke(getString(res, *args)) }
+    }
+
     /**
      * Set a duration-based sleep timer. Replaces an end-of-track timer.
      */
@@ -143,7 +147,7 @@ class SleepTimerStateHolder(
             Bundle().apply { putInt(MusicNotificationProvider.EXTRA_SLEEP_TIMER_MINUTES, durationMinutes) }
         )
         if (sent) {
-            toast(context.getString(R.string.sleep_timer_set_for_minutes_toast, durationMinutes))
+            toast(Res.string.sleep_timer_set_for_minutes_toast, durationMinutes)
         }
     }
 
@@ -174,7 +178,7 @@ class SleepTimerStateHolder(
             return
         }
         if (currentSongId == null) {
-            toast(context.getString(R.string.sleep_timer_eot_no_song_toast))
+            toast(Res.string.sleep_timer_eot_no_song_toast)
             return
         }
         val sent = sendToService(
@@ -182,7 +186,7 @@ class SleepTimerStateHolder(
             Bundle().apply { putBoolean(MusicNotificationProvider.EXTRA_END_OF_TRACK_ENABLED, true) }
         )
         if (sent) {
-            toast(context.getString(R.string.sleep_timer_eot_stop_at_end_toast))
+            toast(Res.string.sleep_timer_eot_stop_at_end_toast)
         }
     }
 
@@ -196,7 +200,7 @@ class SleepTimerStateHolder(
         when {
             overrideToastMessage != null -> toast(overrideToastMessage)
             !suppressDefaultToast && wasAnythingActive ->
-                toast(context.getString(R.string.sleep_timer_cancelled_toast))
+                toast(Res.string.sleep_timer_cancelled_toast)
         }
     }
 

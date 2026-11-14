@@ -70,7 +70,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
@@ -85,7 +84,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import androidx.navigation.NavController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.RecapViewModel
 import io.github.raghavsatyadev.openplayer.ui.theme.ShapeCache
@@ -435,7 +433,7 @@ private fun RecapChrome(
                     Icon(
                         imageVector = if (isPaused) vectorResource(Res.drawable.rounded_play_arrow_filled_24) else vectorResource(Res.drawable.rounded_pause_filled_24),
                         contentDescription = stringResource(
-                            if (isPaused) R.string.recap_cd_resume else R.string.recap_cd_pause
+                            if (isPaused) Res.string.recap_cd_resume else Res.string.recap_cd_pause
                         )
                     )
                 }

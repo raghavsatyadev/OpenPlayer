@@ -9,11 +9,11 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.provider.MediaStore
 import android.provider.Settings
-import androidx.annotation.StringRes
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.StringResource
 import io.github.raghavsatyadev.openplayer.data.database.MusicDao
 import io.github.raghavsatyadev.openplayer.data.database.toArtist
 import io.github.raghavsatyadev.openplayer.data.model.Artist
@@ -46,7 +46,7 @@ class SongInfoBottomSheetViewModel(
 ) : ViewModel() {
 
     data class SongLocationInfo(
-        @StringRes val labelRes: Int,
+        val labelRes: StringResource,
         val value: String,
         val isCloud: Boolean,
     )
@@ -119,7 +119,7 @@ class SongInfoBottomSheetViewModel(
                     onFailure = {
                         MusicBrainzUiState.Error(
                             it.localizedMessage
-                                ?: appContext.getString(R.string.musicbrainz_search_failed_fallback)
+                                ?: getString(Res.string.musicbrainz_search_failed_fallback)
                         )
                     }
                 )
@@ -136,7 +136,7 @@ class SongInfoBottomSheetViewModel(
                 onFailure = {
                     MusicBrainzUiState.Error(
                         it.localizedMessage
-                            ?: appContext.getString(R.string.musicbrainz_save_failed_fallback)
+                            ?: getString(Res.string.musicbrainz_save_failed_fallback)
                     )
                 }
             )
@@ -184,13 +184,13 @@ class SongInfoBottomSheetViewModel(
         val provider = getCloudProviderLabel(song.contentUriString)
         return if (provider != null) {
             SongLocationInfo(
-                labelRes = R.string.song_info_label_provider,
+                labelRes = Res.string.song_info_label_provider,
                 value = provider,
                 isCloud = true,
             )
         } else {
             SongLocationInfo(
-                labelRes = R.string.song_info_label_path,
+                labelRes = Res.string.song_info_label_path,
                 value = song.path,
                 isCloud = false,
             )
@@ -240,18 +240,18 @@ class SongInfoBottomSheetViewModel(
     private suspend fun setSongAsToneInternal(song: Song, target: ToneTarget): ToneActionResult {
         if (getCloudProviderLabel(song.contentUriString) != null) {
             return ToneActionResult.Error(
-                appContext.getString(R.string.song_info_ringtone_local_only)
+                getString(Res.string.song_info_ringtone_local_only)
             )
         }
 
         val ringtoneUri = runCatching { resolveMediaStoreAudioUri(song) }.getOrNull()
             ?: return ToneActionResult.Error(
-                appContext.getString(R.string.song_info_ringtone_missing_file)
+                getString(Res.string.song_info_ringtone_missing_file)
             )
 
         if (!Settings.System.canWrite(appContext)) {
             return ToneActionResult.NeedsSystemWritePermission(
-                appContext.getString(R.string.song_info_ringtone_permission_prompt)
+                getString(Res.string.song_info_ringtone_permission_prompt)
             )
         }
 
@@ -263,16 +263,14 @@ class SongInfoBottomSheetViewModel(
                 ringtoneUri,
             )
             ToneActionResult.Success(
-                appContext.getString(
-                    R.string.song_info_tone_success,
+                getString(Res.string.song_info_tone_success,
                     song.title,
-                    appContext.getString(target.successLabelResId),
+                    getString(target.successLabelResId),
                 )
             )
         }.getOrElse { throwable ->
             ToneActionResult.Error(
-                appContext.getString(
-                    R.string.song_info_ringtone_failed,
+                getString(Res.string.song_info_ringtone_failed,
                     throwable.localizedMessage ?: throwable.javaClass.simpleName
                 )
             )
@@ -378,10 +376,10 @@ class SongInfoBottomSheetViewModel(
             ToneTarget.Alarm -> RingtoneManager.TYPE_ALARM
         }
 
-    private val ToneTarget.successLabelResId: Int
+    private val ToneTarget.successLabelResId: StringResource
         get() = when (this) {
-            ToneTarget.Ringtone -> R.string.song_info_tone_ringtone_label
-            ToneTarget.Notification -> R.string.song_info_tone_notification_label
-            ToneTarget.Alarm -> R.string.song_info_tone_alarm_label
+            ToneTarget.Ringtone -> Res.string.song_info_tone_ringtone_label
+            ToneTarget.Notification -> Res.string.song_info_tone_notification_label
+            ToneTarget.Alarm -> Res.string.song_info_tone_alarm_label
         }
 }

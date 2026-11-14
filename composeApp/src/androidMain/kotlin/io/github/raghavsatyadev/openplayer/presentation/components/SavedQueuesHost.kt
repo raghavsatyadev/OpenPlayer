@@ -1,14 +1,13 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.data.model.Song
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SavedQueuesViewModel
 import kotlinx.coroutines.launch
@@ -29,7 +28,9 @@ fun SavedQueuesHost(
     onDismissList: () -> Unit,
     viewModel: SavedQueuesViewModel = koinViewModel()
 ) {
-    val context = LocalContext.current
+    val toaster = rememberAppToaster()
+    val savedToast = stringResource(Res.string.saved_queues_saved_toast)
+    val restoreEmptyToast = stringResource(Res.string.saved_queues_restore_empty)
     val scope = rememberCoroutineScope()
 
     if (showSave) {
@@ -42,7 +43,7 @@ fun SavedQueuesHost(
                     currentIndex = currentIndex.coerceIn(0, (queue.size - 1).coerceAtLeast(0)),
                     positionMs = playerViewModel.currentPlaybackPosition.value
                 )
-                Toast.makeText(context, R.string.saved_queues_saved_toast, Toast.LENGTH_SHORT).show()
+                toaster.show(savedToast)
                 onDismissSave()
             },
             onDismiss = onDismissSave
@@ -57,15 +58,14 @@ fun SavedQueuesHost(
                 scope.launch {
                     val plan = viewModel.restorePlan(saved)
                     if (plan.isEmpty) {
-                        Toast.makeText(context, R.string.saved_queues_restore_empty, Toast.LENGTH_LONG).show()
+                        toaster.show(restoreEmptyToast, long = true)
                         return@launch
                     }
                     if (plan.missingCount > 0) {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.saved_queues_restore_missing, plan.missingCount),
-                            Toast.LENGTH_LONG
-                        ).show()
+                        toaster.show(
+                            getString(Res.string.saved_queues_restore_missing, plan.missingCount),
+                            long = true
+                        )
                     }
                     playerViewModel.playSongsFromPosition(
                         songsToPlay = plan.songs,

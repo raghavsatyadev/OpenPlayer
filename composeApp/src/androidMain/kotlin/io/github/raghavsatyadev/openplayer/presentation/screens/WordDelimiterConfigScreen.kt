@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import android.widget.Toast
-import io.github.raghavsatyadev.openplayer.R
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -58,7 +56,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
@@ -71,6 +68,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ArtistSettings
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -82,7 +80,10 @@ fun WordDelimiterConfigScreen(
     viewModel: ArtistSettingsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+    val toaster = rememberAppToaster()
+    val toastWordDelimiterToastAdded = stringResource(Res.string.word_delimiter_toast_added)
+    val toastWordDelimiterToastInvalid = stringResource(Res.string.word_delimiter_toast_invalid)
+    val toastWordDelimiterToastReset = stringResource(Res.string.word_delimiter_toast_reset)
     val keyboardController = LocalSoftwareKeyboardController.current
 
     var newDelimiter by remember { mutableStateOf("") }
@@ -271,9 +272,9 @@ fun WordDelimiterConfigScreen(
                                             if (success) {
                                                 newDelimiter = ""
                                                 keyboardController?.hide()
-                                                Toast.makeText(context, context.getString(R.string.word_delimiter_toast_added), Toast.LENGTH_SHORT).show()
+                                                toaster.show(toastWordDelimiterToastAdded)
                                             } else {
-                                                Toast.makeText(context, context.getString(R.string.word_delimiter_toast_invalid), Toast.LENGTH_SHORT).show()
+                                                toaster.show(toastWordDelimiterToastInvalid)
                                             }
                                         }
                                     }
@@ -295,9 +296,9 @@ fun WordDelimiterConfigScreen(
                                         if (success) {
                                             newDelimiter = ""
                                             keyboardController?.hide()
-                                            Toast.makeText(context, context.getString(R.string.word_delimiter_toast_added), Toast.LENGTH_SHORT).show()
+                                            toaster.show(toastWordDelimiterToastAdded)
                                         } else {
-                                            Toast.makeText(context, context.getString(R.string.word_delimiter_toast_invalid), Toast.LENGTH_SHORT).show()
+                                            toaster.show(toastWordDelimiterToastInvalid)
                                         }
                                     }
                                 },
@@ -406,7 +407,7 @@ fun WordDelimiterConfigScreen(
                     Button(
                         onClick = {
                             viewModel.resetWordDelimitersToDefault()
-                            Toast.makeText(context, context.getString(R.string.word_delimiter_toast_reset), Toast.LENGTH_SHORT).show()
+                            toaster.show(toastWordDelimiterToastReset)
                             showResetDialog = false
                         },
                         colors = ButtonDefaults.buttonColors(

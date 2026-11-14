@@ -18,10 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.data.model.Playlist
 import io.github.raghavsatyadev.openplayer.data.playlist.rules.SmartRuleCodec
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SmartRulePlaylistViewModel
@@ -66,7 +65,7 @@ fun SmartRulePlaylistSheet(
     ) {
         Text(
             text = stringResource(
-                if (editing == null) R.string.smart_rules_sheet_title_new else R.string.smart_rules_sheet_title_edit
+                if (editing == null) Res.string.smart_rules_sheet_title_new else Res.string.smart_rules_sheet_title_edit
             ),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier

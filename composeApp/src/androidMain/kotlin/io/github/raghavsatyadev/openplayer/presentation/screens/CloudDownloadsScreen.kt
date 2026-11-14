@@ -42,7 +42,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.offline.OfflineDownload
 import io.github.raghavsatyadev.openplayer.data.offline.OfflineDownloadStatus
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
@@ -371,15 +370,15 @@ private fun OfflineDownloadStatus.visual(): DownloadVisual = when (this) {
 @Composable
 private fun statusText(download: OfflineDownload, context: android.content.Context): String =
     when (download.status) {
-        OfflineDownloadStatus.COMPLETE -> context.getString(
-            R.string.cloud_downloads_downloaded_size,
+        OfflineDownloadStatus.COMPLETE -> stringResource(
+            Res.string.cloud_downloads_downloaded_size,
             Formatter.formatShortFileSize(context, download.bytesDownloaded)
         )
-        OfflineDownloadStatus.QUEUED -> context.getString(R.string.cloud_download_queued)
+        OfflineDownloadStatus.QUEUED -> stringResource(Res.string.cloud_download_queued)
         OfflineDownloadStatus.DOWNLOADING -> download.progress?.let {
-            context.getString(R.string.cloud_download_progress, (it * 100).toInt())
-        } ?: context.getString(R.string.cloud_downloading)
+            stringResource(Res.string.cloud_download_progress, (it * 100).toInt())
+        } ?: stringResource(Res.string.cloud_downloading)
         OfflineDownloadStatus.FAILED -> download.errorMessage
             ?.takeIf(String::isNotBlank)
-            ?: context.getString(R.string.cloud_downloads_failed_fallback)
+            ?: stringResource(Res.string.cloud_downloads_failed_fallback)
     }

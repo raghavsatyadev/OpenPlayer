@@ -34,7 +34,8 @@ import androidx.media3.session.SessionToken
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.StringResource
 import io.github.raghavsatyadev.openplayer.data.database.AlbumArtThemeDao
 import io.github.raghavsatyadev.openplayer.data.media.CoverArtUpdate
 import io.github.raghavsatyadev.openplayer.data.media.CustomMetadataChanges
@@ -631,23 +632,24 @@ class PlayerViewModel(
                 if (index != -1) {
                     _scrollToIndexEvent.emit(LocateScrollRequest(tab = tab, index = index))
                 } else {
-                    sendToast(context.getString(R.string.player_song_not_found_in_list))
+                    sendToast(getString(Res.string.player_song_not_found_in_list))
                 }
             } catch (e: Exception) {
                 Logger.e(e) { "Failed to locate current song" }
-                sendToast(context.getString(R.string.player_could_not_locate_song))
+                sendToast(getString(Res.string.player_could_not_locate_song))
             }
         }
     }
 
     fun showAndPlaySongFromLibrary(
         song: Song,
-        queueName: String = context.getString(R.string.tab_library),
+        queueName: String? = null,
         isVoluntaryPlay: Boolean = true
     ) {
         launchLatestFullQueuePlayback(
             song = song,
             queueName = queueName,
+            defaultQueueName = Res.string.tab_library,
             isVoluntaryPlay = isVoluntaryPlay,
             failureMessage = "Failed to build full library queue for songId=%s"
         ) {
@@ -659,12 +661,13 @@ class PlayerViewModel(
 
     fun showAndPlaySongFromFavorites(
         song: Song,
-        queueName: String = context.getString(R.string.queue_name_liked_songs),
+        queueName: String? = null,
         isVoluntaryPlay: Boolean = true
     ) {
         launchLatestFullQueuePlayback(
             song = song,
             queueName = queueName,
+            defaultQueueName = Res.string.queue_name_liked_songs,
             isVoluntaryPlay = isVoluntaryPlay,
             failureMessage = "Failed to build favorites queue for songId=%s"
         ) {
@@ -704,7 +707,8 @@ class PlayerViewModel(
 
     private fun launchLatestFullQueuePlayback(
         song: Song,
-        queueName: String,
+        queueName: String?,
+        defaultQueueName: StringResource,
         isVoluntaryPlay: Boolean,
         failureMessage: String,
         sortedIdsProvider: suspend () -> List<Long>
@@ -724,7 +728,7 @@ class PlayerViewModel(
                 showAndPlaySong(
                     song = song,
                     contextSongs = fullQueue.ifEmpty { listOf(song) },
-                    queueName = queueName,
+                    queueName = queueName ?: getString(defaultQueueName),
                     isVoluntaryPlay = isVoluntaryPlay,
                     cancelPendingQueueBuild = false
                 )
@@ -742,7 +746,7 @@ class PlayerViewModel(
                 showAndPlaySong(
                     song = song,
                     contextSongs = fallbackQueue,
-                    queueName = queueName,
+                    queueName = queueName ?: getString(defaultQueueName),
                     isVoluntaryPlay = isVoluntaryPlay,
                     cancelPendingQueueBuild = false
                 )
@@ -1360,13 +1364,17 @@ class PlayerViewModel(
 
 
 
-    fun shuffleAllSongs(queueName: String = context.getString(R.string.queue_name_all_songs_shuffled)) {
+    fun shuffleAllSongs(queueName: String? = null) {
         Logger.withTag("ShuffleDebug").d { "shuffleAllSongs called." }
         
         viewModelScope.launch {
             val randomSongs = musicRepository.getRandomSongs(limit = SHUFFLE_ALL_SONG_LIMIT)
             if (randomSongs.isNotEmpty()) {
-                playSongsShuffled(randomSongs, queueName, startAtZero = true)
+                playSongsShuffled(
+                    randomSongs,
+                    queueName ?: getString(Res.string.queue_name_all_songs_shuffled),
+                    startAtZero = true
+                )
             }
         }
     }
@@ -1408,12 +1416,12 @@ class PlayerViewModel(
                     Logger.d { "[TileDebug] Calling playSongsShuffled with ${songs.size} songs" }
                     playSongsShuffled(
                         songs,
-                        context.getString(R.string.queue_name_all_songs_shuffled),
+                        getString(Res.string.queue_name_all_songs_shuffled),
                         startAtZero = true
                     )
                 } else {
                     Logger.w { "[TileDebug] No songs found even after sync - library may be empty" }
-                    sendToast(context.getString(R.string.player_no_songs_in_library_toast))
+                    sendToast(getString(Res.string.player_no_songs_in_library_toast))
                 }
             }
         }
@@ -1433,7 +1441,7 @@ class PlayerViewModel(
             if (randomSongs.isNotEmpty()) {
                 playSongsShuffled(
                     randomSongs,
-                    context.getString(R.string.queue_name_all_songs_shuffled),
+                    getString(Res.string.queue_name_all_songs_shuffled),
                     startAtZero = true
                 )
             }
@@ -1448,7 +1456,7 @@ class PlayerViewModel(
             if (favSongs.isNotEmpty()) {
                 playSongsShuffled(
                     favSongs,
-                    context.getString(R.string.queue_name_liked_songs_shuffled),
+                    getString(Res.string.queue_name_liked_songs_shuffled),
                     startAtZero = true
                 )
             }
@@ -2010,7 +2018,9 @@ class PlayerViewModel(
 
     fun showAndPlaySong(song: Song) {
         Logger.withTag("ShuffleDebug").d { "showAndPlaySong (single song overload) called for '${song.title}'" }
-        showAndPlaySong(song, listOf(song), context.getString(R.string.tab_library))
+        viewModelScope.launch {
+            showAndPlaySong(song, listOf(song), getString(Res.string.tab_library))
+        }
     }
 
     fun playSongAtPosition(song: Song, startPositionMs: Long) {
@@ -2697,7 +2707,7 @@ class PlayerViewModel(
         mediaControllerPlaybackListener = object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
                 viewModelScope.launch {
-                    _toastEvents.emit(context.getString(R.string.player_error_skipping))
+                    _toastEvents.emit(getString(Res.string.player_error_skipping))
                 }
             }
 
@@ -2911,7 +2921,7 @@ class PlayerViewModel(
             throwIfDirectPlaybackRequestIsStale(requestToken)
 
             if (validSongs.isEmpty()) {
-                _toastEvents.emit(context.getString(R.string.no_valid_songs))
+                _toastEvents.emit(getString(Res.string.no_valid_songs))
                 return@launch
             }
 
@@ -2965,7 +2975,7 @@ class PlayerViewModel(
             )
             throwIfDirectPlaybackRequestIsStale(requestToken)
             if (result == null) {
-                sendToast(context.getString(R.string.player_no_songs_to_shuffle))
+                sendToast(getString(Res.string.player_no_songs_to_shuffle))
                 return@launch
             }
 
@@ -2986,7 +2996,7 @@ class PlayerViewModel(
         viewModelScope.launch {
             val externalResult = externalMediaStateHolder.buildExternalSongFromUri(uri)
             if (externalResult == null) {
-                sendToast(context.getString(R.string.external_playback_error))
+                sendToast(getString(Res.string.external_playback_error))
                 return@launch
             }
 
@@ -2998,7 +3008,7 @@ class PlayerViewModel(
             _playerUiState.update { state ->
                 state.copy(
                     currentPlaybackQueue = immutableQueue,
-                    currentQueueSourceName = context.getString(R.string.external_queue_label),
+                    currentQueueSourceName = getString(Res.string.external_queue_label),
                     showDismissUndoBar = false,
                     dismissedSong = null,
                     dismissedQueue = persistentListOf(),
@@ -3022,7 +3032,7 @@ class PlayerViewModel(
             _sheetState.value = PlayerSheetState.COLLAPSED
             _isSheetVisible.value = true
 
-            internalPlaySongs(queueSongs, externalResult.song, context.getString(R.string.external_queue_label), null)
+            internalPlaySongs(queueSongs, externalResult.song, getString(Res.string.external_queue_label), null)
             showPlayer()
         }
     }
@@ -3382,7 +3392,9 @@ class PlayerViewModel(
      */
     fun playSelectedSongs(songs: List<Song>) {
         if (songs.isEmpty()) return
-        playSongs(songs, songs.first(), context.getString(R.string.queue_name_selected_songs))
+        viewModelScope.launch {
+            playSongs(songs, songs.first(), getString(Res.string.queue_name_selected_songs))
+        }
         multiSelectionStateHolder.clearSelection()
     }
 
@@ -3395,7 +3407,7 @@ class PlayerViewModel(
         viewModelScope.launch {
             val n = songs.size
             _toastEvents.emit(
-                context.resources.getQuantityString(R.plurals.n_songs_added_to_queue, n, n),
+                getPluralString(Res.plurals.n_songs_added_to_queue, n, n),
             )
         }
         multiSelectionStateHolder.clearSelection()
@@ -3411,7 +3423,7 @@ class PlayerViewModel(
         viewModelScope.launch {
             val n = songs.size
             _toastEvents.emit(
-                context.resources.getQuantityString(R.plurals.n_songs_will_play_next, n, n),
+                getPluralString(Res.plurals.n_songs_will_play_next, n, n),
             )
         }
         multiSelectionStateHolder.clearSelection()
@@ -3423,14 +3435,14 @@ class PlayerViewModel(
             try {
                 val resolvedSelection = resolveSelectedAlbumSongs(albums)
                 if (resolvedSelection.songs.isEmpty()) {
-                    _toastEvents.emit(context.getString(R.string.player_no_playable_songs_in_albums))
+                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_albums))
                     return@launch
                 }
 
                 val queueName = if (resolvedSelection.albums.size == 1) {
                     resolvedSelection.albums.first().title
                 } else {
-                    context.getString(R.string.player_queue_name_selected_albums)
+                    getString(Res.string.player_queue_name_selected_albums)
                 }
 
                 playSongs(resolvedSelection.songs, resolvedSelection.songs.first(), queueName, null)
@@ -3438,12 +3450,11 @@ class PlayerViewModel(
 
                 if (resolvedSelection.wasTrimmed) {
                     _toastEvents.emit(
-                        context.getString(R.string.player_only_first_n_albums_queued, MAX_ALBUM_BATCH_SELECTION),
+                        getString(Res.string.player_only_first_n_albums_queued, MAX_ALBUM_BATCH_SELECTION),
                     )
                 } else {
                     _toastEvents.emit(
-                        context.getString(
-                            R.string.player_albums_queued_format,
+                        getString(Res.string.player_albums_queued_format,
                             resolvedSelection.albums.size,
                             resolvedSelection.songs.size,
                         ),
@@ -3451,7 +3462,7 @@ class PlayerViewModel(
                 }
             } catch (e: Exception) {
                 Logger.withTag("PlayerViewModel").e(e) { "Error playing selected albums" }
-                _toastEvents.emit(context.getString(R.string.player_could_not_queue_albums))
+                _toastEvents.emit(getString(Res.string.player_could_not_queue_albums))
             }
         }
     }
@@ -3463,20 +3474,20 @@ class PlayerViewModel(
             try {
                 val resolvedSelection = resolveSelectedAlbumSongs(albums)
                 if (resolvedSelection.songs.isEmpty()) {
-                    _toastEvents.emit(context.getString(R.string.player_no_playable_songs_in_albums))
+                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_albums))
                     return@launch
                 }
 
                 addSongsAsNext(resolvedSelection.songs)
 
                 if (resolvedSelection.wasTrimmed) {
-                    _toastEvents.emit(context.getString(R.string.player_only_first_n_albums_next, MAX_ALBUM_BATCH_SELECTION))
+                    _toastEvents.emit(getString(Res.string.player_only_first_n_albums_next, MAX_ALBUM_BATCH_SELECTION))
                 } else {
-                    _toastEvents.emit(context.getString(R.string.player_albums_will_play_next_format, resolvedSelection.albums.size))
+                    _toastEvents.emit(getString(Res.string.player_albums_will_play_next_format, resolvedSelection.albums.size))
                 }
             } catch (e: Exception) {
                 Logger.withTag("PlayerViewModel").e(e) { "Error adding selected albums as next" }
-                _toastEvents.emit(context.getString(R.string.player_could_not_add_albums_next))
+                _toastEvents.emit(getString(Res.string.player_could_not_add_albums_next))
             }
         }
     }
@@ -3488,20 +3499,20 @@ class PlayerViewModel(
             try {
                 val resolvedSelection = resolveSelectedAlbumSongs(albums)
                 if (resolvedSelection.songs.isEmpty()) {
-                    _toastEvents.emit(context.getString(R.string.player_no_playable_songs_in_albums))
+                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_albums))
                     return@launch
                 }
 
                 resolvedSelection.songs.forEach(::addSongToQueue)
 
                 if (resolvedSelection.wasTrimmed) {
-                    _toastEvents.emit(context.getString(R.string.player_only_first_n_albums_added_queue, MAX_ALBUM_BATCH_SELECTION))
+                    _toastEvents.emit(getString(Res.string.player_only_first_n_albums_added_queue, MAX_ALBUM_BATCH_SELECTION))
                 } else {
-                    _toastEvents.emit(context.getString(R.string.player_albums_added_to_queue_format, resolvedSelection.albums.size))
+                    _toastEvents.emit(getString(Res.string.player_albums_added_to_queue_format, resolvedSelection.albums.size))
                 }
             } catch (e: Exception) {
                 Logger.withTag("PlayerViewModel").e(e) { "Error adding selected albums to queue" }
-                _toastEvents.emit(context.getString(R.string.player_could_not_add_albums_queue))
+                _toastEvents.emit(getString(Res.string.player_could_not_add_albums_queue))
             }
         }
     }
@@ -3525,14 +3536,14 @@ class PlayerViewModel(
             try {
                 val songs = getSongsForGenres(genres)
                 if (songs.isNotEmpty()) {
-                    playSongs(songs, songs.first(), context.getString(R.string.player_queue_name_selected_genres))
+                    playSongs(songs, songs.first(), getString(Res.string.player_queue_name_selected_genres))
                     _isSheetVisible.value = true
                 } else {
-                    _toastEvents.emit(context.getString(R.string.player_no_playable_songs_in_genres))
+                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_genres))
                 }
             } catch (e: Exception) {
                 Logger.withTag("PlayerViewModel").e(e) { "Error playing selected genres" }
-                _toastEvents.emit(context.getString(R.string.player_could_not_queue_genres))
+                _toastEvents.emit(getString(Res.string.player_could_not_queue_genres))
             }
         }
     }
@@ -3546,14 +3557,14 @@ class PlayerViewModel(
                     songs.forEach { addSongToQueue(it) }
                     val n = songs.size
                     _toastEvents.emit(
-                        context.resources.getQuantityString(R.plurals.n_songs_added_to_queue, n, n),
+                        getPluralString(Res.plurals.n_songs_added_to_queue, n, n),
                     )
                 } else {
-                    _toastEvents.emit(context.getString(R.string.player_no_playable_songs_in_genres))
+                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_genres))
                 }
             } catch (e: Exception) {
                 Logger.withTag("PlayerViewModel").e(e) { "Error adding selected genres to queue" }
-                _toastEvents.emit(context.getString(R.string.player_could_not_queue_genres))
+                _toastEvents.emit(getString(Res.string.player_could_not_queue_genres))
             }
         }
     }
@@ -3567,14 +3578,14 @@ class PlayerViewModel(
                     addSongsAsNext(songs)
                     val n = songs.size
                     _toastEvents.emit(
-                        context.resources.getQuantityString(R.plurals.n_songs_will_play_next, n, n),
+                        getPluralString(Res.plurals.n_songs_will_play_next, n, n),
                     )
                 } else {
-                    _toastEvents.emit(context.getString(R.string.player_no_playable_songs_in_genres))
+                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_genres))
                 }
             } catch (e: Exception) {
                 Logger.withTag("PlayerViewModel").e(e) { "Error adding selected genres as next" }
-                _toastEvents.emit(context.getString(R.string.player_could_not_queue_genres))
+                _toastEvents.emit(getString(Res.string.player_could_not_queue_genres))
             }
         }
     }
@@ -3596,10 +3607,10 @@ class PlayerViewModel(
             }
             if (likedCount > 0) {
                 _toastEvents.emit(
-                    context.resources.getQuantityString(R.plurals.n_songs_added_to_favorites, likedCount, likedCount),
+                    getPluralString(Res.plurals.n_songs_added_to_favorites, likedCount, likedCount),
                 )
             } else {
-                _toastEvents.emit(context.getString(R.string.player_all_songs_already_in_favorites))
+                _toastEvents.emit(getString(Res.string.player_all_songs_already_in_favorites))
             }
             multiSelectionStateHolder.clearSelection()
         }
@@ -3622,14 +3633,13 @@ class PlayerViewModel(
             }
             if (unlikedCount > 0) {
                 _toastEvents.emit(
-                    context.resources.getQuantityString(
-                        R.plurals.n_songs_removed_from_favorites,
+                    getPluralString(Res.plurals.n_songs_removed_from_favorites,
                         unlikedCount,
                         unlikedCount,
                     ),
                 )
             } else {
-                _toastEvents.emit(context.getString(R.string.player_no_songs_were_in_favorites))
+                _toastEvents.emit(getString(Res.string.player_no_songs_were_in_favorites))
             }
             multiSelectionStateHolder.clearSelection()
         }
@@ -3641,7 +3651,7 @@ class PlayerViewModel(
      */
     fun shareSelectedAsZip(songs: List<Song>) {
         viewModelScope.launch {
-            _toastEvents.emit(context.getString(R.string.player_creating_zip))
+            _toastEvents.emit(getString(Res.string.player_creating_zip))
 
             val result = ZipShareHelper.createAndShareZip(context, songs)
 
@@ -3649,7 +3659,7 @@ class PlayerViewModel(
                 multiSelectionStateHolder.clearSelection()
             }.onFailure { error ->
                 _toastEvents.emit(
-                    context.getString(R.string.player_share_zip_failed_format, error.localizedMessage ?: ""),
+                    getString(Res.string.player_share_zip_failed_format, error.localizedMessage ?: ""),
                 )
                 Logger.withTag("PlayerViewModel").e(error) { "Failed to share selection as zip" }
             }
@@ -3741,7 +3751,7 @@ class PlayerViewModel(
             val deletableSongs = songs.filter { it.id != currentSongId }
 
             if (deletableSongs.isEmpty()) {
-                _toastEvents.emit(context.getString(R.string.player_cannot_delete_currently_playing))
+                _toastEvents.emit(getString(Res.string.player_cannot_delete_currently_playing))
                 return@launch
             }
 
@@ -3799,26 +3809,24 @@ class PlayerViewModel(
             when {
                 successCount == deletableSongs.size && skippedCount == 0 ->
                     _toastEvents.emit(
-                        context.resources.getQuantityString(R.plurals.n_files_deleted, successCount, successCount),
+                        getPluralString(Res.plurals.n_files_deleted, successCount, successCount),
                     )
                 successCount == deletableSongs.size && skippedCount > 0 ->
                     _toastEvents.emit(
-                        context.getString(
-                            R.string.player_batch_delete_files_deleted_skipped_format,
+                        getString(Res.string.player_batch_delete_files_deleted_skipped_format,
                             successCount,
                             skippedCount,
                         ),
                     )
                 successCount > 0 ->
                     _toastEvents.emit(
-                        context.getString(
-                            R.string.player_batch_delete_partial_format,
+                        getString(Res.string.player_batch_delete_partial_format,
                             successCount,
                             deletableSongs.size,
                         ),
                     )
                 else ->
-                    _toastEvents.emit(context.getString(R.string.player_delete_files_failed))
+                    _toastEvents.emit(getString(Res.string.player_delete_files_failed))
             }
 
             multiSelectionStateHolder.clearSelection()
@@ -3837,17 +3845,16 @@ class PlayerViewModel(
 
                 val dialog = MaterialAlertDialogBuilder(activity)
                     .setTitle(
-                        context.resources.getQuantityString(
-                            R.plurals.delete_songs_confirmation_title,
+                        getPluralString(Res.plurals.delete_songs_confirmation_title,
                             count,
                             count,
                         ),
                     )
-                    .setMessage(context.getString(R.string.delete_songs_permanent_message))
-                    .setPositiveButton(context.getString(R.string.delete_action)) { _, _ ->
+                    .setMessage(getString(Res.string.delete_songs_permanent_message))
+                    .setPositiveButton(getString(Res.string.delete_action)) { _, _ ->
                         userChoice.complete(true)
                     }
-                    .setNegativeButton(context.getString(R.string.cancel)) { _, _ ->
+                    .setNegativeButton(getString(Res.string.cancel)) { _, _ ->
                         userChoice.complete(false)
                     }
                     .setOnCancelListener {
@@ -3867,7 +3874,7 @@ class PlayerViewModel(
     fun deleteFromDevice(activity: Activity, song: Song, onResult: (Boolean) -> Unit = {}){
         viewModelScope.launch {
             if (playbackStateHolder.stablePlayerState.value.currentSong?.id == song.id) {
-                _toastEvents.emit(context.getString(R.string.player_cannot_delete_currently_playing))
+                _toastEvents.emit(getString(Res.string.player_cannot_delete_currently_playing))
                 onResult(false)
                 return@launch
             }
@@ -3901,12 +3908,12 @@ class PlayerViewModel(
 
             val success = songRemovalStateHolder.deleteSongFile(song)
             if (success) {
-                _toastEvents.emit(context.getString(R.string.player_file_deleted))
+                _toastEvents.emit(getString(Res.string.player_file_deleted))
                 removeFromMediaControllerQueue(song.id)
                 removeSong(song)
                 onResult(true)
             } else {
-                _toastEvents.emit(context.getString(R.string.player_delete_file_not_found))
+                _toastEvents.emit(getString(Res.string.player_delete_file_not_found))
                 onResult(false)
             }
         }
@@ -3930,19 +3937,18 @@ class PlayerViewModel(
                     val count = batchSongs.size
                     if (skippedCount > 0) {
                         _toastEvents.emit(
-                            context.getString(
-                                R.string.player_batch_delete_files_deleted_skipped_format,
+                            getString(Res.string.player_batch_delete_files_deleted_skipped_format,
                                 count,
                                 skippedCount,
                             ),
                         )
                     } else {
                         _toastEvents.emit(
-                            context.resources.getQuantityString(R.plurals.n_files_deleted, count, count),
+                            getPluralString(Res.plurals.n_files_deleted, count, count),
                         )
                     }
                 } else {
-                    _toastEvents.emit(context.getString(R.string.player_deletion_cancelled))
+                    _toastEvents.emit(getString(Res.string.player_deletion_cancelled))
                 }
                 multiSelectionStateHolder.clearSelection()
                 onComplete?.invoke()
@@ -3956,7 +3962,7 @@ class PlayerViewModel(
         pendingDeleteCallback = null
         viewModelScope.launch {
             if (granted) {
-                _toastEvents.emit(context.getString(R.string.player_file_deleted))
+                _toastEvents.emit(getString(Res.string.player_file_deleted))
                 removeFromMediaControllerQueue(song.id)
                 removeSong(song)
                 callback?.invoke(true)
@@ -4583,9 +4589,9 @@ class PlayerViewModel(
         multiSelectionStateHolder.clearSelection()
 
         val message = when {
-            failureCount == 0 -> context.getString(R.string.batch_edit_success, successCount)
-            successCount == 0 -> context.getString(R.string.batch_edit_failed)
-            else -> context.getString(R.string.batch_edit_partial_success, successCount, songs.size)
+            failureCount == 0 -> getString(Res.string.batch_edit_success, successCount)
+            successCount == 0 -> getString(Res.string.batch_edit_failed)
+            else -> getString(Res.string.batch_edit_partial_success, successCount, songs.size)
         }
         _toastEvents.emit(message)
     }
@@ -4657,7 +4663,7 @@ class PlayerViewModel(
             pendingBatchMetadataEdit = null
             if (!granted) {
                 viewModelScope.launch {
-                    _toastEvents.emit(context.getString(R.string.player_permission_denied_edit_files))
+                    _toastEvents.emit(getString(Res.string.player_permission_denied_edit_files))
                 }
                 return
             }
@@ -4686,7 +4692,7 @@ class PlayerViewModel(
             pendingBatchGenreEdit = null
             if (!granted) {
                 viewModelScope.launch {
-                    _toastEvents.emit(context.getString(R.string.player_permission_denied_edit_files))
+                    _toastEvents.emit(getString(Res.string.player_permission_denied_edit_files))
                 }
                 return
             }
@@ -4699,7 +4705,7 @@ class PlayerViewModel(
             pendingLyricsSave = null
             if (!granted) {
                 viewModelScope.launch {
-                    _toastEvents.emit(context.getString(R.string.player_permission_denied_save_lyrics))
+                    _toastEvents.emit(getString(Res.string.player_permission_denied_save_lyrics))
                 }
                 return
             }
@@ -4715,7 +4721,7 @@ class PlayerViewModel(
         pendingMetadataEdit = null
         if (!granted) {
             viewModelScope.launch {
-                _toastEvents.emit(context.getString(R.string.player_permission_denied_edit_this_file))
+                _toastEvents.emit(getString(Res.string.player_permission_denied_edit_this_file))
             }
             return
         }
@@ -4751,7 +4757,7 @@ class PlayerViewModel(
                 .createWriteRequestIntentSender(context, uris) ?: return@collectLatest
             uris.mapTo(askedInterruptedSaveRestoreUris) { it.toString() }
             pendingInterruptedSaveRestore = true
-            _toastEvents.emit(context.getString(R.string.metadata_restore_permission_prompt))
+            _toastEvents.emit(getString(Res.string.metadata_restore_permission_prompt))
             _writePermissionRequest.emit(intentSender)
         }
     }
@@ -4764,20 +4770,20 @@ class PlayerViewModel(
         pendingInterruptedSaveRestore = false
         viewModelScope.launch {
             val message = if (!granted) {
-                R.string.metadata_restore_permission_denied
+                Res.string.metadata_restore_permission_denied
             } else if (metadataEditStateHolder.resumeInterruptedWriteBacks().stillPending == 0) {
-                R.string.metadata_restore_done
+                Res.string.metadata_restore_done
             } else {
-                R.string.metadata_restore_incomplete
+                Res.string.metadata_restore_incomplete
             }
-            _toastEvents.emit(context.getString(message))
+            _toastEvents.emit(getString(message))
         }
     }
 
     fun saveLyricsToFile(song: Song, lyrics: Lyrics, preferSynced: Boolean) {
         val lrcContent = LyricsUtils.toLrcString(lyrics, preferSynced)
         if (lrcContent.isEmpty()) {
-            viewModelScope.launch { _toastEvents.emit(context.getString(R.string.no_lyrics_to_save)) }
+            viewModelScope.launch { _toastEvents.emit(getString(Res.string.no_lyrics_to_save)) }
             return
         }
 
@@ -4807,14 +4813,14 @@ class PlayerViewModel(
                 val lrcContent = LyricsUtils.toLrcString(lyrics, preferSynced)
 
                 lrcFile.writeText(lrcContent, Charsets.UTF_8)
-                _toastEvents.emit(context.getString(R.string.lyrics_saved_successfully))
+                _toastEvents.emit(getString(Res.string.lyrics_saved_successfully))
                 
                 if (playbackStateHolder.stablePlayerState.value.currentSong?.id == song.id) {
                     loadLyricsForCurrentSong()
                 }
             } catch (e: Exception) {
                 Logger.e(e) { "Failed to save lyrics to file" }
-                _toastEvents.emit(context.getString(R.string.lyrics_save_failed))
+                _toastEvents.emit(getString(Res.string.lyrics_save_failed))
             }
         }
     }
@@ -4910,7 +4916,7 @@ class PlayerViewModel(
                 }
             }
 
-            _toastEvents.emit(context.getString(R.string.metadata_updated_successfully))
+            _toastEvents.emit(getString(Res.string.metadata_updated_successfully))
         } else {
             val errorMessage = result.getUserFriendlyErrorMessage()
             Logger.withTag("PlayerViewModel").e { "METADATA_EDIT_VM: Failed - ${result.error}: $errorMessage" }
@@ -4974,9 +4980,7 @@ class PlayerViewModel(
      */
     fun fetchLyricsForCurrentSong(forcePickResults: Boolean = false) {
         val currentSong = stablePlayerState.value.currentSong ?: return
-        lyricsStateHolder.fetchLyricsForSong(currentSong, forcePickResults, lyricsSourcePreference.value) { resId ->
-            context.getString(resId)
-        }
+        lyricsStateHolder.fetchLyricsForSong(currentSong, forcePickResults, lyricsSourcePreference.value)
     }
 
     /**
@@ -5092,7 +5096,7 @@ class PlayerViewModel(
 
     private suspend fun performBatchEditGenre(songs: List<Song>, newGenre: String) {
             Logger.withTag("PlayerViewModel").d { "Starting batch genre update for ${songs.size} songs to '$newGenre'" }
-            _toastEvents.emit(context.getString(R.string.player_updating_n_songs, songs.size))
+            _toastEvents.emit(getString(Res.string.player_updating_n_songs, songs.size))
 
             var successCount = 0
             var failCount = 0
@@ -5142,10 +5146,10 @@ class PlayerViewModel(
             }
 
             if (failCount == 0) {
-                _toastEvents.emit(context.getString(R.string.player_batch_genre_updated_all, successCount))
+                _toastEvents.emit(getString(Res.string.player_batch_genre_updated_all, successCount))
             } else {
                 _toastEvents.emit(
-                    context.getString(R.string.player_batch_genre_updated_partial, successCount, failCount),
+                    getString(Res.string.player_batch_genre_updated_partial, successCount, failCount),
                 )
             }
     }

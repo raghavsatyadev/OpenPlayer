@@ -44,7 +44,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -52,7 +51,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.update.AppRelease
 import io.github.raghavsatyadev.openplayer.data.update.UpdateChannel
 import io.github.raghavsatyadev.openplayer.data.update.UpdateError
@@ -63,6 +61,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.UpdatesViewMod
 import co.touchlab.kermit.Logger
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
@@ -130,8 +129,8 @@ fun UpdatesScreen(
                         label = stringResource(Res.string.updates_channel_title),
                         description = stringResource(
                             when (state.selectedChannel) {
-                                UpdateChannel.STABLE -> R.string.updates_channel_stable_description
-                                UpdateChannel.ALPHA -> R.string.updates_channel_alpha_description
+                                UpdateChannel.STABLE -> Res.string.updates_channel_stable_description
+                                UpdateChannel.ALPHA -> Res.string.updates_channel_alpha_description
                             }
                         ),
                         options = mapOf(
@@ -302,12 +301,12 @@ private fun statusMessage(state: UpdatesUiState): String = when (val status = st
     is UpdateStatus.Installing -> stringResource(Res.string.updates_status_installing, status.release.versionName)
     is UpdateStatus.Failed -> stringResource(
         when (status.error) {
-            UpdateError.CHECK_FAILED -> R.string.updates_error_check
-            UpdateError.NOTHING_PUBLISHED -> R.string.updates_error_nothing_published
-            UpdateError.DOWNLOAD_FAILED -> R.string.updates_error_download
-            UpdateError.INVALID_APK -> R.string.updates_error_invalid_apk
-            UpdateError.NOT_NEWER -> R.string.updates_error_not_newer
-            UpdateError.INSTALL_FAILED -> R.string.updates_error_install
+            UpdateError.CHECK_FAILED -> Res.string.updates_error_check
+            UpdateError.NOTHING_PUBLISHED -> Res.string.updates_error_nothing_published
+            UpdateError.DOWNLOAD_FAILED -> Res.string.updates_error_download
+            UpdateError.INVALID_APK -> Res.string.updates_error_invalid_apk
+            UpdateError.NOT_NEWER -> Res.string.updates_error_not_newer
+            UpdateError.INSTALL_FAILED -> Res.string.updates_error_install
         }
     )
 }
@@ -346,14 +345,14 @@ private fun ChannelSwitchDialog(
     )
 }
 
-private fun channelLabel(channel: UpdateChannel): Int = when (channel) {
-    UpdateChannel.STABLE -> R.string.updates_channel_stable
-    UpdateChannel.ALPHA -> R.string.updates_channel_alpha
+private fun channelLabel(channel: UpdateChannel): StringResource = when (channel) {
+    UpdateChannel.STABLE -> Res.string.updates_channel_stable
+    UpdateChannel.ALPHA -> Res.string.updates_channel_alpha
 }
 
-private fun channelSource(channel: UpdateChannel): Int = when (channel) {
-    UpdateChannel.STABLE -> R.string.updates_channel_stable_source
-    UpdateChannel.ALPHA -> R.string.updates_channel_alpha_source
+private fun channelSource(channel: UpdateChannel): StringResource = when (channel) {
+    UpdateChannel.STABLE -> Res.string.updates_channel_stable_source
+    UpdateChannel.ALPHA -> Res.string.updates_channel_alpha_source
 }
 
 private fun Context.openUrl(url: String) = startActivitySafely(Intent(Intent.ACTION_VIEW, url.toUri()))

@@ -443,7 +443,7 @@ private fun ExpressiveDailyMixHeader(
                                     .clip(shape)
                             ) {
                                 SmartImage(
-                                    model = artUrl ?: R.drawable.rounded_album_24,
+                                    model = artUrl ?: Res.drawable.rounded_album_24,
                                     contentDescription = null,
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier.fillMaxSize()
@@ -458,7 +458,7 @@ private fun ExpressiveDailyMixHeader(
                                 .clip(shape)
                         ) {
                             SmartImage(
-                                model = artUrl ?: R.drawable.rounded_album_24,
+                                model = artUrl ?: Res.drawable.rounded_album_24,
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier.fillMaxSize()

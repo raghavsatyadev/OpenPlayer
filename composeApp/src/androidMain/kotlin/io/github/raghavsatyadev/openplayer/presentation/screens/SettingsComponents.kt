@@ -52,7 +52,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
@@ -60,7 +59,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.worker.SyncProgress
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.LyricsRefreshProgress
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
@@ -608,19 +606,19 @@ fun RefreshLibraryItem(
 private fun syncPhaseLabel(phase: SyncProgress.SyncPhase): String =
         stringResource(
                 when (phase) {
-                    SyncProgress.SyncPhase.IDLE -> R.string.presentation_batch_f_sync_phase_preparing
+                    SyncProgress.SyncPhase.IDLE -> Res.string.presentation_batch_f_sync_phase_preparing
                     SyncProgress.SyncPhase.FETCHING_MEDIASTORE ->
-                            R.string.presentation_batch_f_sync_phase_reading_mediastore
+                            Res.string.presentation_batch_f_sync_phase_reading_mediastore
                     SyncProgress.SyncPhase.PROCESSING_FILES ->
-                            R.string.presentation_batch_f_sync_phase_processing_tracks
+                            Res.string.presentation_batch_f_sync_phase_processing_tracks
                     SyncProgress.SyncPhase.SAVING_TO_DATABASE ->
-                            R.string.presentation_batch_f_sync_phase_saving_db
-                    SyncProgress.SyncPhase.SCANNING_LRC -> R.string.presentation_batch_f_sync_phase_scanning_lrc
+                            Res.string.presentation_batch_f_sync_phase_saving_db
+                    SyncProgress.SyncPhase.SCANNING_LRC -> Res.string.presentation_batch_f_sync_phase_scanning_lrc
                     SyncProgress.SyncPhase.CLEANING_CACHE ->
-                            R.string.presentation_batch_f_sync_phase_cleaning_cache
+                            Res.string.presentation_batch_f_sync_phase_cleaning_cache
                     SyncProgress.SyncPhase.SYNCING_CLOUD ->
-                            R.string.presentation_batch_f_sync_phase_syncing_cloud
-                    SyncProgress.SyncPhase.COMPLETING -> R.string.presentation_batch_f_sync_phase_completing
+                            Res.string.presentation_batch_f_sync_phase_syncing_cloud
+                    SyncProgress.SyncPhase.COMPLETING -> Res.string.presentation_batch_f_sync_phase_completing
                 }
         )
 

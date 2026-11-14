@@ -1,7 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.graphics.vector.ImageVector
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.vectorResource
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.fadeIn
@@ -49,7 +49,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.model.RecentlyPlayedSongUiModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ThemeStateHolder
@@ -87,7 +86,7 @@ fun RecentlyPlayedSection(
     contentPadding: PaddingValues = HomeRecentlyPlayedDefaultContentPadding,
     modifier: Modifier = Modifier,
     title: String? = null,
-    actionIconRes: Int = R.drawable.rounded_arrow_forward_24,
+    actionIconRes: DrawableResource = Res.drawable.rounded_arrow_forward_24,
     actionDescription: String? = null,
     minSongs: Int = RecentlyPlayedSectionMinSongsToShow,
     /** Shown between the title and the pills, e.g. filter chips. */
@@ -147,7 +146,7 @@ fun RecentlyPlayedSection(
                 enabled = visibleSongs.size >= minSongs
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(actionIconRes),
+                    imageVector = vectorResource(actionIconRes),
                     contentDescription = actionDescription,
                     modifier = Modifier.size(18.dp)
                 )

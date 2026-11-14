@@ -41,18 +41,17 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import io.github.raghavsatyadev.openplayer.AppBuildInfo
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.SineWaveLine
 import io.github.raghavsatyadev.openplayer.ui.theme.ExpTitleTypography
 import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -136,9 +135,9 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                             Text(
                                 text = stringResource(
                                     if (AppBuildInfo.buildType == "release") {
-                                        R.string.presentation_batch_g_beta_sheet_welcome_body_stable
+                                        Res.string.presentation_batch_g_beta_sheet_welcome_body_stable
                                     } else {
-                                        R.string.presentation_batch_g_beta_sheet_welcome_body
+                                        Res.string.presentation_batch_g_beta_sheet_welcome_body
                                     }
                                 ),
                                 style = MaterialTheme.typography.bodyMedium,
@@ -167,10 +166,10 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     ) {
                         BetaBulletList(
                             items = listOf(
-                                R.string.presentation_batch_g_beta_sheet_expect_1,
-                                R.string.presentation_batch_g_beta_sheet_expect_2,
-                                R.string.presentation_batch_g_beta_sheet_expect_3,
-                                R.string.presentation_batch_g_beta_sheet_expect_4
+                                Res.string.presentation_batch_g_beta_sheet_expect_1,
+                                Res.string.presentation_batch_g_beta_sheet_expect_2,
+                                Res.string.presentation_batch_g_beta_sheet_expect_3,
+                                Res.string.presentation_batch_g_beta_sheet_expect_4
                             )
                         )
                     }
@@ -190,10 +189,10 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     )
                     BetaBulletList(
                         items = listOf(
-                            R.string.presentation_batch_g_beta_sheet_before_1,
-                            R.string.presentation_batch_g_beta_sheet_before_2,
-                            R.string.presentation_batch_g_beta_sheet_before_3,
-                            R.string.presentation_batch_g_beta_sheet_before_4
+                            Res.string.presentation_batch_g_beta_sheet_before_1,
+                            Res.string.presentation_batch_g_beta_sheet_before_2,
+                            Res.string.presentation_batch_g_beta_sheet_before_3,
+                            Res.string.presentation_batch_g_beta_sheet_before_4
                         )
                     )
                     BetaSectionDivider()
@@ -203,9 +202,9 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     )
                     BetaBulletList(
                         items = listOf(
-                            R.string.presentation_batch_g_beta_sheet_issue_type_bug,
-                            R.string.presentation_batch_g_beta_sheet_issue_type_feature,
-                            R.string.presentation_batch_g_beta_sheet_issue_type_question
+                            Res.string.presentation_batch_g_beta_sheet_issue_type_bug,
+                            Res.string.presentation_batch_g_beta_sheet_issue_type_feature,
+                            Res.string.presentation_batch_g_beta_sheet_issue_type_question
                         )
                     )
                 }
@@ -225,13 +224,13 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     )
                     BetaFieldList(
                         items = listOf(
-                            R.string.presentation_batch_g_beta_sheet_bug_summary,
-                            R.string.presentation_batch_g_beta_sheet_bug_expected,
-                            R.string.presentation_batch_g_beta_sheet_bug_actual,
-                            R.string.presentation_batch_g_beta_sheet_bug_steps,
-                            R.string.presentation_batch_g_beta_sheet_bug_frequency,
-                            R.string.presentation_batch_g_beta_sheet_bug_screenshot,
-                            R.string.presentation_batch_g_beta_sheet_bug_logs
+                            Res.string.presentation_batch_g_beta_sheet_bug_summary,
+                            Res.string.presentation_batch_g_beta_sheet_bug_expected,
+                            Res.string.presentation_batch_g_beta_sheet_bug_actual,
+                            Res.string.presentation_batch_g_beta_sheet_bug_steps,
+                            Res.string.presentation_batch_g_beta_sheet_bug_frequency,
+                            Res.string.presentation_batch_g_beta_sheet_bug_screenshot,
+                            Res.string.presentation_batch_g_beta_sheet_bug_logs
                         )
                     )
                     BetaSectionDivider()
@@ -241,11 +240,11 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     )
                     BetaFieldList(
                         items = listOf(
-                            R.string.presentation_batch_g_beta_sheet_env_version,
-                            R.string.presentation_batch_g_beta_sheet_env_source,
-                            R.string.presentation_batch_g_beta_sheet_env_android,
-                            R.string.presentation_batch_g_beta_sheet_env_device,
-                            R.string.presentation_batch_g_beta_sheet_env_extra
+                            Res.string.presentation_batch_g_beta_sheet_env_version,
+                            Res.string.presentation_batch_g_beta_sheet_env_source,
+                            Res.string.presentation_batch_g_beta_sheet_env_android,
+                            Res.string.presentation_batch_g_beta_sheet_env_device,
+                            Res.string.presentation_batch_g_beta_sheet_env_extra
                         )
                     )
                 }
@@ -260,11 +259,11 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                 ) {
                     BetaFieldList(
                         items = listOf(
-                            R.string.presentation_batch_g_beta_sheet_feature_problem,
-                            R.string.presentation_batch_g_beta_sheet_feature_solution,
-                            R.string.presentation_batch_g_beta_sheet_feature_alternatives,
-                            R.string.presentation_batch_g_beta_sheet_feature_scope,
-                            R.string.presentation_batch_g_beta_sheet_feature_mockup
+                            Res.string.presentation_batch_g_beta_sheet_feature_problem,
+                            Res.string.presentation_batch_g_beta_sheet_feature_solution,
+                            Res.string.presentation_batch_g_beta_sheet_feature_alternatives,
+                            Res.string.presentation_batch_g_beta_sheet_feature_scope,
+                            Res.string.presentation_batch_g_beta_sheet_feature_mockup
                         )
                     )
                 }
@@ -284,9 +283,9 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     )
                     BetaBulletList(
                         items = listOf(
-                            R.string.presentation_batch_g_beta_sheet_title_example_1,
-                            R.string.presentation_batch_g_beta_sheet_title_example_2,
-                            R.string.presentation_batch_g_beta_sheet_title_example_3
+                            Res.string.presentation_batch_g_beta_sheet_title_example_1,
+                            Res.string.presentation_batch_g_beta_sheet_title_example_2,
+                            Res.string.presentation_batch_g_beta_sheet_title_example_3
                         )
                     )
                     BetaSectionDivider()
@@ -297,9 +296,9 @@ fun BetaInfoBottomSheet(modifier: Modifier = Modifier) {
                     )
                     BetaBulletList(
                         items = listOf(
-                            R.string.presentation_batch_g_beta_sheet_avoid_1,
-                            R.string.presentation_batch_g_beta_sheet_avoid_2,
-                            R.string.presentation_batch_g_beta_sheet_avoid_3
+                            Res.string.presentation_batch_g_beta_sheet_avoid_1,
+                            Res.string.presentation_batch_g_beta_sheet_avoid_2,
+                            Res.string.presentation_batch_g_beta_sheet_avoid_3
                         )
                     )
                     BetaSectionDivider()
@@ -621,7 +620,7 @@ private fun BetaSubsectionHeader(
 }
 
 @Composable
-private fun BetaBulletList(items: List<Int>) {
+private fun BetaBulletList(items: List<StringResource>) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         items.forEach { item ->
             BetaBulletText(text = stringResource(item))
@@ -630,7 +629,7 @@ private fun BetaBulletList(items: List<Int>) {
 }
 
 @Composable
-private fun BetaFieldList(items: List<Int>) {
+private fun BetaFieldList(items: List<StringResource>) {
     Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
         items.forEachIndexed { index, item ->
             if (index > 0) {

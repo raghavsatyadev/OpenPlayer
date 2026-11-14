@@ -103,7 +103,6 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
@@ -147,7 +146,6 @@ import io.github.raghavsatyadev.openplayer.presentation.components.resolveNavBar
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.ui.res.stringResource
 import io.github.raghavsatyadev.openplayer.presentation.components.PlaylistArtCollage
 import io.github.raghavsatyadev.openplayer.presentation.components.ReorderTabsSheet
 import io.github.raghavsatyadev.openplayer.presentation.components.PlayerSheetAwareBackHandler
@@ -246,7 +244,6 @@ import io.github.raghavsatyadev.openplayer.ui.theme.RoundedSans
 import java.util.Locale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLocale
-import android.widget.Toast
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.ui.focus.focusModifier
 import io.github.raghavsatyadev.openplayer.data.model.PlaylistShapeType
@@ -264,8 +261,10 @@ import co.touchlab.kermit.Logger
 import java.io.File
 import kotlin.math.abs
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -349,6 +348,10 @@ fun LibraryScreen(
     smartMixViewModel: SmartMixViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
+    val toaster = rememberAppToaster()
+    val noValidSongsMessage = stringResource(Res.string.no_valid_songs)
+    val toastAddedToQueueMessage = stringResource(Res.string.toast_added_to_queue)
+    val toastPlayingNextMessage = stringResource(Res.string.toast_playing_next)
     val haptic = LocalHapticFeedback.current
     val lastTabIndex by playerViewModel.lastLibraryTabIndexFlow.collectAsStateWithLifecycle()
     val favoriteIds by playerViewModel.favoriteSongIds.collectAsStateWithLifecycle()
@@ -524,11 +527,11 @@ fun LibraryScreen(
     val presentResolvedCategorySongs: (List<Song>) -> Unit = remember(
         multiSelectionState,
         playerViewModel,
-        context
+        noValidSongsMessage
     ) {
         { songs ->
             if (songs.isEmpty()) {
-                playerViewModel.sendToast(context.getString(R.string.no_valid_songs))
+                playerViewModel.sendToast(noValidSongsMessage)
             } else {
                 multiSelectionState.replaceSelection(songs)
                 showMultiSelectionSheet = true
@@ -556,7 +559,7 @@ fun LibraryScreen(
                     .onFailure { error ->
                         if (error is CancellationException) throw error
                         Logger.withTag("LibrarySelection").e(error) { "Unable to resolve selected albums" }
-                        playerViewModel.sendToast(context.getString(R.string.no_valid_songs))
+                        playerViewModel.sendToast(noValidSongsMessage)
                     }
             }
         }
@@ -582,7 +585,7 @@ fun LibraryScreen(
                     .onFailure { error ->
                         if (error is CancellationException) throw error
                         Logger.withTag("LibrarySelection").e(error) { "Unable to resolve selected artists" }
-                        playerViewModel.sendToast(context.getString(R.string.no_valid_songs))
+                        playerViewModel.sendToast(noValidSongsMessage)
                     }
             }
         }
@@ -754,7 +757,7 @@ fun LibraryScreen(
             playlistViewModel.playlistCreationEvent.collect { success ->
                 if (success) {
                     showCreatePlaylistDialog = false
-                    Toast.makeText(context, context.getString(R.string.toast_playlist_created), Toast.LENGTH_SHORT).show()
+                    toaster.show(getString(Res.string.toast_playlist_created))
                 }
             }
         }
@@ -1852,12 +1855,12 @@ fun LibraryScreen(
                 onAddToQueue = {
                     playerViewModel.addSongToQueue(currentSong)
                     showSongInfoBottomSheet = false
-                    playerViewModel.sendToast(context.getString(R.string.toast_added_to_queue))
+                    playerViewModel.sendToast(toastAddedToQueueMessage)
                 },
                 onAddNextToQueue = {
                     playerViewModel.addSongNextToQueue(currentSong)
                     showSongInfoBottomSheet = false
-                    playerViewModel.sendToast(context.getString(R.string.toast_playing_next))
+                    playerViewModel.sendToast(toastPlayingNextMessage)
                 },
                 onAddToPlayList = {
                     playlistSheetSongs = persistentListOf(currentSong)
@@ -2018,13 +2021,15 @@ fun LibraryScreen(
                 cloudDownloadsViewModel.downloadSelected(selectedSongs)
                 multiSelectionState.clearSelection()
                 clearResolvedCategorySelection()
-                playerViewModel.sendToast(
-                    context.resources.getQuantityString(
-                        R.plurals.cloud_download_selected_started,
-                        cloudSongCount,
-                        cloudSongCount
+                scope.launch {
+                    playerViewModel.sendToast(
+                        getPluralString(
+                            Res.plurals.cloud_download_selected_started,
+                            cloudSongCount,
+                            cloudSongCount
+                        )
                     )
-                )
+                }
                 showMultiSelectionSheet = false
             },
             onDeleteAll = { deleteActivity, onComplete ->
@@ -2744,7 +2749,7 @@ private fun LibraryTabGridItem(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    painter = painterResource(id = tabId.iconRes()),
+                    painter = painterResource(tabId.iconRes()),
                     contentDescription = stringResource(tabId.titleRes),
                     tint = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -2804,15 +2809,15 @@ private fun targetPageForTabIndex(
         ?: candidate
 }
 
-private fun LibraryTabId.iconRes(): Int = when (this) {
-    LibraryTabId.SONGS -> R.drawable.rounded_music_note_24
-    LibraryTabId.ALBUMS -> R.drawable.rounded_album_24
-    LibraryTabId.ARTISTS -> R.drawable.rounded_artist_24
-    LibraryTabId.PLAYLISTS -> R.drawable.rounded_playlist_play_24
-    LibraryTabId.FOLDERS -> R.drawable.rounded_folder_24
-    LibraryTabId.LIKED -> R.drawable.round_favorite_24
-    LibraryTabId.GENRES -> R.drawable.rounded_category_24
-    LibraryTabId.VIDEOS -> R.drawable.rounded_movie_24
+private fun LibraryTabId.iconRes(): DrawableResource = when (this) {
+    LibraryTabId.SONGS -> Res.drawable.rounded_music_note_24
+    LibraryTabId.ALBUMS -> Res.drawable.rounded_album_24
+    LibraryTabId.ARTISTS -> Res.drawable.rounded_artist_24
+    LibraryTabId.PLAYLISTS -> Res.drawable.rounded_playlist_play_24
+    LibraryTabId.FOLDERS -> Res.drawable.rounded_folder_24
+    LibraryTabId.LIKED -> Res.drawable.round_favorite_24
+    LibraryTabId.GENRES -> Res.drawable.rounded_category_24
+    LibraryTabId.VIDEOS -> Res.drawable.rounded_movie_24
 }
 
 @Composable

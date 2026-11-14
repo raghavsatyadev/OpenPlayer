@@ -57,7 +57,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -70,7 +69,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.navidrome.model.NavidromeCredentials
 import io.github.raghavsatyadev.openplayer.presentation.components.CloudLibraryPickerItem
 import io.github.raghavsatyadev.openplayer.presentation.components.CloudLibraryPickerSheet
@@ -133,7 +131,7 @@ fun NavidromeLoginScreen(
     LaunchedEffect(localNetworkPermissionDenied) {
         if (localNetworkPermissionDenied) {
             snackbarHostState.showSnackbar(
-                context.getString(R.string.auth_local_network_permission_denied)
+                getString(Res.string.auth_local_network_permission_denied)
             )
             localNetworkPermissionDenied = false
         }
@@ -144,7 +142,7 @@ fun NavidromeLoginScreen(
             is NavidromeLoginState.Success -> {
                 Toast.makeText(
                     context,
-                    context.getString(R.string.toast_welcome_user, state.username),
+                    getString(Res.string.toast_welcome_user, state.username),
                     Toast.LENGTH_SHORT
                 ).show()
                 onClose()
@@ -415,7 +413,7 @@ fun NavidromeLoginScreen(
                                 Icon(
                                     imageVector = if (passwordVisible) vectorResource(Res.drawable.rounded_visibility_off_filled_24) else vectorResource(Res.drawable.rounded_visibility_filled_24),
                                     contentDescription = stringResource(
-                                        if (passwordVisible) R.string.auth_hide_password else R.string.auth_show_password
+                                        if (passwordVisible) Res.string.auth_hide_password else Res.string.auth_show_password
                                     )
                                 )
                             }

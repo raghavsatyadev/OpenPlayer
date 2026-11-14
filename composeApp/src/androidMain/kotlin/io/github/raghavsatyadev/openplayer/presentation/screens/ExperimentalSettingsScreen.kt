@@ -65,8 +65,6 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewMode
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
-import androidx.compose.ui.res.stringResource
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtQuality
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
@@ -704,10 +702,10 @@ fun ExperimentalSettingsScreen(
 private fun albumArtQualityLine(quality: AlbumArtQuality): String =
     stringResource(
         when (quality) {
-            AlbumArtQuality.LOW -> R.string.presentation_batch_f_album_art_quality_low_line
-            AlbumArtQuality.MEDIUM -> R.string.presentation_batch_f_album_art_quality_medium_line
-            AlbumArtQuality.HIGH -> R.string.presentation_batch_f_album_art_quality_high_line
-            AlbumArtQuality.ORIGINAL -> R.string.presentation_batch_f_album_art_quality_original_line
+            AlbumArtQuality.LOW -> Res.string.presentation_batch_f_album_art_quality_low_line
+            AlbumArtQuality.MEDIUM -> Res.string.presentation_batch_f_album_art_quality_medium_line
+            AlbumArtQuality.HIGH -> Res.string.presentation_batch_f_album_art_quality_high_line
+            AlbumArtQuality.ORIGINAL -> Res.string.presentation_batch_f_album_art_quality_original_line
         }
     )
 

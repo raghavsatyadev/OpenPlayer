@@ -84,7 +84,6 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.horizontalScroll
@@ -95,7 +94,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.equalizer.EqualizerPreset
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.ExpressiveTopBarContent
@@ -129,7 +127,6 @@ import io.github.raghavsatyadev.openplayer.presentation.components.rememberSynce
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository.EqualizerViewMode
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -1535,7 +1532,6 @@ private fun HybridBandSliders(
     frequencies: ImmutableList<String>,
     onBandLevelChanged: (Int, Int) -> Unit
 ) {
-    val context = LocalContext.current
     val bandBass = stringResource(Res.string.presentation_batch_d_eq_band_bass)
     val bandLowMids = stringResource(Res.string.presentation_batch_d_eq_band_low_mids)
     val bandHighMids = stringResource(Res.string.presentation_batch_d_eq_band_high_mids)
@@ -1588,7 +1584,7 @@ private fun HybridBandSliders(
         } else if (pageCount == 2) {
             listOf(bandBassLow, bandMidHigh)
         } else {
-            (1..pageCount).map { context.getString(R.string.presentation_batch_d_eq_page_n, it) }
+            (1..pageCount).map { stringResource(Res.string.presentation_batch_d_eq_page_n, it) }
         }
 
         val pagerState = rememberPagerState(pageCount = { pageCount })

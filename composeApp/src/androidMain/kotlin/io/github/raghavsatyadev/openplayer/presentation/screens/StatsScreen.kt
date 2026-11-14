@@ -3,7 +3,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
 import android.text.format.DateFormat as AndroidDateFormat
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Animatable
@@ -110,7 +109,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
@@ -159,6 +157,7 @@ import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.vectorResource
 
 private const val PULL_TO_REFRESH_MIN_DURATION_MS = 3500L
@@ -1063,23 +1062,23 @@ private fun HighlightRow(
 }
 
 private enum class TimelineMetric(
-    @StringRes val displayNameRes: Int,
-    @StringRes val descriptionRes: Int,
+    val displayNameRes: StringResource,
+    val descriptionRes: StringResource,
     val extractValue: (PlaybackStatsRepository.TimelineEntry) -> Double,
 ) {
     ListeningTime(
-        displayNameRes = R.string.presentation_batch_g_stats_timeline_metric_listening_time,
-        descriptionRes = R.string.presentation_batch_g_stats_timeline_metric_listening_time_desc,
+        displayNameRes = Res.string.presentation_batch_g_stats_timeline_metric_listening_time,
+        descriptionRes = Res.string.presentation_batch_g_stats_timeline_metric_listening_time_desc,
         extractValue = { it.totalDurationMs.toDouble() },
     ),
     PlayCount(
-        displayNameRes = R.string.presentation_batch_g_stats_timeline_metric_play_count,
-        descriptionRes = R.string.presentation_batch_g_stats_timeline_metric_play_count_desc,
+        displayNameRes = Res.string.presentation_batch_g_stats_timeline_metric_play_count,
+        descriptionRes = Res.string.presentation_batch_g_stats_timeline_metric_play_count_desc,
         extractValue = { it.playCount.toDouble() },
     ),
     AverageSession(
-        displayNameRes = R.string.presentation_batch_g_stats_timeline_metric_avg_session,
-        descriptionRes = R.string.presentation_batch_g_stats_timeline_metric_avg_session_desc,
+        displayNameRes = Res.string.presentation_batch_g_stats_timeline_metric_avg_session,
+        descriptionRes = Res.string.presentation_batch_g_stats_timeline_metric_avg_session_desc,
         extractValue = { entry ->
             if (entry.playCount > 0) entry.totalDurationMs.toDouble() / entry.playCount.toDouble() else 0.0
         },
@@ -1577,11 +1576,11 @@ private fun timelineSupportingCopy(
 ): String {
     val rangeCopy = stringResource(
         when (range) {
-            StatsTimeRange.DAY -> R.string.presentation_batch_g_stats_timeline_support_day
-            StatsTimeRange.WEEK -> R.string.presentation_batch_g_stats_timeline_support_week
-            StatsTimeRange.MONTH -> R.string.presentation_batch_g_stats_timeline_support_month
-            StatsTimeRange.YEAR -> R.string.presentation_batch_g_stats_timeline_support_year
-            StatsTimeRange.ALL -> R.string.presentation_batch_g_stats_timeline_support_all
+            StatsTimeRange.DAY -> Res.string.presentation_batch_g_stats_timeline_support_day
+            StatsTimeRange.WEEK -> Res.string.presentation_batch_g_stats_timeline_support_week
+            StatsTimeRange.MONTH -> Res.string.presentation_batch_g_stats_timeline_support_month
+            StatsTimeRange.YEAR -> Res.string.presentation_batch_g_stats_timeline_support_year
+            StatsTimeRange.ALL -> Res.string.presentation_batch_g_stats_timeline_support_all
         }
     )
     return stringResource(selectedMetric.descriptionRes) + " " + rangeCopy
@@ -1737,29 +1736,29 @@ private fun timelineChartSpecFor(
 // region Heavy rotation
 
 private enum class RotationDimension(
-    @StringRes val labelRes: Int,
-    @StringRes val emptyTitleRes: Int,
-    @StringRes val emptySubtitleRes: Int,
+    val labelRes: StringResource,
+    val emptyTitleRes: StringResource,
+    val emptySubtitleRes: StringResource,
 ) {
     Tracks(
-        R.string.presentation_batch_g_stats_tab_tracks,
-        R.string.presentation_batch_g_stats_empty_no_tracks_title,
-        R.string.presentation_batch_g_stats_empty_no_tracks_subtitle
+        Res.string.presentation_batch_g_stats_tab_tracks,
+        Res.string.presentation_batch_g_stats_empty_no_tracks_title,
+        Res.string.presentation_batch_g_stats_empty_no_tracks_subtitle
     ),
     Artists(
-        R.string.presentation_batch_g_stats_tab_artists,
-        R.string.presentation_batch_g_stats_empty_no_artists_title,
-        R.string.presentation_batch_g_stats_empty_no_artists_subtitle
+        Res.string.presentation_batch_g_stats_tab_artists,
+        Res.string.presentation_batch_g_stats_empty_no_artists_title,
+        Res.string.presentation_batch_g_stats_empty_no_artists_subtitle
     ),
     Albums(
-        R.string.presentation_batch_g_stats_tab_albums,
-        R.string.presentation_batch_g_stats_empty_no_albums_title,
-        R.string.presentation_batch_g_stats_empty_no_albums_subtitle
+        Res.string.presentation_batch_g_stats_tab_albums,
+        Res.string.presentation_batch_g_stats_empty_no_albums_title,
+        Res.string.presentation_batch_g_stats_empty_no_albums_subtitle
     ),
     Genres(
-        R.string.presentation_batch_g_stats_tab_genres,
-        R.string.presentation_batch_g_stats_empty_no_category_title,
-        R.string.presentation_batch_g_stats_empty_no_category_subtitle
+        Res.string.presentation_batch_g_stats_tab_genres,
+        Res.string.presentation_batch_g_stats_empty_no_category_title,
+        Res.string.presentation_batch_g_stats_empty_no_category_subtitle
     );
 
     val emptyIcon: ImageVector
@@ -2339,7 +2338,7 @@ private fun MonogramArtwork(
 
 @Immutable
 private data class VarietySlice(
-    @StringRes val labelRes: Int,
+    val labelRes: StringResource,
     val durationMs: Long,
     val share: Float,
 )
@@ -2351,9 +2350,9 @@ private fun varietySlices(summary: PlaybackStatsSummary): List<VarietySlice> {
     val topTwoThree = durations.drop(1).take(2).sum()
     val others = (total - topOne - topTwoThree).coerceAtLeast(0L)
     return listOf(
-        VarietySlice(R.string.presentation_batch_g_stats_slice_top_1, topOne, topOne.toFloat() / total),
-        VarietySlice(R.string.presentation_batch_g_stats_slice_top_2_3, topTwoThree, topTwoThree.toFloat() / total),
-        VarietySlice(R.string.presentation_batch_g_stats_slice_others, others, others.toFloat() / total),
+        VarietySlice(Res.string.presentation_batch_g_stats_slice_top_1, topOne, topOne.toFloat() / total),
+        VarietySlice(Res.string.presentation_batch_g_stats_slice_top_2_3, topTwoThree, topTwoThree.toFloat() / total),
+        VarietySlice(Res.string.presentation_batch_g_stats_slice_others, others, others.toFloat() / total),
     ).filter { it.durationMs > 0L }
 }
 
@@ -2388,7 +2387,7 @@ private fun ListeningVarietyCard(
         }
 
         val topThreeShare = slices
-            .filter { it.labelRes != R.string.presentation_batch_g_stats_slice_others }
+            .filter { it.labelRes != Res.string.presentation_batch_g_stats_slice_others }
             .sumOf { it.share.toDouble() }
             .toFloat()
         val playCount = if (summary.totalPlayCount > 0) summary.totalPlayCount else summary.songs.sumOf { it.playCount }

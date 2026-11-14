@@ -91,7 +91,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavController
 import coil3.compose.AsyncImagePainter
 import coil3.size.Size
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Album
 import io.github.raghavsatyadev.openplayer.data.offline.CloudOfflineRepository
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
@@ -111,7 +110,6 @@ import io.github.raghavsatyadev.openplayer.utils.formatSongCount
 import io.github.raghavsatyadev.openplayer.utils.shapes.RoundedStarShape
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
-import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
@@ -844,7 +842,7 @@ private fun SharedAlbumTopBarProbe(
                             Icon(
                                 imageVector = if (allDownloaded) vectorResource(Res.drawable.rounded_cloud_done_filled_24) else vectorResource(Res.drawable.rounded_cloud_download_filled_24),
                                 contentDescription = stringResource(
-                                    if (allDownloaded) R.string.cloud_album_remove_downloads else R.string.cloud_album_download
+                                    if (allDownloaded) Res.string.cloud_album_remove_downloads else Res.string.cloud_album_download
                                 )
                             )
                         }
@@ -983,7 +981,7 @@ private fun CollapsingAlbumTopBar(
                         Icon(
                             imageVector = if (allDownloaded) vectorResource(Res.drawable.rounded_cloud_done_filled_24) else vectorResource(Res.drawable.rounded_cloud_download_filled_24),
                             contentDescription = stringResource(
-                                if (allDownloaded) R.string.cloud_album_remove_downloads else R.string.cloud_album_download
+                                if (allDownloaded) Res.string.cloud_album_remove_downloads else Res.string.cloud_album_download
                             )
                         )
                     }

@@ -1,6 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
+import org.jetbrains.compose.resources.StringResource
 import io.github.raghavsatyadev.openplayer.data.media.AudioMetadataReader
 import io.github.raghavsatyadev.openplayer.data.media.CoverArtUpdate
 import io.github.raghavsatyadev.openplayer.data.media.SongMetadataEditor
@@ -171,8 +172,7 @@ class LyricsStateHolder(
     fun fetchLyricsForSong(
         song: Song,
         forcePickResults: Boolean,
-        sourcePreference: LyricsSourcePreference,
-        contextHelper: (Int) -> String
+        sourcePreference: LyricsSourcePreference
     ) {
         loadingJob?.cancel()
         pendingLoad = null
@@ -188,20 +188,20 @@ class LyricsStateHolder(
                     val (lyrics, rawLyrics) = storedLyrics
                     _searchUiState.value = LyricsSearchUiState.Success(lyrics)
                     _songUpdates.emit(song.withPersistedLyrics(rawLyrics, refreshedAlbumArtUri = null) to lyrics)
-                    _messageEvents.emit(contextHelper(R.string.lyrics_already_available))
+                    _messageEvents.emit(getString(Res.string.lyrics_already_available))
                     return@launch
                 }
             }
 
-            val localSourceChecks: List<suspend () -> Pair<String, Int>?> = when (sourcePreference) {
+            val localSourceChecks: List<suspend () -> Pair<String, StringResource>?> = when (sourcePreference) {
                 LyricsSourcePreference.API_FIRST -> emptyList()
                 LyricsSourcePreference.EMBEDDED_FIRST -> listOf(
-                    { readEmbeddedLyricsFromFile(song)?.let { it to R.string.lyrics_embedded_already_available } },
-                    { readLocalLyricsFile(song)?.let { it to R.string.local_lrc_already_available } }
+                    { readEmbeddedLyricsFromFile(song)?.let { it to Res.string.lyrics_embedded_already_available } },
+                    { readLocalLyricsFile(song)?.let { it to Res.string.local_lrc_already_available } }
                 )
                 LyricsSourcePreference.LOCAL_FIRST -> listOf(
-                    { readLocalLyricsFile(song)?.let { it to R.string.local_lrc_already_available } },
-                    { readEmbeddedLyricsFromFile(song)?.let { it to R.string.lyrics_embedded_already_available } }
+                    { readLocalLyricsFile(song)?.let { it to Res.string.local_lrc_already_available } },
+                    { readEmbeddedLyricsFromFile(song)?.let { it to Res.string.lyrics_embedded_already_available } }
                 )
             }
 
@@ -220,7 +220,7 @@ class LyricsStateHolder(
                         }
 
                         _songUpdates.emit(song.copy(lyrics = rawLyrics) to lyrics)
-                        _messageEvents.emit(contextHelper(messageResId))
+                        _messageEvents.emit(getString(messageResId))
                         return@launch
                     }
                 }

@@ -24,7 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import io.github.raghavsatyadev.openplayer.BottomNavItem
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
 import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateToTopLevelSafely
 import kotlinx.collections.immutable.ImmutableList
@@ -67,7 +66,7 @@ fun PlayerNavigationRail(
                 Icon(
                     imageVector = if (isExpanded) vectorResource(Res.drawable.rounded_menu_open_mirrored_24) else vectorResource(Res.drawable.rounded_menu_24),
                     contentDescription = stringResource(
-                        if (isExpanded) R.string.navigation_rail_collapse else R.string.navigation_rail_expand
+                        if (isExpanded) Res.string.navigation_rail_collapse else Res.string.navigation_rail_expand
                     )
                 )
             }

@@ -1,7 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens.historyimport
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -27,14 +27,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.history.importer.HistoryImportState
 import io.github.raghavsatyadev.openplayer.data.history.importer.HistorySource
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * The body of the import sheet: pick a source, watch progress, read the summary. Stateless, so
@@ -82,16 +80,16 @@ private fun IdleBody(onPick: (HistorySource) -> Unit) {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        SourceRow(R.drawable.rounded_file_download_24, R.string.history_import_lastfm, R.string.history_import_lastfm_desc) {
+        SourceRow(Res.drawable.rounded_file_download_24, Res.string.history_import_lastfm, Res.string.history_import_lastfm_desc) {
             onPick(HistorySource.LASTFM)
         }
-        SourceRow(R.drawable.rounded_library_music_24, R.string.history_import_spotify, R.string.history_import_spotify_desc) {
+        SourceRow(Res.drawable.rounded_library_music_24, Res.string.history_import_spotify, Res.string.history_import_spotify_desc) {
             onPick(HistorySource.SPOTIFY)
         }
-        SourceRow(R.drawable.rounded_audio_file_24, R.string.history_import_listenbrainz, R.string.history_import_listenbrainz_desc) {
+        SourceRow(Res.drawable.rounded_audio_file_24, Res.string.history_import_listenbrainz, Res.string.history_import_listenbrainz_desc) {
             onPick(HistorySource.LISTENBRAINZ)
         }
-        SourceRow(R.drawable.rounded_play_circle_24, R.string.history_import_youtube_music, R.string.history_import_youtube_music_desc) {
+        SourceRow(Res.drawable.rounded_play_circle_24, Res.string.history_import_youtube_music, Res.string.history_import_youtube_music_desc) {
             onPick(HistorySource.YOUTUBE_MUSIC)
         }
     }
@@ -99,9 +97,9 @@ private fun IdleBody(onPick: (HistorySource) -> Unit) {
 
 @Composable
 private fun SourceRow(
-    @DrawableRes icon: Int,
-    @StringRes title: Int,
-    @StringRes subtitle: Int,
+    icon: DrawableResource,
+    title: StringResource,
+    subtitle: StringResource,
     onClick: () -> Unit
 ) {
     Surface(
@@ -130,9 +128,9 @@ private fun SourceRow(
 @Composable
 private fun WorkingBody(state: HistoryImportState.Working) {
     val phase = when (state.phase) {
-        HistoryImportState.Phase.READING -> R.string.history_import_phase_reading
-        HistoryImportState.Phase.MATCHING -> R.string.history_import_phase_matching
-        HistoryImportState.Phase.SAVING -> R.string.history_import_phase_saving
+        HistoryImportState.Phase.READING -> Res.string.history_import_phase_reading
+        HistoryImportState.Phase.MATCHING -> Res.string.history_import_phase_matching
+        HistoryImportState.Phase.SAVING -> Res.string.history_import_phase_saving
     }
     Column(
         modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),

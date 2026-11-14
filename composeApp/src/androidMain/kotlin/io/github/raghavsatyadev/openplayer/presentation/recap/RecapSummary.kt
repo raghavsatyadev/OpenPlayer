@@ -37,12 +37,10 @@ import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.raghavsatyadev.openplayer.R
 import java.text.NumberFormat
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
@@ -206,7 +204,7 @@ private fun RecapSummaryCard(slide: RecapSlide.Summary, palette: RecapPalette) {
         }
         RecapHeadline(
             text = stringResource(
-                if (slide.isSoFar) R.string.recap_summary_title_so_far else R.string.recap_summary_title,
+                if (slide.isSoFar) Res.string.recap_summary_title_so_far else Res.string.recap_summary_title,
                 slide.year
             ),
             color = ink,

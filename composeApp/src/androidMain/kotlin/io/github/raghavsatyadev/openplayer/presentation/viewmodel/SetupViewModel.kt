@@ -8,7 +8,7 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.data.backup.BackupManager
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupTransferProgressUpdate
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupOperationType
@@ -325,9 +325,8 @@ class SetupViewModel(
                     _uiState.update { it.copy(isInspectingBackup = false) }
                     _events.send(
                         SetupEvent.Message(
-                            context.getString(
-                                R.string.backup_invalid_format,
-                                error.localizedMessage ?: context.getString(R.string.error_unknown),
+                            getString(Res.string.backup_invalid_format,
+                                error.localizedMessage ?: getString(Res.string.error_unknown),
                             )
                         )
                     )
@@ -367,8 +366,8 @@ class SetupViewModel(
                         operation = BackupOperationType.IMPORT,
                         step = 0,
                         totalSteps = 1,
-                        title = context.getString(R.string.backup_progress_preparing_restore),
-                        detail = context.getString(R.string.backup_progress_starting_task),
+                        title = getString(Res.string.backup_progress_preparing_restore),
+                        detail = getString(Res.string.backup_progress_starting_task),
                     )
                 )
             }
@@ -387,8 +386,8 @@ class SetupViewModel(
                             operation = BackupOperationType.IMPORT,
                             step = 0,
                             totalSteps = 1,
-                            title = context.getString(R.string.setup_restore_scanning_library),
-                            detail = context.getString(R.string.setup_restore_scanning_library_detail),
+                            title = getString(Res.string.setup_restore_scanning_library),
+                            detail = getString(Res.string.setup_restore_scanning_library_detail),
                         )
                     )
                 }
@@ -402,21 +401,20 @@ class SetupViewModel(
 
             when (result) {
                 is RestoreResult.Success -> {
-                    _events.send(SetupEvent.RestoreCompleted(context.getString(R.string.restore_completed_success)))
+                    _events.send(SetupEvent.RestoreCompleted(getString(Res.string.restore_completed_success)))
                 }
                 is RestoreResult.PartialFailure -> {
                     val canFinishSetup = result.succeeded.isNotEmpty() || !result.rolledBack
                     if (canFinishSetup) {
                         _events.send(
                             SetupEvent.RestoreCompleted(
-                                context.getString(R.string.restore_completed_partial_issues),
+                                getString(Res.string.restore_completed_partial_issues),
                             )
                         )
                     } else {
                         _events.send(
                             SetupEvent.Message(
-                                context.getString(
-                                    R.string.restore_could_not_complete,
+                                getString(Res.string.restore_could_not_complete,
                                     result.failed.values.joinToString(),
                                 ),
                             )
@@ -424,7 +422,7 @@ class SetupViewModel(
                     }
                 }
                 is RestoreResult.TotalFailure -> {
-                    _events.send(SetupEvent.Message(context.getString(R.string.restore_failed_format, result.error)))
+                    _events.send(SetupEvent.Message(getString(Res.string.restore_failed_format, result.error)))
                 }
             }
 

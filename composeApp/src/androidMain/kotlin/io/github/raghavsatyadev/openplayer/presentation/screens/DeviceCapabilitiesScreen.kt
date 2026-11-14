@@ -69,7 +69,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
@@ -82,7 +81,6 @@ import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioCapabilities
@@ -348,8 +346,8 @@ private fun PerformanceReportCard(
             } else {
                 Text(
                     text = stringResource(
-                        if (report == null) R.string.device_capabilities_report_generate
-                        else R.string.device_capabilities_report_regenerate
+                        if (report == null) Res.string.device_capabilities_report_generate
+                        else Res.string.device_capabilities_report_regenerate
                     )
                 )
             }

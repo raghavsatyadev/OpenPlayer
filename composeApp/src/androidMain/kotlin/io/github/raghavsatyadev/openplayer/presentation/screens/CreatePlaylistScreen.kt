@@ -140,9 +140,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.presentation.screens.TabAnimation
 import kotlinx.collections.immutable.persistentListOf
 import io.github.raghavsatyadev.openplayer.resources.*
@@ -156,10 +154,10 @@ data class Quadruple<A, B, C, D>(val first: A, val second: B, val third: C, val 
 private fun smartPlaylistRuleTitle(rule: SmartPlaylistRule): String =
     stringResource(
         when (rule) {
-            SmartPlaylistRule.TOP_PLAYED -> R.string.presentation_batch_f_smart_rule_top_played_title
-            SmartPlaylistRule.RECENTLY_PLAYED -> R.string.presentation_batch_f_smart_rule_recently_played_title
-            SmartPlaylistRule.FORGOTTEN_FAVORITES -> R.string.presentation_batch_f_smart_rule_forgotten_favorites_title
-            SmartPlaylistRule.NEW_GEMS -> R.string.presentation_batch_f_smart_rule_new_gems_title
+            SmartPlaylistRule.TOP_PLAYED -> Res.string.presentation_batch_f_smart_rule_top_played_title
+            SmartPlaylistRule.RECENTLY_PLAYED -> Res.string.presentation_batch_f_smart_rule_recently_played_title
+            SmartPlaylistRule.FORGOTTEN_FAVORITES -> Res.string.presentation_batch_f_smart_rule_forgotten_favorites_title
+            SmartPlaylistRule.NEW_GEMS -> Res.string.presentation_batch_f_smart_rule_new_gems_title
         }
     )
 
@@ -167,10 +165,10 @@ private fun smartPlaylistRuleTitle(rule: SmartPlaylistRule): String =
 private fun smartPlaylistRuleSubtitle(rule: SmartPlaylistRule): String =
     stringResource(
         when (rule) {
-            SmartPlaylistRule.TOP_PLAYED -> R.string.presentation_batch_f_smart_rule_top_played_subtitle
-            SmartPlaylistRule.RECENTLY_PLAYED -> R.string.presentation_batch_f_smart_rule_recently_played_subtitle
-            SmartPlaylistRule.FORGOTTEN_FAVORITES -> R.string.presentation_batch_f_smart_rule_forgotten_favorites_subtitle
-            SmartPlaylistRule.NEW_GEMS -> R.string.presentation_batch_f_smart_rule_new_gems_subtitle
+            SmartPlaylistRule.TOP_PLAYED -> Res.string.presentation_batch_f_smart_rule_top_played_subtitle
+            SmartPlaylistRule.RECENTLY_PLAYED -> Res.string.presentation_batch_f_smart_rule_recently_played_subtitle
+            SmartPlaylistRule.FORGOTTEN_FAVORITES -> Res.string.presentation_batch_f_smart_rule_forgotten_favorites_subtitle
+            SmartPlaylistRule.NEW_GEMS -> Res.string.presentation_batch_f_smart_rule_new_gems_subtitle
         }
     )
 
@@ -508,8 +506,8 @@ private fun CreatePlaylistContent(
                 ) {
                     val storageFilter by playerViewModel.playlistPickerStorageFilter.collectAsStateWithLifecycle()
                     val tabs = listOf(
-                        StorageFilter.OFFLINE to R.string.library_storage_filter_offline,
-                        StorageFilter.ONLINE to R.string.library_storage_filter_online
+                        StorageFilter.OFFLINE to Res.string.library_storage_filter_offline,
+                        StorageFilter.ONLINE to Res.string.library_storage_filter_online
                     )
                     val selectedTabIndex = tabs.indexOfFirst { it.first == storageFilter }.coerceAtLeast(0)
 
@@ -792,7 +790,7 @@ fun EditPlaylistContent(
                     ) {
                         Icon(
                             if (showCropUi) vectorResource(Res.drawable.rounded_arrow_back_24) else vectorResource(Res.drawable.rounded_close_24),
-                            contentDescription = stringResource(if (showCropUi) R.string.presentation_batch_f_cd_back_or_cancel else R.string.presentation_batch_f_cd_close)
+                            contentDescription = stringResource(if (showCropUi) Res.string.presentation_batch_f_cd_back_or_cancel else Res.string.presentation_batch_f_cd_close)
                         )
                     }
                 },

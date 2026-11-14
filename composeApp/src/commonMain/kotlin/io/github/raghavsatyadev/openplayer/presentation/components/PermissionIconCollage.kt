@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -18,12 +17,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.utils.shapes.RoundedStarShape
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -40,7 +40,7 @@ data class IconConfig(
 
 @Composable
 fun PermissionIconCollage(
-    @DrawableRes icons: ImmutableList<Int>,
+    icons: ImmutableList<DrawableResource>,
     modifier: Modifier = Modifier,
     height: Dp = 200.dp,
     padding: Dp = 0.dp,
@@ -80,7 +80,7 @@ fun PermissionIconCollage(
                 if (iconRes != null) {
                     val config = iconConfigs[index]
                     Icon(
-                        painter = painterResource(id = iconRes),
+                        painter = painterResource(iconRes),
                         contentDescription = null,
                         tint = config.color,
                         modifier = Modifier

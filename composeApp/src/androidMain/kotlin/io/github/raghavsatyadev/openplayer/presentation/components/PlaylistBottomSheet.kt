@@ -33,10 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.model.isSmartPlaylist
@@ -239,7 +237,7 @@ fun PlaylistBottomSheet(
                     playerViewModel.multiSelectionStateHolder.clearSelection()
                 },
                 icon = { Icon(vectorResource(Res.drawable.rounded_save_filled_24), stringResource(Res.string.action_save)) },
-                text = { Text(stringResource(if (songs.size > 1) R.string.song_picker_action_add else R.string.action_save)) },
+                text = { Text(stringResource(if (songs.size > 1) Res.string.song_picker_action_add else Res.string.action_save)) },
             )
         }
     }

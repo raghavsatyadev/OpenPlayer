@@ -1,6 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens.historyimport
 
-import androidx.annotation.StringRes
+import org.jetbrains.compose.resources.StringResource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,10 +11,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.history.importer.HistoryImportSummary
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
@@ -34,12 +32,12 @@ fun HistoryImportSummaryBody(summary: HistoryImportSummary, onFinish: () -> Unit
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary
         )
-        StatRow(R.string.history_import_stat_imported, summary.imported, always = true)
-        StatRow(R.string.history_import_stat_duplicates, summary.duplicates, always = true)
-        StatRow(R.string.history_import_stat_unmatched, summary.unmatched, always = true)
-        StatRow(R.string.history_import_stat_below_rule, summary.belowRule)
-        StatRow(R.string.history_import_stat_unparseable, summary.unparseable)
-        StatRow(R.string.history_import_stat_failed_files, summary.failedFiles)
+        StatRow(Res.string.history_import_stat_imported, summary.imported, always = true)
+        StatRow(Res.string.history_import_stat_duplicates, summary.duplicates, always = true)
+        StatRow(Res.string.history_import_stat_unmatched, summary.unmatched, always = true)
+        StatRow(Res.string.history_import_stat_below_rule, summary.belowRule)
+        StatRow(Res.string.history_import_stat_unparseable, summary.unparseable)
+        StatRow(Res.string.history_import_stat_failed_files, summary.failedFiles)
 
         if (summary.unmatchedSample.isNotEmpty()) {
             Text(
@@ -65,7 +63,7 @@ fun HistoryImportSummaryBody(summary: HistoryImportSummary, onFinish: () -> Unit
 }
 
 @Composable
-private fun StatRow(@StringRes label: Int, value: Int, always: Boolean = false) {
+private fun StatRow(label: StringResource, value: Int, always: Boolean = false) {
     if (value == 0 && !always) return
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Text(stringResource(label), style = MaterialTheme.typography.bodyMedium)

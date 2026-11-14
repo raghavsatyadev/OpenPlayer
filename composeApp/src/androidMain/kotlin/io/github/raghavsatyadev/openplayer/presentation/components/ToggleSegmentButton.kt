@@ -29,7 +29,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
@@ -51,7 +52,7 @@ fun ToggleSegmentButton(
     inactiveContentColor: Color = LocalMaterialTheme.current.onSurfaceVariant,
     activeCornerRadius: Dp = 8.dp,
     onClick: () -> Unit,
-    iconId: Int,
+    iconId: DrawableResource,
     contentDesc: String,
     onLongClick: (() -> Unit)? = null,
     badge: (@Composable BoxScope.() -> Unit)? = null
