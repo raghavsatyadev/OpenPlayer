@@ -149,6 +149,8 @@ import androidx.compose.foundation.layout.asPaddingValues
 import io.github.raghavsatyadev.openplayer.presentation.components.PlaylistArtCollage
 import io.github.raghavsatyadev.openplayer.presentation.components.ReorderTabsSheet
 import io.github.raghavsatyadev.openplayer.presentation.components.PlayerSheetAwareBackHandler
+import io.github.raghavsatyadev.openplayer.presentation.components.PredictiveBackPreviewState
+import io.github.raghavsatyadev.openplayer.presentation.components.predictiveBackPreview
 import io.github.raghavsatyadev.openplayer.presentation.components.EditMultipleSongsSheet
 import io.github.raghavsatyadev.openplayer.presentation.components.SongInfoBottomSheet
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.LibraryActionRow
@@ -700,10 +702,15 @@ fun LibraryScreen(
 
     // The coordinator restores this callback as soon as the sheet stops handling back, even if
     // LibraryScreen has not recomposed yet. It also preserves player priority after late registration.
+    // Going up a folder previews like a screen pop; clearing a selection has no preview.
+    val folderBackPreview = remember { PredictiveBackPreviewState() }
     PlayerSheetAwareBackHandler(
         coordinator = playerViewModel.playerSheetBackCoordinator,
-        enabled = hasSelectionInCurrentTab || canHandleFolderBack
+        enabled = hasSelectionInCurrentTab || canHandleFolderBack,
+        onProgress = if (!hasSelectionInCurrentTab && canHandleFolderBack) folderBackPreview::onProgress else null,
+        onCancel = { folderBackPreview.settle(scope) }
     ) {
+        folderBackPreview.settle(scope)
         when {
             hasSelectionInCurrentTab -> {
                 when (visibleCurrentTabId) {
@@ -1647,6 +1654,7 @@ fun LibraryScreen(
                                         val isLoading = playerUiState.isLoadingLibraryCategories
                                         val defaultFolderName = stringResource(Res.string.presentation_batch_d_folder_name_fallback)
 
+                                        Box(Modifier.predictiveBackPreview(folderBackPreview)) {
                                         LibraryFoldersTab(
                                             folders = folders,
                                             currentFolder = currentFolder,
@@ -1694,6 +1702,7 @@ fun LibraryScreen(
                                                 playerViewModel.libraryViewActions.navigateToFolder(folderPath)
                                             }
                                         )
+                                        }
                                     }
 
                                     LibraryTabId.GENRES -> {
