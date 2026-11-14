@@ -254,7 +254,7 @@ fun AlbumDetailScreen(
                     if (heroPlayState == HeroPlayState.Idle) {
                         songs.firstOrNull()?.let { first -> playerViewModel.showAndPlaySong(first, songs) }
                     } else {
-                        playerViewModel.playPause()
+                        playerViewModel.transport.playPause()
                     }
                 }
                 val albumMenuActions = rememberSongCollectionMenuActions(

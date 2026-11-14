@@ -353,9 +353,9 @@ internal fun UnifiedPlayerQueueAndSongInfoHost(
             val onReorderQueue = remember(playerViewModel) {
                 { from: Int, to: Int -> playerViewModel.reorderQueueItem(from, to) }
             }
-            val onToggleRepeat = remember(playerViewModel) { { playerViewModel.cycleRepeatMode() } }
+            val onToggleRepeat = remember(playerViewModel) { { playerViewModel.transport.cycleRepeatMode() } }
             val onToggleShuffle = remember(playerViewModel) { { playerViewModel.toggleShuffle() } }
-            val onClearQueue = remember(playerViewModel) { { playerViewModel.clearQueueExceptCurrent() } }
+            val onClearQueue = remember(playerViewModel) { { playerViewModel.transport.clearQueueExceptCurrent() } }
             val onSetPredefinedTimer = remember(playerViewModel) {
                 { minutes: Int -> playerViewModel.setSleepTimer(minutes) }
             }

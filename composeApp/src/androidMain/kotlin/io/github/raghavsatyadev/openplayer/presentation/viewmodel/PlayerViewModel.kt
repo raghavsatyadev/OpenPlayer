@@ -54,7 +54,6 @@ import io.github.raghavsatyadev.openplayer.data.preferences.ThemePreferencesRepo
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository
 import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtQuality
 import io.github.raghavsatyadev.openplayer.data.preferences.ThemePreference
-import io.github.raghavsatyadev.openplayer.data.preferences.restartsAtPosition
 import io.github.raghavsatyadev.openplayer.data.repository.LyricsSearchResult
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.data.service.MusicNotificationProvider
@@ -71,6 +70,9 @@ import io.github.raghavsatyadev.openplayer.utils.StorageType
 import io.github.raghavsatyadev.openplayer.utils.StorageUtils
 import io.github.raghavsatyadev.openplayer.utils.traceSection
 import io.github.raghavsatyadev.openplayer.presentation.navigation.PlayerSheetBackCoordinator
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.MediaControllerPlaybackController
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerTransportActions
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerTransportCallbacks
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerDeleteActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerLibraryViewActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerLibraryViewCallbacks
@@ -1138,6 +1140,20 @@ class PlayerViewModel(
             setFavoriteStatus = ::setFavoriteStatusEverywhere,
             effectiveStorageFilter = ::currentEffectiveLibraryStorageFilter,
             showPlayer = { _isSheetVisible.value = true },
+        ),
+    )
+
+    val transport = PlayerTransportActions(
+        scope = viewModelScope,
+        controller = MediaControllerPlaybackController { mediaController },
+        playbackStateHolder = playbackStateHolder,
+        musicRepository = musicRepository,
+        playerUiState = playerUiState,
+        callbacks = PlayerTransportCallbacks(
+            playQueue = { songs, startSong, queueName -> internalPlaySongs(songs, startSong, queueName) },
+            loadAndPlaySong = ::loadAndPlaySong,
+            cancelTransitionScheduler = { transitionSchedulerJob?.cancel() },
+            onQueueReplaced = playNextInserter::onQueueReplaced,
         ),
     )
 
@@ -3238,10 +3254,6 @@ class PlayerViewModel(
         )
     }
 
-    fun cycleRepeatMode() {
-        playbackStateHolder.cycleRepeatMode()
-    }
-
     private suspend fun setFavoriteStatusEverywhere(songId: String, isFavorite: Boolean) {
         musicRepository.setFavoriteStatus(songId, isFavorite)
     }
@@ -3336,95 +3348,6 @@ class PlayerViewModel(
     private fun buildPlaybackMediaItem(song: Song, playlistId: String? = null): MediaItem =
         MediaItemBuilder.withPlaylistId(MediaItemBuilder.build(song), playlistId)
 
-    /**
-     * Signal from the player sheet whether the slider-bearing UI is currently
-     * rendered. Drives the position-ticker's resolution (250 ms vs 1 s).
-     */
-    fun setSliderUiMounted(mounted: Boolean) {
-        playbackStateHolder.setSliderUiMounted(mounted)
-    }
-
-    fun playPause() {
-        val controller = mediaController
-        if (controller == null || !controller.isConnected) {
-            playbackStateHolder.playPause()
-            return
-        }
-
-        if (controller.isPlaying) {
-            controller.pause()
-        } else {
-            if (controller.currentMediaItem == null) {
-                val currentQueue = _playerUiState.value.currentPlaybackQueue
-                val currentSong = playbackStateHolder.stablePlayerState.value.currentSong
-                when {
-                    currentQueue.isNotEmpty() && currentSong != null -> {
-                        viewModelScope.launch {
-                            transitionSchedulerJob?.cancel()
-                            internalPlaySongs(
-                                currentQueue.toList(),
-                                currentSong,
-                                _playerUiState.value.currentQueueSourceName
-                            )
-                        }
-                    }
-                    currentSong != null -> loadAndPlaySong(currentSong)
-                    else -> {
-                        viewModelScope.launch {
-                            val fallbackSong = musicRepository.getFirstPlayableSong()
-                            if (fallbackSong != null) {
-                                loadAndPlaySong(fallbackSong)
-                            } else {
-                                controller.play()
-                            }
-                        }
-                    }
-                }
-            } else {
-                if (controller.playbackState == Player.STATE_IDLE && controller.mediaItemCount > 0) {
-                    controller.prepare()
-                }
-                controller.play()
-            }
-        }
-    }
-
-    fun seekTo(position: Long) {
-        playbackStateHolder.seekTo(position)
-    }
-
-    fun nextSong() {
-        AdvancedPerformanceDiagnostics.recordEventIfEnabled(
-            type = AdvancedPerformanceDiagnostics.EventTypes.PLAYBACK,
-            name = "next_requested",
-        )
-        playbackStateHolder.nextSong()
-    }
-
-    fun previousSong() {
-        AdvancedPerformanceDiagnostics.recordEventIfEnabled(
-            type = AdvancedPerformanceDiagnostics.EventTypes.PLAYBACK,
-            name = "previous_requested",
-        )
-        playbackStateHolder.previousSong()
-    }
-
-    /**
-     * Whether [previousSong] at [positionMs] restarts the current track under the "Previous
-     * button" preference, ignoring queue bounds. Read at event time, so it adds no UI state.
-     */
-    fun previousButtonRestartsAt(positionMs: Long): Boolean =
-        playbackStateHolder.currentPreviousButtonBehavior().restartsAtPosition(positionMs)
-
-    /** Steps back to the previous track even past the restart threshold of [previousSong]. */
-    fun forcePreviousSong() {
-        AdvancedPerformanceDiagnostics.recordEventIfEnabled(
-            type = AdvancedPerformanceDiagnostics.EventTypes.PLAYBACK,
-            name = "previous_requested",
-        )
-        playbackStateHolder.forcePreviousSong()
-    }
-
     private fun startProgressUpdates() {
         playbackStateHolder.startProgressUpdates()
     }
@@ -3444,22 +3367,6 @@ class PlayerViewModel(
     suspend fun getSongs(songIds: List<String>) : List<Song>{
         return musicRepository.getSongsByIds(songIds).first()
     }
-
-    fun clearQueueExceptCurrent() {
-        mediaController?.let { controller ->
-            val currentSongIndex = controller.currentMediaItemIndex
-            if (currentSongIndex == C.INDEX_UNSET) return@let
-            val indicesToRemove = (0 until controller.mediaItemCount)
-                .filter { it != currentSongIndex }
-                .sortedDescending()
-
-            playNextInserter.onQueueReplaced()
-            for (index in indicesToRemove) {
-                controller.removeMediaItem(index)
-            }
-        }
-    }
-
 
     override fun onCleared() {
         // Captured before super.onCleared() so the owner checks below compare against the

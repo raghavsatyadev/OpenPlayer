@@ -719,9 +719,9 @@ fun QueueBottomSheet(
                     queueSourceName = currentQueueSourceName,
                     queueCount = displaySongCount,
                     topPadding = headerTopPadding,
-                    onPrevious = { viewModel.previousSong() },
-                    onPlayPause = { viewModel.playPause() },
-                    onNext = { viewModel.nextSong() },
+                    onPrevious = { viewModel.transport.previousSong() },
+                    onPlayPause = { viewModel.transport.playPause() },
+                    onNext = { viewModel.transport.nextSong() },
                     onLocateCurrentSong = {
                         if (currentSongDisplayIndex in 0..<displaySongCount) {
                             queueCoroutineScope.launch {

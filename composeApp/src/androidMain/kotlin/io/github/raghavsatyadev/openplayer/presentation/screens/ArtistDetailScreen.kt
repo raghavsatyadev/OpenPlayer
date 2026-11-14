@@ -337,7 +337,7 @@ fun ArtistDetailScreen(
                         if (heroPlayState == HeroPlayState.Idle) {
                             songs.firstOrNull()?.let { first -> playerViewModel.showAndPlaySong(first, songs) }
                         } else {
-                            playerViewModel.playPause()
+                            playerViewModel.transport.playPause()
                         }
                     }
                     val barScrimFadePx = with(density) { 24.dp.toPx() }

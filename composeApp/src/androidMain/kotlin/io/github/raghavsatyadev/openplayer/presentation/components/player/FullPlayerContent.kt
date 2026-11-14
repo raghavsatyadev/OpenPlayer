@@ -478,7 +478,7 @@ fun FullPlayerContent(
             SkipDirection.PREVIOUS -> predictSkipPreviousCarouselIndex(
                 currentIndex = baseIndex,
                 queue = queueSnapshot,
-                restartsCurrentTrack = playerViewModel.previousButtonRestartsAt(
+                restartsCurrentTrack = playerViewModel.transport.previousButtonRestartsAt(
                     latestCurrentPositionProvider()
                 ),
                 repeatMode = latestRepeatMode,
@@ -871,9 +871,9 @@ fun FullPlayerContent(
             colorScheme = LocalMaterialTheme.current,
             onBackClick = { showLyricsSheet = false },
             onSaveLyricsToFile = playerViewModel.lyricsSaver::saveLyricsToFile,
-            onSeekTo = { playerViewModel.seekTo(it) },
+            onSeekTo = { playerViewModel.transport.seekTo(it) },
             onPlayPause = {
-                playerViewModel.playPause()
+                playerViewModel.transport.playPause()
             },
             onNext = onNext,
             onPrev = onPrevious,

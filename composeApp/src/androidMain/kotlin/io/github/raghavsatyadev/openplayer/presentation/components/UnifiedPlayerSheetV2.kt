@@ -301,8 +301,8 @@ fun UnifiedPlayerSheetV2(
     val shouldRenderFullPlayer = fullPlayerCompositionPolicy.shouldRenderFullPlayer
 
     DisposableEffect(shouldRenderFullPlayer) {
-        playerViewModel.setSliderUiMounted(shouldRenderFullPlayer)
-        onDispose { playerViewModel.setSliderUiMounted(false) }
+        playerViewModel.transport.setSliderUiMounted(shouldRenderFullPlayer)
+        onDispose { playerViewModel.transport.setSliderUiMounted(false) }
     }
 
     suspend fun animatePlayerSheet(
@@ -448,8 +448,8 @@ fun UnifiedPlayerSheetV2(
         screenWidthPx = screenWidthPx,
         onDismissPlaylistAndShowUndo = { playerViewModel.dismissPlaylistAndShowUndo() },
         onDismissStarted = { playerViewModel.setMiniPlayerDismissing(true) },
-        onPrevious = { playerViewModel.previousSong() },
-        onNext = { playerViewModel.nextSong() }
+        onPrevious = { playerViewModel.transport.previousSong() },
+        onNext = { playerViewModel.transport.nextSong() }
     )
     val miniSkipGestureHandler = rememberMiniPlayerSkipGestureHandler(
         scope = scope,
@@ -457,10 +457,10 @@ fun UnifiedPlayerSheetV2(
         translationXAnimatable = skipOffsetX,
         contentAlphaAnimatable = skipContentAlpha,
         screenWidthPx = screenWidthPx,
-        onSkipToNext = { playerViewModel.nextSong() },
+        onSkipToNext = { playerViewModel.transport.nextSong() },
         // The card has already slid away, so restarting the current track instead of stepping
         // back would read as the gesture having failed.
-        onSkipToPrevious = { playerViewModel.forcePreviousSong() }
+        onSkipToPrevious = { playerViewModel.transport.forcePreviousSong() }
     )
 
     QueueSheetRuntimeEffects(

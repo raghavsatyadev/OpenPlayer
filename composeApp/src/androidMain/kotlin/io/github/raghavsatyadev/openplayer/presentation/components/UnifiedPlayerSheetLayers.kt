@@ -126,9 +126,9 @@ internal fun BoxScope.UnifiedPlayerMiniAndFullLayers(
                         isPlaying = infrequentPlayerState.isPlaying,
                         isOutputConnecting = isOutputConnecting,
                         isPreparingPlayback = isPreparingPlayback,
-                        onPlayPause = { playerViewModel.playPause() },
-                        onPrevious = { playerViewModel.previousSong() },
-                        onNext = { playerViewModel.nextSong() },
+                        onPlayPause = { playerViewModel.transport.playPause() },
+                        onPrevious = { playerViewModel.transport.previousSong() },
+                        onNext = { playerViewModel.transport.nextSong() },
                         canScroll = isMiniPlayerVisible && infrequentPlayerState.isPlaying,
                         modifier = Modifier.fillMaxSize()
                     )
@@ -212,17 +212,17 @@ internal fun BoxScope.UnifiedPlayerMiniAndFullLayers(
                     val isFavoriteProvider = remember {
                         { latestIsFavorite.value }
                     }
-                    val onPlayPause = remember(playerViewModel) { playerViewModel::playPause }
-                    val onSeek = remember(playerViewModel) { playerViewModel::seekTo }
-                    val onNext = remember(playerViewModel) { playerViewModel::nextSong }
-                    val onPrevious = remember(playerViewModel) { playerViewModel::previousSong }
+                    val onPlayPause = remember(playerViewModel) { playerViewModel.transport::playPause }
+                    val onSeek = remember(playerViewModel) { playerViewModel.transport::seekTo }
+                    val onNext = remember(playerViewModel) { playerViewModel.transport::nextSong }
+                    val onPrevious = remember(playerViewModel) { playerViewModel.transport::previousSong }
                     val onCollapse = remember(playerViewModel) {
                         { playerViewModel.collapsePlayerSheet() }
                     }
                     val onShuffleToggle = remember(playerViewModel) {
                         { playerViewModel.toggleShuffle() }
                     }
-                    val onRepeatToggle = remember(playerViewModel) { playerViewModel::cycleRepeatMode }
+                    val onRepeatToggle = remember(playerViewModel) { playerViewModel.transport::cycleRepeatMode }
                     val onFavoriteToggle = remember(playerViewModel) { playerViewModel::toggleFavorite }
 
                     FullPlayerContent(
@@ -309,12 +309,12 @@ internal fun UnifiedPlayerPrewarmLayer(
                 val totalDurationProvider = remember { { latestInfrequentPlayerState.value.totalDuration } }
                 val lyricsProvider = remember { { latestInfrequentPlayerState.value.lyrics } }
                 val isFavoriteProvider = remember { { latestIsFavorite.value } }
-                val onPlayPause = remember(playerViewModel) { playerViewModel::playPause }
-                val onSeek = remember(playerViewModel) { playerViewModel::seekTo }
-                val onNext = remember(playerViewModel) { playerViewModel::nextSong }
-                val onPrevious = remember(playerViewModel) { playerViewModel::previousSong }
+                val onPlayPause = remember(playerViewModel) { playerViewModel.transport::playPause }
+                val onSeek = remember(playerViewModel) { playerViewModel.transport::seekTo }
+                val onNext = remember(playerViewModel) { playerViewModel.transport::nextSong }
+                val onPrevious = remember(playerViewModel) { playerViewModel.transport::previousSong }
                 val onShuffleToggle = remember(playerViewModel) { { playerViewModel.toggleShuffle() } }
-                val onRepeatToggle = remember(playerViewModel) { playerViewModel::cycleRepeatMode }
+                val onRepeatToggle = remember(playerViewModel) { playerViewModel.transport::cycleRepeatMode }
                 val onFavoriteToggle = remember(playerViewModel) { playerViewModel::toggleFavorite }
 
                 FullPlayerContent(

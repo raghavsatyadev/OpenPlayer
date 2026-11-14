@@ -282,7 +282,7 @@ fun ExternalPlayerOverlay(
                                 val finalFraction = finalValue.coerceIn(0f, 1f)
                                 sliderPosition = finalFraction
                                 val targetPosition = (finalFraction * totalDuration).roundToLong()
-                                playerViewModel.seekTo(targetPosition)
+                                playerViewModel.transport.seekTo(targetPosition)
                                 pendingSeekFraction = finalFraction
                                 pendingSeekAtMs = System.currentTimeMillis()
                                 isUserScrubbing = false
@@ -320,9 +320,9 @@ fun ExternalPlayerOverlay(
                                 .fillMaxWidth()
                                 .padding(horizontal = 12.dp),
                             isPlayingProvider = { stablePlayerState.isPlaying },
-                            onPrevious = playerViewModel::previousSong,
-                            onPlayPause = playerViewModel::playPause,
-                            onNext = playerViewModel::nextSong,
+                            onPrevious = playerViewModel.transport::previousSong,
+                            onPlayPause = playerViewModel.transport::playPause,
+                            onNext = playerViewModel.transport::nextSong,
                             height = 76.dp,
                             pressAnimationSpec = controlAnimationSpec,
                             colorOtherButtons = skipContainer,
