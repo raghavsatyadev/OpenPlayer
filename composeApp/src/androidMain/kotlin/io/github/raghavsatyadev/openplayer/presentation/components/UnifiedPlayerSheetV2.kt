@@ -122,7 +122,7 @@ fun UnifiedPlayerSheetV2(
     val writePermissionLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
-        playerViewModel.onWritePermissionResult(result.resultCode == android.app.Activity.RESULT_OK)
+        playerViewModel.writePermissions.onWritePermissionResult(result.resultCode == android.app.Activity.RESULT_OK)
     }
 
     val deletePermissionLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
@@ -139,7 +139,7 @@ fun UnifiedPlayerSheetV2(
                 }
             }
             launch {
-                playerViewModel.writePermissionRequest.collect { intentSender ->
+                playerViewModel.writePermissions.writePermissionRequest.collect { intentSender ->
                     writePermissionLauncher.launch(
                         androidx.activity.result.IntentSenderRequest.Builder(intentSender).build()
                     )

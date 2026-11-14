@@ -1423,7 +1423,7 @@ fun SettingsCategoryScreen(
                     if (isAnyPaletteRegenerateRunning) return@PaletteRegenerateSongSheetContent
                     isPaletteRegenerateRunning = true
                     coroutineScope.launch {
-                        val success = playerViewModel.forceRegenerateAlbumPaletteForSong(song)
+                        val success = playerViewModel.metadataEditor.forceRegenerateAlbumPaletteForSong(song)
                         isPaletteRegenerateRunning = false
                         if (success) {
                             showPaletteRegenerateSheet = false
@@ -1520,7 +1520,7 @@ fun SettingsCategoryScreen(
                             coroutineScope.launch {
                                 var successCount = 0
                                 paletteRegenerateTargets.forEachIndexed { index, song ->
-                                    if (playerViewModel.forceRegenerateAlbumPaletteForSong(song)) {
+                                    if (playerViewModel.metadataEditor.forceRegenerateAlbumPaletteForSong(song)) {
                                         successCount++
                                     }
                                     paletteBulkCompletedCount = index + 1

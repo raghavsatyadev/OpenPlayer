@@ -870,7 +870,7 @@ fun FullPlayerContent(
             lyricsTextStyle = MaterialTheme.typography.titleLarge,
             colorScheme = LocalMaterialTheme.current,
             onBackClick = { showLyricsSheet = false },
-            onSaveLyricsToFile = playerViewModel::saveLyricsToFile,
+            onSaveLyricsToFile = playerViewModel.lyricsSaver::saveLyricsToFile,
             onSeekTo = { playerViewModel.seekTo(it) },
             onPlayPause = {
                 playerViewModel.playPause()

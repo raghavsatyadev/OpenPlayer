@@ -735,7 +735,7 @@ fun SearchScreen(
                     showSongInfoBottomSheet = false
                 },
                 onEditSong = { newTitle, newArtist, newAlbum, newAlbumArtist, newComposer, newGenre, newLyrics, newTrackNumber, newDiscNumber, replayGainTrackGainDb, replayGainAlbumGainDb, coverArtUpdate, customMetadataChanges ->
-                    playerViewModel.editSongMetadata(
+                    playerViewModel.metadataEditor.editSongMetadata(
                         currentSong,
                         newTitle,
                         newArtist,
@@ -840,7 +840,7 @@ fun SearchScreen(
             songs = selectedSongs,
             onDismiss = { showBatchEditSheet = false },
             onSave = { songs, title, artist, album, albumArtist, composer, genre, lyrics, trackNumber, discNumber, replayGainTrackGainDb, replayGainAlbumGainDb, coverArtUpdate ->
-                playerViewModel.saveBatchMetadata(
+                playerViewModel.metadataEditor.saveBatchMetadata(
                     songs = songs,
                     title = title,
                     artist = artist,

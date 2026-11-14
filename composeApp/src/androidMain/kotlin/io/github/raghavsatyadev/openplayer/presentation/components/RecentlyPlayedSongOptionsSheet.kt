@@ -100,7 +100,7 @@ fun RecentlyPlayedSongOptionsSheet(
             onDismiss()
         },
         onEditSong = { newTitle, newArtist, newAlbum, newAlbumArtist, newComposer, newGenre, newLyrics, newTrackNumber, newDiscNumber, replayGainTrackGainDb, replayGainAlbumGainDb, coverArtUpdate, customMetadataChanges ->
-            playerViewModel.editSongMetadata(
+            playerViewModel.metadataEditor.editSongMetadata(
                 sheetSong,
                 newTitle,
                 newArtist,

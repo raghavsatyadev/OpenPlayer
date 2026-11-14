@@ -568,7 +568,7 @@ fun GenreDetailScreen(
                     customGenreIcons = customGenreIcons,
                     onDismiss = { showQuickFillDialog = false },
                     onApply = { songs, genre ->
-                        playerViewModel.batchEditGenre(songs, genre)
+                        playerViewModel.genreEditor.batchEditGenre(songs, genre)
                         showQuickFillDialog = false
                     },
                     onAddCustomGenre = { genre, iconRes ->
@@ -642,7 +642,7 @@ fun GenreDetailScreen(
                             showSongOptionsSheet = null
                         },
                         onEditSong = { newTitle, newArtist, newAlbum, newAlbumArtist, newComposer, newGenre, newLyrics, newTrackNumber, newDiscNumber, replayGainTrackGainDb, replayGainAlbumGainDb, coverArtUpdate, customMetadataChanges ->
-                            playerViewModel.editSongMetadata(
+                            playerViewModel.metadataEditor.editSongMetadata(
                                 song,
                                 newTitle,
                                 newArtist,
@@ -747,7 +747,7 @@ fun GenreDetailScreen(
                     songs = selectedSongs,
                     onDismiss = { showBatchEditSheet = false },
                     onSave = { songs, title, artist, album, albumArtist, composer, genre, lyrics, trackNumber, discNumber, replayGainTrackGainDb, replayGainAlbumGainDb, coverArtUpdate ->
-                        playerViewModel.saveBatchMetadata(
+                        playerViewModel.metadataEditor.saveBatchMetadata(
                             songs = songs,
                             title = title,
                             artist = artist,
