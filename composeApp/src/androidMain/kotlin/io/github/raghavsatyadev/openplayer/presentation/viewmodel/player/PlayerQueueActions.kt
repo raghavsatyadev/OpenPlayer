@@ -42,14 +42,17 @@ class PlayerQueueActions(
         playNextInserter.inInsertOrder(songs).forEach(::addSongNextToQueue)
     }
 
-    fun removeSongFromQueue(songId: String) {
-        queueUndoStateHolder.removeSongFromQueue(
+    /** Removes [songId]; pass the row's [queueIndex] so duplicate copies resolve to the right one. */
+    fun removeSongFromQueue(songId: String, queueIndex: Int? = null) {
+        val removedIndex = queueUndoStateHolder.removeSongFromQueue(
             scope = scope,
             mediaController = mediaController(),
             songId = songId,
+            queueIndex = queueIndex,
             getUiState = { playerUiState.value },
             updateUiState = { mutation -> playerUiState.update(mutation) },
         )
+        if (removedIndex != null) playNextInserter.onItemRemoved(removedIndex)
     }
 
     fun undoRemoveSongFromQueue() {

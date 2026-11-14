@@ -68,7 +68,7 @@ internal fun UnifiedPlayerQueueLayer(
     onDismissQueue: () -> Unit,
     onSongInfoClick: (Song) -> Unit,
     onPlaySong: (Song, Int) -> Unit,
-    onRemoveSong: (String) -> Unit,
+    onRemoveSong: (songId: String, queueIndex: Int) -> Unit,
     onReorder: (Int, Int) -> Unit,
     onToggleRepeat: () -> Unit,
     onToggleShuffle: () -> Unit,
@@ -348,7 +348,7 @@ internal fun UnifiedPlayerQueueAndSongInfoHost(
                 }
             }
             val onRemoveQueueSong = remember(playerViewModel) {
-                { id: String -> playerViewModel.queueActions.removeSongFromQueue(id) }
+                { id: String, index: Int -> playerViewModel.queueActions.removeSongFromQueue(id, index) }
             }
             val onReorderQueue = remember(playerViewModel) {
                 { from: Int, to: Int -> playerViewModel.queueActions.reorderQueueItem(from, to) }
