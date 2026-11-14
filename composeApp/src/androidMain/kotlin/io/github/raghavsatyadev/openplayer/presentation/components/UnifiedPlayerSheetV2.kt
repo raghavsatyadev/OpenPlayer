@@ -128,7 +128,7 @@ fun UnifiedPlayerSheetV2(
     val deletePermissionLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
-        playerViewModel.onDeletePermissionResult(result.resultCode == android.app.Activity.RESULT_OK)
+        playerViewModel.deleteActions.onDeletePermissionResult(result.resultCode == android.app.Activity.RESULT_OK)
     }
 
     LaunchedEffect(playerViewModel, lifecycleOwner) {
@@ -146,7 +146,7 @@ fun UnifiedPlayerSheetV2(
                 }
             }
             launch {
-                playerViewModel.deletePermissionRequest.collect { intentSender ->
+                playerViewModel.deleteActions.deletePermissionRequest.collect { intentSender ->
                     deletePermissionLauncher.launch(
                         androidx.activity.result.IntentSenderRequest.Builder(intentSender).build()
                     )

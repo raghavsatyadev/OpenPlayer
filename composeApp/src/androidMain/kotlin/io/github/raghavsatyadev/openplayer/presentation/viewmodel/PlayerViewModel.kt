@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
-import android.app.Activity
 import android.net.Uri
 import android.os.Trace
 import android.media.MediaMetadataRetriever
@@ -31,7 +30,6 @@ import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionError
 import androidx.media3.session.SessionResult
 import androidx.media3.session.SessionToken
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import io.github.raghavsatyadev.openplayer.resources.*
@@ -77,6 +75,8 @@ import io.github.raghavsatyadev.openplayer.utils.StorageType
 import io.github.raghavsatyadev.openplayer.utils.StorageUtils
 import io.github.raghavsatyadev.openplayer.utils.traceSection
 import io.github.raghavsatyadev.openplayer.presentation.navigation.PlayerSheetBackCoordinator
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerDeleteActions
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerDeleteCallbacks
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerSelectionActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerSelectionCallbacks
 import io.github.raghavsatyadev.openplayer.presentation.selection.effectiveLibraryStorageFilter
@@ -87,7 +87,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -500,12 +499,6 @@ class PlayerViewModel(
     )
     val writePermissionRequest: SharedFlow<android.content.IntentSender> = _writePermissionRequest.asSharedFlow()
 
-    private val _deletePermissionRequest = MutableSharedFlow<android.content.IntentSender>(
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
-    val deletePermissionRequest: SharedFlow<android.content.IntentSender> = _deletePermissionRequest.asSharedFlow()
-
     private var pendingMetadataEdit: PendingMetadataEdit? = null
     private var pendingBatchMetadataEdit: PendingBatchMetadataEdit? = null
     private var pendingLyricsSave: PendingLyricsSave? = null
@@ -515,8 +508,6 @@ class PlayerViewModel(
     private val askedInterruptedSaveRestoreUris = mutableSetOf<String>()
     /** Counts answered write requests, so a waiting restore prompt can tell one has finished. */
     private val answeredWriteRequests = MutableStateFlow(0)
-    private var pendingDeleteSong: Song? = null
-    private var pendingDeleteCallback: ((Boolean) -> Unit)? = null
 
     private val _albumNavigationRequests = MutableSharedFlow<Long>(extraBufferCapacity = 1)
     val albumNavigationRequests = _albumNavigationRequests.asSharedFlow()
@@ -1145,6 +1136,23 @@ class PlayerViewModel(
             setFavoriteStatus = ::setFavoriteStatusEverywhere,
             effectiveStorageFilter = ::currentEffectiveLibraryStorageFilter,
             showPlayer = { _isSheetVisible.value = true },
+        ),
+    )
+
+    val deleteActions = PlayerDeleteActions(
+        scope = viewModelScope,
+        dispatchers = dispatchers,
+        playbackStateHolder = playbackStateHolder,
+        metadataEditStateHolder = metadataEditStateHolder,
+        songRemovalStateHolder = songRemovalStateHolder,
+        multiSelectionStateHolder = multiSelectionStateHolder,
+        playerUiState = _playerUiState,
+        playNextInserter = playNextInserter,
+        mediaController = { mediaController },
+        toast = _toastEvents::emit,
+        callbacks = PlayerDeleteCallbacks(
+            toggleFavoriteSpecificSong = { song, removing -> toggleFavoriteSpecificSong(song, removing) },
+            hidePlayerSheet = { _isSheetVisible.value = false },
         ),
     )
 
@@ -3313,274 +3321,6 @@ class PlayerViewModel(
 
     private fun buildPlaybackMediaItem(song: Song, playlistId: String? = null): MediaItem =
         MediaItemBuilder.withPlaylistId(MediaItemBuilder.build(song), playlistId)
-
-    /**
-     * Deletes all selected songs from device with confirmation.
-     * Shows a single confirmation dialog for all songs.
-     */
-    private var pendingBatchDeleteSongs: List<Song>? = null
-    private var pendingBatchDeleteSkippedCount: Int = 0
-    private var pendingBatchDeleteOnComplete: (() -> Unit)? = null
-
-    fun deleteSelectedFromDevice(activity: Activity, songs: List<Song>, onComplete: () -> Unit) {
-        viewModelScope.launch {
-            val currentSongId = playbackStateHolder.stablePlayerState.value.currentSong?.id
-            val deletableSongs = songs.filter { it.id != currentSongId }
-
-            if (deletableSongs.isEmpty()) {
-                _toastEvents.emit(getString(Res.string.player_cannot_delete_currently_playing))
-                return@launch
-            }
-
-            val skippedCount = songs.size - deletableSongs.size
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                val deleteRequests = withContext(dispatchers.io) {
-                    deletableSongs.mapNotNull { song ->
-                        io.github.raghavsatyadev.openplayer.utils.MediaStorePermissionHelper
-                            .resolveDeleteRequestUri(
-                                context = activity,
-                                songId = song.id.toLongOrNull(),
-                                contentUriString = song.contentUriString,
-                                filePath = song.path,
-                            )?.let { uri -> song to uri }
-                    }
-                }
-                if (deleteRequests.size == deletableSongs.size) {
-                    val uris = deleteRequests.map { it.second }.distinctBy { it.toString() }
-                    val deleteRequest = io.github.raghavsatyadev.openplayer.utils.MediaStorePermissionHelper
-                        .createDeleteRequest(activity, uris)
-                    if (deleteRequest != null) {
-                        val acceptedUriStrings = deleteRequest.acceptedUris
-                            .mapTo(mutableSetOf()) { it.toString() }
-                        val acceptedSongs = deleteRequests
-                            .filter { (_, uri) -> uri.toString() in acceptedUriStrings }
-                            .map { it.first }
-                        val invalidRequestCount = deletableSongs.size - acceptedSongs.size
-
-                        pendingBatchDeleteSongs = acceptedSongs
-                        pendingBatchDeleteSkippedCount = skippedCount + invalidRequestCount
-                        pendingBatchDeleteOnComplete = onComplete
-                        _deletePermissionRequest.emit(deleteRequest.intentSender)
-                        return@launch
-                    }
-                }
-            }
-
-            val confirmed = showMultiDeleteConfirmation(activity, deletableSongs.size)
-            if (!confirmed) {
-                onComplete()
-                return@launch
-            }
-
-            var successCount = 0
-            deletableSongs.forEach { song ->
-                val success = metadataEditStateHolder.deleteSong(song)
-                if (success) {
-                    removeFromMediaControllerQueue(song.id)
-                    removeSong(song)
-                    successCount++
-                }
-            }
-
-            when {
-                successCount == deletableSongs.size && skippedCount == 0 ->
-                    _toastEvents.emit(
-                        getPluralString(Res.plurals.n_files_deleted, successCount, successCount),
-                    )
-                successCount == deletableSongs.size && skippedCount > 0 ->
-                    _toastEvents.emit(
-                        getString(Res.string.player_batch_delete_files_deleted_skipped_format,
-                            successCount,
-                            skippedCount,
-                        ),
-                    )
-                successCount > 0 ->
-                    _toastEvents.emit(
-                        getString(Res.string.player_batch_delete_partial_format,
-                            successCount,
-                            deletableSongs.size,
-                        ),
-                    )
-                else ->
-                    _toastEvents.emit(getString(Res.string.player_delete_files_failed))
-            }
-
-            multiSelectionStateHolder.clearSelection()
-            onComplete()
-        }
-    }
-
-    private suspend fun showMultiDeleteConfirmation(activity: Activity, count: Int): Boolean {
-        return withContext(Dispatchers.Main) {
-            try {
-                if (activity.isFinishing || activity.isDestroyed) {
-                    return@withContext false
-                }
-
-                val userChoice = CompletableDeferred<Boolean>()
-
-                val dialog = MaterialAlertDialogBuilder(activity)
-                    .setTitle(
-                        getPluralString(Res.plurals.delete_songs_confirmation_title,
-                            count,
-                            count,
-                        ),
-                    )
-                    .setMessage(getString(Res.string.delete_songs_permanent_message))
-                    .setPositiveButton(getString(Res.string.delete_action)) { _, _ ->
-                        userChoice.complete(true)
-                    }
-                    .setNegativeButton(getString(Res.string.cancel)) { _, _ ->
-                        userChoice.complete(false)
-                    }
-                    .setOnCancelListener {
-                        userChoice.complete(false)
-                    }
-                    .setCancelable(true)
-                    .create()
-
-                dialog.show()
-                userChoice.await()
-            } catch (e: Exception) {
-                false
-            }
-        }
-    }
-
-    fun deleteFromDevice(activity: Activity, song: Song, onResult: (Boolean) -> Unit = {}){
-        viewModelScope.launch {
-            if (playbackStateHolder.stablePlayerState.value.currentSong?.id == song.id) {
-                _toastEvents.emit(getString(Res.string.player_cannot_delete_currently_playing))
-                onResult(false)
-                return@launch
-            }
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                val intentSender = withContext(dispatchers.io) {
-                    io.github.raghavsatyadev.openplayer.utils.MediaStorePermissionHelper
-                        .resolveDeleteRequestUri(
-                            context = activity,
-                            songId = song.id.toLongOrNull(),
-                            contentUriString = song.contentUriString,
-                            filePath = song.path,
-                        )?.let { uri ->
-                            io.github.raghavsatyadev.openplayer.utils.MediaStorePermissionHelper
-                                .createDeleteRequestIntentSender(activity, listOf(uri))
-                        }
-                }
-                if (intentSender != null) {
-                    pendingDeleteSong = song
-                    pendingDeleteCallback = onResult
-                    _deletePermissionRequest.emit(intentSender)
-                    return@launch
-                }
-            }
-
-            val userConfirmed = songRemovalStateHolder.showDeleteConfirmation(activity, song)
-            if (!userConfirmed) {
-                onResult(false)
-                return@launch
-            }
-
-            val success = songRemovalStateHolder.deleteSongFile(song)
-            if (success) {
-                _toastEvents.emit(getString(Res.string.player_file_deleted))
-                removeFromMediaControllerQueue(song.id)
-                removeSong(song)
-                onResult(true)
-            } else {
-                _toastEvents.emit(getString(Res.string.player_delete_file_not_found))
-                onResult(false)
-            }
-        }
-    }
-
-    /** Called from the UI after the user approves or denies the MediaStore delete request. */
-    fun onDeletePermissionResult(granted: Boolean) {
-        val batchSongs = pendingBatchDeleteSongs
-        if (batchSongs != null) {
-            val skippedCount = pendingBatchDeleteSkippedCount
-            val onComplete = pendingBatchDeleteOnComplete
-            pendingBatchDeleteSongs = null
-            pendingBatchDeleteSkippedCount = 0
-            pendingBatchDeleteOnComplete = null
-            viewModelScope.launch {
-                if (granted) {
-                    batchSongs.forEach { song ->
-                        removeFromMediaControllerQueue(song.id)
-                        removeSong(song)
-                    }
-                    val count = batchSongs.size
-                    if (skippedCount > 0) {
-                        _toastEvents.emit(
-                            getString(Res.string.player_batch_delete_files_deleted_skipped_format,
-                                count,
-                                skippedCount,
-                            ),
-                        )
-                    } else {
-                        _toastEvents.emit(
-                            getPluralString(Res.plurals.n_files_deleted, count, count),
-                        )
-                    }
-                } else {
-                    _toastEvents.emit(getString(Res.string.player_deletion_cancelled))
-                }
-                multiSelectionStateHolder.clearSelection()
-                onComplete?.invoke()
-            }
-            return
-        }
-
-        val song = pendingDeleteSong ?: return
-        val callback = pendingDeleteCallback
-        pendingDeleteSong = null
-        pendingDeleteCallback = null
-        viewModelScope.launch {
-            if (granted) {
-                _toastEvents.emit(getString(Res.string.player_file_deleted))
-                removeFromMediaControllerQueue(song.id)
-                removeSong(song)
-                callback?.invoke(true)
-            } else {
-                callback?.invoke(false)
-            }
-        }
-    }
-
-    suspend fun removeSong(song: Song) {
-        toggleFavoriteSpecificSong(song, true)
-        playbackStateHolder.setCurrentPosition(0L)
-        _playerUiState.update { currentState ->
-            currentState.copy(
-                currentPlaybackQueue = currentState.currentPlaybackQueue.removeSongById(song.id),
-                currentQueueSourceName = ""
-            )
-        }
-        _isSheetVisible.value = false
-        songRemovalStateHolder.removeSongFromLibrary(song)
-    }
-
-    private fun removeFromMediaControllerQueue(songId: String) {
-        val controller = mediaController ?: return
-
-        try {
-            val timeline = controller.currentTimeline
-            val mediaItemCount = timeline.windowCount
-
-            for (i in 0 until mediaItemCount) {
-                val window = timeline.getWindow(i, Timeline.Window())
-                if (window.mediaItem.mediaId == songId) {
-                    playNextInserter.onItemRemoved(i)
-                    controller.removeMediaItem(i)
-                    break
-                }
-            }
-        } catch (e: Exception) {
-            Logger.withTag("MediaController").e { "Error removing from queue: ${e.message}" }
-        }
-    }
 
     /**
      * Signal from the player sheet whether the slider-bearing UI is currently

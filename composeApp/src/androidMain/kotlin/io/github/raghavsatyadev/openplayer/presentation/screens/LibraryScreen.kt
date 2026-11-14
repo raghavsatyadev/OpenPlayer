@@ -1866,7 +1866,7 @@ fun LibraryScreen(
                     playlistSheetSongs = persistentListOf(currentSong)
                     showPlaylistBottomSheet = true
                 },
-                onDeleteFromDevice = playerViewModel::deleteFromDevice,
+                onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
                 onNavigateToAlbum = {
                     navController.navigateSafelyReplacing(
                         route = Screen.AlbumDetail.createRoute(currentSong.albumId),
@@ -2033,7 +2033,7 @@ fun LibraryScreen(
                 showMultiSelectionSheet = false
             },
             onDeleteAll = { deleteActivity, onComplete ->
-                playerViewModel.deleteSelectedFromDevice(deleteActivity, selectedSongs) {
+                playerViewModel.deleteActions.deleteSelectedFromDevice(deleteActivity, selectedSongs) {
                     clearResolvedCategorySelection()
                     showMultiSelectionSheet = false
                     onComplete(true)

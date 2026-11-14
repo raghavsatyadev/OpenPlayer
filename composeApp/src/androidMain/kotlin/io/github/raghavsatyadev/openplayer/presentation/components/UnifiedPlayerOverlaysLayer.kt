@@ -222,7 +222,7 @@ internal fun UnifiedPlayerSongInfoLayer(
                     showPlaylistBottomSheet = true
                 },
                 onDeleteFromDevice = { activity, songToDelete, onResult ->
-                    playerViewModel.deleteFromDevice(activity, songToDelete, onResult)
+                    playerViewModel.deleteActions.deleteFromDevice(activity, songToDelete, onResult)
                     onDismissSongInfo()
                 },
                 onNavigateToAlbum = { onNavigateToAlbum(liveSong) },

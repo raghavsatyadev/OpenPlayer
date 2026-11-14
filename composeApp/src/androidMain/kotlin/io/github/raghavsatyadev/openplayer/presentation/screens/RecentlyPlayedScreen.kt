@@ -299,7 +299,7 @@ fun RecentlyPlayedScreen(
                 onAddToPlayList = {
                     showPlaylistBottomSheet = true
                 },
-                onDeleteFromDevice = playerViewModel::deleteFromDevice,
+                onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
                 onNavigateToAlbum = {
                     navController.navigateSafely(Screen.AlbumDetail.createRoute(song.albumId))
                     showSongInfoBottomSheet = false

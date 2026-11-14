@@ -706,7 +706,7 @@ fun SearchScreen(
                     playlistSheetSongs = persistentListOf(currentSong)
                     showPlaylistBottomSheet = true
                 },
-                onDeleteFromDevice = playerViewModel::deleteFromDevice,
+                onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
                 onNavigateToAlbum = {
                     navController.navigateSafelyReplacing(
                         route = Screen.AlbumDetail.createRoute(currentSong.albumId),
@@ -822,7 +822,7 @@ fun SearchScreen(
                 showMultiSelectionSheet = false
             },
             onDeleteAll = { deleteActivity, onComplete ->
-                playerViewModel.deleteSelectedFromDevice(deleteActivity, selectedSongs) {
+                playerViewModel.deleteActions.deleteSelectedFromDevice(deleteActivity, selectedSongs) {
                     showMultiSelectionSheet = false
                     onComplete(true)
                 }

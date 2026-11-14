@@ -610,7 +610,7 @@ fun GenreDetailScreen(
                             playlistSheetSongs = persistentListOf(song)
                             showPlaylistBottomSheet = true
                         },
-                        onDeleteFromDevice = playerViewModel::deleteFromDevice,
+                        onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
                         onNavigateToAlbum = {
                             navController.navigateSafelyReplacing(
                                 route = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.AlbumDetail.createRoute(song.albumId),
@@ -729,7 +729,7 @@ fun GenreDetailScreen(
                         showMultiSelectionSheet = false
                     },
                     onDeleteAll = { deleteActivity, onComplete ->
-                        playerViewModel.deleteSelectedFromDevice(deleteActivity, selectedSongs) {
+                        playerViewModel.deleteActions.deleteSelectedFromDevice(deleteActivity, selectedSongs) {
                             showMultiSelectionSheet = false
                             onComplete(true)
                         }

@@ -82,7 +82,7 @@ fun RecentlyPlayedSongOptionsSheet(
         onAddToPlayList = {
             showPlaylistBottomSheet = true
         },
-        onDeleteFromDevice = playerViewModel::deleteFromDevice,
+        onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
         onNavigateToAlbum = {
             onNavigateToAlbum(sheetSong)
             onDismiss()

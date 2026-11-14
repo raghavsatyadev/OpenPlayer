@@ -1101,7 +1101,7 @@ fun PlaylistDetailScreen(
                 onAddToPlayList = {
                     showPlaylistBottomSheet = true;
                 },
-                onDeleteFromDevice = playerViewModel::deleteFromDevice,
+                onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
                 onNavigateToAlbum = {
                     navController.navigateSafelyReplacing(
                         route = Screen.AlbumDetail.createRoute(currentSong.albumId),
