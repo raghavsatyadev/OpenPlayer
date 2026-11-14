@@ -1235,7 +1235,13 @@ class SettingsViewModel(
                                 wrongBackupPassword = true
                             )
                         }
-                        else -> {
+                        else -> if (error.isLostUriAccess()) {
+                            // A Recent Backups entry whose read grant is gone (old GetContent
+                            // pick, or the file was moved): drop it so it stops failing.
+                            backupManager.removeBackupHistoryEntry(uri.toString())
+                            _dataTransferEvents.send(getString(Res.string.backup_access_expired))
+                            _uiState.update { it.copy(isInspectingBackup = false) }
+                        } else {
                             _dataTransferEvents.send(
                                 getString(Res.string.backup_invalid_format,
                                     error.localizedMessage ?: getString(Res.string.error_unknown),
@@ -1248,6 +1254,14 @@ class SettingsViewModel(
             )
         }
     }
+
+    /** True when [inspectBackupFile] failed because the content URI can no longer be read. */
+    private fun Throwable.isLostUriAccess(): Boolean =
+        generateSequence(this) { it.cause }.any {
+            it is SecurityException || it is java.io.FileNotFoundException ||
+                // BackupFileValidator wraps open failures into this message.
+                it.message?.startsWith("Cannot open backup file") == true
+        }
 
     /** Called when the user dismisses the encrypted-backup password prompt. */
     fun dismissEncryptedBackupPrompt() {

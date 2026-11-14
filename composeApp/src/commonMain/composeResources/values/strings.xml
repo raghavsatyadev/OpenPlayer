@@ -132,6 +132,7 @@
 
 
     <string name="backup_invalid_format">Invalid backup: %1$s</string>
+    <string name="backup_access_expired">Can't open this backup any more. Tap Browse for file to pick it again.</string>
     <string name="backup_progress_preparing_restore">Preparing restore</string>
     <string name="backup_progress_starting_task">Starting restore task.</string>
     <string name="setup_restore_scanning_library">Scanning your music</string>

@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.rotate
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -285,9 +286,13 @@ fun SettingsCategoryScreen(
     }
 
     val importFilePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
+        contract = ActivityResultContracts.OpenDocument()
     ) { uri ->
         if (uri != null) {
+            // Keep read access so the Recent Backups entry still opens after a restart.
+            runCatching {
+                context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
             importFileUri = uri
             settingsViewModel.inspectBackupFile(uri)
         }
@@ -1699,7 +1704,7 @@ fun SettingsCategoryScreen(
                     importFileUri = null
                     settingsViewModel.clearRestorePlan()
                 },
-                onBrowseFile = { importFilePicker.launch("*/*") },
+                onBrowseFile = { importFilePicker.launch(arrayOf("*/*")) },
                 onHistoryItemSelected = { entry ->
                     val uri = entry.uri.toUri()
                     importFileUri = uri

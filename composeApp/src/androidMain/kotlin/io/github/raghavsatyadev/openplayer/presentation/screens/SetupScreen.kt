@@ -190,10 +190,14 @@ fun SetupScreen(
     
     var showCornerRadiusOverlay by remember { mutableStateOf(false) }
     val backupPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
+        contract = ActivityResultContracts.OpenDocument()
     ) { uri ->
         selectedBackupUri = uri
         if (uri != null) {
+            // Keep read access so the restored backup's Recent Backups entry opens later.
+            runCatching {
+                context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
             setupViewModel.inspectBackupFile(uri)
         }
     }
@@ -342,7 +346,7 @@ fun SetupScreen(
                     )
                     SetupPage.BackupRestore -> BackupRestorePage(
                         uiState = uiState,
-                        onImportClicked = { backupPickerLauncher.launch("*/*") },
+                        onImportClicked = { backupPickerLauncher.launch(arrayOf("*/*")) },
                         onSkip = {
                             setupViewModel.clearRestorePlan()
                             selectedBackupUri = null
