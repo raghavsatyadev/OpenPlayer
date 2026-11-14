@@ -2,7 +2,6 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
 import android.content.ComponentCallbacks2
 import android.os.Trace
-import androidx.compose.runtime.Immutable
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -57,13 +56,6 @@ internal fun sortGenresList(genres: List<Genre>, sortOption: SortOption): List<G
     }
     return sorted + unknown
 }
-
-/** The Genres tab's list together with the sort it was ordered by. */
-@Immutable
-data class LibraryGenresState(
-    val genres: ImmutableList<Genre>,
-    val sortOption: SortOption
-)
 
 /**
  * Manages the data state of the music library: Songs, Albums, Artists, Folders.

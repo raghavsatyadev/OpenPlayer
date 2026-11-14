@@ -83,10 +83,8 @@ import io.github.raghavsatyadev.openplayer.presentation.selection.effectiveLibra
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
@@ -140,68 +138,11 @@ private const val SHUFFLE_ALL_SONG_LIMIT = 10_000
 // How long the current queue index has to hold still before the neighbours' palettes are preloaded.
 internal const val PALETTE_NEIGHBOR_PRELOAD_DEBOUNCE_MS = 220L
 
-private fun List<Song>.toPlaybackQueue(): ImmutableList<Song> = when (this) {
-    is PersistentList<Song> -> this
-    is ImmutableList<Song> -> this
-    else -> this.toPersistentList()
-}
-
-private fun ImmutableList<Song>.asPersistentPlaybackQueue(): PersistentList<Song> =
-    this as? PersistentList<Song> ?: this.toPersistentList()
-
-private fun ImmutableList<Song>.replaceSong(updatedSong: Song): ImmutableList<Song> {
-    val index = indexOfFirst { it.id == updatedSong.id }
-    if (index == -1) return this
-    return asPersistentPlaybackQueue().replacingAt(index, updatedSong)
-}
-
-private fun ImmutableList<Song>.removeSongById(songId: String): ImmutableList<Song> {
-    val index = indexOfFirst { it.id == songId }
-    if (index == -1) return this
-    return asPersistentPlaybackQueue().removingAt(index)
-}
-
-private fun ImmutableList<Song>.moveSong(fromIndex: Int, toIndex: Int): ImmutableList<Song> {
-    if (fromIndex == toIndex || fromIndex !in indices || toIndex !in indices) return this
-    val movedSong = this[fromIndex]
-    return asPersistentPlaybackQueue()
-        .removingAt(fromIndex)
-        .addingAt(toIndex, movedSong)
-}
-
-private fun moveQueueIndex(index: Int, fromIndex: Int, toIndex: Int): Int {
-    if (index == C.INDEX_UNSET || fromIndex == toIndex) return index
-    return when {
-        index == fromIndex -> toIndex
-        fromIndex < toIndex && index in (fromIndex + 1)..toIndex -> index - 1
-        toIndex < fromIndex && index in toIndex until fromIndex -> index + 1
-        else -> index
-    }
-}
-
 private data class QueueTimelineSignature(
     val count: Int,
     val orderHash: Long,
     val firstMediaId: String?,
     val lastMediaId: String?
-)
-
-data class PlaybackAudioMetadata(
-    val mediaId: String? = null,
-    val mimeType: String? = null,
-    val bitrate: Int? = null,
-    val sampleRate: Int? = null,
-    val channelCount: Int? = null,
-    val bitDepth: Int? = null
-)
-
-/**
- * A Locate request for one Library list. [index] is the current song's position in [tab]'s own
- * order, so only that tab's list scrolls; a neighbouring pager page keeps its position.
- */
-data class LocateScrollRequest(
-    val tab: LibraryTabId,
-    val index: Int
 )
 
 private data class SortOptionsSnapshot(
@@ -1215,19 +1156,6 @@ class PlayerViewModel(
     }.distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
-    data class FullPlayerSlice(
-        val currentSongArtists: ImmutableList<Artist> = persistentListOf(),
-        val lyricsSyncOffset: Int = 0,
-        val albumArtQuality: AlbumArtQuality = AlbumArtQuality.MEDIUM,
-        val audioMetadata: PlaybackAudioMetadata = PlaybackAudioMetadata(),
-        val showPlayerFileInfo: Boolean = true,
-        val immersiveLyricsEnabled: Boolean = false,
-        val immersiveLyricsTimeout: Long = 4000L,
-        val isImmersiveTemporarilyDisabled: Boolean = false,
-        val isBluetoothEnabled: Boolean = false,
-        val bluetoothName: String? = null
-    )
-
     private val fullPlayerSlicePart1 = combine(
         currentSongArtists,
         currentSongLyricsSyncOffset,
@@ -1289,17 +1217,6 @@ class PlayerViewModel(
     }
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), FullPlayerSlice())
-
-    data class PlayerConfigSlice(
-        val navBarCornerRadius: Int = 32,
-        val navBarStyle: String = NavBarStyle.DEFAULT,
-        val carouselStyle: String = CarouselStyle.NO_PEEK,
-        val fullPlayerLoadingTweaks: FullPlayerLoadingTweaks = FullPlayerLoadingTweaks(),
-        val tapBackgroundClosesPlayer: Boolean = false,
-        val useSmoothCorners: Boolean = true,
-        val playerThemePreference: String = ThemePreference.ALBUM_ART,
-        val miniPlayerSwipeToSkip: Boolean = false
-    )
 
     private val playerConfigSlicePart1 = combine(
         navBarCornerRadius,
@@ -5231,18 +5148,4 @@ internal fun areEquivalentArtworkUrisForSong(
     val firstSongId = resolveUriSongId(firstUri)
     val secondSongId = resolveUriSongId(secondUri)
     return firstSongId == targetSongId && secondSongId == targetSongId
-}
-
-internal fun Song.improvesLyricsLookupComparedTo(previousSong: Song): Boolean {
-    return (previousSong.lyrics.isNullOrBlank() && !lyrics.isNullOrBlank()) ||
-        (previousSong.path.isBlank() && path.isNotBlank()) ||
-        (previousSong.contentUriString.isBlank() && contentUriString.isNotBlank())
-}
-
-internal fun parsePersistedLyrics(rawLyrics: String?): Lyrics? {
-    val normalizedLyrics = rawLyrics?.trim()?.takeIf { it.isNotBlank() } ?: return null
-    val parsedLyrics = LyricsUtils.parseLyrics(normalizedLyrics)
-    return parsedLyrics.takeIf {
-        !it.synced.isNullOrEmpty() || !it.plain.isNullOrEmpty()
-    }
 }
