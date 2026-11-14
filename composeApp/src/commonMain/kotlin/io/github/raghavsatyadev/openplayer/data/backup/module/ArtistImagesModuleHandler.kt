@@ -1,19 +1,21 @@
 package io.github.raghavsatyadev.openplayer.data.backup.module
 
-import android.content.Context
-import android.util.Base64
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.github.raghavsatyadev.openplayer.data.backup.model.ArtistImageBackupEntry
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
 import io.github.raghavsatyadev.openplayer.data.database.MusicDao
+import io.github.raghavsatyadev.openplayer.platform.AppDirectories
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import co.touchlab.kermit.Logger
 import java.io.File
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
+@OptIn(ExperimentalEncodingApi::class)
 class ArtistImagesModuleHandler(
-    private val context: Context,
+    private val appDirectories: AppDirectories,
     private val musicDao: MusicDao,
     private val gson: Gson
 ) : BackupModuleHandler {
@@ -57,8 +59,8 @@ class ArtistImagesModuleHandler(
             val customBase64 = entry.customImageBase64
             if (customBase64 != null) {
                 try {
-                    val bytes = Base64.decode(customBase64, Base64.NO_WRAP)
-                    val file = File(context.filesDir, "artist_art_${artistId}.jpg")
+                    val bytes = Base64.Default.decode(customBase64)
+                    val file = File(appDirectories.filesDir, "artist_art_${artistId}.jpg")
                     file.writeBytes(bytes)
                     musicDao.updateArtistCustomImage(artistId, file.absolutePath)
                 } catch (e: Exception) {
@@ -86,15 +88,15 @@ class ArtistImagesModuleHandler(
             val customBase64 = entry?.customImageBase64
             if (customBase64 != null) {
                 try {
-                    val bytes = Base64.decode(customBase64, Base64.NO_WRAP)
-                    val file = File(context.filesDir, "artist_art_${artist.id}.jpg")
+                    val bytes = Base64.Default.decode(customBase64)
+                    val file = File(appDirectories.filesDir, "artist_art_${artist.id}.jpg")
                     file.writeBytes(bytes)
                     musicDao.updateArtistCustomImage(artist.id, file.absolutePath)
                 } catch (e: Exception) {
                     Logger.withTag(TAG).w(e) { "Failed to roll back custom image for artist: ${artist.name}" }
                 }
             } else {
-                File(context.filesDir, "artist_art_${artist.id}.jpg").delete()
+                File(appDirectories.filesDir, "artist_art_${artist.id}.jpg").delete()
                 musicDao.updateArtistCustomImage(artist.id, null)
             }
         }
@@ -105,7 +107,7 @@ class ArtistImagesModuleHandler(
             val file = File(path)
             if (!file.exists() || file.length() == 0L) return null
             val bytes = file.readBytes()
-            Base64.encodeToString(bytes, Base64.NO_WRAP)
+            Base64.Default.encode(bytes)
         } catch (e: Exception) {
             Logger.withTag(TAG).w(e) { "Failed to read artist image: $path" }
             null

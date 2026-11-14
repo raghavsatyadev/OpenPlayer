@@ -119,7 +119,7 @@ val backupModule = module {
     }
     single {
         ArtistImagesModuleHandler(
-            context = androidContext(),
+            appDirectories = get(),
             musicDao = get(),
             gson = get(QUALIFIER_BACKUP_GSON)
         )
