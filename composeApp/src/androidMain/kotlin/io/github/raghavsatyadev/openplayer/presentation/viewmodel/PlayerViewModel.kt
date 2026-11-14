@@ -76,9 +76,9 @@ import io.github.raghavsatyadev.openplayer.utils.LyricsUtils
 import io.github.raghavsatyadev.openplayer.utils.StorageType
 import io.github.raghavsatyadev.openplayer.utils.StorageUtils
 import io.github.raghavsatyadev.openplayer.utils.traceSection
-import io.github.raghavsatyadev.openplayer.utils.ZipShareHelper
-import io.github.raghavsatyadev.openplayer.presentation.selection.flattenDistinctGroups
 import io.github.raghavsatyadev.openplayer.presentation.navigation.PlayerSheetBackCoordinator
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerSelectionActions
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerSelectionCallbacks
 import io.github.raghavsatyadev.openplayer.presentation.selection.effectiveLibraryStorageFilter
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -119,14 +119,12 @@ import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.yield
 import kotlinx.serialization.json.Json
 import co.touchlab.kermit.Logger
-import java.util.Locale
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import coil3.memory.MemoryCache
 import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceDiagnostics
 
 private const val ENABLE_FOLDERS_SOURCE_SWITCHING = true
-private const val MAX_ALBUM_BATCH_SELECTION = 6
 private const val SONG_ID_QUERY_CHUNK_SIZE = 900
 private const val HOME_MIX_PREVIEW_LIMIT = 48
 private const val EXTERNAL_SONG_ID_PREFIX = "external:"
@@ -196,12 +194,6 @@ private data class PendingLyricsSave(
     val song: Song,
     val lyrics: Lyrics,
     val preferSynced: Boolean
-)
-
-private data class ResolvedAlbumSelection(
-    val albums: List<Album>,
-    val songs: List<Song>,
-    val wasTrimmed: Boolean
 )
 
 @androidx.annotation.OptIn(UnstableApi::class)
@@ -1136,6 +1128,25 @@ class PlayerViewModel(
     val favoriteSongIds: StateFlow<Set<String>> = musicRepository
         .getFavoriteSongIdsFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptySet())
+
+    val selectionActions = PlayerSelectionActions(
+        scope = viewModelScope,
+        context = context,
+        musicRepository = musicRepository,
+        dispatchers = dispatchers,
+        multiSelectionStateHolder = multiSelectionStateHolder,
+        favoriteSongIds = favoriteSongIds,
+        playerUiState = playerUiState,
+        toast = _toastEvents::emit,
+        callbacks = PlayerSelectionCallbacks(
+            playSongs = ::playSongs,
+            addSongToQueue = ::addSongToQueue,
+            addSongsAsNext = ::addSongsAsNext,
+            setFavoriteStatus = ::setFavoriteStatusEverywhere,
+            effectiveStorageFilter = ::currentEffectiveLibraryStorageFilter,
+            showPlayer = { _isSheetVisible.value = true },
+        ),
+    )
 
     val isCurrentSongFavorite: StateFlow<Boolean> = combine(
         stablePlayerState
@@ -3302,357 +3313,6 @@ class PlayerViewModel(
 
     private fun buildPlaybackMediaItem(song: Song, playlistId: String? = null): MediaItem =
         MediaItemBuilder.withPlaylistId(MediaItemBuilder.build(song), playlistId)
-
-    /**
-     * Plays all selected songs, preserving their selection order.
-     * Clears selection after starting playback.
-     */
-    fun playSelectedSongs(songs: List<Song>) {
-        if (songs.isEmpty()) return
-        viewModelScope.launch {
-            playSongs(songs, songs.first(), getString(Res.string.queue_name_selected_songs))
-        }
-        multiSelectionStateHolder.clearSelection()
-    }
-
-    /**
-     * Adds all selected songs to the end of the queue.
-     * Clears selection after adding.
-     */
-    fun addSelectedToQueue(songs: List<Song>) {
-        songs.forEach { addSongToQueue(it) }
-        viewModelScope.launch {
-            val n = songs.size
-            _toastEvents.emit(
-                getPluralString(Res.plurals.n_songs_added_to_queue, n, n),
-            )
-        }
-        multiSelectionStateHolder.clearSelection()
-    }
-
-    /**
-     * Adds all selected songs to play next, preserving selection order.
-     * Songs are inserted in reverse order so they play in the correct sequence.
-     * Clears selection after adding.
-     */
-    fun addSelectedAsNext(songs: List<Song>) {
-        addSongsAsNext(songs)
-        viewModelScope.launch {
-            val n = songs.size
-            _toastEvents.emit(
-                getPluralString(Res.plurals.n_songs_will_play_next, n, n),
-            )
-        }
-        multiSelectionStateHolder.clearSelection()
-    }
-
-    fun playSelectedAlbums(albums: List<Album>) {
-        if (albums.isEmpty()) return
-        viewModelScope.launch {
-            try {
-                val resolvedSelection = resolveSelectedAlbumSongs(albums)
-                if (resolvedSelection.songs.isEmpty()) {
-                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_albums))
-                    return@launch
-                }
-
-                val queueName = if (resolvedSelection.albums.size == 1) {
-                    resolvedSelection.albums.first().title
-                } else {
-                    getString(Res.string.player_queue_name_selected_albums)
-                }
-
-                playSongs(resolvedSelection.songs, resolvedSelection.songs.first(), queueName, null)
-                _isSheetVisible.value = true
-
-                if (resolvedSelection.wasTrimmed) {
-                    _toastEvents.emit(
-                        getString(Res.string.player_only_first_n_albums_queued, MAX_ALBUM_BATCH_SELECTION),
-                    )
-                } else {
-                    _toastEvents.emit(
-                        getString(Res.string.player_albums_queued_format,
-                            resolvedSelection.albums.size,
-                            resolvedSelection.songs.size,
-                        ),
-                    )
-                }
-            } catch (e: Exception) {
-                Logger.withTag("PlayerViewModel").e(e) { "Error playing selected albums" }
-                _toastEvents.emit(getString(Res.string.player_could_not_queue_albums))
-            }
-        }
-    }
-
-    fun addSelectedAlbumsAsNext(albums: List<Album>) {
-        if (albums.isEmpty()) return
-
-        viewModelScope.launch {
-            try {
-                val resolvedSelection = resolveSelectedAlbumSongs(albums)
-                if (resolvedSelection.songs.isEmpty()) {
-                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_albums))
-                    return@launch
-                }
-
-                addSongsAsNext(resolvedSelection.songs)
-
-                if (resolvedSelection.wasTrimmed) {
-                    _toastEvents.emit(getString(Res.string.player_only_first_n_albums_next, MAX_ALBUM_BATCH_SELECTION))
-                } else {
-                    _toastEvents.emit(getString(Res.string.player_albums_will_play_next_format, resolvedSelection.albums.size))
-                }
-            } catch (e: Exception) {
-                Logger.withTag("PlayerViewModel").e(e) { "Error adding selected albums as next" }
-                _toastEvents.emit(getString(Res.string.player_could_not_add_albums_next))
-            }
-        }
-    }
-
-    fun addSelectedAlbumsToQueue(albums: List<Album>) {
-        if (albums.isEmpty()) return
-
-        viewModelScope.launch {
-            try {
-                val resolvedSelection = resolveSelectedAlbumSongs(albums)
-                if (resolvedSelection.songs.isEmpty()) {
-                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_albums))
-                    return@launch
-                }
-
-                resolvedSelection.songs.forEach(::addSongToQueue)
-
-                if (resolvedSelection.wasTrimmed) {
-                    _toastEvents.emit(getString(Res.string.player_only_first_n_albums_added_queue, MAX_ALBUM_BATCH_SELECTION))
-                } else {
-                    _toastEvents.emit(getString(Res.string.player_albums_added_to_queue_format, resolvedSelection.albums.size))
-                }
-            } catch (e: Exception) {
-                Logger.withTag("PlayerViewModel").e(e) { "Error adding selected albums to queue" }
-                _toastEvents.emit(getString(Res.string.player_could_not_add_albums_queue))
-            }
-        }
-    }
-
-    suspend fun getSongsForAlbums(albums: List<Album>): List<Song> {
-        return resolveSelectedAlbumSongs(albums).songs
-    }
-
-    /** Resolves the selected genres to their songs, in selection order and without duplicates. */
-    suspend fun getSongsForGenres(genres: List<Genre>): List<Song> {
-        return withContext(dispatchers.io) {
-            genres.flatMap { genre ->
-                musicRepository.getMusicByGenre(genre.name).first()
-            }.distinctBy { it.id }
-        }
-    }
-
-    fun playSelectedGenres(genres: List<Genre>) {
-        if (genres.isEmpty()) return
-        viewModelScope.launch {
-            try {
-                val songs = getSongsForGenres(genres)
-                if (songs.isNotEmpty()) {
-                    playSongs(songs, songs.first(), getString(Res.string.player_queue_name_selected_genres))
-                    _isSheetVisible.value = true
-                } else {
-                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_genres))
-                }
-            } catch (e: Exception) {
-                Logger.withTag("PlayerViewModel").e(e) { "Error playing selected genres" }
-                _toastEvents.emit(getString(Res.string.player_could_not_queue_genres))
-            }
-        }
-    }
-
-    fun addSelectedGenresToQueue(genres: List<Genre>) {
-        if (genres.isEmpty()) return
-        viewModelScope.launch {
-            try {
-                val songs = getSongsForGenres(genres)
-                if (songs.isNotEmpty()) {
-                    songs.forEach { addSongToQueue(it) }
-                    val n = songs.size
-                    _toastEvents.emit(
-                        getPluralString(Res.plurals.n_songs_added_to_queue, n, n),
-                    )
-                } else {
-                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_genres))
-                }
-            } catch (e: Exception) {
-                Logger.withTag("PlayerViewModel").e(e) { "Error adding selected genres to queue" }
-                _toastEvents.emit(getString(Res.string.player_could_not_queue_genres))
-            }
-        }
-    }
-
-    fun addSelectedGenresAsNext(genres: List<Genre>) {
-        if (genres.isEmpty()) return
-        viewModelScope.launch {
-            try {
-                val songs = getSongsForGenres(genres)
-                if (songs.isNotEmpty()) {
-                    addSongsAsNext(songs)
-                    val n = songs.size
-                    _toastEvents.emit(
-                        getPluralString(Res.plurals.n_songs_will_play_next, n, n),
-                    )
-                } else {
-                    _toastEvents.emit(getString(Res.string.player_no_playable_songs_in_genres))
-                }
-            } catch (e: Exception) {
-                Logger.withTag("PlayerViewModel").e(e) { "Error adding selected genres as next" }
-                _toastEvents.emit(getString(Res.string.player_could_not_queue_genres))
-            }
-        }
-    }
-
-    /**
-     * Adds all selected songs to favorites.
-     * Clears selection after liking.
-     */
-    fun likeSelectedSongs(songs: List<Song>) {
-        viewModelScope.launch {
-            val favIds = favoriteSongIds.value.toMutableSet()
-            var likedCount = 0
-            songs.forEach { song ->
-                if (!favIds.contains(song.id)) {
-                    setFavoriteStatusEverywhere(song.id, true)
-                    favIds.add(song.id)
-                    likedCount++
-                }
-            }
-            if (likedCount > 0) {
-                _toastEvents.emit(
-                    getPluralString(Res.plurals.n_songs_added_to_favorites, likedCount, likedCount),
-                )
-            } else {
-                _toastEvents.emit(getString(Res.string.player_all_songs_already_in_favorites))
-            }
-            multiSelectionStateHolder.clearSelection()
-        }
-    }
-
-    /**
-     * Removes all selected songs from favorites.
-     * Clears selection after unliking.
-     */
-    fun unlikeSelectedSongs(songs: List<Song>) {
-        viewModelScope.launch {
-            val favIds = favoriteSongIds.value.toMutableSet()
-            var unlikedCount = 0
-            songs.forEach { song ->
-                if (favIds.contains(song.id)) {
-                    setFavoriteStatusEverywhere(song.id, false)
-                    favIds.remove(song.id)
-                    unlikedCount++
-                }
-            }
-            if (unlikedCount > 0) {
-                _toastEvents.emit(
-                    getPluralString(Res.plurals.n_songs_removed_from_favorites,
-                        unlikedCount,
-                        unlikedCount,
-                    ),
-                )
-            } else {
-                _toastEvents.emit(getString(Res.string.player_no_songs_were_in_favorites))
-            }
-            multiSelectionStateHolder.clearSelection()
-        }
-    }
-
-    /**
-     * Shares all selected songs as a ZIP file.
-     * Clears selection after initiating share.
-     */
-    fun shareSelectedAsZip(songs: List<Song>) {
-        viewModelScope.launch {
-            _toastEvents.emit(getString(Res.string.player_creating_zip))
-
-            val result = ZipShareHelper.createAndShareZip(context, songs)
-
-            result.onSuccess {
-                multiSelectionStateHolder.clearSelection()
-            }.onFailure { error ->
-                _toastEvents.emit(
-                    getString(Res.string.player_share_zip_failed_format, error.localizedMessage ?: ""),
-                )
-                Logger.withTag("PlayerViewModel").e(error) { "Failed to share selection as zip" }
-            }
-        }
-    }
-
-    private suspend fun resolveSelectedAlbumSongs(albums: List<Album>): ResolvedAlbumSelection {
-        val albumsToProcess = albums.take(MAX_ALBUM_BATCH_SELECTION)
-        val wasTrimmed = albums.size > albumsToProcess.size
-
-        val songs = withContext(dispatchers.io) {
-            buildList {
-                albumsToProcess.forEach { album ->
-                    val albumSongs = musicRepository.getSongsForAlbum(album.id).first()
-                    if (albumSongs.isNotEmpty()) {
-                        addAll(sortSongsForAlbumSelection(albumSongs))
-                    }
-                }
-            }
-        }
-
-        return ResolvedAlbumSelection(
-            albums = albumsToProcess,
-            songs = songs,
-            wasTrimmed = wasTrimmed
-        )
-    }
-
-    /** Resolves whole albums to the currently visible songs consumed by the batch-action sheet. */
-    suspend fun resolveAlbumSongsForBatchActions(albums: List<Album>): List<Song> {
-        if (albums.isEmpty()) return emptyList()
-        val visibleSongIds = currentLibrarySelectionSongIds()
-        return withContext(dispatchers.io) {
-            flattenDistinctGroups(
-                groups = albums.map { album ->
-                    sortSongsForAlbumSelection(musicRepository.getSongsForAlbum(album.id).first())
-                        .filter { it.id in visibleSongIds }
-                },
-                keyOf = Song::id
-            )
-        }
-    }
-
-    /**
-     * Resolves whole artists to songs and removes overlaps from multi-artist tracks so delete,
-     * edit, queue and playlist actions are each applied once per file.
-     */
-    suspend fun resolveArtistSongsForBatchActions(artists: List<Artist>): List<Song> {
-        if (artists.isEmpty()) return emptyList()
-        val visibleSongIds = currentLibrarySelectionSongIds()
-        return withContext(dispatchers.io) {
-            flattenDistinctGroups(
-                groups = artists.map { artist ->
-                    musicRepository.getSongsForArtist(artist.id).first()
-                        .filter { it.id in visibleSongIds }
-                },
-                keyOf = Song::id
-            )
-        }
-    }
-
-    private suspend fun currentLibrarySelectionSongIds(): Set<String> {
-        val state = playerUiState.value
-        return musicRepository.getSongIdsSorted(
-            sortOption = state.currentSongSortOption,
-            storageFilter = currentEffectiveLibraryStorageFilter(state),
-        ).mapTo(hashSetOf()) { it.toString() }
-    }
-
-    private fun sortSongsForAlbumSelection(songs: List<Song>): List<Song> {
-        return songs.sortedWith(
-            compareBy<Song> { it.discNumber ?: 1 }
-                .thenBy { if (it.trackNumber > 0) it.trackNumber else Int.MAX_VALUE }
-                .thenBy { it.title.lowercase(Locale.getDefault()) }
-        )
-    }
 
     /**
      * Deletes all selected songs from device with confirmation.

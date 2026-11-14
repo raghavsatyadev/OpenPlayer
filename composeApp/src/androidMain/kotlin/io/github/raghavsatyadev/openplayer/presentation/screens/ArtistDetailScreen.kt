@@ -318,8 +318,8 @@ fun ArtistDetailScreen(
                     )
                     val artistMenuActions = rememberSongCollectionMenuActions(
                         onAddToPlaylist = { showArtistPlaylistSheet = true },
-                        onPlayNext = { if (songs.isNotEmpty()) playerViewModel.addSelectedAsNext(songs) },
-                        onAddToQueue = { if (songs.isNotEmpty()) playerViewModel.addSelectedToQueue(songs) }
+                        onPlayNext = { if (songs.isNotEmpty()) playerViewModel.selectionActions.addSelectedAsNext(songs) },
+                        onAddToQueue = { if (songs.isNotEmpty()) playerViewModel.selectionActions.addSelectedToQueue(songs) }
                     )
                     val songIdsInScope = remember(songs) { songs.mapTo(HashSet()) { it.id } }
                     val currentSongId = stablePlayerState.currentSong?.id

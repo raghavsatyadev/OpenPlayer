@@ -684,15 +684,15 @@ fun GenreDetailScreen(
                     favoriteSongIds = favoriteSongIds,
                     onDismiss = { showMultiSelectionSheet = false },
                     onPlayAll = {
-                        playerViewModel.playSelectedSongs(selectedSongs)
+                        playerViewModel.selectionActions.playSelectedSongs(selectedSongs)
                         showMultiSelectionSheet = false
                     },
                     onAddToQueue = {
-                        playerViewModel.addSelectedToQueue(selectedSongs)
+                        playerViewModel.selectionActions.addSelectedToQueue(selectedSongs)
                         showMultiSelectionSheet = false
                     },
                     onPlayNext = {
-                        playerViewModel.addSelectedAsNext(selectedSongs)
+                        playerViewModel.selectionActions.addSelectedAsNext(selectedSongs)
                         showMultiSelectionSheet = false
                     },
                     onAddToPlaylist = {
@@ -703,14 +703,14 @@ fun GenreDetailScreen(
                     },
                     onToggleLikeAll = { shouldLike ->
                         if (shouldLike) {
-                            playerViewModel.likeSelectedSongs(selectedSongs)
+                            playerViewModel.selectionActions.likeSelectedSongs(selectedSongs)
                         } else {
-                            playerViewModel.unlikeSelectedSongs(selectedSongs)
+                            playerViewModel.selectionActions.unlikeSelectedSongs(selectedSongs)
                         }
                         showMultiSelectionSheet = false
                     },
                     onShareAll = {
-                        playerViewModel.shareSelectedAsZip(selectedSongs)
+                        playerViewModel.selectionActions.shareSelectedAsZip(selectedSongs)
                         showMultiSelectionSheet = false
                     },
                     onDownloadAll = {

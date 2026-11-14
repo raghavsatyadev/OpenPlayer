@@ -777,15 +777,15 @@ fun SearchScreen(
             favoriteSongIds = favoriteSongIds,
             onDismiss = { showMultiSelectionSheet = false },
             onPlayAll = {
-                playerViewModel.playSelectedSongs(selectedSongs)
+                playerViewModel.selectionActions.playSelectedSongs(selectedSongs)
                 showMultiSelectionSheet = false
             },
             onAddToQueue = {
-                playerViewModel.addSelectedToQueue(selectedSongs)
+                playerViewModel.selectionActions.addSelectedToQueue(selectedSongs)
                 showMultiSelectionSheet = false
             },
             onPlayNext = {
-                playerViewModel.addSelectedAsNext(selectedSongs)
+                playerViewModel.selectionActions.addSelectedAsNext(selectedSongs)
                 showMultiSelectionSheet = false
             },
             onAddToPlaylist = {
@@ -796,14 +796,14 @@ fun SearchScreen(
             },
             onToggleLikeAll = { shouldLike ->
                 if (shouldLike) {
-                    playerViewModel.likeSelectedSongs(selectedSongs)
+                    playerViewModel.selectionActions.likeSelectedSongs(selectedSongs)
                 } else {
-                    playerViewModel.unlikeSelectedSongs(selectedSongs)
+                    playerViewModel.selectionActions.unlikeSelectedSongs(selectedSongs)
                 }
                 showMultiSelectionSheet = false
             },
             onShareAll = {
-                playerViewModel.shareSelectedAsZip(selectedSongs)
+                playerViewModel.selectionActions.shareSelectedAsZip(selectedSongs)
                 showMultiSelectionSheet = false
             },
             onDownloadAll = {
@@ -865,17 +865,17 @@ fun SearchScreen(
             maxSelection = MAX_ALBUM_MULTI_SELECTION,
             onDismiss = { showAlbumMultiSelectionSheet = false },
             onPlay = {
-                playerViewModel.playSelectedAlbums(selectedAlbums)
+                playerViewModel.selectionActions.playSelectedAlbums(selectedAlbums)
                 selectedAlbums = persistentListOf()
                 showAlbumMultiSelectionSheet = false
             },
             onPlayNext = {
-                playerViewModel.addSelectedAlbumsAsNext(selectedAlbums)
+                playerViewModel.selectionActions.addSelectedAlbumsAsNext(selectedAlbums)
                 selectedAlbums = persistentListOf()
                 showAlbumMultiSelectionSheet = false
             },
             onAddToQueue = {
-                playerViewModel.addSelectedAlbumsToQueue(selectedAlbums)
+                playerViewModel.selectionActions.addSelectedAlbumsToQueue(selectedAlbums)
                 selectedAlbums = persistentListOf()
                 showAlbumMultiSelectionSheet = false
             },
@@ -884,7 +884,7 @@ fun SearchScreen(
                 selectedAlbums = persistentListOf()
                 showAlbumMultiSelectionSheet = false
                 scope.launch {
-                    val songs = playerViewModel.getSongsForAlbums(albums)
+                    val songs = playerViewModel.selectionActions.getSongsForAlbums(albums)
                     if (songs.isNotEmpty()) {
                         playlistSheetSongs = songs.toImmutableList()
                         showPlaylistBottomSheet = true
@@ -948,17 +948,17 @@ fun SearchScreen(
             selectedGenres = selectedGenres,
             onDismiss = { showGenreMultiSelectionSheet = false },
             onPlay = {
-                playerViewModel.playSelectedGenres(selectedGenres)
+                playerViewModel.selectionActions.playSelectedGenres(selectedGenres)
                 selectedGenres = persistentListOf()
                 showGenreMultiSelectionSheet = false
             },
             onPlayNext = {
-                playerViewModel.addSelectedGenresAsNext(selectedGenres)
+                playerViewModel.selectionActions.addSelectedGenresAsNext(selectedGenres)
                 selectedGenres = persistentListOf()
                 showGenreMultiSelectionSheet = false
             },
             onAddToQueue = {
-                playerViewModel.addSelectedGenresToQueue(selectedGenres)
+                playerViewModel.selectionActions.addSelectedGenresToQueue(selectedGenres)
                 selectedGenres = persistentListOf()
                 showGenreMultiSelectionSheet = false
             },
@@ -967,7 +967,7 @@ fun SearchScreen(
                 selectedGenres = persistentListOf()
                 showGenreMultiSelectionSheet = false
                 scope.launch {
-                    val songs = playerViewModel.getSongsForGenres(genresToResolve)
+                    val songs = playerViewModel.selectionActions.getSongsForGenres(genresToResolve)
                     if (songs.isNotEmpty()) {
                         playlistSheetSongs = songs.toImmutableList()
                         showPlaylistBottomSheet = true

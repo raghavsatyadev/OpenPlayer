@@ -550,7 +550,7 @@ fun LibraryScreen(
             val snapshotIds = selectionSnapshot.map(Album::id)
             scope.launch {
                 runCatching {
-                    playerViewModel.resolveAlbumSongsForBatchActions(selectionSnapshot)
+                    playerViewModel.selectionActions.resolveAlbumSongsForBatchActions(selectionSnapshot)
                 }.onSuccess { songs ->
                     if (latestSelectedAlbums.map(Album::id) == snapshotIds) {
                         presentResolvedCategorySongs(songs)
@@ -576,7 +576,7 @@ fun LibraryScreen(
             val snapshotIds = selectionSnapshot.map(Artist::id)
             scope.launch {
                 runCatching {
-                    playerViewModel.resolveArtistSongsForBatchActions(selectionSnapshot)
+                    playerViewModel.selectionActions.resolveArtistSongsForBatchActions(selectionSnapshot)
                 }.onSuccess { songs ->
                     if (latestSelectedArtists.map(Artist::id) == snapshotIds) {
                         presentResolvedCategorySongs(songs)
@@ -1948,22 +1948,22 @@ fun LibraryScreen(
             selectedGenres = selectedGenres,
             onDismiss = { showGenreMultiSelectionSheet = false },
             onPlay = {
-                playerViewModel.playSelectedGenres(selectedGenres)
+                playerViewModel.selectionActions.playSelectedGenres(selectedGenres)
                 clearGenreSelection()
             },
             onPlayNext = {
-                playerViewModel.addSelectedGenresAsNext(selectedGenres)
+                playerViewModel.selectionActions.addSelectedGenresAsNext(selectedGenres)
                 clearGenreSelection()
             },
             onAddToQueue = {
-                playerViewModel.addSelectedGenresToQueue(selectedGenres)
+                playerViewModel.selectionActions.addSelectedGenresToQueue(selectedGenres)
                 clearGenreSelection()
             },
             onAddToPlaylist = {
                 val genresToResolve = selectedGenres
                 clearGenreSelection()
                 scope.launch {
-                    val songs = playerViewModel.getSongsForGenres(genresToResolve)
+                    val songs = playerViewModel.selectionActions.getSongsForGenres(genresToResolve)
                     if (songs.isNotEmpty()) {
                         playlistSheetSongs = songs.toImmutableList()
                         showPlaylistBottomSheet = true
@@ -1981,17 +1981,17 @@ fun LibraryScreen(
             favoriteSongIds = favoriteIds,
             onDismiss = { showMultiSelectionSheet = false },
             onPlayAll = {
-                playerViewModel.playSelectedSongs(selectedSongs)
+                playerViewModel.selectionActions.playSelectedSongs(selectedSongs)
                 clearResolvedCategorySelection()
                 showMultiSelectionSheet = false
             },
             onAddToQueue = {
-                playerViewModel.addSelectedToQueue(selectedSongs)
+                playerViewModel.selectionActions.addSelectedToQueue(selectedSongs)
                 clearResolvedCategorySelection()
                 showMultiSelectionSheet = false
             },
             onPlayNext = {
-                playerViewModel.addSelectedAsNext(selectedSongs)
+                playerViewModel.selectionActions.addSelectedAsNext(selectedSongs)
                 clearResolvedCategorySelection()
                 showMultiSelectionSheet = false
             },
@@ -2004,15 +2004,15 @@ fun LibraryScreen(
             },
             onToggleLikeAll = { shouldLike ->
                 if (shouldLike) {
-                    playerViewModel.likeSelectedSongs(selectedSongs)
+                    playerViewModel.selectionActions.likeSelectedSongs(selectedSongs)
                 } else {
-                    playerViewModel.unlikeSelectedSongs(selectedSongs)
+                    playerViewModel.selectionActions.unlikeSelectedSongs(selectedSongs)
                 }
                 clearResolvedCategorySelection()
                 showMultiSelectionSheet = false
             },
             onShareAll = {
-                playerViewModel.shareSelectedAsZip(selectedSongs)
+                playerViewModel.selectionActions.shareSelectedAsZip(selectedSongs)
                 clearResolvedCategorySelection()
                 showMultiSelectionSheet = false
             },
