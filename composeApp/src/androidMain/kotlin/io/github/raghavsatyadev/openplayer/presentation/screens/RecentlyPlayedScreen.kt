@@ -289,11 +289,11 @@ fun RecentlyPlayedScreen(
                     showSongInfoBottomSheet = false
                 },
                 onAddToQueue = {
-                    playerViewModel.addSongToQueue(song)
+                    playerViewModel.queueActions.addSongToQueue(song)
                     showSongInfoBottomSheet = false
                 },
                 onAddNextToQueue = {
-                    playerViewModel.addSongNextToQueue(song)
+                    playerViewModel.queueActions.addSongNextToQueue(song)
                     showSongInfoBottomSheet = false
                 },
                 onAddToPlayList = {

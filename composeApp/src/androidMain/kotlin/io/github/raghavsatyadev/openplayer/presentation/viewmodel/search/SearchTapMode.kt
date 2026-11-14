@@ -87,8 +87,8 @@ fun io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel.s
     override fun playQueue(queue: List<Song>, start: Song, queueName: String) =
         showAndPlaySong(start, queue, queueName)
 
-    override fun playNext(song: Song) = addSongNextToQueue(song)
-    override fun addToQueue(song: Song) = addSongToQueue(song)
+    override fun playNext(song: Song) = queueActions.addSongNextToQueue(song)
+    override fun addToQueue(song: Song) = queueActions.addSongToQueue(song)
     override fun playAlbumOf(song: Song) = this@searchTapActions.playAlbumOf(song)
     override fun playArtistOf(song: Song) = this@searchTapActions.playArtistOf(song)
     override fun toast(messageRes: StringResource) {

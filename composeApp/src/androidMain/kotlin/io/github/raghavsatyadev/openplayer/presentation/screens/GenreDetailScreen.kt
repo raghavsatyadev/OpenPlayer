@@ -597,12 +597,12 @@ fun GenreDetailScreen(
                             showSongOptionsSheet = null
                         },
                         onAddToQueue = {
-                            playerViewModel.addSongToQueue(song)
+                            playerViewModel.queueActions.addSongToQueue(song)
                             showSongOptionsSheet = null
                             playerViewModel.sendToast(toastAddedToQueue)
                         },
                         onAddNextToQueue = {
-                            playerViewModel.addSongNextToQueue(song)
+                            playerViewModel.queueActions.addSongNextToQueue(song)
                             showSongOptionsSheet = null
                             playerViewModel.sendToast(toastPlayingNext)
                         },

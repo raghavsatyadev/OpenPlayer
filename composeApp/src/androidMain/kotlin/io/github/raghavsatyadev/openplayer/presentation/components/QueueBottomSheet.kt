@@ -1131,7 +1131,7 @@ fun QueueBottomSheet(
                             color = colors.inverseOnSurface.copy(alpha = 0.7f),
                         )
                         TextButton(
-                            onClick = { viewModel.undoRemoveSongFromQueue() }
+                            onClick = { viewModel.queueActions.undoRemoveSongFromQueue() }
                         ) {
                             Text(
                                 text = stringResource(Res.string.action_undo),

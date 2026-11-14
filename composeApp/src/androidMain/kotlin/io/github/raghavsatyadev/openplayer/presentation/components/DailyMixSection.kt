@@ -121,11 +121,11 @@ fun DailyMixSection(
                 showSongInfoSheet = false
             },
             onAddToQueue = {
-                playerViewModel.addSongToQueue(song)
+                playerViewModel.queueActions.addSongToQueue(song)
                 showSongInfoSheet = false
             },
             onAddNextToQueue = {
-                playerViewModel.addSongNextToQueue(song)
+                playerViewModel.queueActions.addSongNextToQueue(song)
                 showSongInfoSheet = false
             },
             onAddToPlayList = {

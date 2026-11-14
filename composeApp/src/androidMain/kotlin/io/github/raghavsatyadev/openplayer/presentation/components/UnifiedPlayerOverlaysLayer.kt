@@ -209,12 +209,12 @@ internal fun UnifiedPlayerSongInfoLayer(
                     onDismissSongInfo()
                 },
                 onAddToQueue = {
-                    playerViewModel.addSongToQueue(liveSong)
+                    playerViewModel.queueActions.addSongToQueue(liveSong)
                     onDismissSongInfo()
                     toaster.show(addedToQueueToast)
                 },
                 onAddNextToQueue = {
-                    playerViewModel.addSongNextToQueue(liveSong)
+                    playerViewModel.queueActions.addSongNextToQueue(liveSong)
                     onDismissSongInfo()
                     toaster.show(playingNextToast)
                 },
@@ -248,7 +248,7 @@ internal fun UnifiedPlayerSongInfoLayer(
                     onDismissSongInfo()
                 },
                 removeFromListTrigger = {
-                    playerViewModel.removeSongFromQueue(liveSong.id)
+                    playerViewModel.queueActions.removeSongFromQueue(liveSong.id)
                     onDismissSongInfo()
                 }
             )
@@ -348,10 +348,10 @@ internal fun UnifiedPlayerQueueAndSongInfoHost(
                 }
             }
             val onRemoveQueueSong = remember(playerViewModel) {
-                { id: String -> playerViewModel.removeSongFromQueue(id) }
+                { id: String -> playerViewModel.queueActions.removeSongFromQueue(id) }
             }
             val onReorderQueue = remember(playerViewModel) {
-                { from: Int, to: Int -> playerViewModel.reorderQueueItem(from, to) }
+                { from: Int, to: Int -> playerViewModel.queueActions.reorderQueueItem(from, to) }
             }
             val onToggleRepeat = remember(playerViewModel) { { playerViewModel.transport.cycleRepeatMode() } }
             val onToggleShuffle = remember(playerViewModel) { { playerViewModel.toggleShuffle() } }

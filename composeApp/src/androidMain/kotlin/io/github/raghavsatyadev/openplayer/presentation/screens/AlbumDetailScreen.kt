@@ -629,11 +629,11 @@ fun AlbumDetailScreen(
                         showSongInfoBottomSheet = false
                     },
                     onAddToQueue = {
-                        playerViewModel.addSongToQueue(currentSong)
+                        playerViewModel.queueActions.addSongToQueue(currentSong)
                         showSongInfoBottomSheet = false
                     },
                     onAddNextToQueue = {
-                        playerViewModel.addSongNextToQueue(currentSong)
+                        playerViewModel.queueActions.addSongNextToQueue(currentSong)
                         showSongInfoBottomSheet = false
                     },
                     onAddToPlayList = {

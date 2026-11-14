@@ -71,6 +71,7 @@ import io.github.raghavsatyadev.openplayer.utils.StorageUtils
 import io.github.raghavsatyadev.openplayer.utils.traceSection
 import io.github.raghavsatyadev.openplayer.presentation.navigation.PlayerSheetBackCoordinator
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.MediaControllerPlaybackController
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerQueueActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerTransportActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerTransportCallbacks
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerDeleteActions
@@ -1135,12 +1136,22 @@ class PlayerViewModel(
         toast = _toastEvents::emit,
         callbacks = PlayerSelectionCallbacks(
             playSongs = ::playSongs,
-            addSongToQueue = ::addSongToQueue,
-            addSongsAsNext = ::addSongsAsNext,
+            addSongToQueue = { queueActions.addSongToQueue(it) },
+            addSongsAsNext = { queueActions.addSongsAsNext(it) },
             setFavoriteStatus = ::setFavoriteStatusEverywhere,
             effectiveStorageFilter = ::currentEffectiveLibraryStorageFilter,
             showPlayer = { _isSheetVisible.value = true },
         ),
+    )
+
+    val queueActions = PlayerQueueActions(
+        scope = viewModelScope,
+        controller = MediaControllerPlaybackController { mediaController },
+        mediaController = { mediaController },
+        playbackStateHolder = playbackStateHolder,
+        queueUndoStateHolder = queueUndoStateHolder,
+        playNextInserter = playNextInserter,
+        playerUiState = _playerUiState,
     )
 
     val transport = PlayerTransportActions(
@@ -2130,64 +2141,6 @@ class PlayerViewModel(
                 }
             } catch (e: Exception) {
                 Logger.withTag("PlayerViewModel").e(e) { "Error playing artist ${artist.name}" }
-            }
-        }
-    }
-
-    fun removeSongFromQueue(songId: String) {
-        queueUndoStateHolder.removeSongFromQueue(
-            scope = viewModelScope,
-            mediaController = mediaController,
-            songId = songId,
-            getUiState = { _playerUiState.value },
-            updateUiState = { mutation -> _playerUiState.update(mutation) }
-        )
-    }
-
-    fun undoRemoveSongFromQueue() {
-        queueUndoStateHolder.undoRemoveSongFromQueue(
-            mediaController = mediaController,
-            getUiState = { _playerUiState.value },
-            updateUiState = { mutation -> _playerUiState.update(mutation) }
-        )
-    }
-
-    fun hideQueueItemUndoBar() {
-        queueUndoStateHolder.hideQueueItemUndoBar { mutation ->
-            _playerUiState.update(mutation)
-        }
-    }
-
-    fun reorderQueueItem(fromIndex: Int, toIndex: Int) {
-        mediaController?.let { controller ->
-            if (fromIndex >= 0 && fromIndex < controller.mediaItemCount &&
-                toIndex >= 0 && toIndex < controller.mediaItemCount) {
-                val currentIndexBeforeMove = controller.currentMediaItemIndex
-                    .takeIf { it != C.INDEX_UNSET }
-                    ?: playbackStateHolder.stablePlayerState.value.currentMediaItemIndex
-                val updatedCurrentIndex = moveQueueIndex(currentIndexBeforeMove, fromIndex, toIndex)
-
-                playNextInserter.onItemMoved(fromIndex, toIndex)
-                controller.moveMediaItem(fromIndex, toIndex)
-
-                _playerUiState.update { state ->
-                    val updatedQueue = state.currentPlaybackQueue.moveSong(fromIndex, toIndex)
-                    if (updatedQueue === state.currentPlaybackQueue) {
-                        state
-                    } else {
-                        state.copy(currentPlaybackQueue = updatedQueue)
-                    }
-                }
-
-                playbackStateHolder.updateStablePlayerState { state ->
-                    if (updatedCurrentIndex == C.INDEX_UNSET ||
-                        state.currentMediaItemIndex == updatedCurrentIndex
-                    ) {
-                        state
-                    } else {
-                        state.copy(currentMediaItemIndex = updatedCurrentIndex)
-                    }
-                }
             }
         }
     }
@@ -3325,24 +3278,6 @@ class PlayerViewModel(
     private fun parseFileUriPath(uriString: String): String? {
         val uri = runCatching { Uri.parse(uriString) }.getOrNull() ?: return null
         return uri.takeIf { it.scheme == "file" }?.path?.takeIf { it.isNotBlank() }
-    }
-
-    fun addSongToQueue(song: Song) {
-        mediaController?.let { controller ->
-            val mediaItem = buildPlaybackMediaItem(song)
-            controller.addMediaItem(mediaItem)
-        }
-    }
-
-    fun addSongNextToQueue(song: Song) {
-        mediaController?.let { controller ->
-            playNextInserter.insert(controller, buildPlaybackMediaItem(song))
-        }
-    }
-
-    /** Queues [songs] right after the current song (or the last one queued this way), in order. */
-    private fun addSongsAsNext(songs: List<Song>) {
-        playNextInserter.inInsertOrder(songs).forEach(::addSongNextToQueue)
     }
 
     private fun buildPlaybackMediaItem(song: Song, playlistId: String? = null): MediaItem =

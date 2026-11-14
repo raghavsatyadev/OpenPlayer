@@ -70,12 +70,12 @@ fun RecentlyPlayedSongOptionsSheet(
             onDismiss()
         },
         onAddToQueue = {
-            playerViewModel.addSongToQueue(sheetSong)
+            playerViewModel.queueActions.addSongToQueue(sheetSong)
             playerViewModel.sendToast(addedToQueueMessage)
             onDismiss()
         },
         onAddNextToQueue = {
-            playerViewModel.addSongNextToQueue(sheetSong)
+            playerViewModel.queueActions.addSongNextToQueue(sheetSong)
             playerViewModel.sendToast(playingNextMessage)
             onDismiss()
         },

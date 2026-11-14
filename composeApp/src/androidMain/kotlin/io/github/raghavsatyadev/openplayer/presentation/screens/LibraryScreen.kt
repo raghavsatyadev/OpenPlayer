@@ -1853,12 +1853,12 @@ fun LibraryScreen(
                     showSongInfoBottomSheet = false
                 },
                 onAddToQueue = {
-                    playerViewModel.addSongToQueue(currentSong)
+                    playerViewModel.queueActions.addSongToQueue(currentSong)
                     showSongInfoBottomSheet = false
                     playerViewModel.sendToast(toastAddedToQueueMessage)
                 },
                 onAddNextToQueue = {
-                    playerViewModel.addSongNextToQueue(currentSong)
+                    playerViewModel.queueActions.addSongNextToQueue(currentSong)
                     showSongInfoBottomSheet = false
                     playerViewModel.sendToast(toastPlayingNextMessage)
                 },
