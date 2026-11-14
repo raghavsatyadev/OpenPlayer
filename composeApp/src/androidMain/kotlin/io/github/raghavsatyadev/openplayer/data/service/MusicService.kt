@@ -57,6 +57,7 @@ import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
 import io.github.raghavsatyadev.openplayer.data.service.player.AudioDecoderPolicy
 import io.github.raghavsatyadev.openplayer.data.service.player.DualPlayerEngine
 import io.github.raghavsatyadev.openplayer.data.service.player.FadingPlayer
+import io.github.raghavsatyadev.openplayer.data.service.player.grantedPlayerCommands
 import io.github.raghavsatyadev.openplayer.data.service.player.MappingPlayer
 import io.github.raghavsatyadev.openplayer.data.service.player.PreviousButtonPlayer
 import io.github.raghavsatyadev.openplayer.data.service.player.TransitionController
@@ -586,7 +587,7 @@ class MusicService : MediaSessionService() {
 
                 return MediaSession.ConnectionResult.accept(
                     sessionCommandsBuilder.build(),
-                    defaultResult.availablePlayerCommands
+                    grantedPlayerCommands(defaultResult)
                 )
             }
 
