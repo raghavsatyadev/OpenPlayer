@@ -294,7 +294,7 @@ fun SearchScreen(
 
     // A filter change re-runs the query inside the search holder, so only the query restarts it.
     LaunchedEffect(searchQuery) {
-        playerViewModel.performSearch(searchQuery)
+        playerViewModel.searchStateHolder.performSearch(searchQuery)
     }
     val searchResults = searchUiState.searchResults
     val handleSongMoreOptionsClick: (Song) -> Unit = { song ->
@@ -378,7 +378,7 @@ fun SearchScreen(
                                 },
                                 onSearch = { query ->
                                     if (query.isNotBlank()) {
-                                        playerViewModel.onSearchQuerySubmitted(query)
+                                        playerViewModel.searchStateHolder.onSearchQuerySubmitted(query)
                                     }
                                     keyboardController?.hide()
                                 },
@@ -606,7 +606,7 @@ fun SearchScreen(
                                         playerViewModel = playerViewModel,
                                         onItemSelected = {
                                             if (searchQuery.isNotBlank()) {
-                                                playerViewModel.onSearchQuerySubmitted(searchQuery)
+                                                playerViewModel.searchStateHolder.onSearchQuerySubmitted(searchQuery)
                                             }
                                         },
                                         currentPlayingSongId = stablePlayerState.currentSong?.id,
@@ -1776,7 +1776,7 @@ fun SearchFilterChip(
 
     ToggleButton(
         checked = selected,
-        onCheckedChange = { playerViewModel.updateSearchFilter(filterType) },
+        onCheckedChange = { playerViewModel.searchStateHolder.updateSearchFilter(filterType) },
         modifier = modifier,
         colors = ToggleButtonDefaults.colors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,

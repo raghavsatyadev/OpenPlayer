@@ -41,7 +41,6 @@ import io.github.raghavsatyadev.openplayer.data.model.FolderSource
 import io.github.raghavsatyadev.openplayer.data.model.Genre
 import io.github.raghavsatyadev.openplayer.data.model.Lyrics
 import io.github.raghavsatyadev.openplayer.data.model.LyricsSourcePreference
-import io.github.raghavsatyadev.openplayer.data.model.SearchFilterType
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.model.SortOption
 import io.github.raghavsatyadev.openplayer.data.model.toLibraryTabIdOrNull
@@ -73,6 +72,8 @@ import io.github.raghavsatyadev.openplayer.utils.StorageUtils
 import io.github.raghavsatyadev.openplayer.utils.traceSection
 import io.github.raghavsatyadev.openplayer.presentation.navigation.PlayerSheetBackCoordinator
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerDeleteActions
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerLibraryViewActions
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerLibraryViewCallbacks
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerDeleteCallbacks
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerSelectionActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerSelectionCallbacks
@@ -124,7 +125,7 @@ import androidx.paging.cachedIn
 import coil3.memory.MemoryCache
 import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceDiagnostics
 
-private const val ENABLE_FOLDERS_SOURCE_SWITCHING = true
+internal const val ENABLE_FOLDERS_SOURCE_SWITCHING = true
 private const val SONG_ID_QUERY_CHUNK_SIZE = 900
 private const val HOME_MIX_PREVIEW_LIMIT = 48
 private const val EXTERNAL_SONG_ID_PREFIX = "external:"
@@ -179,8 +180,8 @@ class PlayerViewModel(
     private val connectivityStateHolder: ConnectivityStateHolder,
     private val sleepTimerStateHolder: SleepTimerStateHolder,
     private val repeatNStateHolder: RepeatNStateHolder,
-    private val searchStateHolder: SearchStateHolder,
-    private val libraryStateHolder: LibraryStateHolder,
+    val searchStateHolder: SearchStateHolder,
+    val libraryStateHolder: LibraryStateHolder,
     private val folderNavigationStateHolder: FolderNavigationStateHolder,
     private val libraryTabsStateHolder: LibraryTabsStateHolder,
     private val metadataEditStateHolder: MetadataEditStateHolder,
@@ -1157,6 +1158,18 @@ class PlayerViewModel(
         ),
     )
 
+    val libraryViewActions = PlayerLibraryViewActions(
+        scope = viewModelScope,
+        userPreferencesRepository = userPreferencesRepository,
+        folderNavigationStateHolder = folderNavigationStateHolder,
+        libraryStateHolder = libraryStateHolder,
+        playerUiState = _playerUiState,
+        callbacks = PlayerLibraryViewCallbacks(
+            requiresHydration = { song -> song.requiresHydration() },
+            hydrateSongsIfNeeded = { songs -> hydrateSongsIfNeeded(songs) },
+        ),
+    )
+
     val isCurrentSongFavorite: StateFlow<Boolean> = combine(
         stablePlayerState
             .map { it.currentSong }
@@ -1652,12 +1665,12 @@ class PlayerViewModel(
                     )
                 }
 
-                sortSongs(initialSongSort, persist = false)
-                sortAlbums(initialAlbumSort, persist = false)
-                sortArtists(initialArtistSort, persist = false)
-                sortFolders(initialFolderSort, persist = false)
-                sortFolderSongs(initialFolderSongSort, persist = false)
-                sortFavoriteSongs(initialLikedSort, persist = false)
+                libraryStateHolder.sortSongs(initialSongSort, persist = false)
+                libraryStateHolder.sortAlbums(initialAlbumSort, persist = false)
+                libraryStateHolder.sortArtists(initialArtistSort, persist = false)
+                libraryStateHolder.sortFolders(initialFolderSort, persist = false)
+                libraryStateHolder.sortFolderSongs(initialFolderSongSort, persist = false)
+                libraryStateHolder.sortFavoriteSongs(initialLikedSort, persist = false)
             }
 
             viewModelScope.launch {
@@ -1669,7 +1682,7 @@ class PlayerViewModel(
             }
 
             loadPersistedDailyMix()
-            loadSearchHistory()
+            searchStateHolder.loadSearchHistory()
 
             viewModelScope.launch {
                 isSyncingStateFlow.collect { isSyncing ->
@@ -3432,124 +3445,6 @@ class PlayerViewModel(
         return musicRepository.getSongsByIds(songIds).first()
     }
 
-    fun sortSongs(sortOption: SortOption, persist: Boolean = true) {
-        libraryStateHolder.sortSongs(sortOption, persist)
-    }
-
-    fun sortAlbums(sortOption: SortOption, persist: Boolean = true) {
-        libraryStateHolder.sortAlbums(sortOption, persist)
-    }
-
-    fun sortArtists(sortOption: SortOption, persist: Boolean = true) {
-        libraryStateHolder.sortArtists(sortOption, persist)
-    }
-
-    fun sortFavoriteSongs(sortOption: SortOption, persist: Boolean = true) {
-        libraryStateHolder.sortFavoriteSongs(sortOption, persist)
-    }
-
-    fun sortFolders(sortOption: SortOption, persist: Boolean = true) {
-        libraryStateHolder.sortFolders(sortOption, persist)
-    }
-
-    fun sortFolderSongs(sortOption: SortOption, persist: Boolean = true) {
-        libraryStateHolder.sortFolderSongs(sortOption, persist)
-    }
-
-    fun sortGenres(sortOption: SortOption, persist: Boolean = true) {
-        libraryStateHolder.sortGenres(sortOption, persist)
-    }
-
-    fun setFoldersPlaylistView(isPlaylistView: Boolean) {
-        viewModelScope.launch {
-            userPreferencesRepository.setFoldersPlaylistView(isPlaylistView)
-            folderNavigationStateHolder.setFoldersPlaylistViewState(
-                isPlaylistView = isPlaylistView,
-                updateUiState = { mutation -> _playerUiState.update(mutation) }
-            )
-        }
-    }
-
-    fun setFoldersSource(source: FolderSource) {
-        if (!ENABLE_FOLDERS_SOURCE_SWITCHING) return
-        viewModelScope.launch {
-            userPreferencesRepository.setFoldersSource(source)
-        }
-    }
-
-    fun navigateToFolder(path: String) {
-        folderNavigationStateHolder.navigateToFolder(
-            path = path,
-            getUiState = { _playerUiState.value },
-            updateUiState = { mutation -> _playerUiState.update(mutation) },
-            cachedSongsById = { libraryStateHolder.allSongsById.value },
-            onFolderChanged = { folderPath ->
-                folderNavigationStateHolder.hydrateCurrentFolderSongsIfNeeded(
-                    scope = viewModelScope,
-                    folderPath = folderPath,
-                    getUiState = { _playerUiState.value },
-                    updateUiState = { mutation -> _playerUiState.update(mutation) },
-                    requiresHydration = { song -> song.requiresHydration() },
-                    hydrateSongs = { songs -> hydrateSongsIfNeeded(songs) }
-                )
-            }
-        )
-    }
-
-    fun navigateBackFolder() {
-        folderNavigationStateHolder.navigateBackFolder(
-            getUiState = { _playerUiState.value },
-            updateUiState = { mutation -> _playerUiState.update(mutation) },
-            cachedSongsById = { libraryStateHolder.allSongsById.value },
-            onFolderChanged = { folderPath ->
-                folderNavigationStateHolder.hydrateCurrentFolderSongsIfNeeded(
-                    scope = viewModelScope,
-                    folderPath = folderPath,
-                    getUiState = { _playerUiState.value },
-                    updateUiState = { mutation -> _playerUiState.update(mutation) },
-                    requiresHydration = { song -> song.requiresHydration() },
-                    hydrateSongs = { songs -> hydrateSongsIfNeeded(songs) }
-                )
-            }
-        )
-    }
-
-    fun setAlbumsListView(isList: Boolean) {
-        viewModelScope.launch {
-            userPreferencesRepository.setAlbumsListView(isList)
-        }
-    }
-
-    fun setPlaylistsGridView(isGrid: Boolean) {
-        viewModelScope.launch {
-            userPreferencesRepository.setPlaylistsGridView(isGrid)
-        }
-    }
-
-    fun updateSearchFilter(filterType: SearchFilterType) {
-        searchStateHolder.updateSearchFilter(filterType)
-    }
-
-    fun loadSearchHistory(limit: Int = 15) {
-        searchStateHolder.loadSearchHistory(limit)
-    }
-
-    fun onSearchQuerySubmitted(query: String) {
-        searchStateHolder.onSearchQuerySubmitted(query)
-    }
-
-    fun performSearch(query: String) {
-        searchStateHolder.performSearch(query)
-    }
-
-    fun deleteSearchHistoryItem(query: String) {
-        searchStateHolder.deleteSearchHistoryItem(query)
-    }
-
-    fun clearSearchHistory() {
-        searchStateHolder.clearSearchHistory()
-    }
-
     fun clearQueueExceptCurrent() {
         mediaController?.let { controller ->
             val currentSongIndex = controller.currentMediaItemIndex
@@ -3701,19 +3596,6 @@ class PlayerViewModel(
             loadArtists = { loadArtistsIfNeeded() },
             loadFolders = { loadFoldersFromRepository() }
         )
-    }
-
-    fun saveLibraryTabsOrder(tabs: List<String>) {
-        viewModelScope.launch {
-            val orderJson = Json.encodeToString(tabs)
-            userPreferencesRepository.saveLibraryTabsOrder(orderJson)
-        }
-    }
-
-    fun resetLibraryTabsOrder() {
-        viewModelScope.launch {
-            userPreferencesRepository.resetLibraryTabsOrder()
-        }
     }
 
     fun selectSongForInfo(song: Song) {

@@ -746,7 +746,7 @@ fun LibraryScreen(
             }
 
             canHandleFolderBack -> {
-                playerViewModel.navigateBackFolder()
+                playerViewModel.libraryViewActions.navigateBackFolder()
             }
         }
     }
@@ -1083,13 +1083,13 @@ fun LibraryScreen(
                         val onSortOptionChanged: (SortOption) -> Unit = remember(playerViewModel, playlistViewModel, currentTabId) {
                             { option ->
                                 when (currentTabId) {
-                                    LibraryTabId.SONGS -> playerViewModel.sortSongs(option)
-                                    LibraryTabId.ALBUMS -> playerViewModel.sortAlbums(option)
-                                    LibraryTabId.ARTISTS -> playerViewModel.sortArtists(option)
+                                    LibraryTabId.SONGS -> playerViewModel.libraryStateHolder.sortSongs(option)
+                                    LibraryTabId.ALBUMS -> playerViewModel.libraryStateHolder.sortAlbums(option)
+                                    LibraryTabId.ARTISTS -> playerViewModel.libraryStateHolder.sortArtists(option)
                                     LibraryTabId.PLAYLISTS -> playlistViewModel.sortPlaylists(option)
-                                    LibraryTabId.LIKED -> playerViewModel.sortFavoriteSongs(option)
-                                    LibraryTabId.FOLDERS -> playerViewModel.sortFolders(option)
-                                    LibraryTabId.GENRES -> playerViewModel.sortGenres(option)
+                                    LibraryTabId.LIKED -> playerViewModel.libraryStateHolder.sortFavoriteSongs(option)
+                                    LibraryTabId.FOLDERS -> playerViewModel.libraryStateHolder.sortFolders(option)
+                                    LibraryTabId.GENRES -> playerViewModel.libraryStateHolder.sortGenres(option)
                                     LibraryTabId.VIDEOS -> Unit
                                 }
                             }
@@ -1241,8 +1241,8 @@ fun LibraryScreen(
                                         Environment.getExternalStorageDirectory().path
                                     },
                                     folderRootLabel = playerUiState.folderSource.displayName,
-                                    onFolderClick = { playerViewModel.navigateToFolder(it) },
-                                    onNavigateBack = { playerViewModel.navigateBackFolder() },
+                                    onFolderClick = { playerViewModel.libraryViewActions.navigateToFolder(it) },
+                                    onNavigateBack = { playerViewModel.libraryViewActions.navigateBackFolder() },
                                     isShuffleEnabled = isShuffleEnabled,
                                     showStorageFilterButton = visibleCurrentTabId.hasStorageFilterButton(),
                                     currentStorageFilter = playerUiState.currentStorageFilter,
@@ -1289,11 +1289,11 @@ fun LibraryScreen(
                                 secondaryOptions = if (showsFolderSongs) folderSongSortOptions else persistentListOf(),
                                 secondarySelectedOption = playerUiState.currentFolderSongSortOption,
                                 onSecondaryOptionSelected = { option ->
-                                    playerViewModel.sortFolderSongs(option)
+                                    playerViewModel.libraryStateHolder.sortFolderSongs(option)
                                     playerViewModel.hideSortingSheet()
                                 },
                                 onSecondaryDirectionToggle = { option ->
-                                    playerViewModel.sortFolderSongs(option)
+                                    playerViewModel.libraryStateHolder.sortFolderSongs(option)
                                 },
                                 primaryTargetLabel = stringResource(Res.string.library_tab_folders),
                                 secondaryTargetLabel = stringResource(Res.string.library_tab_songs),
@@ -1303,7 +1303,7 @@ fun LibraryScreen(
                                 viewToggleLabel = stringResource(Res.string.presentation_batch_d_playlist_view),
                                 viewToggleChecked = playerUiState.isFoldersPlaylistView,
                                 onViewToggleChange = { isChecked ->
-                                    playerViewModel.setFoldersPlaylistView(isChecked)
+                                    playerViewModel.libraryViewActions.setFoldersPlaylistView(isChecked)
                                 },
                                 viewToggleContent = if (isAlbumTab) {
                                     {
@@ -1325,7 +1325,7 @@ fun LibraryScreen(
                                                 activeContentColor = MaterialTheme.colorScheme.onPrimary,
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
-                                                onClick = { playerViewModel.setAlbumsListView(false) },
+                                                onClick = { playerViewModel.libraryViewActions.setAlbumsListView(false) },
                                                 text = stringResource(Res.string.presentation_batch_d_view_grid),
                                                 imageVector = vectorResource(Res.drawable.rounded_view_module_filled_24)
                                             )
@@ -1338,7 +1338,7 @@ fun LibraryScreen(
                                                 activeContentColor = MaterialTheme.colorScheme.onPrimary,
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
-                                                onClick = { playerViewModel.setAlbumsListView(true) },
+                                                onClick = { playerViewModel.libraryViewActions.setAlbumsListView(true) },
                                                 text = stringResource(Res.string.presentation_batch_d_view_list),
                                                 imageVector = vectorResource(Res.drawable.rounded_view_list_filled_mirrored_24)
                                             )
@@ -1394,7 +1394,7 @@ fun LibraryScreen(
                                                 activeContentColor = MaterialTheme.colorScheme.onPrimary,
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
-                                                onClick = { playerViewModel.setFoldersSource(FolderSource.INTERNAL) },
+                                                onClick = { playerViewModel.libraryViewActions.setFoldersSource(FolderSource.INTERNAL) },
                                                 text = stringResource(Res.string.presentation_batch_d_storage_internal)
                                             )
                                             ToggleSegmentButton(
@@ -1409,7 +1409,7 @@ fun LibraryScreen(
                                                 activeCornerRadius = 32.dp,
                                                 onClick = {
                                                     if (isSdAvailable) {
-                                                        playerViewModel.setFoldersSource(FolderSource.SD_CARD)
+                                                        playerViewModel.libraryViewActions.setFoldersSource(FolderSource.SD_CARD)
                                                     }
                                                 },
                                                 text = stringResource(Res.string.presentation_batch_d_storage_sd_card)
@@ -1449,7 +1449,7 @@ fun LibraryScreen(
                                                 activeContentColor = MaterialTheme.colorScheme.onPrimary,
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
-                                                onClick = { playerViewModel.setPlaylistsGridView(false) },
+                                                onClick = { playerViewModel.libraryViewActions.setPlaylistsGridView(false) },
                                                 text = stringResource(Res.string.presentation_batch_d_view_list),
                                                 imageVector = vectorResource(Res.drawable.rounded_view_list_filled_mirrored_24)
                                             )
@@ -1461,7 +1461,7 @@ fun LibraryScreen(
                                                 activeContentColor = MaterialTheme.colorScheme.onPrimary,
                                                 inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 activeCornerRadius = 32.dp,
-                                                onClick = { playerViewModel.setPlaylistsGridView(true) },
+                                                onClick = { playerViewModel.libraryViewActions.setPlaylistsGridView(true) },
                                                 text = stringResource(Res.string.presentation_batch_d_view_grid),
                                                 imageVector = vectorResource(Res.drawable.rounded_view_module_filled_24)
                                             )
@@ -1653,8 +1653,8 @@ fun LibraryScreen(
                                             isLoading = isLoading,
                                             bottomBarHeight = bottomBarHeightDp,
                                             playerViewModel = playerViewModel,
-                                            onNavigateBack = { playerViewModel.navigateBackFolder() },
-                                            onFolderClick = { folderPath -> playerViewModel.navigateToFolder(folderPath) },
+                                            onNavigateBack = { playerViewModel.libraryViewActions.navigateBackFolder() },
+                                            onFolderClick = { folderPath -> playerViewModel.libraryViewActions.navigateToFolder(folderPath) },
                                             onFolderAsPlaylistClick = { folder ->
                                                 val encodedPath = Uri.encode(folder.path)
                                                 navController.navigateSafelyReplacing(
@@ -1691,7 +1691,7 @@ fun LibraryScreen(
                                             onClearPendingLocate = { pendingFoldersLocatePath = null },
                                             onRequestCrossFolderLocate = { folderPath ->
                                                 pendingFoldersLocatePath = folderPath
-                                                playerViewModel.navigateToFolder(folderPath)
+                                                playerViewModel.libraryViewActions.navigateToFolder(folderPath)
                                             }
                                         )
                                     }
@@ -2109,10 +2109,10 @@ fun LibraryScreen(
         ReorderTabsSheet(
             tabs = tabTitles,
             onReorder = { newOrder ->
-                playerViewModel.saveLibraryTabsOrder(newOrder)
+                playerViewModel.libraryViewActions.saveLibraryTabsOrder(newOrder)
             },
             onReset = {
-                playerViewModel.resetLibraryTabsOrder()
+                playerViewModel.libraryViewActions.resetLibraryTabsOrder()
             },
             onDismiss = { showReorderTabsSheet = false }
         )
