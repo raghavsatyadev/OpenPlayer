@@ -100,6 +100,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
+import io.github.raghavsatyadev.openplayer.presentation.navigation.MainNavItems
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation3.runtime.rememberNavBackStack
 import io.github.raghavsatyadev.openplayer.data.preferences.LaunchTab
@@ -169,21 +170,6 @@ import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
 
 
-@Immutable
-data class BottomNavItem(
-    /** Shown as the tab label and content description, so it follows the app language. */
-    @StringRes val labelResId: Int,
-    @DrawableRes val iconResId: Int,
-    @DrawableRes val selectedIconResId: Int? = null,
-    val screen: Screen
-)
-
-/** Top-level destinations shared by the bottom navigation bar and the navigation rail. */
-internal val MainNavItems: ImmutableList<BottomNavItem> = persistentListOf(
-    BottomNavItem(R.string.tab_home, R.drawable.rounded_home_24, R.drawable.home_24_rounded_filled, Screen.Home),
-    BottomNavItem(R.string.search, R.drawable.rounded_search_24, R.drawable.rounded_search_24, Screen.Search),
-    BottomNavItem(R.string.tab_library, R.drawable.rounded_library_music_24, R.drawable.round_library_music_24, Screen.Library)
-)
 
 private data class DismissUndoBarSlice(
     val isVisible: Boolean = false,

@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.data.service.repeatn
 
-import androidx.media3.common.Player
 
 /**
  * Pure state machine for "repeat the current song N more times, then continue normally".
@@ -27,7 +26,7 @@ class RepeatNCounter {
         private set
     var remaining: Int = 0
         private set
-    private var previousMode: Int = Player.REPEAT_MODE_OFF
+    private var previousMode: Int = REPEAT_MODE_OFF
 
     val isActive: Boolean get() = remaining > 0
 
@@ -36,15 +35,15 @@ class RepeatNCounter {
         this.songId = songId
         remaining = times.coerceIn(MIN_TIMES, MAX_TIMES)
         // Repeat-one already loops forever, so "N more times" restores to off.
-        previousMode = if (currentMode == Player.REPEAT_MODE_ONE) Player.REPEAT_MODE_OFF else currentMode
-        return Player.REPEAT_MODE_ONE
+        previousMode = if (currentMode == REPEAT_MODE_ONE) REPEAT_MODE_OFF else currentMode
+        return REPEAT_MODE_ONE
     }
 
     fun onTransition(newSongId: String?, reason: Int): Action {
         if (!isActive) return Action.None
         if (newSongId != songId) return reset(finished = false)
         return when (reason) {
-            Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT -> {
+            MEDIA_ITEM_TRANSITION_REASON_REPEAT -> {
                 remaining--
                 if (remaining <= 0) reset(finished = true) else Action.Counting(remaining)
             }
@@ -55,7 +54,7 @@ class RepeatNCounter {
 
     /** The user picked another repeat mode mid-count: accept it. Returns true if that ended the count. */
     fun onRepeatModeChanged(mode: Int): Boolean {
-        if (!isActive || mode == Player.REPEAT_MODE_ONE) return false
+        if (!isActive || mode == REPEAT_MODE_ONE) return false
         clear()
         return true
     }
@@ -84,3 +83,8 @@ class RepeatNCounter {
         const val MAX_TIMES = 10
     }
 }
+
+// Same values as androidx.media3.common.Player, which commonMain can't see.
+private const val REPEAT_MODE_OFF = 0
+private const val REPEAT_MODE_ONE = 1
+private const val MEDIA_ITEM_TRANSITION_REASON_REPEAT = 0

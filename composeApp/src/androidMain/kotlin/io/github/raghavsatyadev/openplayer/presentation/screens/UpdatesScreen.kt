@@ -118,7 +118,7 @@ fun UpdatesScreen(
                             Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, "package:${context.packageName}".toUri())
                         )
                     },
-                    onOpenPrompt = { intent -> context.startActivitySafely(Intent(intent)) },
+                    onOpenPrompt = { intent -> context.startActivitySafely(Intent(intent as Intent)) },
                     onOpenUrl = { url -> context.openUrl(url) },
                     onShowSwitch = { switchRelease = it.versionName },
                 )
@@ -192,7 +192,7 @@ private fun UpdateStatusCard(
     onCancel: () -> Unit,
     onDismiss: () -> Unit,
     onAllowInstalls: () -> Unit,
-    onOpenPrompt: (Intent) -> Unit,
+    onOpenPrompt: (Any) -> Unit,
     onOpenUrl: (String) -> Unit,
     onShowSwitch: (AppRelease) -> Unit,
 ) {

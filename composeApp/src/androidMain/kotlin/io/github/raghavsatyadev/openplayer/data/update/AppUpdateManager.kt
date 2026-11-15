@@ -32,32 +32,6 @@ import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-sealed interface UpdateStatus {
-    data object Idle : UpdateStatus
-    data object Checking : UpdateStatus
-    data class UpToDate(val channel: UpdateChannel) : UpdateStatus
-
-    /**
-     * [requiresReinstall] means the release is signed differently from this install (other
-     * channel, or a side-loaded build), so Android refuses to install it over the app.
-     */
-    data class Available(val release: AppRelease, val requiresReinstall: Boolean) : UpdateStatus
-    data class Downloading(val release: AppRelease, val progress: Float?) : UpdateStatus
-    data class AwaitingInstallPermission(val release: AppRelease) : UpdateStatus
-    data class AwaitingConfirmation(val release: AppRelease, val confirmIntent: Intent) : UpdateStatus
-    data class Installing(val release: AppRelease) : UpdateStatus
-    data class Failed(val error: UpdateError, val release: AppRelease?) : UpdateStatus
-}
-
-enum class UpdateError {
-    CHECK_FAILED,
-    NOTHING_PUBLISHED,
-    DOWNLOAD_FAILED,
-    INVALID_APK,
-    NOT_NEWER,
-    INSTALL_FAILED,
-}
-
 /**
  * Checks the selected channel for a newer build and installs it through [PackageInstaller].
  * Stable and alpha releases are both published on GitHub and signed with the same key, so

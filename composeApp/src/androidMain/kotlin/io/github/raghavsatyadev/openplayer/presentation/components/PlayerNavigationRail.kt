@@ -19,11 +19,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
-import io.github.raghavsatyadev.openplayer.BottomNavItem
+import io.github.raghavsatyadev.openplayer.presentation.navigation.BottomNavItem
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
@@ -74,7 +74,7 @@ fun PlayerNavigationRail(
         navItems.forEach { item ->
             val isSelected = currentTab != null && currentTab == item.screen
             val label = stringResource(item.labelResId)
-            val iconPainterResId = if (isSelected && item.selectedIconResId != null && item.selectedIconResId != 0) {
+            val iconPainterResId = if (isSelected && item.selectedIconResId != null) {
                 item.selectedIconResId
             } else {
                 item.iconResId
@@ -129,7 +129,7 @@ fun PlayerNavigationRail(
                 railExpanded = isExpanded,
                 icon = {
                     Icon(
-                        painter = painterResource(id = iconPainterResId),
+                        painter = painterResource(iconPainterResId),
                         contentDescription = label
                     )
                 },

@@ -21,12 +21,12 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
-import io.github.raghavsatyadev.openplayer.BottomNavItem
+import io.github.raghavsatyadev.openplayer.presentation.navigation.BottomNavItem
 import io.github.raghavsatyadev.openplayer.data.preferences.NavBarStyle
 import io.github.raghavsatyadev.openplayer.presentation.components.scoped.CustomNavigationBarItem
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
@@ -126,7 +126,7 @@ private fun PlayerInternalNavigationItemsRow(
             val unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
             val indicatorColorFromTheme = MaterialTheme.colorScheme.secondaryContainer
 
-            val iconPainterResId = if (isSelected && item.selectedIconResId != null && item.selectedIconResId != 0) {
+            val iconPainterResId = if (isSelected && item.selectedIconResId != null) {
                 item.selectedIconResId
             } else {
                 item.iconResId
@@ -136,7 +136,7 @@ private fun PlayerInternalNavigationItemsRow(
             val iconLambda: @Composable () -> Unit = remember(iconPainterResId, label) {
                 {
                     Icon(
-                        painter = painterResource(id = iconPainterResId),
+                        painter = painterResource(iconPainterResId),
                         contentDescription = label
                     )
                 }
@@ -144,7 +144,7 @@ private fun PlayerInternalNavigationItemsRow(
             val selectedIconLambda: @Composable () -> Unit = remember(iconPainterResId, label) {
                 {
                     Icon(
-                        painter = painterResource(id = iconPainterResId),
+                        painter = painterResource(iconPainterResId),
                         contentDescription = label
                     )
                 }
