@@ -1,10 +1,6 @@
 @file:Suppress("DEPRECATION")
 package io.github.raghavsatyadev.openplayer.data.navidrome
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.data.database.AlbumEntity
 import io.github.raghavsatyadev.openplayer.data.database.ArtistEntity
@@ -18,6 +14,8 @@ import io.github.raghavsatyadev.openplayer.data.database.SongEntity
 import io.github.raghavsatyadev.openplayer.data.database.SourceType
 import io.github.raghavsatyadev.openplayer.data.database.toSong
 import io.github.raghavsatyadev.openplayer.data.model.Song
+import io.github.raghavsatyadev.openplayer.data.security.CredentialStore
+import io.github.raghavsatyadev.openplayer.data.security.CredentialStoreFactory
 import io.github.raghavsatyadev.openplayer.data.navidrome.model.NavidromeAuthMethod
 import io.github.raghavsatyadev.openplayer.data.navidrome.model.NavidromeCredentials
 import io.github.raghavsatyadev.openplayer.data.navidrome.model.NavidromeMusicFolder
@@ -48,7 +46,6 @@ import org.json.JSONObject
 import co.touchlab.kermit.Logger
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.absoluteValue
-import androidx.core.content.edit
 
 /**
  * Repository for Navidrome/Subsonic music service.
@@ -62,7 +59,7 @@ class NavidromeRepository(
     private val musicDao: MusicDao,
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
-    private val context: Context
+    private val credentialStores: CredentialStoreFactory
 ) {
     companion object {
         const val SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000L
@@ -83,40 +80,14 @@ class NavidromeRepository(
         const val LIBRARY_PLAYLIST_ID = "__library__"
     }
 
-    private val prefs: SharedPreferences = createCredentialPrefs()
-
-    private fun createEncryptedPrefs(): SharedPreferences {
-        val masterKey = MasterKey.Builder(context)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
-        return EncryptedSharedPreferences.create(
-            context,
-            PREFS_NAME,
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
-    }
-
-    private fun createCredentialPrefs(): SharedPreferences = try {
-        createEncryptedPrefs()
-    } catch (e: Exception) {
-        Logger.e(e) { "$TAG: EncryptedSharedPreferences unreadable, deleting and recreating" }
-        context.deleteSharedPreferences(PREFS_NAME)
-        try {
-            createEncryptedPrefs()
-        } catch (e2: Exception) {
-            Logger.e(e2) { "$TAG: Encrypted prefs unavailable, falling back to plain" }
-            context.getSharedPreferences("${PREFS_NAME}_plain", Context.MODE_PRIVATE)
-        }
-    }
+    private val prefs: CredentialStore = credentialStores.open(PREFS_NAME)
 
     private val _isLoggedInFlow = MutableStateFlow(false)
     val isLoggedInFlow: StateFlow<Boolean> = _isLoggedInFlow.asStateFlow()
 
     init {
         api.onAuthMethodChanged = { method ->
-            if (api.getServerUrl() == prefs.getString(KEY_SERVER_URL, null)) {
+            if (api.getServerUrl() == prefs.getString(KEY_SERVER_URL)) {
                 prefs.edit { putString(KEY_AUTH_METHOD, method.name) }
             }
         }
@@ -127,9 +98,9 @@ class NavidromeRepository(
      * Initialize API from saved credentials.
      */
     private fun initFromSavedCredentials() {
-        val serverUrl = prefs.getString(KEY_SERVER_URL, null)
-        val username = prefs.getString(KEY_USERNAME, null)
-        val password = prefs.getString(KEY_PASSWORD, null)
+        val serverUrl = prefs.getString(KEY_SERVER_URL)
+        val username = prefs.getString(KEY_USERNAME)
+        val password = prefs.getString(KEY_PASSWORD)
 
         if (!serverUrl.isNullOrBlank() && !username.isNullOrBlank() && !password.isNullOrBlank()) {
             val credentials = NavidromeCredentials(serverUrl, username, password)
@@ -142,7 +113,7 @@ class NavidromeRepository(
             }
             api.setCredentials(
                 credentials,
-                NavidromeAuthMethod.fromStorageKey(prefs.getString(KEY_AUTH_METHOD, null))
+                NavidromeAuthMethod.fromStorageKey(prefs.getString(KEY_AUTH_METHOD))
             )
             _isLoggedInFlow.value = true
             Logger.d { "$TAG: Restored credentials for $username@${credentials.normalizedServerUrl}" }
@@ -159,13 +130,13 @@ class NavidromeRepository(
      * Get the current server URL.
      */
     val serverUrl: String?
-        get() = prefs.getString(KEY_SERVER_URL, null)
+        get() = prefs.getString(KEY_SERVER_URL)
 
     /**
      * Get the current username.
      */
     val username: String?
-        get() = prefs.getString(KEY_USERNAME, null)
+        get() = prefs.getString(KEY_USERNAME)
 
     val selectedMusicFolderIdsFlow: Flow<Set<String>> =
         userPreferencesRepository.navidromeSelectedMusicFolderIdsFlow

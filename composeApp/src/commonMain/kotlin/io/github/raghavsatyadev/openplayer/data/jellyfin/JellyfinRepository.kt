@@ -1,10 +1,6 @@
 @file:Suppress("DEPRECATION")
 package io.github.raghavsatyadev.openplayer.data.jellyfin
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 import io.github.raghavsatyadev.openplayer.AppBuildInfo
 import io.github.raghavsatyadev.openplayer.data.database.AlbumEntity
 import io.github.raghavsatyadev.openplayer.data.database.ArtistEntity
@@ -21,6 +17,8 @@ import io.github.raghavsatyadev.openplayer.data.jellyfin.model.JellyfinCredentia
 import io.github.raghavsatyadev.openplayer.data.jellyfin.model.JellyfinLibrary
 import io.github.raghavsatyadev.openplayer.data.jellyfin.model.JellyfinSong
 import io.github.raghavsatyadev.openplayer.data.model.Song
+import io.github.raghavsatyadev.openplayer.data.security.CredentialStore
+import io.github.raghavsatyadev.openplayer.data.security.CredentialStoreFactory
 import io.github.raghavsatyadev.openplayer.data.network.jellyfin.JellyfinApiService
 import io.github.raghavsatyadev.openplayer.data.network.jellyfin.JellyfinResponseParser
 import io.github.raghavsatyadev.openplayer.data.preferences.PlaylistPreferencesRepository
@@ -49,7 +47,7 @@ class JellyfinRepository(
     private val musicDao: MusicDao,
     private val playlistPreferencesRepository: PlaylistPreferencesRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
-    private val context: Context
+    private val credentialStores: CredentialStoreFactory
 ) {
     private companion object {
         private const val TAG = "JellyfinRepo"
@@ -71,33 +69,7 @@ class JellyfinRepository(
         private const val LIBRARY_PLAYLIST_ID = "__library__"
     }
 
-    private val prefs: SharedPreferences = createCredentialPrefs()
-
-    private fun createEncryptedPrefs(): SharedPreferences {
-        val masterKey = MasterKey.Builder(context)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
-        return EncryptedSharedPreferences.create(
-            context,
-            PREFS_NAME,
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
-    }
-
-    private fun createCredentialPrefs(): SharedPreferences = try {
-        createEncryptedPrefs()
-    } catch (e: Exception) {
-        Logger.e(e) { "$TAG: EncryptedSharedPreferences unreadable, deleting and recreating" }
-        context.deleteSharedPreferences(PREFS_NAME)
-        try {
-            createEncryptedPrefs()
-        } catch (e2: Exception) {
-            Logger.e(e2) { "$TAG: Encrypted prefs unavailable, falling back to plain" }
-            context.getSharedPreferences("${PREFS_NAME}_plain", Context.MODE_PRIVATE)
-        }
-    }
+    private val prefs: CredentialStore = credentialStores.open(PREFS_NAME)
 
     private val _isLoggedInFlow = MutableStateFlow(false)
     val isLoggedInFlow: StateFlow<Boolean> = _isLoggedInFlow.asStateFlow()
@@ -107,10 +79,10 @@ class JellyfinRepository(
     }
 
     private fun initFromSavedCredentials() {
-        val serverUrl = prefs.getString(KEY_SERVER_URL, null)
-        val username = prefs.getString(KEY_USERNAME, null)
-        val accessToken = prefs.getString(KEY_ACCESS_TOKEN, null)
-        val userId = prefs.getString(KEY_USER_ID, null)
+        val serverUrl = prefs.getString(KEY_SERVER_URL)
+        val username = prefs.getString(KEY_USERNAME)
+        val accessToken = prefs.getString(KEY_ACCESS_TOKEN)
+        val userId = prefs.getString(KEY_USER_ID)
 
         if (!serverUrl.isNullOrBlank() && !username.isNullOrBlank() &&
             !accessToken.isNullOrBlank() && !userId.isNullOrBlank()) {
@@ -132,12 +104,12 @@ class JellyfinRepository(
         get() = _isLoggedInFlow.value
 
     val serverUrl: String?
-        get() = prefs.getString(KEY_SERVER_URL, null)
+        get() = prefs.getString(KEY_SERVER_URL)
 
     /** When the last complete library and playlist sync finished, or 0 if none has. */
     var lastFullSyncTime: Long
         get() = prefs.getLong(KEY_LAST_FULL_SYNC, 0L)
-        private set(value) = prefs.edit().putLong(KEY_LAST_FULL_SYNC, value).apply()
+        private set(value) = prefs.edit { putLong(KEY_LAST_FULL_SYNC, value) }
 
     val isFullSyncDue: Boolean
         get() = isJellyfinFullSyncDue(lastFullSyncTime, System.currentTimeMillis())
@@ -157,7 +129,7 @@ class JellyfinRepository(
         withContext(Dispatchers.IO) {
             // Bumped first, and with commit rather than apply, so a write that outlives an
             // unsaved bump cannot leave the unified library looking current.
-            prefs.edit().putLong(KEY_SONG_CACHE_REVISION, songCacheRevision + 1).commit()
+            prefs.edit(commit = true) { putLong(KEY_SONG_CACHE_REVISION, songCacheRevision + 1) }
         }
         write()
     }
@@ -165,7 +137,7 @@ class JellyfinRepository(
     fun getAuthorizationHeader(): String? = api.getAuthorizationHeader()
 
     val username: String?
-        get() = prefs.getString(KEY_USERNAME, null)
+        get() = prefs.getString(KEY_USERNAME)
 
     suspend fun login(serverUrl: String, username: String, password: String): Result<String> {
         return withContext(Dispatchers.IO) {
@@ -193,12 +165,12 @@ class JellyfinRepository(
                 val fullCredentials = credentials.copy(accessToken = accessToken, userId = userId)
                 api.setCredentials(fullCredentials)
 
-                prefs.edit()
-                    .putString(KEY_SERVER_URL, fullCredentials.normalizedServerUrl)
-                    .putString(KEY_USERNAME, username)
-                    .putString(KEY_ACCESS_TOKEN, accessToken)
-                    .putString(KEY_USER_ID, userId)
-                    .apply()
+                prefs.edit {
+                    putString(KEY_SERVER_URL, fullCredentials.normalizedServerUrl)
+                        .putString(KEY_USERNAME, username)
+                        .putString(KEY_ACCESS_TOKEN, accessToken)
+                        .putString(KEY_USER_ID, userId)
+                }
 
                 _isLoggedInFlow.value = true
                 Logger.d { "$TAG: Login successful for $username@$serverUrl" }
@@ -216,7 +188,7 @@ class JellyfinRepository(
     suspend fun logout() {
         Logger.d { "$TAG: Logging out" }
         api.clearCredentials()
-        prefs.edit().clear().apply()
+        prefs.edit { clear() }
         userPreferencesRepository.clearJellyfinSelectedLibraryIds()
 
         val playlistsToDelete = dao.getAllPlaylistsList()
@@ -599,7 +571,7 @@ class JellyfinRepository(
             appBuild = APP_BUILD,
             unifiedSongCount = musicDao.getJellyfinSongCount()
         )
-        if (prefs.getString(KEY_UNIFIED_LIBRARY_STATE, null) == currentState) {
+        if (prefs.getString(KEY_UNIFIED_LIBRARY_STATE) == currentState) {
             Logger.d { "$TAG: Cached songs unchanged since the last unified library rebuild" }
             return@withLock
         }
@@ -621,7 +593,7 @@ class JellyfinRepository(
             appBuild = APP_BUILD,
             unifiedSongCount = musicDao.getJellyfinSongCount()
         )
-        prefs.edit().putString(KEY_UNIFIED_LIBRARY_STATE, state).apply()
+        prefs.edit { putString(KEY_UNIFIED_LIBRARY_STATE, state) }
     }
 
     private suspend fun rebuildUnifiedLibrary(groupByAlbumArtist: Boolean) {

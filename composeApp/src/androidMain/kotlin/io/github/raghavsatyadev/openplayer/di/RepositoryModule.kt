@@ -53,6 +53,8 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import io.github.raghavsatyadev.openplayer.data.security.CredentialStoreFactory
+import io.github.raghavsatyadev.openplayer.data.security.EncryptedCredentialStoreFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
@@ -90,6 +92,7 @@ val repositoryModule = module {
     single<AudioBookmarkRepository> { get<AudioBookmarkRepositoryImpl>() }
 
     singleOf(::ArtistImageRepository)
+    single<CredentialStoreFactory> { EncryptedCredentialStoreFactory(androidContext()) }
     singleOf(::NavidromeRepository)
     singleOf(::JellyfinRepository)
     singleOf(::ListenBrainzRepository)
