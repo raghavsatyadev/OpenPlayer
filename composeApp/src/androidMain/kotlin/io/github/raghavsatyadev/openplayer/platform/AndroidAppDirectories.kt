@@ -5,4 +5,5 @@ import java.io.File
 
 class AndroidAppDirectories(private val context: Context) : AppDirectories {
     override val filesDir: File get() = context.filesDir
+    override val cacheDir: File get() = context.cacheDir
 }

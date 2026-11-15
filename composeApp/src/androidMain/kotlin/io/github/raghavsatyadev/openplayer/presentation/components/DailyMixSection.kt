@@ -39,7 +39,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
+import org.jetbrains.compose.resources.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
@@ -48,7 +48,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.resolveNavBarOccupiedHeight
 import io.github.raghavsatyadev.openplayer.presentation.components.subcomps.EnhancedSongListItem
@@ -412,22 +411,21 @@ private fun ViewAllDailyMixButton(
 @OptIn(ExperimentalTextApi::class)
 @Composable
 private fun rememberDailyMixTitleStyle(): TextStyle {
-    return remember {
+    val font = Font(
+        resource = Res.font.gflex_variable,
+        variationSettings = FontVariation.Settings(
+            FontVariation.weight(630),
+            FontVariation.width(136f),
+            FontVariation.grade(40),
+            FontVariation.Setting("ROND", 100f),
+            FontVariation.Setting("XTRA", 520f),
+            FontVariation.Setting("YOPQ", 90f),
+            FontVariation.Setting("YTLC", 505f)
+        )
+    )
+    return remember(font) {
         TextStyle(
-            fontFamily = FontFamily(
-                Font(
-                    resId = R.font.gflex_variable,
-                    variationSettings = FontVariation.Settings(
-                        FontVariation.weight(630),
-                        FontVariation.width(136f),
-                        FontVariation.grade(40),
-                        FontVariation.Setting("ROND", 100f),
-                        FontVariation.Setting("XTRA", 520f),
-                        FontVariation.Setting("YOPQ", 90f),
-                        FontVariation.Setting("YTLC", 505f)
-                    )
-                )
-            ),
+            fontFamily = FontFamily(font),
             fontWeight = FontWeight(630),
             fontSize = 20.sp,
             lineHeight = 22.sp,

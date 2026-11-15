@@ -53,7 +53,6 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.unit.Constraints
@@ -61,7 +60,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
-import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.components.PlaylistBottomSheet
@@ -86,6 +84,7 @@ import kotlinx.collections.immutable.persistentListOf
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.pluralStringResource
 import io.github.raghavsatyadev.openplayer.resources.stringResource
+import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -538,21 +537,20 @@ private fun ExpressiveDailyMixHeader(
 @OptIn(ExperimentalTextApi::class)
 @Composable
 private fun rememberDailyMixTitleStyle(): TextStyle {
-    return remember {
+    val font = Font(
+        resource = Res.font.gflex_variable,
+        variationSettings = FontVariation.Settings(
+            FontVariation.weight(436),
+            FontVariation.width(102f),
+            FontVariation.Setting("ROND", 100f),
+            FontVariation.Setting("XTRA", 520f),
+            FontVariation.Setting("YOPQ", 90f),
+            FontVariation.Setting("YTLC", 505f)
+        )
+    )
+    return remember(font) {
         TextStyle(
-            fontFamily = FontFamily(
-                Font(
-                    resId = R.font.gflex_variable,
-                    variationSettings = FontVariation.Settings(
-                        FontVariation.weight(436),
-                        FontVariation.width(102f),
-                        FontVariation.Setting("ROND", 100f),
-                        FontVariation.Setting("XTRA", 520f),
-                        FontVariation.Setting("YOPQ", 90f),
-                        FontVariation.Setting("YTLC", 505f)
-                    )
-                )
-            ),
+            fontFamily = FontFamily(font),
             fontWeight = FontWeight(760),
             fontSize = 44.sp,
         )

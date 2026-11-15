@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.Font
+import org.jetbrains.compose.resources.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.TextStyle
@@ -31,7 +31,8 @@ import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.style.TextOverflow
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.resources.Res
+import io.github.raghavsatyadev.openplayer.resources.gflex_variable
 import kotlin.math.roundToInt
 
 private const val DefaultTopBarTitleWidthAxis = 100f
@@ -179,20 +180,17 @@ private fun rememberRoundedFlexFontFamily(
     widthAxis: Float
 ): FontFamily {
     val sanitizedWidthAxis = widthAxis.coerceIn(1f, DefaultTopBarTitleWidthAxis).roundToInt().toFloat()
-    return remember(fontWeight, sanitizedWidthAxis) {
-        FontFamily(
-            Font(
-                resId = R.font.gflex_variable,
-                weight = fontWeight,
-                variationSettings = FontVariation.Settings(
-                    FontVariation.weight(fontWeight.weight),
-                    FontVariation.width(sanitizedWidthAxis),
-                    FontVariation.Setting("ROND", TopBarTitleRoundedAxis),
-                    FontVariation.Setting("XTRA", TopBarTitleXtraAxis),
-                    FontVariation.Setting("YOPQ", TopBarTitleYopqAxis),
-                    FontVariation.Setting("YTLC", TopBarTitleYtlcAxis)
-                )
-            )
+    val font = Font(
+        resource = Res.font.gflex_variable,
+        weight = fontWeight,
+        variationSettings = FontVariation.Settings(
+            FontVariation.weight(fontWeight.weight),
+            FontVariation.width(sanitizedWidthAxis),
+            FontVariation.Setting("ROND", TopBarTitleRoundedAxis),
+            FontVariation.Setting("XTRA", TopBarTitleXtraAxis),
+            FontVariation.Setting("YOPQ", TopBarTitleYopqAxis),
+            FontVariation.Setting("YTLC", TopBarTitleYtlcAxis)
         )
-    }
+    )
+    return remember(font) { FontFamily(font) }
 }

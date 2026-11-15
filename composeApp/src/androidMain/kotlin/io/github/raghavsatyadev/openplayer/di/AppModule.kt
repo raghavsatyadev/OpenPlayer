@@ -13,6 +13,8 @@ import io.github.raghavsatyadev.openplayer.OpenPlayerApplication
 import io.github.raghavsatyadev.openplayer.data.preferences.dataStore
 import io.github.raghavsatyadev.openplayer.data.service.MusicService
 import io.github.raghavsatyadev.openplayer.platform.AndroidAppDirectories
+import io.github.raghavsatyadev.openplayer.platform.AndroidDocumentStreams
+import io.github.raghavsatyadev.openplayer.platform.DocumentStreams
 import io.github.raghavsatyadev.openplayer.platform.AppDirectories
 import io.github.raghavsatyadev.openplayer.data.media.SongMetadataEditor
 import io.github.raghavsatyadev.openplayer.data.playlist.M3uSyncCoordinator
@@ -32,6 +34,7 @@ val appModule = module {
     single { androidContext() as OpenPlayerApplication }
     single { Gson() }
     single<AppDirectories> { AndroidAppDirectories(androidContext()) }
+    single<DocumentStreams> { AndroidDocumentStreams(androidContext()) }
     single {
         SessionToken(
             androidContext(),
