@@ -127,7 +127,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.stats.PlaybackStatsRepository
 import io.github.raghavsatyadev.openplayer.data.stats.PlaybackStatsRepository.PlaybackStatsSummary
@@ -137,7 +137,6 @@ import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHei
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImageCompactListTargetSize
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.recap.RecapStatsCard
 import io.github.raghavsatyadev.openplayer.presentation.stats.displayNameRes
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
@@ -169,7 +168,7 @@ private val ScreenGutter = 20.dp
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun StatsScreen(
-    navController: NavController,
+    navController: AppNavigator,
     playerViewModel: PlayerViewModel,
     statsViewModel: StatsViewModel = koinViewModel(),
     recapEntryViewModel: RecapEntryViewModel = koinViewModel()
@@ -311,16 +310,16 @@ fun StatsScreen(
                 }
 
                 RotationDimension.Artists -> statsViewModel.resolveArtistId(entry.title)?.let { artistId ->
-                    navController.navigateSafely(Screen.ArtistDetail.createRoute(artistId))
+                    navController.navigateSafely(Screen.ArtistDetail(artistId))
                 }
 
                 RotationDimension.Albums -> statsViewModel.resolveAlbumId(entry.title, playedSongIds)?.let { albumId ->
-                    navController.navigateSafely(Screen.AlbumDetail.createRoute(albumId))
+                    navController.navigateSafely(Screen.AlbumDetail(albumId))
                 }
 
                 RotationDimension.Genres -> if (statsViewModel.isLibraryGenre(entry.title)) {
                     navController.navigateSafely(
-                        Screen.GenreDetail.createRoute(URLEncoder.encode(entry.title, "UTF-8"))
+                        Screen.GenreDetail(URLEncoder.encode(entry.title, "UTF-8"))
                     )
                 }
             }
@@ -366,7 +365,7 @@ fun StatsScreen(
                         item(key = "recap_entry", contentType = "recap_entry") {
                             RecapStatsCard(
                                 entries = recapEntries,
-                                onOpen = { year -> navController.navigateSafely(Screen.Recap.createRoute(year)) },
+                                onOpen = { year -> navController.navigateSafely(Screen.Recap(year)) },
                                 modifier = Modifier
                                     .animateItem()
                                     .padding(horizontal = ScreenGutter)

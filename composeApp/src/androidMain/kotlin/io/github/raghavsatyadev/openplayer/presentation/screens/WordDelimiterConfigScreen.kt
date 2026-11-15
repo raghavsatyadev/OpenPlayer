@@ -62,7 +62,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ArtistSettingsViewModel
 import kotlinx.coroutines.launch
@@ -76,7 +76,7 @@ import org.jetbrains.compose.resources.vectorResource
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun WordDelimiterConfigScreen(
-    navController: NavController,
+    navController: AppNavigator,
     viewModel: ArtistSettingsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

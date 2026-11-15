@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -61,7 +60,7 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
@@ -96,7 +95,7 @@ fun DailyMixScreen(
     mainViewModel: MainViewModel = koinViewModel(),
     playlistViewModel: PlaylistViewModel = koinViewModel(),
     playerViewModel: PlayerViewModel,
-    navController: NavController,
+    navController: AppNavigator,
     smartMixViewModel: SmartMixViewModel = koinViewModel(),
 ) = traceSection("DailyMixScreen.Composition") {
     val dailyMixTitle = stringResource(Res.string.presentation_batch_b_daily_mix_title)
@@ -159,20 +158,20 @@ fun DailyMixScreen(
             },
             onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
             onNavigateToAlbum = {
-                navController.navigateSafely(Screen.AlbumDetail.createRoute(song.albumId))
+                navController.navigateSafely(Screen.AlbumDetail(song.albumId))
                 showSongInfoSheet = false
             },
             onNavigateToArtist = {
-                navController.navigateSafely(Screen.ArtistDetail.createRoute(song.artistId))
+                navController.navigateSafely(Screen.ArtistDetail(song.artistId))
                 showSongInfoSheet = false
             },
             onNavigateToArtistById = { artistId ->
-                navController.navigateSafely(Screen.ArtistDetail.createRoute(artistId))
+                navController.navigateSafely(Screen.ArtistDetail(artistId))
                 showSongInfoSheet = false
             },
             onNavigateToGenre = {
                 song.genre?.let {
-                    navController.navigateSafely(Screen.GenreDetail.createRoute(java.net.URLEncoder.encode(it, "UTF-8")))
+                    navController.navigateSafely(Screen.GenreDetail(java.net.URLEncoder.encode(it, "UTF-8")))
                 }
                 showSongInfoSheet = false
             },

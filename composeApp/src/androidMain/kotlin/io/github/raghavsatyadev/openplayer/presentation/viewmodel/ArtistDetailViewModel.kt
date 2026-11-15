@@ -3,7 +3,6 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.Immutable
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.resources.*
@@ -63,7 +62,7 @@ class ArtistDetailViewModel(
     private val artistImageRepository: ArtistImageRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     val themeStateHolder: ThemeStateHolder,
-    savedStateHandle: SavedStateHandle
+    private val artistId: String
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ArtistDetailUiState())
@@ -91,7 +90,7 @@ class ArtistDetailViewModel(
     val albumExpansionOverrides: StateFlow<Map<String, Boolean>> = _albumExpansionOverrides.asStateFlow()
 
     init {
-        savedStateHandle.getStateFlow<String?>("artistId", null)
+        kotlinx.coroutines.flow.flowOf<String?>(artistId)
             .onEach { idString ->
                 if (idString != null) {
                     val artistId = idString.toLongOrNull()

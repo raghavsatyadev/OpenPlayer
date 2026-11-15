@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -78,7 +77,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.data.model.Playlist
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.model.SortOption
@@ -111,7 +110,7 @@ fun PlaylistContainer(
     onRefresh: () -> Unit,
     bottomBarHeight: Dp,
     currentSong: Song? = null,
-    navController: NavController?,
+    navController: AppNavigator?,
     playerViewModel: PlayerViewModel,
     isAddingToPlaylist: Boolean = false,
     selectedPlaylists: SnapshotStateMap<String, Boolean>? = null,
@@ -251,7 +250,7 @@ fun PlaylistContainer(
 @Composable
 fun PlaylistItems(
     bottomBarHeight: Dp,
-    navController: NavController?,
+    navController: AppNavigator?,
     currentSong: Song? = null,
     playerViewModel: PlayerViewModel,
     isAddingToPlaylist: Boolean = false,
@@ -313,7 +312,7 @@ fun PlaylistItems(
                         } else if (isSelectionMode) {
                             onPlaylistSelectionToggle(playlist)
                         } else {
-                            navController?.navigateSafely(Screen.PlaylistDetail.createRoute(playlist.id))
+                            navController?.navigateSafely(Screen.PlaylistDetail(playlist.id))
                         }
                     }
                 }
@@ -359,7 +358,7 @@ fun PlaylistItems(
 @Composable
 private fun PlaylistGridItems(
     bottomBarHeight: Dp,
-    navController: NavController?,
+    navController: AppNavigator?,
     playerViewModel: PlayerViewModel,
     filteredPlaylists: ImmutableList<Playlist>,
     currentSortOption: SortOption?,
@@ -416,7 +415,7 @@ private fun PlaylistGridItems(
                         if (isSelectionMode) {
                             onPlaylistSelectionToggle(playlist)
                         } else {
-                            navController?.navigateSafely(Screen.PlaylistDetail.createRoute(playlist.id))
+                            navController?.navigateSafely(Screen.PlaylistDetail(playlist.id))
                         }
                     },
                     onLongPress = { onPlaylistLongPress(playlist) }

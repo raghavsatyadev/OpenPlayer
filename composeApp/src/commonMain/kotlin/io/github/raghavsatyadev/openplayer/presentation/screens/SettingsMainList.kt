@@ -51,19 +51,19 @@ internal val SettingsCategory.iconTone: SettingsIconTone
 /** A row of the main Settings list. */
 internal sealed interface MainSettingsEntry {
     val iconTone: SettingsIconTone
-    val route: String
+    val route: Screen
 
     /** A row drawn from the category's own title, subtitle and icon. */
     data class Category(val category: SettingsCategory) : MainSettingsEntry {
         override val iconTone: SettingsIconTone
             get() = category.iconTone
 
-        override val route: String
+        override val route: Screen
             get() = when (category) {
-                SettingsCategory.EQUALIZER -> Screen.Equalizer.createRoute()
-                SettingsCategory.DEVICE_CAPABILITIES -> Screen.DeviceCapabilities.createRoute()
-                SettingsCategory.ABOUT -> Screen.About.route
-                else -> Screen.SettingsCategory.createRoute(category.id)
+                SettingsCategory.EQUALIZER -> Screen.Equalizer()
+                SettingsCategory.DEVICE_CAPABILITIES -> Screen.DeviceCapabilities()
+                SettingsCategory.ABOUT -> Screen.About
+                else -> Screen.SettingsCategory(category.id)
             }
     }
 
@@ -73,7 +73,7 @@ internal sealed interface MainSettingsEntry {
         val subtitleRes: StringResource,
         val iconRes: DrawableResource,
         override val iconTone: SettingsIconTone,
-        override val route: String
+        override val route: Screen
     ) : MainSettingsEntry {
         // Settings search groups the lyrics options under Playback, so the row shares its tone.
         LYRICS(
@@ -81,28 +81,28 @@ internal sealed interface MainSettingsEntry {
             subtitleRes = Res.string.setcat_lyrics_subtitle,
             iconRes = Res.drawable.rounded_lyrics_filled_24,
             iconTone = SettingsIconTone.SECONDARY,
-            route = Screen.LyricsSettings.createRoute()
+            route = Screen.LyricsSettings()
         ),
         DOWNLOADS(
             titleRes = Res.string.cloud_downloads_title,
             subtitleRes = Res.string.cloud_downloads_settings_subtitle,
             iconRes = Res.drawable.rounded_cloud_download_filled_24,
             iconTone = SettingsIconTone.PRIMARY,
-            route = Screen.CloudDownloads.route
+            route = Screen.CloudDownloads
         ),
         ACCOUNTS(
             titleRes = Res.string.settings_accounts_row_title,
             subtitleRes = Res.string.settings_accounts_row_subtitle,
             iconRes = Res.drawable.rounded_account_circle_filled_24,
             iconTone = SettingsIconTone.TERTIARY,
-            route = Screen.Accounts.createRoute()
+            route = Screen.Accounts()
         ),
         UPDATES(
             titleRes = Res.string.updates_title,
             subtitleRes = Res.string.updates_settings_subtitle,
             iconRes = Res.drawable.rounded_system_update_filled_24,
             iconTone = SettingsIconTone.PRIMARY,
-            route = Screen.Updates.route
+            route = Screen.Updates
         )
     }
 }

@@ -4,15 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.navigation.NavHostController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 internal fun PlayerAlbumNavigationEffect(
-    navController: NavHostController,
+    navController: AppNavigator,
     sheetCollapsedTargetY: Float,
     sheetMotionController: SheetMotionController,
     playerViewModel: PlayerViewModel
@@ -24,8 +23,8 @@ internal fun PlayerAlbumNavigationEffect(
             playerViewModel.collapsePlayerSheet()
 
             navController.navigateSafelyReplacing(
-                route = Screen.AlbumDetail.createRoute(albumId),
-                patternToPop = Screen.AlbumDetail.route
+                route = Screen.AlbumDetail(albumId),
+                patternToPop = Screen.AlbumDetail::class
             )
         }
     }

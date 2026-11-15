@@ -55,8 +55,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.preferences.sanitizeNavBarCornerRadius
 import io.github.raghavsatyadev.openplayer.presentation.components.scoped.PlayerAlbumNavigationEffect
@@ -112,7 +111,7 @@ fun UnifiedPlayerSheetV2(
     sheetCollapsedTargetY: Float,
     containerHeight: Dp,
     collapsedStateHorizontalPadding: Dp = 12.dp,
-    navController: NavHostController,
+    navController: AppNavigator,
     hideMiniPlayer: Boolean = false,
     isNavBarHidden: Boolean = false
 ) {
@@ -157,7 +156,6 @@ fun UnifiedPlayerSheetV2(
 
     val infrequentPlayerStateReference = playerViewModel.stablePlayerState.collectAsStateWithLifecycle()
     val infrequentPlayerState = infrequentPlayerStateReference.value
-    val currentBackStackEntry by navController.currentBackStackEntryAsState()
 
     val currentPositionState = playerViewModel.currentPlaybackPosition.collectAsStateWithLifecycle()
     val positionToDisplayProvider = remember(currentPositionState) {
@@ -482,7 +480,7 @@ fun UnifiedPlayerSheetV2(
         sheetMotionController = sheetMotionController,
         animationDurationMs = ANIMATION_DURATION_MS,
         onSwipeEdgeChanged = { playerViewModel.updatePredictiveBackSwipeEdge(it) },
-        registrationKey = currentBackStackEntry?.id
+        registrationKey = navController.backStack.size to navController.current
     )
 
     val queuePredictiveBackProgress = remember { Animatable(0f) }

@@ -41,7 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import coil3.imageLoader
@@ -637,7 +637,7 @@ fun LibraryArtistsTab(
 fun LibraryPlaylistsTab(
     playlistUiState: PlaylistUiState,
     filteredPlaylists: ImmutableList<io.github.raghavsatyadev.openplayer.data.model.Playlist> = playlistUiState.playlists,
-    navController: NavController,
+    navController: AppNavigator,
     playerViewModel: PlayerViewModel,
     bottomBarHeight: Dp,
     isRefreshing: Boolean,

@@ -80,7 +80,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioCapabilities
@@ -108,7 +108,7 @@ import org.jetbrains.compose.resources.vectorResource
 @kotlin.OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DeviceCapabilitiesScreen(
-    navController: NavController,
+    navController: AppNavigator,
     viewModel: DeviceCapabilitiesViewModel = koinViewModel(),
     playerViewModel: PlayerViewModel
 ) {

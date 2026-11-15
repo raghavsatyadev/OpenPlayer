@@ -2,7 +2,6 @@ package io.github.raghavsatyadev.openplayer.presentation.settings.search
 
 import io.github.raghavsatyadev.openplayer.presentation.model.SettingsCategory
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.resources.*
 
 object SettingsRegistry {
@@ -16,7 +15,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_excluded_directories_title,
                 subtitleRes = Res.string.setcat_excluded_directories_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.ExcludedDirectories.route,
+                subscreenRoute = Screen.ExcludedDirectories,
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("folder", "ignore", "exclude", "blacklist", "directories", "hidden")
             ),
@@ -26,19 +25,18 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_artists_title,
                 subtitleRes = Res.string.setcat_artists_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.ArtistSettings.createRoute(),
+                subscreenRoute = Screen.ArtistSettings(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("artist", "delimiters", "split", "multi artist", "parsing", "separator")
             ),
-            // Rows of the artist settings page. createRoute(), not .route: the raw route
-            // already ends in "?highlightKey={highlightKey}".
+            // Rows of the artist settings page.
             SettingSpec(
                 id = "artist_char_delimiters",
                 itemKey = "item_artist_char_delimiters",
                 titleRes = Res.string.presentation_batch_g_artist_item_char_delimiters,
                 subtitleRes = Res.string.setcat_artists_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.ArtistSettings.createRoute(),
+                subscreenRoute = Screen.ArtistSettings(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf(
                     "delimiter", "separator", "split artists", "multiple artists", "slash", "semicolon", "comma"
@@ -50,7 +48,7 @@ object SettingsRegistry {
                 titleRes = Res.string.presentation_batch_g_artist_item_word_delimiters,
                 subtitleRes = Res.string.setcat_artists_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.ArtistSettings.createRoute(),
+                subscreenRoute = Screen.ArtistSettings(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("word delimiter", "feat", "featuring", "ft", "split artists")
             ),
@@ -62,7 +60,7 @@ object SettingsRegistry {
                 titleRes = Res.string.presentation_batch_g_artist_extract_from_title,
                 subtitleRes = Res.string.presentation_batch_g_artist_extract_from_title_sub,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.ArtistSettings.createRoute(),
+                subscreenRoute = Screen.ArtistSettings(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("feat in title", "featured artists", "extract artists", "song title")
             ),
@@ -72,7 +70,7 @@ object SettingsRegistry {
                 titleRes = Res.string.presentation_batch_g_artist_group_by_album_artist,
                 subtitleRes = Res.string.presentation_batch_g_artist_group_by_album_artist_sub,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.ArtistSettings.createRoute(),
+                subscreenRoute = Screen.ArtistSettings(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("album artist", "group albums", "collaborations", "compilation", "organize")
             ),
@@ -82,7 +80,7 @@ object SettingsRegistry {
                 titleRes = Res.string.artist_page_albums_collapsed_by_default,
                 subtitleRes = Res.string.artist_page_albums_collapsed_by_default_sub,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.ArtistSettings.createRoute(),
+                subscreenRoute = Screen.ArtistSettings(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("collapse", "collapsed", "expand", "fold", "artist page", "album list")
             ),
@@ -92,19 +90,19 @@ object SettingsRegistry {
                 itemKey = "item_listening_stats",
                 titleRes = Res.string.presentation_batch_g_stats_title,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.Stats.route,
+                subscreenRoute = Screen.Stats,
                 type = SettingType.ACTION,
                 keywordsStatic = listOf(
                     "stats", "statistics", "listening", "history", "habits", "top songs", "most played", "heavy rotation"
                 ),
-                onAction = { it.navigateSafely(Screen.Stats.route) }
+                onAction = { it.navigateSafely(Screen.Stats) }
             ),
             SettingSpec(
                 id = "library_min_duration",
                 itemKey = "item_library_min_duration",
                 titleRes = Res.string.setcat_min_song_duration,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("duration", "short songs", "filter", "seconds", "length")
             ),
@@ -113,7 +111,7 @@ object SettingsRegistry {
                 itemKey = "item_library_min_tracks",
                 titleRes = Res.string.setcat_min_tracks_per_album,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("tracks", "album", "filter", "singles")
             ),
@@ -122,7 +120,7 @@ object SettingsRegistry {
                 itemKey = "item_library_album_art_cache",
                 titleRes = Res.string.setcat_album_art_cache_limit,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("cache", "storage", "album art", "artwork", "size", "space")
             ),
@@ -132,7 +130,7 @@ object SettingsRegistry {
                 titleRes = Res.string.presentation_batch_f_refresh_library_title,
                 subtitleRes = Res.string.presentation_batch_f_refresh_library_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.ACTION,
                 keywordsStatic = listOf("scan", "rescan", "sync", "refresh", "rebuild", "database")
             ),
@@ -142,7 +140,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_m3u_sync_title,
                 subtitleRes = Res.string.setcat_m3u_sync_disabled_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("m3u", "m3u8", "playlist", "sync", "folder", "import", "export")
             ),
@@ -152,7 +150,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_m3u_sync_now_title,
                 subtitleRes = Res.string.setcat_m3u_sync_now_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.ACTION,
                 keywordsStatic = listOf("m3u", "playlist", "sync now", "reconcile")
             ),
@@ -162,7 +160,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_smart_mix_history_title,
                 subtitleRes = Res.string.setcat_smart_mix_history_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.ACTION,
                 keywordsStatic = listOf("smart mix", "mix", "history", "clear", "recent requests", "historial", "borrar")
             ),
@@ -172,7 +170,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_auto_scan_lrc_title,
                 subtitleRes = Res.string.setcat_auto_scan_lrc_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("lrc", "lyrics", "file", "scan"),
                 getValue = { it.autoScanLrcFiles },
@@ -184,7 +182,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_folder_album_art_title,
                 subtitleRes = Res.string.setcat_folder_album_art_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 // Navigates instead of toggling in place: enabling needs a READ_MEDIA_IMAGES
                 // prompt, which only the settings screen can launch.
                 type = SettingType.NAVIGABLE_CARD,
@@ -199,7 +197,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_online_covers_title,
                 subtitleRes = Res.string.setcat_online_covers_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf(
                     "cover", "artwork", "album art", "online", "deezer", "itunes", "missing"
@@ -211,7 +209,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_online_genres_title,
                 subtitleRes = Res.string.setcat_online_genres_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf(
                     "genre", "genres", "unknown", "online", "deezer", "itunes", "missing", "tag"
@@ -223,7 +221,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_find_duplicates_title,
                 subtitleRes = Res.string.setcat_find_duplicates_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.Duplicates.createRoute(),
+                subscreenRoute = Screen.Duplicates(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("duplicate", "cleanup", "copies", "same song")
             ),
@@ -233,7 +231,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_external_lyrics_title,
                 subtitleRes = Res.string.setcat_external_lyrics_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("lrclib", "online lyrics", "fetch", "internet", "download lyrics"),
                 getValue = { it.externalLyricsEnabled },
@@ -245,7 +243,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_external_artist_images_title,
                 subtitleRes = Res.string.setcat_external_artist_images_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.SettingsCategory.createRoute("library"),
+                subscreenRoute = Screen.SettingsCategory("library"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("deezer", "artist image", "artwork", "photos", "pictures"),
                 getValue = { it.externalArtistImagesEnabled },
@@ -259,7 +257,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_lyrics_title,
                 subtitleRes = Res.string.setcat_lyrics_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.LyricsSettings.createRoute(),
+                subscreenRoute = Screen.LyricsSettings(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("lyrics", "words", "text", "font", "lrc", "synced lyrics")
             ),
@@ -269,7 +267,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_lyrics_font_size_title,
                 subtitleRes = Res.string.setcat_lyrics_font_size_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.LyricsSettings.createRoute(),
+                subscreenRoute = Screen.LyricsSettings(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("lyrics size", "text size", "font size", "bigger lyrics", "accessibility")
             ),
@@ -279,7 +277,7 @@ object SettingsRegistry {
                 titleRes = Res.string.lyrics_highlight_style_title,
                 subtitleRes = Res.string.lyrics_highlight_style_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.LyricsSettings.createRoute(),
+                subscreenRoute = Screen.LyricsSettings(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("karaoke", "word highlight", "gradient", "sweep", "fade", "word by word")
             ),
@@ -289,7 +287,7 @@ object SettingsRegistry {
                 titleRes = Res.string.lyrics_duet_layout_title,
                 subtitleRes = Res.string.lyrics_duet_layout_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.LyricsSettings.createRoute(),
+                subscreenRoute = Screen.LyricsSettings(),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("duet", "singer", "voices", "v1", "v2", "alignment"),
                 getValue = { it.lyricsDuetLayoutEnabled },
@@ -301,7 +299,7 @@ object SettingsRegistry {
                 titleRes = Res.string.lyrics_background_vocals_title,
                 subtitleRes = Res.string.lyrics_background_vocals_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.LyricsSettings.createRoute(),
+                subscreenRoute = Screen.LyricsSettings(),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("background vocals", "backing vocals", "bg", "adlib", "harmony"),
                 getValue = { it.showLyricsBackgroundVocals },
@@ -313,7 +311,7 @@ object SettingsRegistry {
                 titleRes = Res.string.presentation_batch_f_exp_lyric_blur_title,
                 subtitleRes = Res.string.presentation_batch_f_exp_lyric_blur_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.LyricsSettings.createRoute(),
+                subscreenRoute = Screen.LyricsSettings(),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("lyrics blur", "animated blur", "depth of field", "blur strength"),
                 getValue = { it.animatedLyricsBlurEnabled },
@@ -325,7 +323,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_lyrics_source_priority_label,
                 subtitleRes = Res.string.setcat_lyrics_source_priority_desc,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.LyricsSettings.createRoute(),
+                subscreenRoute = Screen.LyricsSettings(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("lyrics source", "embedded", "online", "priority", "lrc", "lrclib")
             ),
@@ -335,7 +333,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_reset_imported_lyrics_title,
                 subtitleRes = Res.string.setcat_reset_imported_lyrics_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.LyricsSettings.createRoute(),
+                subscreenRoute = Screen.LyricsSettings(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("reset lyrics", "imported lyrics", "clear", "remove", "delete lyrics")
             ),
@@ -347,7 +345,7 @@ object SettingsRegistry {
                 titleRes = Res.string.settings_accounts_row_title,
                 subtitleRes = Res.string.settings_accounts_row_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.Accounts.createRoute(),
+                subscreenRoute = Screen.Accounts(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("accounts", "navidrome", "jellyfin", "subsonic", "streaming", "server", "login")
             ),
@@ -357,7 +355,7 @@ object SettingsRegistry {
                 titleRes = Res.string.cloud_downloads_title,
                 subtitleRes = Res.string.cloud_downloads_settings_subtitle,
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.CloudDownloads.route,
+                subscreenRoute = Screen.CloudDownloads,
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("downloads", "offline", "cloud", "storage", "navidrome", "jellyfin")
             ),
@@ -367,7 +365,7 @@ object SettingsRegistry {
                 titleRes = Res.string.accounts_listenbrainz_title,
                 subtitleStatic = "Scrobble your listens to ListenBrainz",
                 category = SettingsCategory.LIBRARY,
-                subscreenRoute = Screen.Accounts.createRoute(),
+                subscreenRoute = Screen.Accounts(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("scrobble", "scrobbling", "listens", "maloja", "last.fm", "history")
             ),
@@ -379,7 +377,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_app_language_label,
                 subtitleRes = Res.string.setcat_app_language_desc,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("language", "locale", "translation", "english", "region")
             ),
@@ -389,7 +387,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_app_theme_label,
                 subtitleRes = Res.string.setcat_app_theme_desc,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("dark mode", "light mode", "theme", "system", "night")
             ),
@@ -399,7 +397,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_theme_preset_label,
                 subtitleRes = Res.string.setcat_theme_preset_desc,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("amoled", "black", "oled", "true black", "dark", "theme", "preset")
             ),
@@ -409,7 +407,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_global_now_playing_theme_title,
                 subtitleRes = Res.string.setcat_global_now_playing_theme_subtitle,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf(
                     "now playing", "album art", "dynamic colors", "app theme", "palette"
@@ -425,7 +423,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_smooth_corners_title,
                 subtitleRes = Res.string.setcat_smooth_corners_subtitle,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("corners", "shape", "rounded", "squircle", "performance")
             ),
@@ -435,7 +433,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_show_scrollbar_title,
                 subtitleRes = Res.string.setcat_show_scrollbar_subtitle,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("scrollbar", "scroll", "fast scroll", "bar"),
                 getValue = { it.showScrollbar },
@@ -447,7 +445,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_player_theme_label,
                 subtitleRes = Res.string.setcat_player_theme_desc,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("player theme", "album art", "dynamic colors", "now playing")
             ),
@@ -457,7 +455,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_show_player_file_info_title,
                 subtitleRes = Res.string.setcat_show_player_file_info_subtitle,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("codec", "bitrate", "sample rate", "file info", "format"),
                 getValue = { it.showPlayerFileInfo },
@@ -468,7 +466,7 @@ object SettingsRegistry {
                 itemKey = "item_appearance_palette_style",
                 titleRes = Res.string.setcat_album_art_palette_title,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.PaletteStyle.createRoute(),
+                subscreenRoute = Screen.PaletteStyle(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("palette", "color", "monet", "material you", "accent", "album colors")
             ),
@@ -478,7 +476,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_carousel_style_label,
                 subtitleRes = Res.string.setcat_carousel_style_desc,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("carousel", "peek", "album covers", "swipe")
             ),
@@ -488,7 +486,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_seekbar_style_label,
                 subtitleRes = Res.string.setcat_seekbar_style_desc,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("seekbar", "waveform", "wavy", "slider", "progress", "chapters")
             ),
@@ -498,7 +496,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_collage_pattern_label,
                 subtitleRes = Res.string.setcat_collage_pattern_desc,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("collage", "home", "your mix", "pattern", "grid")
             ),
@@ -508,7 +506,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_auto_rotate_patterns_title,
                 subtitleRes = Res.string.setcat_auto_rotate_patterns_subtitle,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("rotate", "collage", "cycle", "shuffle patterns"),
                 getValue = { it.collageAutoRotate },
@@ -520,7 +518,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_navbar_style_label,
                 subtitleRes = Res.string.setcat_navbar_style_desc,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("navbar", "navigation bar", "full width", "bottom bar")
             ),
@@ -530,7 +528,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_compact_mode_title,
                 subtitleRes = Res.string.setcat_compact_mode_subtitle,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("compact", "navbar", "icons", "height", "small"),
                 getValue = { it.navBarCompactMode },
@@ -542,7 +540,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_navbar_corner_title,
                 subtitleRes = Res.string.setcat_navbar_corner_subtitle,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.NavBarCrRad.createRoute(),
+                subscreenRoute = Screen.NavBarCrRad(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("corner radius", "rounded", "navbar", "roundness")
             ),
@@ -552,7 +550,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_immersive_lyrics_title,
                 subtitleRes = Res.string.setcat_immersive_lyrics_subtitle,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("immersive", "lyrics", "fullscreen", "auto hide", "controls"),
                 getValue = { it.immersiveLyricsEnabled },
@@ -565,7 +563,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_auto_hide_delay_label,
                 subtitleRes = Res.string.setcat_auto_hide_delay_desc,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("auto hide", "delay", "timeout", "lyrics", "controls")
             ),
@@ -575,7 +573,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_default_tab_label,
                 subtitleRes = Res.string.setcat_default_tab_desc,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("launch", "start screen", "default tab", "startup")
             ),
@@ -585,7 +583,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_library_navigation_label,
                 subtitleRes = Res.string.setcat_library_navigation_desc,
                 category = SettingsCategory.APPEARANCE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("appearance"),
+                subscreenRoute = Screen.SettingsCategory("appearance"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("library tabs", "pill", "navigation mode", "tab row")
             ),
@@ -597,7 +595,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_keep_playing_label,
                 subtitleRes = Res.string.setcat_keep_playing_desc,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("background", "close app", "swipe away", "recents", "keep playing"),
                 getValue = { it.keepPlayingInBackground },
@@ -609,7 +607,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_battery_optimization_title,
                 subtitleRes = Res.string.setcat_battery_optimization_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.ACTION,
                 keywordsStatic = listOf("battery", "optimization", "doze", "background", "killed", "interrupted")
             ),
@@ -619,7 +617,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_keep_screen_awake_title,
                 subtitleRes = Res.string.setcat_keep_screen_awake_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf(
                     "screen", "awake", "display", "driving", "sleep", "lock"
@@ -635,7 +633,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_replaygain_enable_title,
                 subtitleRes = Res.string.setcat_replaygain_enable_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("replaygain", "volume", "normalization", "gain", "loudness"),
                 getValue = { it.replayGainEnabled },
@@ -648,7 +646,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_gain_mode_label,
                 subtitleRes = Res.string.setcat_gain_mode_desc,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("gain mode", "replaygain", "album gain", "track gain", "normalization")
             ),
@@ -658,7 +656,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_headphones_resume_title,
                 subtitleRes = Res.string.setcat_headphones_resume_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("headphones", "bluetooth", "resume", "reconnect", "earbuds"),
                 getValue = { it.resumeOnHeadsetReconnect },
@@ -670,7 +668,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_listen_count_section,
                 subtitleRes = Res.string.setcat_listen_count_desc,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("listen", "history", "play count", "scrobble", "threshold", "seconds", "percentage")
             ),
@@ -680,7 +678,7 @@ object SettingsRegistry {
                 titleRes = Res.string.history_import_title,
                 subtitleRes = Res.string.history_import_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("import", "history", "last.fm", "lastfm", "spotify", "listenbrainz", "scrobble", "csv", "listens")
             ),
@@ -690,7 +688,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setting_videos_section,
                 subtitleRes = Res.string.setting_video_show_in_player_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("video", "music video", "mv", "clip", "fullscreen")
             ),
@@ -700,7 +698,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setting_video_add_to_library_title,
                 subtitleRes = Res.string.setting_video_add_to_library_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("video", "library", "songs", "count", "music video")
             ),
@@ -710,7 +708,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setting_video_folders_title,
                 subtitleRes = Res.string.setting_video_folders_help,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("video", "folder", "include", "exclude", "skip", "scan", "blacklist")
             ),
@@ -720,7 +718,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_crossfade_label,
                 subtitleRes = Res.string.setcat_crossfade_desc,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("crossfade", "fade", "transition", "smooth", "blend"),
                 getValue = { it.isCrossfadeEnabled },
@@ -732,7 +730,7 @@ object SettingsRegistry {
                 itemKey = "item_playback_crossfade_duration",
                 titleRes = Res.string.setcat_crossfade_duration,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("crossfade", "duration", "seconds", "fade length", "transition time")
             ),
@@ -742,7 +740,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_smart_crossfade_title,
                 subtitleRes = Res.string.setcat_smart_crossfade_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("smart", "crossfade", "bpm", "tempo", "beat", "dj", "blend"),
                 getValue = { it.smartCrossfadeEnabled },
@@ -754,7 +752,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_playback_speed,
                 subtitleRes = Res.string.playback_speed_description,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf(
                     "speed", "tempo", "rate", "faster", "slower",
@@ -767,7 +765,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_audio_output_mode_title,
                 subtitleRes = Res.string.setcat_audio_output_mode_description,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf(
                     "audio", "output", "direct", "hifi", "high fidelity",
@@ -780,7 +778,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_persistent_shuffle_title,
                 subtitleRes = Res.string.setcat_persistent_shuffle_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("shuffle", "remember", "persist", "random"),
                 getValue = { it.persistentShuffleEnabled },
@@ -792,7 +790,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_show_queue_history_title,
                 subtitleRes = Res.string.setcat_show_queue_history_subtitle,
                 category = SettingsCategory.PLAYBACK,
-                subscreenRoute = Screen.SettingsCategory.createRoute("playback"),
+                subscreenRoute = Screen.SettingsCategory("playback"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("queue", "history", "previous songs", "played"),
                 getValue = { it.showQueueHistory },
@@ -806,7 +804,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_folder_back_gesture_title,
                 subtitleRes = Res.string.setcat_folder_back_gesture_subtitle,
                 category = SettingsCategory.BEHAVIOR,
-                subscreenRoute = Screen.SettingsCategory.createRoute("behavior"),
+                subscreenRoute = Screen.SettingsCategory("behavior"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("back gesture", "folders", "navigation", "system back"),
                 getValue = { it.folderBackGestureNavigation },
@@ -818,7 +816,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_tap_bg_closes_title,
                 subtitleRes = Res.string.setcat_tap_bg_closes_subtitle,
                 category = SettingsCategory.BEHAVIOR,
-                subscreenRoute = Screen.SettingsCategory.createRoute("behavior"),
+                subscreenRoute = Screen.SettingsCategory("behavior"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("tap", "background", "close player", "gesture", "dismiss"),
                 getValue = { it.tapBackgroundClosesPlayer },
@@ -830,7 +828,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_mini_player_swipe_to_skip_title,
                 subtitleRes = Res.string.setcat_mini_player_swipe_to_skip_subtitle,
                 category = SettingsCategory.BEHAVIOR,
-                subscreenRoute = Screen.SettingsCategory.createRoute("behavior"),
+                subscreenRoute = Screen.SettingsCategory("behavior"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf(
                     "mini player", "miniplayer", "swipe", "skip", "next song", "previous song",
@@ -845,7 +843,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_autoplay_on_skip_title,
                 subtitleRes = Res.string.setcat_autoplay_on_skip_subtitle,
                 category = SettingsCategory.BEHAVIOR,
-                subscreenRoute = Screen.SettingsCategory.createRoute("behavior"),
+                subscreenRoute = Screen.SettingsCategory("behavior"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf(
                     "autoplay", "auto play", "skip", "next song", "previous song", "paused", "resume"
@@ -859,7 +857,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_search_tap_mode_label,
                 subtitleRes = Res.string.setcat_search_tap_mode_desc,
                 category = SettingsCategory.BEHAVIOR,
-                subscreenRoute = Screen.SettingsCategory.createRoute("behavior"),
+                subscreenRoute = Screen.SettingsCategory("behavior"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("search", "tap", "result", "play", "queue", "album", "artist")
             ),
@@ -869,7 +867,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_insert_after_latest_title,
                 subtitleRes = Res.string.setcat_insert_after_latest_subtitle,
                 category = SettingsCategory.BEHAVIOR,
-                subscreenRoute = Screen.SettingsCategory.createRoute("behavior"),
+                subscreenRoute = Screen.SettingsCategory("behavior"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("play next", "insert", "queue", "order", "after latest", "next up"),
                 getValue = { it.insertAfterLatest },
@@ -881,7 +879,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_previous_button_title,
                 subtitleRes = Res.string.setcat_previous_button_description,
                 category = SettingsCategory.BEHAVIOR,
-                subscreenRoute = Screen.SettingsCategory.createRoute("behavior"),
+                subscreenRoute = Screen.SettingsCategory("behavior"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf(
                     "previous", "previous song", "previous track", "rewind", "back", "skip back",
@@ -894,7 +892,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_haptic_feedback_title,
                 subtitleRes = Res.string.setcat_haptic_feedback_subtitle,
                 category = SettingsCategory.BEHAVIOR,
-                subscreenRoute = Screen.SettingsCategory.createRoute("behavior"),
+                subscreenRoute = Screen.SettingsCategory("behavior"),
                 type = SettingType.SWITCH,
                 keywordsStatic = listOf("vibration", "haptic", "feedback", "buzz"),
                 getValue = { it.hapticsEnabled },
@@ -907,7 +905,7 @@ object SettingsRegistry {
                 itemKey = "item_backup_export",
                 titleRes = Res.string.setcat_export_backup_title,
                 category = SettingsCategory.BACKUP_RESTORE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("backup_restore"),
+                subscreenRoute = Screen.SettingsCategory("backup_restore"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("backup", "export", "save", "pxpl", "transfer")
             ),
@@ -917,7 +915,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_import_backup_title,
                 subtitleRes = Res.string.setcat_import_backup_subtitle,
                 category = SettingsCategory.BACKUP_RESTORE,
-                subscreenRoute = Screen.SettingsCategory.createRoute("backup_restore"),
+                subscreenRoute = Screen.SettingsCategory("backup_restore"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("restore", "import", "backup", "recover")
             ),
@@ -929,7 +927,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_experimental_title,
                 subtitleRes = Res.string.setcat_experimental_subtitle,
                 category = SettingsCategory.DEVELOPER,
-                subscreenRoute = Screen.Experimental.createRoute(),
+                subscreenRoute = Screen.Experimental(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("experimental", "labs", "tweaks", "beta")
             ),
@@ -939,7 +937,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_force_daily_mix_title,
                 subtitleRes = Res.string.setcat_force_daily_mix_subtitle,
                 category = SettingsCategory.DEVELOPER,
-                subscreenRoute = Screen.SettingsCategory.createRoute("developer"),
+                subscreenRoute = Screen.SettingsCategory("developer"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("daily mix", "regenerate", "playlist")
             ),
@@ -949,7 +947,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_force_stats_title,
                 subtitleRes = Res.string.setcat_force_stats_subtitle,
                 category = SettingsCategory.DEVELOPER,
-                subscreenRoute = Screen.SettingsCategory.createRoute("developer"),
+                subscreenRoute = Screen.SettingsCategory("developer"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("statistics", "stats", "recalculate", "listening")
             ),
@@ -959,7 +957,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_force_palette_title,
                 subtitleRes = Res.string.setcat_force_palette_subtitle,
                 category = SettingsCategory.DEVELOPER,
-                subscreenRoute = Screen.SettingsCategory.createRoute("developer"),
+                subscreenRoute = Screen.SettingsCategory("developer"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("palette", "regenerate", "colors", "album art")
             ),
@@ -969,7 +967,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_test_setup_title,
                 subtitleRes = Res.string.setcat_test_setup_subtitle,
                 category = SettingsCategory.DEVELOPER,
-                subscreenRoute = Screen.SettingsCategory.createRoute("developer"),
+                subscreenRoute = Screen.SettingsCategory("developer"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("onboarding", "setup", "first run", "welcome")
             ),
@@ -979,7 +977,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_trigger_crash_title,
                 subtitleRes = Res.string.setcat_trigger_crash_subtitle,
                 category = SettingsCategory.DEVELOPER,
-                subscreenRoute = Screen.SettingsCategory.createRoute("developer"),
+                subscreenRoute = Screen.SettingsCategory("developer"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("crash", "test", "diagnostics", "debug")
             ),
@@ -991,7 +989,7 @@ object SettingsRegistry {
                 titleRes = Res.string.settings_category_equalizer_title,
                 subtitleRes = Res.string.settings_category_equalizer_subtitle,
                 category = SettingsCategory.EQUALIZER,
-                subscreenRoute = Screen.Equalizer.createRoute(),
+                subscreenRoute = Screen.Equalizer(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("equalizer", "eq", "bass", "treble", "bands", "frequencies")
             ),
@@ -1001,7 +999,7 @@ object SettingsRegistry {
                 titleRes = Res.string.settings_category_device_capabilities_title,
                 subtitleRes = Res.string.settings_category_device_capabilities_subtitle,
                 category = SettingsCategory.DEVICE_CAPABILITIES,
-                subscreenRoute = Screen.DeviceCapabilities.createRoute(),
+                subscreenRoute = Screen.DeviceCapabilities(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("device", "audio output", "capabilities", "formats", "hardware")
             ),
@@ -1011,7 +1009,7 @@ object SettingsRegistry {
                 titleRes = Res.string.device_capabilities_advanced_diagnostics_title,
                 subtitleRes = Res.string.device_capabilities_advanced_diagnostics_description,
                 category = SettingsCategory.DEVICE_CAPABILITIES,
-                subscreenRoute = Screen.DeviceCapabilities.createRoute(),
+                subscreenRoute = Screen.DeviceCapabilities(),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("performance", "diagnostics", "lag", "stall", "report", "beta", "debug")
             ),
@@ -1023,7 +1021,7 @@ object SettingsRegistry {
                 titleRes = Res.string.setcat_about_openplayer_title,
                 subtitleRes = Res.string.setcat_about_openplayer_subtitle,
                 category = SettingsCategory.ABOUT,
-                subscreenRoute = Screen.SettingsCategory.createRoute("about"),
+                subscreenRoute = Screen.SettingsCategory("about"),
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("version", "credits", "about", "info", "app")
             ),
@@ -1033,7 +1031,7 @@ object SettingsRegistry {
                 titleRes = Res.string.updates_title,
                 subtitleRes = Res.string.updates_settings_subtitle,
                 category = SettingsCategory.ABOUT,
-                subscreenRoute = Screen.Updates.route,
+                subscreenRoute = Screen.Updates,
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("update", "upgrade", "version", "alpha", "stable", "github", "channel")
             ),
@@ -1043,7 +1041,7 @@ object SettingsRegistry {
                 titleRes = Res.string.about_licenses_title,
                 subtitleRes = Res.string.about_licenses_subtitle,
                 category = SettingsCategory.ABOUT,
-                subscreenRoute = Screen.Licenses.route,
+                subscreenRoute = Screen.Licenses,
                 type = SettingType.NAVIGABLE_CARD,
                 keywordsStatic = listOf("licenses", "open source", "third party", "notices", "attribution", "fonts")
             )

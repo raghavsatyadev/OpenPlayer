@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
 import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
 import androidx.compose.animation.core.Animatable
@@ -96,7 +95,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.SettingsViewMo
 import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.data.preferences.LaunchTab
 import io.github.raghavsatyadev.openplayer.resources.*
 import io.github.raghavsatyadev.openplayer.resources.stringResource
@@ -105,7 +104,7 @@ import org.jetbrains.compose.resources.vectorResource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-        navController: NavController,
+        navController: AppNavigator,
         playerViewModel: PlayerViewModel,
         onNavigationIconClick: () -> Unit,
         settingsViewModel: SettingsViewModel = koinViewModel()

@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
 import android.Manifest
 import android.content.ComponentName
@@ -100,9 +99,11 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.navigation3.runtime.rememberNavBackStack
+import io.github.raghavsatyadev.openplayer.data.preferences.LaunchTab
+import io.github.raghavsatyadev.openplayer.presentation.components.drawerRouteFor
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.common.util.concurrent.ListenableFuture
@@ -151,6 +152,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import co.touchlab.kermit.Logger
 
@@ -602,7 +604,22 @@ class MainActivity : ComponentActivity() {
         playerViewModel: PlayerViewModel,
         mainViewModel: MainViewModel
     ) = traceSection("MainActivity.MainAppContent") {
-        val navController = rememberNavController()
+        val backStack = rememberNavBackStack(Screen.Home)
+        val navController = remember(backStack) { AppNavigator(backStack) }
+        // The stack starts on Home; swap in the saved launch tab once, before anything is shown or
+        // pushed (a config change restores the stack and keeps the flag).
+        var launchTabApplied by rememberSaveable { mutableStateOf(false) }
+        LaunchedEffect(Unit) {
+            if (!launchTabApplied) {
+                val launchScreen = when (userPreferencesRepository.launchTabFlow.first()) {
+                    LaunchTab.SEARCH -> Screen.Search
+                    LaunchTab.LIBRARY -> Screen.Library
+                    else -> Screen.Home
+                }
+                navController.resetRoot(launchScreen)
+                launchTabApplied = true
+            }
+        }
         val isSyncing by mainViewModel.isSyncing.collectAsStateWithLifecycle()
         val hasCompletedInitialSync by mainViewModel.hasCompletedInitialSync.collectAsStateWithLifecycle()
         val syncProgress by mainViewModel.syncProgress.collectAsStateWithLifecycle()
@@ -623,42 +640,21 @@ class MainActivity : ComponentActivity() {
         val pendingPlaylistNav by _pendingPlaylistNavigation.collectAsStateWithLifecycle()
         var processedPlaylistId by remember { mutableStateOf<String?>(null) }
         
-        LaunchedEffect(pendingPlaylistNav, isMediaControllerReady) {
+        LaunchedEffect(pendingPlaylistNav, isMediaControllerReady, launchTabApplied) {
             val playlistId = pendingPlaylistNav
-            if (playlistId != null && playlistId != processedPlaylistId && isMediaControllerReady) {
+            if (playlistId != null && playlistId != processedPlaylistId && isMediaControllerReady && launchTabApplied) {
                 processedPlaylistId = playlistId
-                var success = false
-                var attempts = 0
-                while (!success && attempts < 50) {
-                    try {
-                        success = navController.navigateSafely(Screen.PlaylistDetail.createRoute(playlistId))
-                        if (success) {
-                            _pendingPlaylistNavigation.value = null
-                        } else {
-                            delay(100)
-                            attempts++
-                        }
-                    } catch (e: IllegalArgumentException) {
-                        delay(100)
-                        attempts++
-                    }
-                }
+                navController.navigateSafely(Screen.PlaylistDetail(playlistId))
+                _pendingPlaylistNavigation.value = null
             } else if (playlistId == null) {
                 processedPlaylistId = null
             }
         }
 
         val pendingUpdatesNav by _pendingUpdatesNavigation.collectAsStateWithLifecycle()
-        LaunchedEffect(pendingUpdatesNav) {
-            if (!pendingUpdatesNav) return@LaunchedEffect
-            // The NavHost may not be attached yet when the activity is cold-started from the notification.
-            repeat(50) {
-                if (navController.navigateSafely(Screen.Updates.route)) {
-                    _pendingUpdatesNavigation.value = false
-                    return@LaunchedEffect
-                }
-                delay(100)
-            }
+        LaunchedEffect(pendingUpdatesNav, launchTabApplied) {
+            if (!pendingUpdatesNav || !launchTabApplied) return@LaunchedEffect
+            navController.navigateSafely(Screen.Updates)
             _pendingUpdatesNavigation.value = false
         }
 
@@ -689,7 +685,7 @@ class MainActivity : ComponentActivity() {
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
-            MainUI(playerViewModel, navController)
+            MainUI(playerViewModel, navController, launchTabApplied)
 
             if (canShowLoadingIndicator) {
                 LoadingOverlay(syncProgress)
@@ -701,64 +697,20 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun MainUI(
         playerViewModel: PlayerViewModel,
-        navController: NavHostController
+        navController: AppNavigator,
+        launchTabApplied: Boolean
     ) = traceSection("MainActivity.MainUI") {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
+        val currentRoute = navController.current
+        val currentTab = navController.currentTab
         var isSearchBarActive by remember { mutableStateOf(false) }
         val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
         val useNavigationRail =
             windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
 
-        val routesWithHiddenNavigationBar = remember {
-            setOf(
-                Screen.Settings.route,
-                Screen.Accounts.route,
-                Screen.PlaylistDetail.route,
-                Screen.DailyMixScreen.route,
-                Screen.RecentlyPlayed.route,
-                Screen.GenreDetail.route,
-                Screen.AlbumDetail.route,
-                Screen.ArtistDetail.route,
-                Screen.DJSpace.route,
-                Screen.NavBarCrRad.route,
-                Screen.About.route,
-                Screen.Licenses.route,
-                Screen.Stats.route,
-                Screen.Recap.route,
-                Screen.EditTransition.route,
-                Screen.Experimental.route,
-                Screen.LyricsSettings.route,
-                Screen.ArtistSettings.route,
-                Screen.Equalizer.route,
-                Screen.SettingsCategory.route,
-                Screen.DelimiterConfig.route,
-                Screen.PaletteStyle.route,
-                Screen.RecentlyPlayed.route,
-                Screen.DeviceCapabilities.route,
-                Screen.EasterEgg.route,
-                Screen.WordDelimiterConfig.route,
-                Screen.ExcludedDirectories.route,
-                Screen.AudioBookmarks.route,
-                Screen.AudioBookmarkFolder.route,
-                Screen.Updates.route
-            )
-        }
         val shouldHideNavigationBar by remember(currentRoute, isSearchBarActive) {
             derivedStateOf {
-                if (currentRoute == Screen.Search.route && isSearchBarActive) {
-                    true
-                } else {
-                    currentRoute?.let { route ->
-                        routesWithHiddenNavigationBar.any { hiddenRoute ->
-                            if (hiddenRoute.contains("{")) {
-                                route.startsWith(hiddenRoute.substringBefore("{"))
-                            } else {
-                                route == hiddenRoute
-                            }
-                        }
-                    } ?: false
-                }
+                if (currentRoute == Screen.Search && isSearchBarActive) true
+                else currentRoute?.showsNavBar == false
             }
         }
 
@@ -858,7 +810,7 @@ class MainActivity : ComponentActivity() {
                 .collectAsStateWithLifecycle(initialValue = SidebarShortcutKeys.DEFAULT)
             AppSidebarDrawer(
                 drawerState = drawerState,
-                selectedRoute = currentRoute ?: Screen.Home.route,
+                selectedRoute = drawerRouteFor(currentRoute ?: Screen.Home),
                 enabledShortcuts = sidebarShortcuts,
                 onShortcutsChanged = { shortcuts ->
                     scope.launch { userPreferencesRepository.setSidebarShortcuts(shortcuts) }
@@ -866,13 +818,11 @@ class MainActivity : ComponentActivity() {
                 onDestinationSelected = { destination ->
                     scope.launch { drawerState.close() }
                     when (destination) {
-                        DrawerDestination.Home -> navController.navigateSafely(Screen.Home.route) {
-                            popUpTo(Screen.Home.route) { inclusive = true }
-                        }
-                        DrawerDestination.Stats -> navController.navigateSafely(Screen.Stats.route)
-                        DrawerDestination.Equalizer -> navController.navigateSafely(Screen.Equalizer.route)
-                        DrawerDestination.Bookmarks -> navController.navigateSafely(Screen.AudioBookmarks.route)
-                        DrawerDestination.Settings -> navController.navigateSafely(Screen.Settings.route)
+                        DrawerDestination.Home -> navController.navigateToTabRoot(Screen.Home)
+                        DrawerDestination.Stats -> navController.navigateSafely(Screen.Stats)
+                        DrawerDestination.Equalizer -> navController.navigateSafely(Screen.Equalizer())
+                        DrawerDestination.Bookmarks -> navController.navigateSafely(Screen.AudioBookmarks)
+                        DrawerDestination.Settings -> navController.navigateSafely(Screen.Settings)
                     }
                 }
         ) {
@@ -889,7 +839,7 @@ class MainActivity : ComponentActivity() {
                         PlayerNavigationRail(
                             navController = navController,
                             navItems = MainNavItems,
-                            currentRoute = currentRoute,
+                            currentTab = currentTab,
                             onSearchIconDoubleTap = onSearchIconDoubleTap
                         )
                     }
@@ -988,7 +938,7 @@ class MainActivity : ComponentActivity() {
                                 PlayerInternalNavigationBar(
                                     navController = navController,
                                     navItems = MainNavItems,
-                                    currentRoute = currentRoute,
+                                    currentTab = currentTab,
                                     navBarStyle = navBarStyle,
                                     compactMode = navBarCompactMode,
                                     bottomBarPadding = bottomBarPadding,
@@ -1014,12 +964,7 @@ class MainActivity : ComponentActivity() {
                         }.collectAsStateWithLifecycle(initialValue = false)
                         // The recap story is full screen; its own Play button closes it so the
                         // player shows up again.
-                        val routesWithHiddenMiniPlayer = remember {
-                            setOf(Screen.NavBarCrRad.route, Screen.Recap.route)
-                        }
-                        val shouldHideMiniPlayer by remember(currentRoute) {
-                            derivedStateOf { currentRoute in routesWithHiddenMiniPlayer }
-                        }
+                        val shouldHideMiniPlayer = currentRoute?.hidesMiniPlayer == true
 
                         val miniPlayerH = with(density) { MiniPlayerHeight.toPx() }
                         val totalSheetHeightWhenContentCollapsedPx = if (showPlayerContentInitially && !shouldHideMiniPlayer) miniPlayerH else 0f
@@ -1038,11 +983,10 @@ class MainActivity : ComponentActivity() {
                         Box(
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            AppNavigation(
+                            if (launchTabApplied) AppNavigation(
                                 playerViewModel = playerViewModel,
                                 navController = navController,
                                 paddingValues = innerPadding,
-                                userPreferencesRepository = userPreferencesRepository,
                                 onSearchBarActiveChange = { isSearchBarActive = it },
                                 onOpenSidebar = { scope.launch { drawerState.open() } }
                             )

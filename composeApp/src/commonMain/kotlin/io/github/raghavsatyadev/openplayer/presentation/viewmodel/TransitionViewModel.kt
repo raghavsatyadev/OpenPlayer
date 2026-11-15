@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.data.model.Curve
@@ -25,10 +24,9 @@ data class TransitionUiState(
 
 class TransitionViewModel(
     private val transitionRepository: TransitionRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val playlistId: String?
 ) : ViewModel() {
 
-    private val playlistId: String? = savedStateHandle["playlistId"]
 
     private val _uiState = MutableStateFlow(TransitionUiState())
     val uiState = _uiState.asStateFlow()

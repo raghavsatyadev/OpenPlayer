@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.data.model.Genre
@@ -101,7 +100,7 @@ data class GenreDetailUiState(
 
 class GenreDetailViewModel(
     private val musicRepository: MusicRepository,
-    private val savedStateHandle: SavedStateHandle,
+    private val genreId: String,
     private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
@@ -111,7 +110,7 @@ class GenreDetailViewModel(
     private var artistMap: Map<String, String?> = emptyMap()
 
     init {
-        savedStateHandle.get<String>("genreId")?.let { genreId ->
+        genreId.takeIf { it.isNotEmpty() }?.let { genreId ->
             val decodedGenreId = java.net.URLDecoder.decode(genreId, "UTF-8")
             loadGenreDetails(decodedGenreId)
         } ?: run {

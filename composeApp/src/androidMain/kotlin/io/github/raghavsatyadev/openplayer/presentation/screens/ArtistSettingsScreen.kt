@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
@@ -72,7 +71,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.ExpressiveTopBarContent
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.LocalSettingsHighlightTarget
@@ -94,7 +93,7 @@ private const val ARTIST_SETTINGS_ARTIST_PAGE_ITEM_INDEX = 3
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ArtistSettingsScreen(
-    navController: NavController,
+    navController: AppNavigator,
     highlightKey: String? = null,
     viewModel: ArtistSettingsViewModel = koinViewModel()
 ) {
@@ -236,7 +235,7 @@ fun ArtistSettingsScreen(
                             },
                             modifier = Modifier.settingHighlight("item_artist_char_delimiters", highlightKey),
                             onClick = {
-                                navController.navigateSafely("delimiter_config")
+                                navController.navigateSafely(io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.DelimiterConfig)
                             }
                         )
 
@@ -267,7 +266,7 @@ fun ArtistSettingsScreen(
                             },
                             modifier = Modifier.settingHighlight("item_artist_word_delimiters", highlightKey),
                             onClick = {
-                                navController.navigateSafely("word_delimiter_config")
+                                navController.navigateSafely(io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.WordDelimiterConfig)
                             }
                         )
 

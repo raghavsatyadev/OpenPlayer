@@ -34,9 +34,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.presentation.model.SettingsCategory
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.screens.ExpressiveSettingsGroup
 import io.github.raghavsatyadev.openplayer.presentation.screens.iconTone
 import io.github.raghavsatyadev.openplayer.presentation.screens.settingsAccentColor
@@ -53,7 +52,7 @@ fun SettingsSearchResultsContent(
     results: List<SearchResultSection>,
     uiState: SettingsUiState,
     settingsViewModel: SettingsViewModel,
-    navController: NavController,
+    navController: AppNavigator,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {

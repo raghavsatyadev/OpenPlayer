@@ -53,7 +53,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.data.model.LyricsSourcePreference
 import io.github.raghavsatyadev.openplayer.data.preferences.LyricsWordHighlightStyle
 import io.github.raghavsatyadev.openplayer.data.preferences.MAX_LYRICS_FONT_SIZE_SP
@@ -78,7 +78,7 @@ private const val MAX_LYRICS_BLUR_STRENGTH = 2f
 
 @Composable
 fun LyricsSettingsScreen(
-    navController: NavController,
+    navController: AppNavigator,
     playerViewModel: PlayerViewModel,
     settingsViewModel: SettingsViewModel = koinViewModel(),
     highlightKey: String? = null

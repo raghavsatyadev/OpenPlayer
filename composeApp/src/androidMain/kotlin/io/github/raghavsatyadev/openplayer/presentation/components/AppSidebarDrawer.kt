@@ -52,6 +52,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.data.preferences.SidebarShortcutKeys
+import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.launch
 import io.github.raghavsatyadev.openplayer.resources.*
@@ -68,6 +69,18 @@ sealed class DrawerDestination(val route: String) {
     object Equalizer : DrawerDestination("equalizer")
     object Bookmarks : DrawerDestination("audio_bookmarks")
     object Settings : DrawerDestination("settings")
+}
+
+/** The drawer row matching the screen on top, or "" when none does. */
+fun drawerRouteFor(screen: Screen?): String {
+    return when (screen) {
+        Screen.Home -> DrawerDestination.Home.route
+        Screen.Stats -> DrawerDestination.Stats.route
+        is Screen.Equalizer -> DrawerDestination.Equalizer.route
+        Screen.AudioBookmarks -> DrawerDestination.Bookmarks.route
+        Screen.Settings -> DrawerDestination.Settings.route
+        else -> ""
+    }
 }
 
 @Composable

@@ -93,7 +93,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.data.equalizer.EqualizerPreset
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
 import io.github.raghavsatyadev.openplayer.presentation.components.ExpressiveTopBarContent
@@ -137,7 +137,7 @@ import org.jetbrains.compose.resources.vectorResource
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun EqualizerScreen(
-    navController: NavController,
+    navController: AppNavigator,
     playerViewModel: PlayerViewModel = sharedPlayerViewModel(),
     equalizerViewModel: EqualizerViewModel = koinViewModel(),
     parametricViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.ParametricEqViewModel = koinViewModel()

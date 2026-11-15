@@ -1,14 +1,12 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.scoped
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.navigation.NavHostController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -29,7 +27,7 @@ internal data class SheetActionHandlers(
 @Composable
 internal fun rememberSheetActionHandlers(
     scope: CoroutineScope,
-    navController: NavHostController,
+    navController: AppNavigator,
     playerViewModel: PlayerViewModel,
     sheetMotionController: SheetMotionController,
     queueSheetController: QueueSheetController,
@@ -81,8 +79,8 @@ internal fun rememberSheetActionHandlers(
             sheetModalOverlayControllerState.value.updateSelectedSongForInfo(null)
             if (song.albumId != -1L) {
                 navController.navigateSafelyReplacing(
-                    route = Screen.AlbumDetail.createRoute(song.albumId),
-                    patternToPop = Screen.AlbumDetail.route
+                    route = Screen.AlbumDetail(song.albumId),
+                    patternToPop = Screen.AlbumDetail::class
                 )
             }
         }
@@ -97,8 +95,8 @@ internal fun rememberSheetActionHandlers(
             sheetModalOverlayControllerState.value.updateSelectedSongForInfo(null)
             if (song.artistId != -1L) {
                 navController.navigateSafelyReplacing(
-                    route = Screen.ArtistDetail.createRoute(song.artistId),
-                    patternToPop = Screen.ArtistDetail.route
+                    route = Screen.ArtistDetail(song.artistId),
+                    patternToPop = Screen.ArtistDetail::class
                 )
             }
         }
@@ -114,8 +112,8 @@ internal fun rememberSheetActionHandlers(
             if (!song.genre.isNullOrEmpty()) {
                 val encodedGenre = java.net.URLEncoder.encode(song.genre, "UTF-8")
                 navController.navigateSafelyReplacing(
-                    route = Screen.GenreDetail.createRoute(encodedGenre),
-                    patternToPop = Screen.GenreDetail.route
+                    route = Screen.GenreDetail(encodedGenre),
+                    patternToPop = Screen.GenreDetail::class
                 )
             }
         }

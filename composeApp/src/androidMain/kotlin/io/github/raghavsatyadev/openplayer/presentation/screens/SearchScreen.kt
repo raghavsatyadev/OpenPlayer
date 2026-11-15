@@ -5,8 +5,6 @@ import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.execute
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.planSearchTap
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.search.searchTapActions
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
@@ -102,7 +100,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.navigation.NavHostController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceDiagnostics
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
@@ -170,7 +168,7 @@ fun SearchScreen(
     paddingValues: PaddingValues,
     playerViewModel: PlayerViewModel = sharedPlayerViewModel(),
     playlistViewModel: PlaylistViewModel = koinViewModel(),
-    navController: NavHostController,
+    navController: AppNavigator,
     onSearchBarActiveChange: (Boolean) -> Unit = {},
     cloudDownloadsViewModel: CloudDownloadsViewModel = koinViewModel()
 ) {
@@ -443,7 +441,7 @@ fun SearchScreen(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
-                    onClick = { navController.navigateSafely(Screen.Settings.route) }
+                    onClick = { navController.navigateSafely(Screen.Settings) }
                 ) {
                     Icon(
                         painter = painterResource(Res.drawable.rounded_settings_24),
@@ -488,7 +486,7 @@ fun SearchScreen(
                                 onGenreClick = { genre ->
                                     Logger.withTag("SearchScreen").d { "Genre clicked: ${genre.name} (ID: ${genre.id})" }
                                     val encodedGenreId = java.net.URLEncoder.encode(genre.id, "UTF-8")
-                                    navController.navigateSafely(Screen.GenreDetail.createRoute(encodedGenreId))
+                                    navController.navigateSafely(Screen.GenreDetail(encodedGenreId))
                                 },
                                 playerViewModel = playerViewModel,
                                 modifier = Modifier.padding(top = 12.dp),
@@ -709,28 +707,28 @@ fun SearchScreen(
                 onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
                 onNavigateToAlbum = {
                     navController.navigateSafelyReplacing(
-                        route = Screen.AlbumDetail.createRoute(currentSong.albumId),
-                        patternToPop = Screen.AlbumDetail.route
+                        route = Screen.AlbumDetail(currentSong.albumId),
+                        patternToPop = Screen.AlbumDetail::class
                     )
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToArtist = {
                     navController.navigateSafelyReplacing(
-                        route = Screen.ArtistDetail.createRoute(currentSong.artistId),
-                        patternToPop = Screen.ArtistDetail.route
+                        route = Screen.ArtistDetail(currentSong.artistId),
+                        patternToPop = Screen.ArtistDetail::class
                     )
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToArtistById = { artistId ->
                     navController.navigateSafelyReplacing(
-                        route = Screen.ArtistDetail.createRoute(artistId),
-                        patternToPop = Screen.ArtistDetail.route
+                        route = Screen.ArtistDetail(artistId),
+                        patternToPop = Screen.ArtistDetail::class
                     )
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToGenre = {
                     currentSong.genre?.let {
-                        navController.navigateSafely(Screen.GenreDetail.createRoute(java.net.URLEncoder.encode(it, "UTF-8")))
+                        navController.navigateSafely(Screen.GenreDetail(java.net.URLEncoder.encode(it, "UTF-8")))
                     }
                     showSongInfoBottomSheet = false
                 },
@@ -1126,7 +1124,7 @@ fun SearchResultsList(
     currentPlayingSongId: String?,
     isPlaying: Boolean,
     onSongMoreOptionsClick: (Song) -> Unit,
-    navController: NavHostController,
+    navController: AppNavigator,
     isSongSelectionMode: Boolean = false,
     selectedSongIds: Set<String> = emptySet(),
     getSongSelectionIndex: (String) -> Int? = { null },
@@ -1326,8 +1324,8 @@ fun SearchResultsList(
                                 ) {
                                     {
                                         navController.navigateSafelyReplacing(
-                                            route = Screen.AlbumDetail.createRoute(item.album.id),
-                                            patternToPop = Screen.AlbumDetail.route
+                                            route = Screen.AlbumDetail(item.album.id),
+                                            patternToPop = Screen.AlbumDetail::class
                                         )
                                         onItemSelected()
                                     }
@@ -1358,8 +1356,8 @@ fun SearchResultsList(
                                 ) {
                                     {
                                         navController.navigateSafelyReplacing(
-                                            route = Screen.ArtistDetail.createRoute(item.artist.id),
-                                            patternToPop = Screen.ArtistDetail.route
+                                            route = Screen.ArtistDetail(item.artist.id),
+                                            patternToPop = Screen.ArtistDetail::class
                                         )
                                         onItemSelected()
                                     }
@@ -1398,7 +1396,7 @@ fun SearchResultsList(
                                     playerViewModel, onItemSelected
                                 ) {
                                     {
-                                        navController.navigateSafely(Screen.PlaylistDetail.createRoute(item.playlist.id))
+                                        navController.navigateSafely(Screen.PlaylistDetail(item.playlist.id))
                                         onItemSelected()
                                     }
                                 }

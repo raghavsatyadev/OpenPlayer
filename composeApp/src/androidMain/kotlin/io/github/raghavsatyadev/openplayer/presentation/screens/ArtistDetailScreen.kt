@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 import io.github.raghavsatyadev.openplayer.presentation.components.DetailHeroFloatingLayer
 import io.github.raghavsatyadev.openplayer.presentation.components.DetailHeroPinnedActionsHeight
 import io.github.raghavsatyadev.openplayer.presentation.components.DetailSongsSummary
@@ -64,7 +62,8 @@ import io.github.raghavsatyadev.openplayer.ui.theme.OpenPlayerStatusBarStyle
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavController
+import org.koin.core.parameter.parametersOf
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.data.model.Artist
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCommonTopBar
@@ -113,9 +112,9 @@ private const val UseSharedCollapsibleTopBarProbe = true
 @Composable
 fun ArtistDetailScreen(
     artistId: String,
-    navController: NavController,
+    navController: AppNavigator,
     playerViewModel: PlayerViewModel,
-    viewModel: ArtistDetailViewModel = koinViewModel(),
+    viewModel: ArtistDetailViewModel = koinViewModel { parametersOf(artistId) },
     playlistViewModel: PlaylistViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -658,30 +657,30 @@ fun ArtistDetailScreen(
                 onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
                 onNavigateToAlbum = {
                     navController.navigateSafelyReplacing(
-                        route = Screen.AlbumDetail.createRoute(currentSong.albumId),
-                        patternToPop = Screen.AlbumDetail.route
+                        route = Screen.AlbumDetail(currentSong.albumId),
+                        patternToPop = Screen.AlbumDetail::class
                     )
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToArtist = {
                     navController.navigateSafelyReplacing(
-                        route = Screen.ArtistDetail.createRoute(currentSong.artistId),
-                        patternToPop = Screen.ArtistDetail.route
+                        route = Screen.ArtistDetail(currentSong.artistId),
+                        patternToPop = Screen.ArtistDetail::class
                     )
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToArtistById = { artistId ->
                     navController.navigateSafelyReplacing(
-                        route = Screen.ArtistDetail.createRoute(artistId),
-                        patternToPop = Screen.ArtistDetail.route
+                        route = Screen.ArtistDetail(artistId),
+                        patternToPop = Screen.ArtistDetail::class
                     )
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToGenre = {
                     currentSong.genre?.let {
                         navController.navigateSafelyReplacing(
-                            route = Screen.GenreDetail.createRoute(java.net.URLEncoder.encode(it, "UTF-8")),
-                            patternToPop = Screen.GenreDetail.route
+                            route = Screen.GenreDetail(java.net.URLEncoder.encode(it, "UTF-8")),
+                            patternToPop = Screen.GenreDetail::class
                         )
                     }
                     showSongInfoBottomSheet = false

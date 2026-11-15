@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 
 import io.github.raghavsatyadev.openplayer.utils.traceSection
 import androidx.compose.foundation.background
@@ -63,7 +62,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.stats.StatsTimeRange
@@ -98,7 +97,7 @@ import org.jetbrains.compose.resources.vectorResource
 fun RecentlyPlayedScreen(
     playerViewModel: PlayerViewModel,
     playlistViewModel: PlaylistViewModel = koinViewModel(),
-    navController: NavController
+    navController: AppNavigator
 ) = traceSection("RecentlyPlayedScreen.Composition") {
     val context = LocalContext.current
     val dateTodayLabel = stringResource(Res.string.presentation_batch_b_date_today)
@@ -301,20 +300,20 @@ fun RecentlyPlayedScreen(
                 },
                 onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
                 onNavigateToAlbum = {
-                    navController.navigateSafely(Screen.AlbumDetail.createRoute(song.albumId))
+                    navController.navigateSafely(Screen.AlbumDetail(song.albumId))
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToArtist = {
-                    navController.navigateSafely(Screen.ArtistDetail.createRoute(song.artistId))
+                    navController.navigateSafely(Screen.ArtistDetail(song.artistId))
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToArtistById = { artistId ->
-                    navController.navigateSafely(Screen.ArtistDetail.createRoute(artistId))
+                    navController.navigateSafely(Screen.ArtistDetail(artistId))
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToGenre = {
                     song.genre?.let {
-                        navController.navigateSafely(Screen.GenreDetail.createRoute(java.net.URLEncoder.encode(it, "UTF-8")))
+                        navController.navigateSafely(Screen.GenreDetail(java.net.URLEncoder.encode(it, "UTF-8")))
                     }
                     showSongInfoBottomSheet = false
                 },

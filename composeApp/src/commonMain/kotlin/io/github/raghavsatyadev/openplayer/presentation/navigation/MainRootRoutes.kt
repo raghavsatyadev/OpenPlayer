@@ -1,15 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.navigation
 
-internal fun isMainRootRoute(route: String?): Boolean = when (route) {
-    Screen.Home.route,
-    Screen.Search.route,
-    Screen.Library.route -> true
-    else -> false
-}
+import androidx.navigation3.runtime.NavKey
 
-internal fun mainRootRouteIndex(route: String?): Int? = when (route) {
-    Screen.Home.route -> 0
-    Screen.Search.route -> 1
-    Screen.Library.route -> 2
-    else -> null
-}
+internal fun isMainRootRoute(key: NavKey?): Boolean = mainRootRouteIndex(key) != null
+
+internal fun mainRootRouteIndex(key: NavKey?): Int? = (key as? Screen)?.mainTabIndex

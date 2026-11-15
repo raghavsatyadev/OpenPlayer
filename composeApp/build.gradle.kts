@@ -71,7 +71,7 @@ kotlin {
             implementation(libs.jetbrains.compose.ui.tooling.preview)
             implementation(libs.jetbrains.lifecycle.viewmodel.compose)
             implementation(libs.jetbrains.lifecycle.runtime.compose)
-            implementation(libs.jetbrains.navigation.compose)
+            implementation(libs.androidx.navigation3.runtime)
             implementation(libs.kotlinx.coroutines.core)
 
             api(project.dependencies.platform(libs.koin.bom))
@@ -136,8 +136,8 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
             implementation(libs.koin.androidx.workmanager)
-            implementation(libs.androidx.navigation.compose)
-            implementation(libs.androidx.navigation.runtime.ktx)
+            implementation(libs.androidx.navigation3.ui)
+            implementation(libs.androidx.lifecycle.viewmodel.navigation3)
             implementation(libs.androidx.paging.runtime)
             implementation(libs.androidx.datastore.preferences)
 

@@ -22,10 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.BottomNavItem
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateToTopLevelSafely
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -40,15 +39,15 @@ import org.jetbrains.compose.resources.vectorResource
  */
 @Composable
 fun PlayerNavigationRail(
-    navController: NavHostController,
+    navController: AppNavigator,
     navItems: ImmutableList<BottomNavItem>,
-    currentRoute: String?,
+    currentTab: Screen?,
     modifier: Modifier = Modifier,
     onSearchIconDoubleTap: () -> Unit = {}
 ) {
-    val latestCurrentRoute by rememberUpdatedState(currentRoute)
+    val latestCurrentTab by rememberUpdatedState(currentTab)
     val latestOnSearchIconDoubleTap by rememberUpdatedState(onSearchIconDoubleTap)
-    val latestNavigationEnabled by rememberUpdatedState(currentRoute != null)
+    val latestNavigationEnabled by rememberUpdatedState(currentTab != null)
     val scope = rememberCoroutineScope()
     var lastSearchTapTimestamp by remember { mutableLongStateOf(0L) }
     val railState = rememberWideNavigationRailState()
@@ -73,23 +72,23 @@ fun PlayerNavigationRail(
         }
     ) {
         navItems.forEach { item ->
-            val isSelected = currentRoute != null && currentRoute == item.screen.route
+            val isSelected = currentTab != null && currentTab == item.screen
             val label = stringResource(item.labelResId)
             val iconPainterResId = if (isSelected && item.selectedIconResId != null && item.selectedIconResId != 0) {
                 item.selectedIconResId
             } else {
                 item.iconResId
             }
-            val onClickLambda: () -> Unit = remember(item.screen.route, navController, scope) {
+            val onClickLambda: () -> Unit = remember(item.screen, navController, scope) {
                 click@{
                     if (!latestNavigationEnabled) {
                         lastSearchTapTimestamp = 0L
                         return@click
                     }
 
-                    val itemRoute = item.screen.route
-                    val isSearchTab = itemRoute == Screen.Search.route
-                    val isAlreadySelected = latestCurrentRoute == itemRoute
+                    val itemRoute = item.screen
+                    val isSearchTab = itemRoute == Screen.Search
+                    val isAlreadySelected = latestCurrentTab == itemRoute
 
                     if (isSearchTab) {
                         val now = elapsedRealtimeMs()
@@ -119,13 +118,14 @@ fun PlayerNavigationRail(
                         navController.navigateToTopLevelSafely(itemRoute)
                     } else {
                         lastSearchTapTimestamp = 0L
+                        navController.navigateToTabRoot(itemRoute)
                     }
                 }
             }
             WideNavigationRailItem(
                 selected = isSelected,
                 onClick = onClickLambda,
-                enabled = currentRoute != null,
+                enabled = currentTab != null,
                 railExpanded = isExpanded,
                 icon = {
                     Icon(

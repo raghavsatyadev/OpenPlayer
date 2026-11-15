@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 
 import android.content.Intent
 import androidx.activity.compose.ReportDrawnWhen
@@ -70,7 +68,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -130,7 +128,7 @@ private const val HomeScrollRestoreGraceMillis = 1_500L
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navController: NavController,
+    navController: AppNavigator,
     paddingValuesParent: PaddingValues,
     playerViewModel: PlayerViewModel = sharedPlayerViewModel(),
     settingsViewModel: SettingsViewModel = koinViewModel(),
@@ -358,7 +356,7 @@ fun HomeScreen(
             topBar = {
                 HomeGradientTopBar(
                     onNavigationIconClick = {
-                        navController.navigateSafely(Screen.Settings.route)
+                        navController.navigateSafely(Screen.Settings)
                     },
                     onMoreOptionsClick = {
                         showChangelogBottomSheet = true
@@ -470,7 +468,7 @@ fun HomeScreen(
                     ) {
                         RecapHomeCard(
                             entry = entry,
-                            onOpen = { navController.navigateSafely(Screen.Recap.createRoute(entry.year)) },
+                            onOpen = { navController.navigateSafely(Screen.Recap(entry.year)) },
                             onDismiss = { recapEntryViewModel.dismissHomeCard(entry.year) },
                             modifier = Modifier.animateItem()
                         )
@@ -485,23 +483,23 @@ fun HomeScreen(
                         DailyMixSection(
                             songs = dailyMixSongs,
                             onClickOpen = {
-                                navController.navigateSafely(Screen.DailyMixScreen.route)
+                                navController.navigateSafely(Screen.DailyMixScreen)
                             },
                             onNavigateToAlbum = { song ->
                                 navController.navigateSafelyReplacing(
-                                    route = Screen.AlbumDetail.createRoute(song.albumId),
-                                    patternToPop = Screen.AlbumDetail.route
+                                    route = Screen.AlbumDetail(song.albumId),
+                                    patternToPop = Screen.AlbumDetail::class
                                 )
                             },
                             onNavigateToArtist = { song ->
                                 navController.navigateSafelyReplacing(
-                                    route = Screen.ArtistDetail.createRoute(song.artistId),
-                                    patternToPop = Screen.ArtistDetail.route
+                                    route = Screen.ArtistDetail(song.artistId),
+                                    patternToPop = Screen.ArtistDetail::class
                                 )
                             },
                             onNavigateToGenre = { song ->
                                 song.genre?.let {
-                                    navController.navigateSafely(Screen.GenreDetail.createRoute(java.net.URLEncoder.encode(it, "UTF-8")))
+                                    navController.navigateSafely(Screen.GenreDetail(java.net.URLEncoder.encode(it, "UTF-8")))
                                 }
                             },
                             playerViewModel = playerViewModel
@@ -529,7 +527,7 @@ fun HomeScreen(
                                 recentSongForOptions = song
                             },
                             onOpenAllClick = {
-                                navController.navigateSafely(Screen.RecentlyPlayed.route)
+                                navController.navigateSafely(Screen.RecentlyPlayed)
                             },
                             themeStateHolder = playerViewModel.themeStateHolder,
                             currentSongId = currentSong?.id,
@@ -552,7 +550,7 @@ fun HomeScreen(
                 ) {
                     StatsOverviewCard(
                         state = homeStatsOverviewState,
-                        onClick = { navController.navigateSafely(Screen.Stats.route) }
+                        onClick = { navController.navigateSafely(Screen.Stats) }
                     )
                 }
             }
@@ -588,7 +586,7 @@ fun HomeScreen(
                     }.invokeOnCompletion {
                         if (!sheetState.isVisible) {
                             showOptionsBottomSheet = false
-                            navController.navigateSafely(Screen.DJSpace.route)
+                            navController.navigateSafely(Screen.DJSpace)
                         }
                     }
                 }
@@ -618,11 +616,11 @@ fun HomeScreen(
             onDismissRequest = { showStreamingProviderSheet = false },
             isNavidromeLoggedIn = isNavidromeLoggedIn,
             onNavigateToNavidromeDashboard = {
-                navController.navigateSafely(Screen.NavidromeDashboard.route)
+                navController.navigateSafely(Screen.NavidromeDashboard)
             },
             isJellyfinLoggedIn = isJellyfinLoggedIn,
             onNavigateToJellyfinDashboard = {
-                navController.navigateSafely(Screen.JellyfinDashboard.route)
+                navController.navigateSafely(Screen.JellyfinDashboard)
             }
         )
     }
@@ -638,19 +636,19 @@ fun HomeScreen(
             },
             onNavigateToAlbum = { selectedSong ->
                 navController.navigateSafelyReplacing(
-                    route = Screen.AlbumDetail.createRoute(selectedSong.albumId),
-                    patternToPop = Screen.AlbumDetail.route
+                    route = Screen.AlbumDetail(selectedSong.albumId),
+                    patternToPop = Screen.AlbumDetail::class
                 )
             },
             onNavigateToArtist = { artistId ->
                 navController.navigateSafelyReplacing(
-                    route = Screen.ArtistDetail.createRoute(artistId),
-                    patternToPop = Screen.ArtistDetail.route
+                    route = Screen.ArtistDetail(artistId),
+                    patternToPop = Screen.ArtistDetail::class
                 )
             },
             onNavigateToGenre = { selectedSong ->
                 selectedSong.genre?.let {
-                    navController.navigateSafely(Screen.GenreDetail.createRoute(java.net.URLEncoder.encode(it, "UTF-8")))
+                    navController.navigateSafely(Screen.GenreDetail(java.net.URLEncoder.encode(it, "UTF-8")))
                 }
             }
         )

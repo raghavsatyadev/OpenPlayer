@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.data.model.Song
@@ -31,14 +30,13 @@ import co.touchlab.kermit.Logger
  * snapshot: plays recorded while it is open do not reshuffle the slides under the reader.
  */
 class RecapViewModel(
-    savedStateHandle: SavedStateHandle,
+    val year: Int,
     private val playbackStatsRepository: PlaybackStatsRepository,
     private val musicRepository: MusicRepository,
     private val artistImageRepository: ArtistImageRepository,
     private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
-    val year: Int = savedStateHandle.get<Int>(YEAR_ARG) ?: LocalDate.now().year
 
     private val _uiState = MutableStateFlow<RecapUiState>(RecapUiState.Loading)
     val uiState: StateFlow<RecapUiState> = _uiState.asStateFlow()

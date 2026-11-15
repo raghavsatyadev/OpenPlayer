@@ -2,8 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 
 import android.os.Trace
 import io.github.raghavsatyadev.openplayer.utils.traceSection
@@ -120,7 +118,7 @@ import androidx.compose.ui.unit.dp
 import io.github.raghavsatyadev.openplayer.ui.theme.LocalOpenPlayerDarkTheme
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
@@ -340,7 +338,7 @@ private fun PlayerUiState.toLibraryScreenProjection(): LibraryScreenPlayerProjec
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun LibraryScreen(
-    navController: NavController,
+    navController: AppNavigator,
     playerViewModel: PlayerViewModel = sharedPlayerViewModel(),
     playlistViewModel: PlaylistViewModel = koinViewModel(),
     libraryViewModel: LibraryViewModel = koinViewModel(),
@@ -884,7 +882,7 @@ fun LibraryScreen(
                                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                             ),
                             onClick = {
-                                navController.navigateSafely(Screen.AudioBookmarks.route)
+                                navController.navigateSafely(Screen.AudioBookmarks)
                             }
                         ) {
                             Icon(
@@ -899,7 +897,7 @@ fun LibraryScreen(
                                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                             ),
                             onClick = {
-                                navController.navigateSafely(Screen.Settings.route)
+                                navController.navigateSafely(Screen.Settings)
                             }
                         ) {
                             Icon(
@@ -1552,8 +1550,8 @@ fun LibraryScreen(
                                         val stableOnAlbumClick: (Long) -> Unit = remember(navController) {
                                             { albumId: Long ->
                                                 navController.navigateSafelyReplacing(
-                                                    route = Screen.AlbumDetail.createRoute(albumId),
-                                                    patternToPop = Screen.AlbumDetail.route
+                                                    route = Screen.AlbumDetail(albumId),
+                                                    patternToPop = Screen.AlbumDetail::class
                                                 )
                                             }
                                         }
@@ -1588,8 +1586,8 @@ fun LibraryScreen(
                                             currentArtistSortOption = playerUiState.currentArtistSortOption,
                                             onArtistClick = { artistId ->
                                                 navController.navigateSafelyReplacing(
-                                                    route = Screen.ArtistDetail.createRoute(artistId),
-                                                    patternToPop = Screen.ArtistDetail.route
+                                                    route = Screen.ArtistDetail(artistId),
+                                                    patternToPop = Screen.ArtistDetail::class
                                                 )
                                             },
                                             isRefreshing = isRefreshing,
@@ -1666,10 +1664,10 @@ fun LibraryScreen(
                                             onFolderAsPlaylistClick = { folder ->
                                                 val encodedPath = Uri.encode(folder.path)
                                                 navController.navigateSafelyReplacing(
-                                                    route = Screen.PlaylistDetail.createRoute(
+                                                    route = Screen.PlaylistDetail(
                                                         "${PlaylistViewModel.FOLDER_PLAYLIST_PREFIX}$encodedPath"
                                                     ),
-                                                    patternToPop = Screen.PlaylistDetail.route
+                                                    patternToPop = Screen.PlaylistDetail::class
                                                 )
                                             },
                                             onPlaySong = { song, queue ->
@@ -1710,10 +1708,10 @@ fun LibraryScreen(
                                         val stableOnGenreClick: (Genre) -> Unit = remember(navController) {
                                             { genre: Genre ->
                                                 navController.navigateSafelyReplacing(
-                                                    route = Screen.GenreDetail.createRoute(
+                                                    route = Screen.GenreDetail(
                                                         java.net.URLEncoder.encode(genre.id, "UTF-8")
                                                     ),
-                                                    patternToPop = Screen.GenreDetail.route
+                                                    patternToPop = Screen.GenreDetail::class
                                                 )
                                             }
                                         }
@@ -1878,30 +1876,30 @@ fun LibraryScreen(
                 onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
                 onNavigateToAlbum = {
                     navController.navigateSafelyReplacing(
-                        route = Screen.AlbumDetail.createRoute(currentSong.albumId),
-                        patternToPop = Screen.AlbumDetail.route
+                        route = Screen.AlbumDetail(currentSong.albumId),
+                        patternToPop = Screen.AlbumDetail::class
                     )
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToArtist = {
                     navController.navigateSafelyReplacing(
-                        route = Screen.ArtistDetail.createRoute(currentSong.artistId),
-                        patternToPop = Screen.ArtistDetail.route
+                        route = Screen.ArtistDetail(currentSong.artistId),
+                        patternToPop = Screen.ArtistDetail::class
                     )
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToArtistById = { artistId ->
                     navController.navigateSafelyReplacing(
-                        route = Screen.ArtistDetail.createRoute(artistId),
-                        patternToPop = Screen.ArtistDetail.route
+                        route = Screen.ArtistDetail(artistId),
+                        patternToPop = Screen.ArtistDetail::class
                     )
                     showSongInfoBottomSheet = false
                 },
                 onNavigateToGenre = {
                     currentSong.genre?.let {
                         navController.navigateSafelyReplacing(
-                            route = Screen.GenreDetail.createRoute(java.net.URLEncoder.encode(it, "UTF-8")),
-                            patternToPop = Screen.GenreDetail.route
+                            route = Screen.GenreDetail(java.net.URLEncoder.encode(it, "UTF-8")),
+                            patternToPop = Screen.GenreDetail::class
                         )
                     }
                     showSongInfoBottomSheet = false

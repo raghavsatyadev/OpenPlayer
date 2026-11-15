@@ -122,7 +122,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.database.AudioBookmarkEntity
 import io.github.raghavsatyadev.openplayer.data.database.backupSongIdOfRestoredBookmark
@@ -135,7 +135,6 @@ import io.github.raghavsatyadev.openplayer.presentation.components.ScreenWrapper
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
 import io.github.raghavsatyadev.openplayer.presentation.components.rememberModalSheetState
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.AudioBookmarksViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.ui.theme.GenreThemeUtils
@@ -157,7 +156,7 @@ import org.jetbrains.compose.resources.vectorResource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AudioBookmarksScreen(
-    navController: NavController,
+    navController: AppNavigator,
     playerViewModel: PlayerViewModel,
     onOpenSidebar: () -> Unit,
     bookmarksViewModel: AudioBookmarksViewModel = koinViewModel()
@@ -281,7 +280,7 @@ fun AudioBookmarksScreen(
                                 if (isSelecting) {
                                     selectedSongIds = selection.toggled(folderId)
                                 } else {
-                                    navController.navigateSafely(Screen.AudioBookmarkFolder.createRoute(folderId))
+                                    navController.navigateSafely(Screen.AudioBookmarkFolder(folderId))
                                 }
                             },
                             onLongClick = {
@@ -431,7 +430,7 @@ private fun <T> Set<T>.toggled(id: T): Set<T> =
 @Composable
 fun AudioBookmarkFolderScreen(
     songId: String,
-    navController: NavController,
+    navController: AppNavigator,
     playerViewModel: PlayerViewModel,
     bookmarksViewModel: AudioBookmarksViewModel = koinViewModel()
 ) {

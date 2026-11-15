@@ -79,11 +79,12 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.RecapViewModel
 import io.github.raghavsatyadev.openplayer.ui.theme.ShapeCache
@@ -129,9 +130,10 @@ private val SlideScrollStatesSaver = listSaver<List<ScrollState>, Int>(
  */
 @Composable
 fun RecapScreen(
-    navController: NavController,
+    navController: AppNavigator,
     playerViewModel: PlayerViewModel,
-    recapViewModel: RecapViewModel = koinViewModel()
+    year: Int,
+    recapViewModel: RecapViewModel = koinViewModel { parametersOf(year) }
 ) {
     val uiState by recapViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current

@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.raghavsatyadev.openplayer.data.model.Album
@@ -31,7 +30,7 @@ class AlbumDetailViewModel(
     private val context: Context,
     private val musicRepository: MusicRepository,
     private val cloudOfflineRepository: CloudOfflineRepository,
-    savedStateHandle: SavedStateHandle
+    albumId: String
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AlbumDetailUiState())
@@ -43,7 +42,7 @@ class AlbumDetailViewModel(
     private var loadedAlbumId: Long? = null
 
     init {
-        val albumIdString: String? = savedStateHandle.get("albumId")
+        val albumIdString: String? = albumId
         if (albumIdString != null) {
             val albumId = albumIdString.toLongOrNull()
             if (albumId != null) {

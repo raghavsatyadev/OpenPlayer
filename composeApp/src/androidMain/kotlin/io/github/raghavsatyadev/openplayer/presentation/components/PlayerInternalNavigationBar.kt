@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateToTopLevelSafely
 
 import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.BottomNavItem
 import io.github.raghavsatyadev.openplayer.data.preferences.NavBarStyle
 import io.github.raghavsatyadev.openplayer.presentation.components.scoped.CustomNavigationBarItem
@@ -88,9 +87,9 @@ internal fun resolveNavBarOccupiedHeight(
 
 @Composable
 private fun PlayerInternalNavigationItemsRow(
-    navController: NavHostController,
+    navController: AppNavigator,
     navItems: ImmutableList<BottomNavItem>,
-    currentRoute: String?,
+    currentTab: Screen?,
     modifier: Modifier = Modifier,
     navBarStyle: String,
     compactMode: Boolean,
@@ -101,9 +100,9 @@ private fun PlayerInternalNavigationItemsRow(
         WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     )
     val innerRowPadding = (navBarInsetPadding - bottomBarPadding).coerceAtLeast(0.dp)
-    val latestCurrentRoute by rememberUpdatedState(currentRoute)
+    val latestCurrentTab by rememberUpdatedState(currentTab)
     val latestOnSearchIconDoubleTap by rememberUpdatedState(onSearchIconDoubleTap)
-    val latestNavigationEnabled by rememberUpdatedState(currentRoute != null)
+    val latestNavigationEnabled by rememberUpdatedState(currentTab != null)
 
     val rowModifier = if (navBarStyle == NavBarStyle.FULL_WIDTH) {
         modifier
@@ -122,7 +121,7 @@ private fun PlayerInternalNavigationItemsRow(
         val scope = rememberCoroutineScope()
         var lastSearchTapTimestamp by remember { mutableStateOf(0L) }
         navItems.forEach { item ->
-            val isSelected = currentRoute != null && currentRoute == item.screen.route
+            val isSelected = currentTab != null && currentTab == item.screen
             val selectedColor = MaterialTheme.colorScheme.primary
             val unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
             val indicatorColorFromTheme = MaterialTheme.colorScheme.secondaryContainer
@@ -157,16 +156,16 @@ private fun PlayerInternalNavigationItemsRow(
                     { Text(label) }
                 }
             }
-            val onClickLambda: () -> Unit = remember(item.screen.route, navController, scope) {
+            val onClickLambda: () -> Unit = remember(item.screen, navController, scope) {
                 click@{
                     if (!latestNavigationEnabled) {
                         lastSearchTapTimestamp = 0L
                         return@click
                     }
 
-                    val itemRoute = item.screen.route
-                    val isSearchTab = itemRoute == Screen.Search.route
-                    val isAlreadySelected = latestCurrentRoute == itemRoute
+                    val itemRoute = item.screen
+                    val isSearchTab = itemRoute == Screen.Search
+                    val isAlreadySelected = latestCurrentTab == itemRoute
 
                     if (isSearchTab) {
                         val now = elapsedRealtimeMs()
@@ -196,6 +195,7 @@ private fun PlayerInternalNavigationItemsRow(
                         navController.navigateToTopLevelSafely(itemRoute)
                     } else {
                         lastSearchTapTimestamp = 0L
+                        navController.navigateToTabRoot(itemRoute)
                     }
                 }
             }
@@ -203,7 +203,7 @@ private fun PlayerInternalNavigationItemsRow(
                 modifier = Modifier.weight(1f),
                 selected = isSelected,
                 onClick = onClickLambda,
-                enabled = currentRoute != null,
+                enabled = currentTab != null,
                 compactMode = compactMode,
                 icon = iconLambda,
                 selectedIcon = selectedIconLambda,
@@ -222,9 +222,9 @@ private fun PlayerInternalNavigationItemsRow(
 
 @Composable
 fun PlayerInternalNavigationBar(
-    navController: NavHostController,
+    navController: AppNavigator,
     navItems: ImmutableList<BottomNavItem>,
-    currentRoute: String?,
+    currentTab: Screen?,
     modifier: Modifier = Modifier,
     navBarStyle: String,
     compactMode: Boolean,
@@ -234,7 +234,7 @@ fun PlayerInternalNavigationBar(
     PlayerInternalNavigationItemsRow(
         navController = navController,
         navItems = navItems,
-        currentRoute = currentRoute,
+        currentTab = currentTab,
         navBarStyle = navBarStyle,
         compactMode = compactMode,
         bottomBarPadding = bottomBarPadding,

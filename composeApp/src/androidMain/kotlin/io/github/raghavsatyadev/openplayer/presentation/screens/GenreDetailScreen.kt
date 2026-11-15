@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafelyReplacing
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 import androidx.compose.animation.*
@@ -45,7 +43,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.zIndex
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavHostController
+import org.koin.core.parameter.parametersOf
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -99,11 +98,11 @@ import org.jetbrains.compose.resources.vectorResource
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun GenreDetailScreen(
-    navController: NavHostController,
+    navController: AppNavigator,
     genreId: String,
     decodedGenreId: String = java.net.URLDecoder.decode(genreId, "UTF-8"),
     playerViewModel: PlayerViewModel,
-    viewModel: GenreDetailViewModel = koinViewModel(),
+    viewModel: GenreDetailViewModel = koinViewModel { parametersOf(genreId) },
     playlistViewModel: io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewModel = koinViewModel(),
     cloudDownloadsViewModel: CloudDownloadsViewModel = koinViewModel()
 ) {
@@ -613,30 +612,30 @@ fun GenreDetailScreen(
                         onDeleteFromDevice = playerViewModel.deleteActions::deleteFromDevice,
                         onNavigateToAlbum = {
                             navController.navigateSafelyReplacing(
-                                route = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.AlbumDetail.createRoute(song.albumId),
-                                patternToPop = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.AlbumDetail.route
+                                route = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.AlbumDetail(song.albumId),
+                                patternToPop = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.AlbumDetail::class
                             )
                             showSongOptionsSheet = null
                         },
                         onNavigateToArtist = {
                             navController.navigateSafelyReplacing(
-                                route = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.ArtistDetail.createRoute(song.artistId),
-                                patternToPop = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.ArtistDetail.route
+                                route = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.ArtistDetail(song.artistId),
+                                patternToPop = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.ArtistDetail::class
                             )
                             showSongOptionsSheet = null
                         },
                         onNavigateToArtistById = { artistId ->
                             navController.navigateSafelyReplacing(
-                                route = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.ArtistDetail.createRoute(artistId),
-                                patternToPop = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.ArtistDetail.route
+                                route = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.ArtistDetail(artistId),
+                                patternToPop = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.ArtistDetail::class
                             )
                             showSongOptionsSheet = null
                         },
                         onNavigateToGenre = {
                             song.genre?.let {
                                 navController.navigateSafelyReplacing(
-                                    route = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.GenreDetail.createRoute(java.net.URLEncoder.encode(it, "UTF-8")),
-                                    patternToPop = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.GenreDetail.route
+                                    route = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.GenreDetail(java.net.URLEncoder.encode(it, "UTF-8")),
+                                    patternToPop = io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.GenreDetail::class
                                 )
                             }
                             showSongOptionsSheet = null

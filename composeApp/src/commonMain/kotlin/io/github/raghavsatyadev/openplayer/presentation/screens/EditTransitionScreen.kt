@@ -68,7 +68,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavController
+import org.koin.core.parameter.parametersOf
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import io.github.raghavsatyadev.openplayer.data.model.Curve
 import io.github.raghavsatyadev.openplayer.data.model.TransitionMode
 import io.github.raghavsatyadev.openplayer.data.model.TransitionSettings
@@ -86,8 +87,9 @@ import org.jetbrains.compose.resources.vectorResource
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun EditTransitionScreen(
-    navController: NavController,
-    viewModel: TransitionViewModel = koinViewModel()
+    navController: AppNavigator,
+    playlistId: String? = null,
+    viewModel: TransitionViewModel = koinViewModel { parametersOf(playlistId) }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }

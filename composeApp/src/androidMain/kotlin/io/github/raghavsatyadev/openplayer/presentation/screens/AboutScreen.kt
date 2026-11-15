@@ -86,7 +86,7 @@ import androidx.compose.ui.unit.lerp as lerpDp
 import androidx.compose.ui.util.lerp as lerpFloat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import coil3.compose.AsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -96,7 +96,6 @@ import io.github.raghavsatyadev.openplayer.presentation.components.CollapsibleCo
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
 import io.github.raghavsatyadev.openplayer.presentation.navigation.Screen
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
 import kotlinx.coroutines.launch
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
@@ -161,7 +160,7 @@ private data class ProjectLink(
 @Suppress("UNUSED_PARAMETER")
 @Composable
 fun AboutScreen(
-    navController: NavController,
+    navController: AppNavigator,
     viewModel: PlayerViewModel,
     onNavigationIconClick: () -> Unit,
 ) {
@@ -186,7 +185,7 @@ fun AboutScreen(
             title = stringResource(Res.string.about_licenses_title),
             subtitle = stringResource(Res.string.about_licenses_subtitle),
             icon = rememberVectorPainter(vectorResource(Res.drawable.rounded_balance_24)),
-            onClick = { navController.navigateSafely(Screen.Licenses.route) },
+            onClick = { navController.navigateSafely(Screen.Licenses) },
         ),
     )
 
@@ -298,7 +297,7 @@ fun AboutScreen(
                 AboutHeroCard(
                     versionName = versionName,
                     onVersionLongPress = {
-                        navController.navigateSafely(Screen.EasterEgg.route)
+                        navController.navigateSafely(Screen.EasterEgg)
                     },
                     modifier = Modifier
                         .fillMaxWidth()

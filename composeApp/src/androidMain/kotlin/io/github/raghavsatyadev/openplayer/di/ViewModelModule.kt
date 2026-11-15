@@ -167,7 +167,7 @@ val viewModelModule = module {
     viewModelOf(::SongUserMetaViewModel)
     viewModelOf(::StatsViewModel)
     viewModelOf(::StreamingProviderLoginViewModel)
-    viewModelOf(::TransitionViewModel)
+    viewModel { params -> TransitionViewModel(get(), params.getOrNull()) }
     viewModelOf(::UpdatesViewModel)
     viewModelOf(::VideoSettingsViewModel)
     viewModelOf(::VideosLibraryViewModel)

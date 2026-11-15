@@ -2,7 +2,6 @@
 
 package io.github.raghavsatyadev.openplayer.presentation.screens
 
-import io.github.raghavsatyadev.openplayer.presentation.navigation.navigateSafely
 import io.github.raghavsatyadev.openplayer.presentation.utils.rememberAppToaster
 import io.github.raghavsatyadev.openplayer.presentation.components.BackupModuleSelectionDialog
 import java.text.SimpleDateFormat
@@ -126,7 +125,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.net.toUri
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.navigation.NavController
+import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -182,7 +181,7 @@ import org.jetbrains.compose.resources.vectorResource
 fun SettingsCategoryScreen(
     categoryId: String,
     highlightKey: String? = null,
-    navController: NavController,
+    navController: AppNavigator,
     playerViewModel: PlayerViewModel,
     settingsViewModel: SettingsViewModel = koinViewModel(),
     m3uSyncViewModel: M3uSyncViewModel = koinViewModel(),
@@ -457,7 +456,7 @@ fun SettingsCategoryScreen(
                                     leadingIcon = { Icon(vectorResource(Res.drawable.rounded_folder_24), null, tint = MaterialTheme.colorScheme.secondary) },
                                     trailingIcon = { Icon(vectorResource(Res.drawable.rounded_chevron_right_24), stringResource(Res.string.cd_open), tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                                     modifier = Modifier.settingHighlight("item_library_excluded_directories", highlightKey),
-                                    onClick = { navController.navigateSafely(Screen.ExcludedDirectories.route) }
+                                    onClick = { navController.navigateSafely(Screen.ExcludedDirectories) }
                                 )
                                 SettingsItem(
                                     title = stringResource(Res.string.setcat_artists_title),
@@ -465,7 +464,7 @@ fun SettingsCategoryScreen(
                                     leadingIcon = { Icon(vectorResource(Res.drawable.rounded_person_24), null, tint = MaterialTheme.colorScheme.secondary) },
                                     trailingIcon = { Icon(vectorResource(Res.drawable.rounded_chevron_right_24), stringResource(Res.string.cd_open), tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                                     modifier = Modifier.settingHighlight("item_library_artists", highlightKey),
-                                    onClick = { navController.navigateSafely(Screen.ArtistSettings.createRoute()) }
+                                    onClick = { navController.navigateSafely(Screen.ArtistSettings()) }
                                 )
                             }
 
@@ -595,7 +594,7 @@ fun SettingsCategoryScreen(
                                     leadingIcon = { Icon(vectorResource(Res.drawable.rounded_folder_24), null, tint = MaterialTheme.colorScheme.secondary) },
                                     trailingIcon = { Icon(vectorResource(Res.drawable.rounded_chevron_right_24), stringResource(Res.string.cd_open), tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                                     modifier = Modifier.settingHighlight("item_library_find_duplicates", highlightKey),
-                                    onClick = { navController.navigateSafely(Screen.Duplicates.createRoute()) }
+                                    onClick = { navController.navigateSafely(Screen.Duplicates()) }
                                 )
                             }
 
@@ -799,7 +798,7 @@ fun SettingsCategoryScreen(
                                     subtitle = stringResource(Res.string.setcat_album_art_palette_subtitle, uiState.albumArtPaletteStyle.label),
                                     leadingIcon = { Icon(vectorResource(Res.drawable.rounded_style_24), null, tint = MaterialTheme.colorScheme.secondary) },
                                     trailingIcon = { Icon(vectorResource(Res.drawable.rounded_chevron_right_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
-                                    onClick = { navController.navigateSafely(Screen.PaletteStyle.createRoute()) }
+                                    onClick = { navController.navigateSafely(Screen.PaletteStyle()) }
                                 )
                                 ThemeSelectorItem(
                                     label = stringResource(Res.string.setcat_carousel_style_label),
@@ -870,7 +869,7 @@ fun SettingsCategoryScreen(
                                     subtitle = stringResource(Res.string.setcat_navbar_corner_subtitle),
                                     leadingIcon = { Icon(painterResource(Res.drawable.rounded_rounded_corner_24), null, tint = MaterialTheme.colorScheme.secondary) },
                                     trailingIcon = { Icon(vectorResource(Res.drawable.rounded_chevron_right_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
-                                    onClick = { navController.navigateSafely(Screen.NavBarCrRad.createRoute()) }
+                                    onClick = { navController.navigateSafely(Screen.NavBarCrRad()) }
                                 )
                             }
 
@@ -1281,7 +1280,7 @@ fun SettingsCategoryScreen(
                                     subtitle = stringResource(Res.string.setcat_experimental_subtitle),
                                     leadingIcon = { Icon(vectorResource(Res.drawable.rounded_science_filled_24), null, tint = MaterialTheme.colorScheme.secondary) },
                                     trailingIcon = { Icon(vectorResource(Res.drawable.rounded_chevron_right_24), stringResource(Res.string.cd_open), tint = MaterialTheme.colorScheme.onSurfaceVariant) },
-                                    onClick = { navController.navigateSafely(Screen.Experimental.createRoute()) }
+                                    onClick = { navController.navigateSafely(Screen.Experimental()) }
                                 )
                                 SettingsItem(
                                     title = stringResource(Res.string.setcat_test_setup_title),
@@ -1352,7 +1351,7 @@ fun SettingsCategoryScreen(
                                     leadingIcon = { Icon(vectorResource(Res.drawable.rounded_info_24), null, tint = MaterialTheme.colorScheme.secondary) },
                                     trailingIcon = { Icon(vectorResource(Res.drawable.rounded_chevron_right_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                                     modifier = Modifier.settingHighlight("item_about_app", highlightKey),
-                                    onClick = { navController.navigateSafely("about") }
+                                    onClick = { navController.navigateSafely(io.github.raghavsatyadev.openplayer.presentation.navigation.Screen.About) }
                                 )
                                 SettingsItem(
                                     title = stringResource(Res.string.updates_check_row_title),
@@ -1360,7 +1359,7 @@ fun SettingsCategoryScreen(
                                     leadingIcon = { Icon(vectorResource(Res.drawable.rounded_system_update_filled_24), null, tint = MaterialTheme.colorScheme.secondary) },
                                     trailingIcon = { Icon(vectorResource(Res.drawable.rounded_chevron_right_24), null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                                     modifier = Modifier.settingHighlight("item_updates", highlightKey),
-                                    onClick = { navController.navigateSafely(Screen.Updates.route) }
+                                    onClick = { navController.navigateSafely(Screen.Updates) }
                                 )
                             }
                         }
