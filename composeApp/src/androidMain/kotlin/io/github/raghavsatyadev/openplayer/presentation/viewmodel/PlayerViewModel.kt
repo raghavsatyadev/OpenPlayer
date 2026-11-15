@@ -2,7 +2,6 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
 import android.net.Uri
 import android.os.Trace
-import android.media.MediaMetadataRetriever
 import kotlinx.coroutines.withContext
 import androidx.compose.animation.core.Animatable
 import androidx.core.content.ContextCompat
@@ -1115,11 +1114,8 @@ class PlayerViewModel(
     private val playNextInserter = io.github.raghavsatyadev.openplayer.presentation.viewmodel.queue.PlayNextInserter()
 
     private var pendingPlaybackAction: (() -> Unit)? = null
-    private var metadataProbeJob: Job? = null
-    private var metadataProbeMediaId: String? = null
-
-    private val _playbackAudioMetadata = MutableStateFlow(PlaybackAudioMetadata())
-    val playbackAudioMetadata: StateFlow<PlaybackAudioMetadata> = _playbackAudioMetadata.asStateFlow()
+    private val audioMetadataTracker = io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackAudioMetadataTracker(context, viewModelScope, dispatchers)
+    val playbackAudioMetadata: StateFlow<PlaybackAudioMetadata> = audioMetadataTracker.metadata
 
     val favoriteSongIds: StateFlow<Set<String>> = musicRepository
         .getFavoriteSongIdsFlow()
@@ -2378,132 +2374,6 @@ class PlayerViewModel(
         pendingRepeatMode?.let { applyPreferredRepeatMode(it) }
     }
 
-    private fun resetPlaybackAudioMetadata() {
-        metadataProbeJob?.cancel()
-        metadataProbeJob = null
-        metadataProbeMediaId = null
-        _playbackAudioMetadata.value = PlaybackAudioMetadata()
-    }
-
-    private fun preparePlaybackAudioMetadataForMedia(mediaId: String?) {
-        // Queue-only changes (shuffle/unshuffle, reordering, repeat toggles) re-announce
-        // the same media id while the same track keeps playing. No tracks-changed event
-        // follows, so wiping here would blank the player file info until the next real
-        // transition. Keep the already-resolved format info instead.
-        if (mediaId != null && _playbackAudioMetadata.value.mediaId == mediaId) return
-        metadataProbeJob?.cancel()
-        metadataProbeJob = null
-        metadataProbeMediaId = null
-        _playbackAudioMetadata.value = PlaybackAudioMetadata(mediaId = mediaId)
-    }
-
-    private fun extractBitDepthFromPcmEncoding(pcmEncoding: Int): Int? {
-        return when (pcmEncoding) {
-            C.ENCODING_PCM_8BIT -> 8
-            C.ENCODING_PCM_16BIT -> 16
-            C.ENCODING_PCM_24BIT -> 24
-            C.ENCODING_PCM_32BIT -> 32
-            C.ENCODING_PCM_FLOAT -> 32
-            else -> null
-        }
-    }
-
-    private fun refreshPlaybackAudioMetadata(player: Player, tracks: Tracks = player.currentTracks) {
-        runCatching {
-            val mediaId = player.currentMediaItem?.mediaId
-            if (mediaId == null) {
-                resetPlaybackAudioMetadata()
-                return@runCatching
-            }
-
-            val selectedAudioFormat = tracks.groups
-                .asSequence()
-                .filter { it.type == C.TRACK_TYPE_AUDIO }
-                .flatMap { group ->
-                    (0 until group.length)
-                        .asSequence()
-                        .filter { index -> group.isTrackSelected(index) }
-                        .map { index -> group.getTrackFormat(index) }
-                }
-                .firstOrNull()
-
-            val current = _playbackAudioMetadata.value.takeIf { it.mediaId == mediaId }
-            val metadata = PlaybackAudioMetadata(
-                mediaId = mediaId,
-                mimeType = selectedAudioFormat?.sampleMimeType
-                    ?: selectedAudioFormat?.containerMimeType
-                    ?: current?.mimeType,
-                bitrate = selectedAudioFormat?.bitrate?.takeIf { it > 0 }
-                    ?: current?.bitrate,
-                sampleRate = selectedAudioFormat?.sampleRate?.takeIf { it > 0 }
-                    ?: current?.sampleRate,
-                channelCount = selectedAudioFormat?.channelCount?.takeIf { it > 0 } ?: current?.channelCount,
-                bitDepth = selectedAudioFormat?.pcmEncoding?.let(::extractBitDepthFromPcmEncoding) ?: current?.bitDepth
-            )
-
-            _playbackAudioMetadata.value = metadata
-            maybeProbeMissingPlaybackAudioMetadata(player, metadata)
-        }.onFailure { throwable ->
-            Logger.w(throwable) { "Failed to refresh playback audio metadata" }
-        }
-    }
-
-    private fun maybeProbeMissingPlaybackAudioMetadata(
-        player: Player,
-        metadata: PlaybackAudioMetadata
-    ) {
-        val shouldProbe = metadata.mimeType.isNullOrBlank() || metadata.bitrate == null || metadata.sampleRate == null
-        if (!shouldProbe) return
-
-        val mediaItem = player.currentMediaItem ?: return
-        val mediaId = mediaItem.mediaId
-        val uri = mediaItem.localConfiguration?.uri ?: return
-
-        if (metadataProbeMediaId == mediaId && metadataProbeJob?.isActive == true) return
-
-        metadataProbeJob?.cancel()
-        metadataProbeMediaId = mediaId
-        metadataProbeJob = viewModelScope.launch(dispatchers.io) {
-            val probedMetadata = runCatching {
-                val retriever = MediaMetadataRetriever()
-                try {
-                    retriever.setDataSource(context, uri)
-                    val mimeType = retriever
-                        .extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE)
-                        ?.takeIf { it.isNotBlank() }
-                        ?: context.contentResolver.getType(uri)
-                    val bitrate = retriever
-                        .extractMetadata(MediaMetadataRetriever.METADATA_KEY_BITRATE)
-                        ?.toIntOrNull()
-                        ?.takeIf { it > 0 }
-                    val sampleRate = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_SAMPLERATE)
-                            ?.toIntOrNull()
-                            ?.takeIf { it > 0 }
-                    } else null
-                    PlaybackAudioMetadata(
-                        mediaId = mediaId,
-                        mimeType = mimeType,
-                        bitrate = bitrate,
-                        sampleRate = sampleRate
-                    )
-                } finally {
-                    retriever.release()
-                }
-            }.getOrNull() ?: return@launch
-
-            _playbackAudioMetadata.update { current ->
-                val isSameMediaItem = current.mediaId == mediaId
-                if (!isSameMediaItem) return@update current
-                current.copy(
-                    mimeType = current.mimeType ?: probedMetadata.mimeType,
-                    bitrate = current.bitrate ?: probedMetadata.bitrate,
-                    sampleRate = current.sampleRate ?: probedMetadata.sampleRate
-                )
-            }
-        }
-    }
-
     private fun syncPlaybackPositionFromPlayer(
         mediaId: String?,
         reportedPositionMs: Long
@@ -2525,7 +2395,7 @@ class PlayerViewModel(
         if (currentSongId == mediaItem.mediaId && currentIndex == expectedIndex) return
 
         playbackStateHolder.onPlaybackOccurrenceTransition(mediaItem.mediaId)
-        preparePlaybackAudioMetadataForMedia(mediaItem.mediaId)
+        audioMetadataTracker.prepareForMedia(mediaItem.mediaId)
         transitionSchedulerJob?.cancel()
         lyricsStateHolder.cancelLoading()
         resetLyricsSearchState()
@@ -2575,8 +2445,8 @@ class PlayerViewModel(
                 playWhenReady = playerCtrl.playWhenReady
             )
         }
-        preparePlaybackAudioMetadataForMedia(playerCtrl.currentMediaItem?.mediaId)
-        refreshPlaybackAudioMetadata(playerCtrl)
+        audioMetadataTracker.prepareForMedia(playerCtrl.currentMediaItem?.mediaId)
+        audioMetadataTracker.refresh(playerCtrl)
 
         updateCurrentPlaybackQueueFromPlayer(playerCtrl)
 
@@ -2618,7 +2488,7 @@ class PlayerViewModel(
                 }
                 playbackStateHolder.clearCurrentPositionHints()
                 playbackStateHolder.setCurrentPosition(0L)
-                resetPlaybackAudioMetadata()
+                audioMetadataTracker.reset()
             }
         }
 
@@ -2667,7 +2537,7 @@ class PlayerViewModel(
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 playNextInserter.onCurrentItemChanged(playerCtrl.currentMediaItemIndex, reason)
                 playbackStateHolder.onPlaybackOccurrenceTransition(mediaItem?.mediaId)
-                preparePlaybackAudioMetadataForMedia(mediaItem?.mediaId)
+                audioMetadataTracker.prepareForMedia(mediaItem?.mediaId)
                 transitionSchedulerJob?.cancel()
                 lyricsStateHolder.cancelLoading()
                 transitionSchedulerJob = viewModelScope.launch {
@@ -2724,13 +2594,13 @@ class PlayerViewModel(
                             )
                         }
                         playbackStateHolder.clearCurrentPositionHints()
-                        resetPlaybackAudioMetadata()
+                        audioMetadataTracker.reset()
                     }
                 }
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
-                refreshPlaybackAudioMetadata(playerCtrl)
+                audioMetadataTracker.refresh(playerCtrl)
                 syncDisplayedMediaItemIfChanged(playerCtrl)
 
                 bufferingDebounceJob?.cancel()
@@ -2775,11 +2645,11 @@ class PlayerViewModel(
                     }
                     playbackStateHolder.clearCurrentPositionHints()
                     playbackStateHolder.setCurrentPosition(0L)
-                    resetPlaybackAudioMetadata()
+                    audioMetadataTracker.reset()
                 }
             }
             override fun onTracksChanged(tracks: Tracks) {
-                refreshPlaybackAudioMetadata(playerCtrl, tracks)
+                audioMetadataTracker.refresh(playerCtrl, tracks)
             }
             override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
                 syncDisplayedMediaItemIfChanged(playerCtrl)
