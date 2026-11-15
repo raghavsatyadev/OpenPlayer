@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.media3.common.Player
 import io.github.raghavsatyadev.openplayer.presentation.components.LocalMaterialTheme
 import io.github.raghavsatyadev.openplayer.presentation.components.ToggleSegmentButton
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
@@ -87,10 +86,10 @@ fun BottomToggleRow(
                 iconId = Res.drawable.rounded_shuffle_24,
                 contentDesc = stringResource(Res.string.cd_shuffle)
             )
-            val repeatActive = repeatMode != Player.REPEAT_MODE_OFF
+            val repeatActive = repeatMode != REPEAT_MODE_OFF
             val repeatIcon = when (repeatMode) {
-                Player.REPEAT_MODE_ONE -> Res.drawable.rounded_repeat_one_24
-                Player.REPEAT_MODE_ALL -> Res.drawable.rounded_repeat_24
+                REPEAT_MODE_ONE -> Res.drawable.rounded_repeat_one_24
+                REPEAT_MODE_ALL -> Res.drawable.rounded_repeat_24
                 else -> Res.drawable.rounded_repeat_24
             }
             ToggleSegmentButton(
@@ -120,3 +119,8 @@ fun BottomToggleRow(
         }
     }
 }
+
+// Same values as androidx.media3.common.Player.REPEAT_MODE_*.
+private const val REPEAT_MODE_OFF = 0
+private const val REPEAT_MODE_ONE = 1
+private const val REPEAT_MODE_ALL = 2

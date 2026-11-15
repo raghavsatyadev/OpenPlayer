@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import android.app.Activity
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background

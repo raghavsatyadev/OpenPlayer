@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.data.backup.restore
 
-import android.net.Uri
 import io.github.raghavsatyadev.openplayer.data.backup.format.BackupReader
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupOperationType
 import io.github.raghavsatyadev.openplayer.data.backup.model.BackupSection
@@ -24,7 +23,7 @@ class RestoreExecutor(
     }
 
     suspend fun execute(
-        uri: Uri,
+        uri: String,
         plan: RestorePlan,
         onProgress: (BackupTransferProgressUpdate) -> Unit
     ): RestoreResult = withContext(Dispatchers.IO) {

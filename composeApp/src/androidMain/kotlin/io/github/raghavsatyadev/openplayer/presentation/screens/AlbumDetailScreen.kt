@@ -69,8 +69,8 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.text.style.TextOverflow
@@ -161,7 +161,7 @@ fun AlbumDetailScreen(
             playerViewModel.themeStateHolder.ensureAlbumColorScheme(albumArtUri)
         }
     }
-    val configuration = LocalConfiguration.current
+    val containerWidthPx = LocalWindowInfo.current.containerSize.width
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
 
@@ -269,12 +269,12 @@ fun AlbumDetailScreen(
                 val minTopBarHeightPx = with(density) { minTopBarHeight.toPx() }
                 val maxTopBarHeightPx = with(density) { maxTopBarHeight.toPx() }
                 val headerImageRequestSize = remember(
-                    configuration.screenWidthDp,
+                    containerWidthPx,
                     density.density,
                     maxTopBarHeightPx
                 ) {
                     Size(
-                        width = with(density) { configuration.screenWidthDp.dp.roundToPx() },
+                        width = containerWidthPx,
                         height = maxTopBarHeightPx.roundToInt()
                     )
                 }

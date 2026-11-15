@@ -104,7 +104,7 @@ class BackupManager(
             reportProgress(onProgress, BackupOperationType.EXPORT, ++step, totalSteps,
                 "Packaging backup", "Creating .pxpl archive.")
 
-            backupWriter.write(uri, manifest, modulePayloads, passphrase = passphrase).getOrThrow()
+            backupWriter.write(uri.toString(), manifest, modulePayloads, passphrase = passphrase).getOrThrow()
 
             reportProgress(onProgress, BackupOperationType.EXPORT, ++step, totalSteps,
                 "Backup complete", "Your OpenPlayer backup was created successfully.")
@@ -113,7 +113,7 @@ class BackupManager(
 
     /** True when the file at [uri] is an encrypted .pxpl archive. */
     suspend fun isBackupEncrypted(uri: Uri): Boolean =
-        backupReader.detectFormat(uri).getOrNull() == BackupFormatDetector.Format.PXPL_V4_ENCRYPTED
+        backupReader.detectFormat(uri.toString()).getOrNull() == BackupFormatDetector.Format.PXPL_V4_ENCRYPTED
 
     /**
      * Inspects a backup file and returns a RestorePlan (without actually restoring).
@@ -138,7 +138,7 @@ class BackupManager(
                 warnings.addAll(fileValidation.warnings.map { it.message })
             }
 
-            val plan = restorePlanner.buildRestorePlan(uri).getOrThrow()
+            val plan = restorePlanner.buildRestorePlan(uri.toString()).getOrThrow()
 
             val manifestValidation = validationPipeline.validateManifest(plan.manifest)
             warnings.addAll(plan.warnings)
@@ -159,7 +159,7 @@ class BackupManager(
                     return@forEach
                 }
 
-                val payload = backupReader.readModulePayload(uri, section.key).getOrThrow()
+                val payload = backupReader.readModulePayload(uri.toString(), section.key).getOrThrow()
 
                 val moduleValidation = validationPipeline.validateModulePayload(
                     section = section,
@@ -212,7 +212,7 @@ class BackupManager(
         }
 
         val result = try {
-            restoreExecutor.execute(readableUri, plan, onProgress)
+            restoreExecutor.execute(readableUri.toString(), plan, onProgress)
         } finally {
             discardDecryptedBackup(uri)
         }

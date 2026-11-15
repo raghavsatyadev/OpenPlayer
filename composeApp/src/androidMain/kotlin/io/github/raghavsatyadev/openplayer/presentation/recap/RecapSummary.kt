@@ -36,7 +36,6 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -143,7 +142,7 @@ internal fun RecapSummarySlide(
 
 @Composable
 private fun RecapSummaryCard(slide: RecapSlide.Summary, palette: RecapPalette) {
-    val locale = LocalConfiguration.current.locales[0]
+    val locale = java.util.Locale.getDefault()
     val minutes = remember(slide.totalMs, locale) {
         NumberFormat.getIntegerInstance(locale).format(recapListenedMinutes(slide.totalMs))
     }

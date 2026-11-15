@@ -55,10 +55,10 @@ fun HistoryImportSheet(
     var pending by remember { mutableStateOf(HistorySource.LASTFM) }
 
     val single = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
-        if (uri != null) viewModel.import(pending, listOf(uri))
+        if (uri != null) viewModel.import(pending, listOf(uri.toString()))
     }
     val multiple = rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris: List<Uri> ->
-        if (uris.isNotEmpty()) viewModel.import(pending, uris)
+        if (uris.isNotEmpty()) viewModel.import(pending, uris.map { it.toString() })
     }
 
     ModalBottomSheet(

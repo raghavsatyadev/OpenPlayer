@@ -48,14 +48,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
+import org.jetbrains.compose.resources.Font
+import io.github.raghavsatyadev.openplayer.resources.gflex_variable
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
@@ -63,7 +63,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import io.github.raghavsatyadev.openplayer.presentation.navigation.AppNavigator
-import io.github.raghavsatyadev.openplayer.R
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberIs24HourFormat
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.stats.StatsTimeRange
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
@@ -99,7 +99,7 @@ fun RecentlyPlayedScreen(
     playlistViewModel: PlaylistViewModel = koinViewModel(),
     navController: AppNavigator
 ) = traceSection("RecentlyPlayedScreen.Composition") {
-    val context = LocalContext.current
+    val is24Hour = rememberIs24HourFormat()
     val dateTodayLabel = stringResource(Res.string.presentation_batch_b_date_today)
     val dateYesterdayLabel = stringResource(Res.string.presentation_batch_b_date_yesterday)
     val queueRecentlyPlayed = stringResource(Res.string.presentation_batch_b_queue_recently_played)
@@ -145,9 +145,9 @@ fun RecentlyPlayedScreen(
             maxItems = Int.MAX_VALUE
         ).toImmutableList()
     }
-    val groupedSongs = remember(recentlyPlayedSongs, selectedRange, context, dateTodayLabel, dateYesterdayLabel) {
+    val groupedSongs = remember(recentlyPlayedSongs, selectedRange, is24Hour, dateTodayLabel, dateYesterdayLabel) {
         groupRecentlyPlayedSongs(
-            context = context,
+            is24Hour = is24Hour,
             todayLabel = dateTodayLabel,
             yesterdayLabel = dateYesterdayLabel,
             songs = recentlyPlayedSongs,
@@ -437,22 +437,23 @@ private fun ExpressiveRecentlyPlayedHeader(
 @OptIn(ExperimentalTextApi::class)
 @Composable
 private fun rememberRecentlyPlayedTitleStyle(): TextStyle {
-    return remember {
+    val fontFamily = FontFamily(
+        Font(
+            resource = Res.font.gflex_variable,
+            variationSettings = FontVariation.Settings(
+                FontVariation.weight(560),
+                FontVariation.width(122f),
+                FontVariation.grade(40),
+                FontVariation.Setting("ROND", 100f),
+                FontVariation.Setting("XTRA", 520f),
+                FontVariation.Setting("YOPQ", 90f),
+                FontVariation.Setting("YTLC", 505f)
+            )
+        )
+    )
+    return remember(fontFamily) {
         TextStyle(
-            fontFamily = FontFamily(
-                Font(
-                    resId = R.font.gflex_variable,
-                    variationSettings = FontVariation.Settings(
-                        FontVariation.weight(560),
-                        FontVariation.width(122f),
-                        FontVariation.grade(40),
-                        FontVariation.Setting("ROND", 100f),
-                        FontVariation.Setting("XTRA", 520f),
-                        FontVariation.Setting("YOPQ", 90f),
-                        FontVariation.Setting("YTLC", 505f)
-                    )
-                )
-            ),
+            fontFamily = fontFamily,
             fontWeight = FontWeight(560),
             fontSize = 34.sp,
             lineHeight = 38.sp,
@@ -652,7 +653,7 @@ private data class TimestampGroup(
 )
 
 private fun groupRecentlyPlayedSongs(
-    context: android.content.Context,
+    is24Hour: Boolean,
     todayLabel: String,
     yesterdayLabel: String,
     songs: List<RecentlyPlayedSongUiModel>,
@@ -670,7 +671,7 @@ private fun groupRecentlyPlayedSongs(
 
     sorted.forEach { item ->
         val timeBucket = resolveTimestampBucket(
-            context = context,
+            is24Hour = is24Hour,
             todayLabel = todayLabel,
             yesterdayLabel = yesterdayLabel,
             timestamp = item.lastPlayedTimestamp,
@@ -715,7 +716,7 @@ private data class TimestampBucket(
 )
 
 private fun resolveTimestampBucket(
-    context: android.content.Context,
+    is24Hour: Boolean,
     todayLabel: String,
     yesterdayLabel: String,
     timestamp: Long,
@@ -737,7 +738,7 @@ private fun resolveTimestampBucket(
             key = hourStart.toInstant().toEpochMilli().toString(),
             label = hourStart.format(
                 DateTimeFormatter.ofPattern(
-                    if (android.text.format.DateFormat.is24HourFormat(context)) "HH:mm" else "h a",
+                    if (is24Hour) "HH:mm" else "h a",
                     Locale.getDefault()
                 )
             ),

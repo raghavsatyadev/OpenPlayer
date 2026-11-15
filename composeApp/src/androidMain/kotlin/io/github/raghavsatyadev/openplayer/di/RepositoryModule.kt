@@ -1,6 +1,10 @@
 package io.github.raghavsatyadev.openplayer.di
 
 import io.github.raghavsatyadev.openplayer.data.genre.GenreFiller
+import io.github.raghavsatyadev.openplayer.data.genre.GenreLookupScheduler
+import io.github.raghavsatyadev.openplayer.data.genre.WorkManagerGenreLookupScheduler
+import io.github.raghavsatyadev.openplayer.data.worker.CloudInitialSync
+import io.github.raghavsatyadev.openplayer.data.worker.WorkManagerCloudInitialSync
 import io.github.raghavsatyadev.openplayer.data.genre.OnlineGenreSettings
 import io.github.raghavsatyadev.openplayer.data.genre.OnlineGenreSource
 import io.github.raghavsatyadev.openplayer.data.history.ListenHistoryRepository
@@ -100,6 +104,8 @@ val repositoryModule = module {
     singleOf(::ListenBrainzRepository)
     singleOf(::M3uSyncRepository)
     singleOf(::OnlineCoverRepository)
+    single<GenreLookupScheduler> { WorkManagerGenreLookupScheduler(get()) }
+    single<CloudInitialSync> { WorkManagerCloudInitialSync(get()) }
     singleOf(::OnlineGenreSettings)
     singleOf(::OnlineGenreSource)
     singleOf(::GenreFiller)

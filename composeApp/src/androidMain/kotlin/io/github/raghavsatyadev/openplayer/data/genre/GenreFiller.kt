@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.data.genre
 
-import androidx.work.ExistingWorkPolicy
-import androidx.work.WorkManager
 import io.github.raghavsatyadev.openplayer.data.database.GenreFillDao
 import io.github.raghavsatyadev.openplayer.data.database.GenreLookupCacheEntity
 import io.github.raghavsatyadev.openplayer.data.playlist.ArtistGenreLoader
@@ -23,13 +21,13 @@ class GenreFiller(
     private val dao: GenreFillDao,
     private val artistGenres: ArtistGenreLoader,
     private val preferences: OnlineGenrePreferences,
-    private val workManager: WorkManager,
+    private val lookupScheduler: GenreLookupScheduler,
 ) {
     /** Runs after each library sync. Returns how many songs got a genre. */
     suspend fun fillAfterSync(): Int = withContext(Dispatchers.IO) {
         val (filled, missing) = fillOffline()
         if (preferences.enabled && filled < missing) {
-            GenreLookupWorker.enqueue(workManager, preferences.wifiOnly, ExistingWorkPolicy.KEEP)
+            lookupScheduler.enqueue(preferences.wifiOnly, replace = false)
         }
         filled
     }

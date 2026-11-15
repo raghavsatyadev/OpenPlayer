@@ -148,6 +148,8 @@ import io.github.raghavsatyadev.openplayer.presentation.components.PlaylistArtCo
 import io.github.raghavsatyadev.openplayer.presentation.components.ReorderTabsSheet
 import io.github.raghavsatyadev.openplayer.presentation.components.PlayerSheetAwareBackHandler
 import io.github.raghavsatyadev.openplayer.presentation.components.PredictiveBackPreviewState
+import androidx.activity.BackEventCompat
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackEvent
 import io.github.raghavsatyadev.openplayer.presentation.components.predictiveBackPreview
 import io.github.raghavsatyadev.openplayer.presentation.components.EditMultipleSongsSheet
 import io.github.raghavsatyadev.openplayer.presentation.components.SongInfoBottomSheet
@@ -705,7 +707,7 @@ fun LibraryScreen(
     PlayerSheetAwareBackHandler(
         coordinator = playerViewModel.playerSheetBackCoordinator,
         enabled = hasSelectionInCurrentTab || canHandleFolderBack,
-        onProgress = if (!hasSelectionInCurrentTab && canHandleFolderBack) folderBackPreview::onProgress else null,
+        onProgress = if (!hasSelectionInCurrentTab && canHandleFolderBack) ({ event: BackEventCompat -> folderBackPreview.onProgress(AppBackEvent(event.progress, event.swipeEdge)) }) else null,
         onCancel = { folderBackPreview.settle(scope) }
     ) {
         folderBackPreview.settle(scope)

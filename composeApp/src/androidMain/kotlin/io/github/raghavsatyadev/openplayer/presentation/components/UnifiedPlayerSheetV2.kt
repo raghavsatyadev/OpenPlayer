@@ -40,8 +40,8 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.util.VelocityTracker
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -194,13 +194,11 @@ fun UnifiedPlayerSheetV2(
     val miniPlayerSwipeToSkip = playerConfig.miniPlayerSwipeToSkip
 
     val density = LocalDensity.current
-    val configuration = LocalConfiguration.current
+    val containerSize = LocalWindowInfo.current.containerSize
     val scope = rememberCoroutineScope()
 
     val offsetAnimatable = remember { Animatable(0f) }
-    val screenWidthPx = remember(configuration, density) {
-        with(density) { configuration.screenWidthDp.dp.toPx() }
-    }
+    val screenWidthPx = containerSize.width.toFloat()
     val dismissThresholdPx = remember(screenWidthPx) { screenWidthPx * 0.4f }
 
     // Swipe-to-skip mode. Both live in Animatables that are only ever read inside
@@ -237,9 +235,7 @@ fun UnifiedPlayerSheetV2(
         if (offsetAnimatable.value != 0f) offsetAnimatable.snapTo(0f)
     }
 
-    val screenHeightPx = remember(configuration, density) {
-        with(density) { configuration.screenHeightDp.dp.toPx() }
-    }
+    val screenHeightPx = containerSize.height.toFloat()
     val miniPlayerContentHeightPx = remember { with(density) { MiniPlayerHeight.toPx() } }
 
     val isOutputConnecting = false
@@ -793,7 +789,7 @@ fun UnifiedPlayerSheetV2(
                 queuePredictiveBackProgress = queuePredictiveBackProgress,
                 queueSheetHeightPx = queueSheetHeightPx,
                 onQueueSheetHeightPxChange = onQueueSheetHeightPxChange,
-                configurationResetKey = configuration,
+                configurationResetKey = containerSize,
                 currentQueueSourceName = currentQueueSourceName,
                 infrequentPlayerState = infrequentPlayerState,
                 playerViewModel = playerViewModel,

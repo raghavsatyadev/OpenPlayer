@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.parametric
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberTextDocumentPickers
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.MutableTransitionState
@@ -86,22 +85,20 @@ fun EqualizerModeSwitch(
 @Composable
 fun ParametricEqSection(viewModel: ParametricEqViewModel, modifier: Modifier = Modifier) {
     val state by viewModel.uiState.collectAsState()
-    val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) viewModel.importFrom(uri)
-    }
-    val exportLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
-        if (uri != null) viewModel.exportTo(uri)
-    }
+    val pickers = rememberTextDocumentPickers(
+        onOpened = viewModel::importFrom,
+        onCreated = viewModel::exportTo,
+    )
     val fileName = stringResource(Res.string.parametric_eq_export_file_name)
-    val actions = remember(viewModel, importLauncher, exportLauncher, fileName) {
+    val actions = remember(viewModel, pickers, fileName) {
         ParametricEqActions(
             onPreampChange = viewModel::setPreamp,
             onAddBand = viewModel::addBand,
             onBandChange = viewModel::updateBand,
             onRemoveBand = viewModel::removeBand,
             onClear = viewModel::clearBands,
-            onImportClick = { importLauncher.launch(arrayOf("text/plain", "*/*")) },
-            onExportClick = { exportLauncher.launch(fileName) },
+            onImportClick = pickers::launchOpen,
+            onExportClick = { pickers.launchCreate(fileName) },
         )
     }
     ParametricEqEditor(state, actions, modifier)

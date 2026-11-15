@@ -452,7 +452,7 @@ class PlaylistViewModel(
     fun importM3u(uri: Uri) {
         viewModelScope.launch {
             try {
-                val (name, songIds) = m3uManager.parseM3u(uri)
+                val (name, songIds) = m3uManager.parseM3u(uri.toString())
                 if (songIds.isNotEmpty()) {
                     playlistPreferencesRepository.createPlaylist(name, songIds)
                 }

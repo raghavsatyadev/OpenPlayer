@@ -31,7 +31,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalContext
+import coil3.compose.LocalPlatformContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
@@ -906,7 +906,7 @@ fun GenreArtistHeader(
         )
     }
 
-    val context = LocalContext.current
+    val context = LocalPlatformContext.current
     val imageRequest = remember(artistImageUrl) {
         if (!artistImageUrl.isNullOrEmpty()) {
             ImageRequest.Builder(context)

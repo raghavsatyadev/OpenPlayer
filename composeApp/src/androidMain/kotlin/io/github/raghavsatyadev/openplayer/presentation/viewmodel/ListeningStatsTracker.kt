@@ -1,7 +1,6 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel
 
 import io.github.raghavsatyadev.openplayer.utils.elapsedRealtimeMs
-import androidx.media3.common.C
 import io.github.raghavsatyadev.openplayer.data.DailyMixManager
 import io.github.raghavsatyadev.openplayer.data.history.CountedListen
 import io.github.raghavsatyadev.openplayer.data.history.ListenHistoryRepository
@@ -252,7 +251,7 @@ class ListeningStatsTracker(
     @Synchronized
     fun updateDuration(durationMs: Long) {
         val session = currentSession ?: return
-        if (durationMs > 0 && durationMs != C.TIME_UNSET) {
+        if (durationMs > 0 && durationMs != TIME_UNSET) {
             session.totalDurationMs = durationMs
         }
     }
@@ -377,8 +376,8 @@ class ListeningStatsTracker(
 
     private fun normalizeDuration(durationMs: Long, fallbackDurationMs: Long): Long {
         return when {
-            durationMs > 0 && durationMs != C.TIME_UNSET -> durationMs
-            fallbackDurationMs > 0 && fallbackDurationMs != C.TIME_UNSET -> fallbackDurationMs
+            durationMs > 0 && durationMs != TIME_UNSET -> durationMs
+            fallbackDurationMs > 0 && fallbackDurationMs != TIME_UNSET -> fallbackDurationMs
             else -> 0L
         }
     }
@@ -404,3 +403,6 @@ data class ActiveSession(
     val isVoluntary: Boolean,
     val listenPass: ListenPass? = null
 )
+
+// Same value as androidx.media3.common.C.TIME_UNSET.
+private const val TIME_UNSET = Long.MIN_VALUE + 1

@@ -1,0 +1,89 @@
+package io.github.raghavsatyadev.openplayer.data.backup.format
+
+import io.github.raghavsatyadev.openplayer.platform.DocumentStreams
+import com.google.gson.Gson
+import io.github.raghavsatyadev.openplayer.data.backup.model.BackupManifest
+import io.github.raghavsatyadev.openplayer.data.backup.model.BackupModuleInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.security.MessageDigest
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
+
+class BackupWriter(
+    private val documentStreams: DocumentStreams,
+    private val gson: Gson
+) {
+    suspend fun write(
+        uri: String,
+        manifest: BackupManifest,
+        modulePayloads: Map<String, String>,
+        onProgress: (current: Int, total: Int) -> Unit = { _, _ -> },
+        passphrase: String? = null
+    ): Result<Unit> = withContext(Dispatchers.IO) {
+        runCatching {
+            val totalSteps = modulePayloads.size + 1
+            var currentStep = 0
+
+            val modulesInfo = mutableMapOf<String, BackupModuleInfo>()
+            val payloadBytes = mutableMapOf<String, ByteArray>()
+
+            modulePayloads.forEach { (key, jsonPayload) ->
+                val bytes = jsonPayload.toByteArray(Charsets.UTF_8)
+                payloadBytes[key] = bytes
+                modulesInfo[key] = BackupModuleInfo(
+                    checksum = "sha256:${sha256(bytes)}",
+                    entryCount = countJsonArrayEntries(jsonPayload),
+                    sizeBytes = bytes.size.toLong()
+                )
+            }
+
+            val finalManifest = manifest.copy(modules = modulesInfo)
+            val manifestJson = gson.toJson(finalManifest)
+
+            documentStreams.openOutput(uri)?.use { rawOutput ->
+                rawOutput.write(BackupFormatDetector.PXPL_MAGIC)
+
+                // With a passphrase, everything after the magic is the
+                // encrypted container (header + AES-GCM ciphertext of the ZIP).
+                val archiveOutput = if (passphrase != null) {
+                    BackupCrypto.encryptingStream(rawOutput, passphrase)
+                } else {
+                    rawOutput
+                }
+
+                ZipOutputStream(archiveOutput).use { zip ->
+                    zip.putNextEntry(ZipEntry(BackupManifest.MANIFEST_FILENAME))
+                    zip.write(manifestJson.toByteArray(Charsets.UTF_8))
+                    zip.closeEntry()
+                    onProgress(++currentStep, totalSteps)
+
+                    payloadBytes.forEach { (key, bytes) ->
+                        zip.putNextEntry(ZipEntry("$key.json"))
+                        zip.write(bytes)
+                        zip.closeEntry()
+                        onProgress(++currentStep, totalSteps)
+                    }
+                }
+            } ?: throw IllegalStateException("Unable to open output stream for backup")
+        }
+    }
+
+    private fun sha256(data: ByteArray): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        return digest.digest(data).joinToString("") { "%02x".format(it) }
+    }
+
+    private fun countJsonArrayEntries(json: String): Int {
+        return try {
+            val trimmed = json.trim()
+            if (trimmed.startsWith("[")) {
+                gson.fromJson(trimmed, com.google.gson.JsonArray::class.java)?.size() ?: 0
+            } else {
+                1
+            }
+        } catch (_: Exception) {
+            0
+        }
+    }
+}

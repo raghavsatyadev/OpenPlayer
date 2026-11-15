@@ -127,7 +127,7 @@ import io.github.raghavsatyadev.openplayer.presentation.components.rememberSynce
 import io.github.raghavsatyadev.openplayer.data.preferences.UserPreferencesRepository.EqualizerViewMode
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.ui.platform.LocalView
+import io.github.raghavsatyadev.openplayer.presentation.utils.rememberParentTouchInterceptBlocker
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import io.github.raghavsatyadev.openplayer.resources.*
@@ -953,7 +953,7 @@ private fun CustomVerticalSlider(
 ) {
     val density = LocalDensity.current
     val hapticFeedback = LocalHapticFeedback.current
-    val view = LocalView.current
+    val touchInterceptBlocker = rememberParentTouchInterceptBlocker()
     val thumbSizePx = with(density) { thumbSize.toPx() }
     val thumbRadiusPx = thumbSizePx / 2
     
@@ -1027,7 +1027,7 @@ private fun CustomVerticalSlider(
 
                     awaitEachGesture {
                         val down = awaitFirstDown(requireUnconsumed = false)
-                        view.parent?.requestDisallowInterceptTouchEvent(true)
+                        touchInterceptBlocker.disallowIntercept(true)
                         isInteracting = true
                         down.consume()
                         dispatchValue(down.position.y, forceHaptic = true)
@@ -1051,7 +1051,7 @@ private fun CustomVerticalSlider(
                         }
 
                         isInteracting = false
-                        view.parent?.requestDisallowInterceptTouchEvent(false)
+                        touchInterceptBlocker.disallowIntercept(false)
                     }
                 }
         ) {

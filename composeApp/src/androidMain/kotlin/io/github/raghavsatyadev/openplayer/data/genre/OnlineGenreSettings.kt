@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.data.genre
 
-import androidx.work.ExistingWorkPolicy
-import androidx.work.WorkManager
 import io.github.raghavsatyadev.openplayer.data.database.GenreFillDao
 import io.github.raghavsatyadev.openplayer.data.preferences.OnlineGenrePreferences
 
@@ -9,7 +7,7 @@ import io.github.raghavsatyadev.openplayer.data.preferences.OnlineGenrePreferenc
 class OnlineGenreSettings(
     private val preferences: OnlineGenrePreferences,
     private val dao: GenreFillDao,
-    private val workManager: WorkManager,
+    private val lookupScheduler: GenreLookupScheduler,
 ) {
     val enabled get() = preferences.enabled
     val wifiOnly get() = preferences.wifiOnly
@@ -23,9 +21,9 @@ class OnlineGenreSettings(
             enabled && !wasEnabled -> {
                 // Turned back on: give albums that found nothing before another chance.
                 dao.clearCachedMisses()
-                GenreLookupWorker.enqueue(workManager, preferences.wifiOnly, ExistingWorkPolicy.REPLACE)
+                lookupScheduler.enqueue(preferences.wifiOnly, replace = true)
             }
-            !enabled -> GenreLookupWorker.cancel(workManager)
+            !enabled -> lookupScheduler.cancel()
         }
     }
 
@@ -33,7 +31,7 @@ class OnlineGenreSettings(
         preferences.setWifiOnly(wifiOnly)
         // The network requirement is fixed when work is queued, so queue it again.
         if (preferences.enabled) {
-            GenreLookupWorker.enqueue(workManager, wifiOnly, ExistingWorkPolicy.REPLACE)
+            lookupScheduler.enqueue(wifiOnly, replace = true)
         }
     }
 }

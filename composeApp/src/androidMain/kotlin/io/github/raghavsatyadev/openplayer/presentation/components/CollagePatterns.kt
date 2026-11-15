@@ -1,7 +1,5 @@
 package io.github.raghavsatyadev.openplayer.presentation.components
 
-import android.graphics.Matrix
-import android.graphics.RectF
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -11,13 +9,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.asComposePath
+import androidx.compose.ui.graphics.Matrix
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
-import androidx.graphics.shapes.toPath
 import io.github.raghavsatyadev.openplayer.data.preferences.CollagePattern
 import io.github.raghavsatyadev.openplayer.utils.shapes.RoundedStarShape
 
@@ -46,30 +44,31 @@ fun buildCollageConfigs(
  * computed once; each outline transforms a copy.
  */
 private class MaterialPolygonShape(polygon: RoundedPolygon) : Shape {
-    private val basePath: android.graphics.Path = polygon.toPath()
-    private val bounds = RectF().also { basePath.computeBounds(it, true) }
+    private val basePath: Path = polygon.toComposePath()
+    private val bounds = basePath.getBounds()
 
     override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,
         density: Density
     ): Outline {
-        val androidPath = android.graphics.Path(basePath)
-        val sourceWidth = bounds.width()
-        val sourceHeight = bounds.height()
+        val path = Path().apply { addPath(basePath) }
+        val sourceWidth = bounds.width
+        val sourceHeight = bounds.height
         if (sourceWidth > 0f && sourceHeight > 0f) {
-            val matrix = Matrix()
-            matrix.postTranslate(-bounds.left, -bounds.top)
             val scale = minOf(size.width / sourceWidth, size.height / sourceHeight)
-            matrix.postScale(scale, scale)
-            matrix.postTranslate(
-                (size.width - sourceWidth * scale) / 2f,
-                (size.height - sourceHeight * scale) / 2f,
-            )
-            androidPath.transform(matrix)
+            val matrix = Matrix().apply {
+                translate(
+                    (size.width - sourceWidth * scale) / 2f,
+                    (size.height - sourceHeight * scale) / 2f,
+                )
+                scale(scale, scale)
+                translate(-bounds.left, -bounds.top)
+            }
+            path.transform(matrix)
         }
 
-        return Outline.Generic(androidPath.asComposePath())
+        return Outline.Generic(path)
     }
 }
 

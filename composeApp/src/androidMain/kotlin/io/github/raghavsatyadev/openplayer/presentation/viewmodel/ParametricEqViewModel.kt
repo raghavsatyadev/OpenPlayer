@@ -88,7 +88,8 @@ class ParametricEqViewModel(
         message.value = null
     }
 
-    fun importFrom(uri: Uri) {
+    fun importFrom(uriString: String) {
+        val uri = Uri.parse(uriString)
         viewModelScope.launch {
             val text = withContext(Dispatchers.IO) {
                 runCatching { context.contentResolver.openInputStream(uri)?.use { it.readBytes().toString(Charsets.UTF_8) } }
@@ -109,7 +110,8 @@ class ParametricEqViewModel(
         }
     }
 
-    fun exportTo(uri: Uri) {
+    fun exportTo(uriString: String) {
+        val uri = Uri.parse(uriString)
         viewModelScope.launch {
             val text = AutoEqParser.export(engine.profile.value)
             val ok = withContext(Dispatchers.IO) {

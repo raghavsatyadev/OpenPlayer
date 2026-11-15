@@ -1,8 +1,8 @@
 package io.github.raghavsatyadev.openplayer.presentation.components.scoped
 
-import android.os.Build
 import io.github.raghavsatyadev.openplayer.presentation.utils.AppBackHandler
-import androidx.activity.compose.PredictiveBackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.AppPredictiveBackHandler
+import io.github.raghavsatyadev.openplayer.presentation.utils.isPredictiveBackProgressSupported
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
@@ -28,8 +28,8 @@ internal fun PlayerSheetPredictiveBackHandler(
 ) {
     val scope = rememberCoroutineScope()
     key(registrationKey) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            PredictiveBackHandler(enabled = enabled) { progressFlow ->
+        if (isPredictiveBackProgressSupported) {
+            AppPredictiveBackHandler(enabled = enabled) { progressFlow ->
                 try {
                     progressFlow.collect { backEvent ->
                         onSwipeEdgeChanged(backEvent.swipeEdge)

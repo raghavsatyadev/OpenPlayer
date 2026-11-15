@@ -37,7 +37,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
+import coil3.compose.LocalPlatformContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -106,7 +106,7 @@ fun LibraryAlbumsTab(
     val listState = rememberRestoredLazyListState(albums)
     val dummyListState = rememberLazyListState()
     val dummyGridState = rememberLazyGridState()
-    val context = LocalContext.current
+    val context = LocalPlatformContext.current
     val imageLoader = context.imageLoader
 
     val albumFastScrollLabelProvider = remember(albums, currentAlbumSortOption) {

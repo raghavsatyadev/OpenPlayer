@@ -180,8 +180,8 @@ val backupModule = module {
         )
     }
 
-    single { BackupReader(androidContext(), get(QUALIFIER_BACKUP_GSON), get(), get()) }
-    single { BackupWriter(androidContext(), get(QUALIFIER_BACKUP_GSON)) }
+    single { BackupReader(get(), get(QUALIFIER_BACKUP_GSON), get(), get()) }
+    single { BackupWriter(get(), get(QUALIFIER_BACKUP_GSON)) }
     singleOf(::LegacyPayloadAdapter)
     singleOf(::BackupSongResolver)
     singleOf(::ContentSanitizer)

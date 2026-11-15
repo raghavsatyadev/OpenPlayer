@@ -69,8 +69,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInParent
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.TextStyle
@@ -226,7 +226,7 @@ fun rememberDetailHeroDock(
     val dock = remember { DetailHeroDock { heroTopPx() } }
     val density = LocalDensity.current
     val statusBarTop = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val screenWidth = with(density) { LocalWindowInfo.current.containerSize.width.toDp() }
     val subtitleLineHeight = MaterialTheme.typography.labelLarge.lineHeight
     val heroFontSize = titleStyle.fontSize
     with(density) {

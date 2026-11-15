@@ -116,8 +116,6 @@ import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.media3.common.Player
-import androidx.media3.common.util.UnstableApi
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.presentation.components.AutoScrollingText
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
@@ -196,7 +194,6 @@ private fun PlayerUiState.toQueueUndoBarProjection(): QueueUndoBarProjection =
 internal fun shouldReturnListDragToList(availableY: Float, queueSheetOffsetPx: Float): Boolean =
     availableY < 0f && queueSheetOffsetPx <= 0.5f
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
     ExperimentalMaterial3ExpressiveApi::class
 )
@@ -1457,11 +1454,11 @@ private fun QueueControlsToolbar(
                 Spacer(modifier = Modifier.width(gap))
                 FilledTonalIconButton(
                     onClick = onToggleRepeat,
-                    colors = if (repeatMode != Player.REPEAT_MODE_OFF) activeColors else inactiveColors,
+                    colors = if (repeatMode != REPEAT_MODE_OFF) activeColors else inactiveColors,
                     modifier = Modifier.size(QueueToolbarButtonSize)
                 ) {
                     val repeatIcon = when (repeatMode) {
-                        Player.REPEAT_MODE_ONE -> vectorResource(Res.drawable.rounded_repeat_one_24)
+                        REPEAT_MODE_ONE -> vectorResource(Res.drawable.rounded_repeat_one_24)
                         else -> vectorResource(Res.drawable.rounded_repeat_24)
                     }
                     Icon(
@@ -2159,3 +2156,7 @@ fun QueuePlaylistSongItem(
         }
     }
 }
+
+// Same values as androidx.media3.common.Player.REPEAT_MODE_*.
+private const val REPEAT_MODE_OFF = 0
+private const val REPEAT_MODE_ONE = 1
