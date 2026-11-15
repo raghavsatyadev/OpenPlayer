@@ -39,6 +39,7 @@ import androidx.media3.ui.PlayerView
 import io.github.raghavsatyadev.openplayer.R
 import io.github.raghavsatyadev.openplayer.data.model.Song
 import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
+import io.github.raghavsatyadev.openplayer.data.video.MediaStoreVideoSource
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerVideoViewModel
 import kotlinx.collections.immutable.ImmutableList
 import racra.compose.smooth_corner_rect_library.AbsoluteSmoothCornerShape
@@ -93,7 +94,7 @@ internal fun PlayerVideoCover(
             onClick = {
                 when {
                     showVideo -> viewModel.setShowInPlayer(false)
-                    !hasPermission -> permissionLauncher.launch(LocalVideoRepository.videoPermission)
+                    !hasPermission -> permissionLauncher.launch(MediaStoreVideoSource.videoPermission)
                     else -> viewModel.setShowInPlayer(true)
                 }
             },

@@ -1,6 +1,5 @@
 package io.github.raghavsatyadev.openplayer.data.video
 
-import android.provider.MediaStore
 import io.github.raghavsatyadev.openplayer.data.model.Song
 
 /**
@@ -32,7 +31,8 @@ object VideoSongs {
 
     fun isVideo(song: Song?): Boolean = videoIdOf(song) != null
 
-    private val VIDEO_URI_PREFIX = MediaStore.Video.Media.EXTERNAL_CONTENT_URI.toString() + "/"
+    // MediaStore.Video.Media.EXTERNAL_CONTENT_URI, written out so this stays common code.
+    private const val VIDEO_URI_PREFIX = "content://media/external/video/media/"
 
     fun idFor(video: LocalVideo): String = ID_PREFIX + video.id
 

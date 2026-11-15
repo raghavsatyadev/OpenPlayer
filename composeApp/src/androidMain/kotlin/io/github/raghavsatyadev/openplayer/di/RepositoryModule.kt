@@ -47,6 +47,8 @@ import io.github.raghavsatyadev.openplayer.data.repository.TransitionRepository
 import io.github.raghavsatyadev.openplayer.data.repository.TransitionRepositoryImpl
 import io.github.raghavsatyadev.openplayer.data.stats.PlaybackStatsRepository
 import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
+import io.github.raghavsatyadev.openplayer.data.video.LocalVideoSource
+import io.github.raghavsatyadev.openplayer.data.video.MediaStoreVideoSource
 import io.github.raghavsatyadev.openplayer.data.video.VideoLibrarySongs
 import io.github.raghavsatyadev.openplayer.data.waveform.WaveformRepository
 import android.content.Context
@@ -109,6 +111,7 @@ val repositoryModule = module {
     singleOf(::PlaybackStatsRepository)
     singleOf(::TrackBpmRepository)
     singleOf(::WaveformRepository)
+    single<LocalVideoSource> { MediaStoreVideoSource(androidContext()) }
     singleOf(::LocalVideoRepository)
     singleOf(::VideoLibrarySongs)
     singleOf(::ListenHistoryRepository)

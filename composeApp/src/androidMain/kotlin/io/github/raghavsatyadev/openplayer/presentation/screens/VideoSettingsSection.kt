@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
+import io.github.raghavsatyadev.openplayer.data.video.MediaStoreVideoSource
 import io.github.raghavsatyadev.openplayer.data.video.VideoMatchingMode
 import io.github.raghavsatyadev.openplayer.presentation.settings.search.settingHighlight
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.VideoSettingsViewModel
@@ -49,7 +50,7 @@ fun VideoSettingsSection(
             checked = settings.showInPlayer && hasPermission,
             onCheckedChange = { checked ->
                 if (checked && !hasPermission) {
-                    permissionLauncher.launch(LocalVideoRepository.videoPermission)
+                    permissionLauncher.launch(MediaStoreVideoSource.videoPermission)
                 } else {
                     viewModel.setShowInPlayer(checked)
                 }
@@ -87,7 +88,7 @@ fun VideoSettingsSection(
             checked = settings.addToLibrary && hasPermission,
             onCheckedChange = { checked ->
                 if (checked && !hasPermission) {
-                    permissionLauncher.launch(LocalVideoRepository.videoPermission)
+                    permissionLauncher.launch(MediaStoreVideoSource.videoPermission)
                 } else {
                     viewModel.setAddToLibrary(checked)
                 }

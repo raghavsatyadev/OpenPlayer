@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.raghavsatyadev.openplayer.data.model.LibraryTabId
 import io.github.raghavsatyadev.openplayer.data.model.StorageFilter
 import io.github.raghavsatyadev.openplayer.data.video.LocalVideoRepository
+import io.github.raghavsatyadev.openplayer.data.video.MediaStoreVideoSource
 import io.github.raghavsatyadev.openplayer.presentation.components.MiniPlayerHeight
 import io.github.raghavsatyadev.openplayer.presentation.components.SmartImage
 import coil3.size.Size
@@ -66,7 +67,7 @@ internal fun LibraryVideosTab(
 
         !state.hasPermission -> VideoPermissionPrompt(
             bottomBarHeight = bottomBarHeight,
-            onAllow = { permissionLauncher.launch(LocalVideoRepository.videoPermission) },
+            onAllow = { permissionLauncher.launch(MediaStoreVideoSource.videoPermission) },
         )
 
         state.rows.isEmpty() -> LibraryExpressiveEmptyState(
