@@ -73,6 +73,8 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.MediaCo
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackAudioMetadataTracker
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerFavoriteActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerQueueActions
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerShuffleActions
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerShuffleCallbacks
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerTransportActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerTransportCallbacks
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerDeleteActions
@@ -136,7 +138,6 @@ private val LOCAL_PLAYBACK_SCHEMES = setOf("content", "file", "android.resource"
 // Shuffle All, the shuffle tile and play-random queue up to this many random songs. The queue is
 // attached in batches and the crossfade window is spliced back after each swap, so large queues
 // stay intact.
-private const val SHUFFLE_ALL_SONG_LIMIT = 10_000
 // How long the current queue index has to hold still before the neighbours' palettes are preloaded.
 internal const val PALETTE_NEIGHBOR_PRELOAD_DEBOUNCE_MS = 220L
 
@@ -1129,6 +1130,21 @@ class PlayerViewModel(
         currentSong = { playbackStateHolder.stablePlayerState.value.currentSong },
     )
 
+    private val shuffleActions = PlayerShuffleActions(
+        scope = viewModelScope,
+        musicRepository = musicRepository,
+        syncManager = syncManager,
+        libraryStateHolder = libraryStateHolder,
+        loadedGenres = loadedGenres,
+        callbacks = PlayerShuffleCallbacks(
+            playSongsShuffled = { songs, queueName -> playSongsShuffled(songs, queueName, startAtZero = true) },
+            currentStorageFilter = { playerUiState.value.currentStorageFilter },
+            isControllerReady = { mediaController != null },
+            setPendingPlaybackAction = { pendingPlaybackAction = it },
+            toast = ::sendToast,
+        ),
+    )
+
     val selectionActions = PlayerSelectionActions(
         scope = viewModelScope,
         context = context,
@@ -1345,137 +1361,22 @@ class PlayerViewModel(
 
 
 
-    fun shuffleAllSongs(queueName: String? = null) {
-        Logger.withTag("ShuffleDebug").d { "shuffleAllSongs called." }
-        
-        viewModelScope.launch {
-            val randomSongs = musicRepository.getRandomSongs(limit = SHUFFLE_ALL_SONG_LIMIT)
-            if (randomSongs.isNotEmpty()) {
-                playSongsShuffled(
-                    randomSongs,
-                    queueName ?: getString(Res.string.queue_name_all_songs_shuffled),
-                    startAtZero = true
-                )
-            }
-        }
-    }
+    fun shuffleAllSongs(queueName: String? = null) = shuffleActions.shuffleAllSongs(queueName)
 
-    /**
-     * Called from Quick Settings tile. Unlike shuffleAllSongs(), this always starts
-     * fresh playback regardless of current state, and correctly handles the case
-     * where the MediaController isn't ready yet (cold start from tile).
-     *
-     * Queries a bounded random sample directly from the repository so the tile does
-     * not depend on the eager in-memory song cache being populated first.
-     */
-    fun triggerShuffleAllFromTile() {
-        Logger.d { "[TileDebug] triggerShuffleAllFromTile called. mediaController=${mediaController != null}" }
-        val action: () -> Unit = {
-            Logger.d { "[TileDebug] action() invoked" }
-            viewModelScope.launch {
-                var songs = musicRepository.getRandomSongs(limit = SHUFFLE_ALL_SONG_LIMIT)
-                Logger.d { "[TileDebug] Repository returned ${songs.size} random songs immediately" }
+    fun triggerShuffleAllFromTile() = shuffleActions.triggerShuffleAllFromTile()
 
-                if (songs.isEmpty()) {
-                    Logger.d { "[TileDebug] No songs available yet, triggering sync and retrying repository sample" }
-                    syncManager.sync()
-                    songs = withTimeoutOrNull(30_000L) {
-                        var refreshedSongs = emptyList<Song>()
-                        while (refreshedSongs.isEmpty()) {
-                            refreshedSongs = musicRepository.getRandomSongs(limit = SHUFFLE_ALL_SONG_LIMIT)
-                            if (refreshedSongs.isEmpty()) {
-                                delay(500L)
-                            }
-                        }
-                        refreshedSongs
-                    }
-                        ?: emptyList()
-                    Logger.d { "[TileDebug] After retry, repository returned ${songs.size} songs" }
-                }
+    fun playRandomSong() = shuffleActions.playRandomSong()
 
-                if (songs.isNotEmpty()) {
-                    Logger.d { "[TileDebug] Calling playSongsShuffled with ${songs.size} songs" }
-                    playSongsShuffled(
-                        songs,
-                        getString(Res.string.queue_name_all_songs_shuffled),
-                        startAtZero = true
-                    )
-                } else {
-                    Logger.w { "[TileDebug] No songs found even after sync - library may be empty" }
-                    sendToast(getString(Res.string.player_no_songs_in_library_toast))
-                }
-            }
-        }
-
-        if (mediaController == null) {
-            Logger.d { "[TileDebug] mediaController null, queuing as pendingPlaybackAction" }
-            pendingPlaybackAction = action
-        } else {
-            Logger.d { "[TileDebug] mediaController ready, calling action immediately" }
-            action()
-        }
-    }
-
-    fun playRandomSong() {
-        viewModelScope.launch {
-            val randomSongs = musicRepository.getRandomSongs(limit = SHUFFLE_ALL_SONG_LIMIT)
-            if (randomSongs.isNotEmpty()) {
-                playSongsShuffled(
-                    randomSongs,
-                    getString(Res.string.queue_name_all_songs_shuffled),
-                    startAtZero = true
-                )
-            }
-        }
-    }
-
-    fun shuffleFavoriteSongs() {
-        Logger.withTag("ShuffleDebug").d { "shuffleFavoriteSongs called." }
-
-        viewModelScope.launch {
-            val favSongs = musicRepository.getFavoriteSongsOnce(playerUiState.value.currentStorageFilter)
-            if (favSongs.isNotEmpty()) {
-                playSongsShuffled(
-                    favSongs,
-                    getString(Res.string.queue_name_liked_songs_shuffled),
-                    startAtZero = true
-                )
-            }
-        }
-    }
+    fun shuffleFavoriteSongs() = shuffleActions.shuffleFavoriteSongs()
 
     /** Only the album pick is random; its tracks play in album order. */
     fun playRandomAlbum() {
         libraryStateHolder.albums.value.randomOrNull()?.let(::playAlbum)
     }
 
-    fun shuffleRandomGenre() {
-        viewModelScope.launch {
-            val allGenres = loadedGenres.value ?: libraryStateHolder.genres.first()
-            // Unknown is the bucket of untagged songs, so it is only picked when nothing else is.
-            val randomGenre = allGenres
-                .filterNot { it.id == UNKNOWN_GENRE_ID }
-                .ifEmpty { allGenres }
-                .randomOrNull() ?: return@launch
-            val genreSongs = musicRepository.getMusicByGenre(randomGenre.name).first()
-            if (genreSongs.isNotEmpty()) {
-                playSongsShuffled(genreSongs, randomGenre.name, startAtZero = true)
-            }
-        }
-    }
+    fun shuffleRandomGenre() = shuffleActions.shuffleRandomGenre()
 
-    fun shuffleRandomArtist() {
-        viewModelScope.launch {
-            val allArtists = libraryStateHolder.artists.value
-            if (allArtists.isNotEmpty()) {
-                val randomArtist = allArtists.random()
-                val artistSongs = musicRepository.getSongsForArtist(randomArtist.id).first()
-                if (artistSongs.isNotEmpty()) {
-                    playSongsShuffled(artistSongs, randomArtist.name, startAtZero = true)
-                }
-            }
-        }
-    }
+    fun shuffleRandomArtist() = shuffleActions.shuffleRandomArtist()
 
 
     private fun loadPersistedDailyMix() {
