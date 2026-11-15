@@ -70,6 +70,8 @@ import io.github.raghavsatyadev.openplayer.utils.StorageUtils
 import io.github.raghavsatyadev.openplayer.utils.traceSection
 import io.github.raghavsatyadev.openplayer.presentation.navigation.PlayerSheetBackCoordinator
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.MediaControllerPlaybackController
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackAudioMetadataTracker
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerFavoriteActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerQueueActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerTransportActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerTransportCallbacks
@@ -130,7 +132,6 @@ import io.github.raghavsatyadev.openplayer.data.diagnostics.AdvancedPerformanceD
 internal const val ENABLE_FOLDERS_SOURCE_SWITCHING = true
 private const val SONG_ID_QUERY_CHUNK_SIZE = 900
 private const val HOME_MIX_PREVIEW_LIMIT = 48
-private const val EXTERNAL_SONG_ID_PREFIX = "external:"
 private val LOCAL_PLAYBACK_SCHEMES = setOf("content", "file", "android.resource")
 // Shuffle All, the shuffle tile and play-random queue up to this many random songs. The queue is
 // attached in batches and the crossfade window is spliced back after each swap, so large queues
@@ -1114,12 +1115,19 @@ class PlayerViewModel(
     private val playNextInserter = io.github.raghavsatyadev.openplayer.presentation.viewmodel.queue.PlayNextInserter()
 
     private var pendingPlaybackAction: (() -> Unit)? = null
-    private val audioMetadataTracker = io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackAudioMetadataTracker(context, viewModelScope, dispatchers)
+    private val audioMetadataTracker = PlaybackAudioMetadataTracker(context, viewModelScope, dispatchers)
     val playbackAudioMetadata: StateFlow<PlaybackAudioMetadata> = audioMetadataTracker.metadata
 
     val favoriteSongIds: StateFlow<Set<String>> = musicRepository
         .getFavoriteSongIdsFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptySet())
+
+    private val favoriteActions = PlayerFavoriteActions(
+        scope = viewModelScope,
+        musicRepository = musicRepository,
+        favoriteSongIds = favoriteSongIds,
+        currentSong = { playbackStateHolder.stablePlayerState.value.currentSong },
+    )
 
     val selectionActions = PlayerSelectionActions(
         scope = viewModelScope,
@@ -1134,7 +1142,7 @@ class PlayerViewModel(
             playSongs = ::playSongs,
             addSongToQueue = { queueActions.addSongToQueue(it) },
             addSongsAsNext = { queueActions.addSongsAsNext(it) },
-            setFavoriteStatus = ::setFavoriteStatusEverywhere,
+            setFavoriteStatus = favoriteActions::setFavoriteStatus,
             effectiveStorageFilter = ::currentEffectiveLibraryStorageFilter,
             showPlayer = { _isSheetVisible.value = true },
         ),
@@ -1203,7 +1211,7 @@ class PlayerViewModel(
             }
             .flatMapLatest { song ->
                 kotlinx.coroutines.flow.flow {
-                    emit(resolveFavoriteSongId(song))
+                    emit(favoriteActions.resolveSongId(song))
                 }
             },
         favoriteSongIds
@@ -3077,78 +3085,10 @@ class PlayerViewModel(
         )
     }
 
-    private suspend fun setFavoriteStatusEverywhere(songId: String, isFavorite: Boolean) {
-        musicRepository.setFavoriteStatus(songId, isFavorite)
-    }
+    fun toggleFavorite() = favoriteActions.toggleFavorite()
 
-    fun toggleFavorite() {
-        val currentSong = playbackStateHolder.stablePlayerState.value.currentSong ?: return
-        viewModelScope.launch {
-            val favoriteSongId = resolveFavoriteSongId(currentSong) ?: return@launch
-            val currentlyFavorite = favoriteSongIds.value.contains(favoriteSongId)
-            setFavoriteStatusEverywhere(favoriteSongId, !currentlyFavorite)
-        }
-    }
-
-    fun toggleFavoriteSpecificSong(song: Song, removing: Boolean = false) {
-        viewModelScope.launch {
-            val favoriteSongId = resolveFavoriteSongId(song) ?: return@launch
-            val currentlyFavorite = favoriteSongIds.value.contains(favoriteSongId)
-            val targetFavoriteState = if (removing) false else !currentlyFavorite
-            setFavoriteStatusEverywhere(favoriteSongId, targetFavoriteState)
-        }
-    }
-
-    private suspend fun resolveFavoriteSongId(song: Song?): String? {
-        song ?: return null
-        if (song.id.toLongOrNull() != null) {
-            return song.id
-        }
-
-        val contentUriCandidates = buildList {
-            if (song.id.startsWith(EXTERNAL_SONG_ID_PREFIX)) {
-                add(song.id.removePrefix(EXTERNAL_SONG_ID_PREFIX))
-            }
-            add(song.contentUriString)
-        }.filter { it.isNotBlank() }.distinct()
-
-        for (candidate in contentUriCandidates) {
-            musicRepository.getSongIdByContentUri(candidate)?.let { return it.toString() }
-            parseMediaStoreAudioId(candidate)?.let { return it.toString() }
-        }
-
-        val pathCandidates = buildList {
-            add(song.path)
-            contentUriCandidates.forEach { candidate ->
-                parseFileUriPath(candidate)?.let(::add)
-            }
-        }.filter { it.isNotBlank() }.distinct()
-
-        for (candidate in pathCandidates) {
-            musicRepository.getSongByPath(candidate)?.id?.takeIf { it.toLongOrNull() != null }?.let {
-                return it
-            }
-        }
-
-        return null
-    }
-
-    private fun parseMediaStoreAudioId(uriString: String): Long? {
-        val normalizedUri = uriString.substringBefore('?').substringBefore('#')
-        if (
-            !normalizedUri.startsWith("content://media/", ignoreCase = true) ||
-            !normalizedUri.contains("/audio/media/", ignoreCase = true)
-        ) {
-            return null
-        }
-
-        return normalizedUri.substringAfterLast('/').toLongOrNull()?.takeIf { it > 0L }
-    }
-
-    private fun parseFileUriPath(uriString: String): String? {
-        val uri = runCatching { Uri.parse(uriString) }.getOrNull() ?: return null
-        return uri.takeIf { it.scheme == "file" }?.path?.takeIf { it.isNotBlank() }
-    }
+    fun toggleFavoriteSpecificSong(song: Song, removing: Boolean = false) =
+        favoriteActions.toggleFavoriteSpecificSong(song, removing)
 
     private fun buildPlaybackMediaItem(song: Song, playlistId: String? = null): MediaItem =
         MediaItemBuilder.withPlaylistId(MediaItemBuilder.build(song), playlistId)
@@ -3349,9 +3289,6 @@ class PlayerViewModel(
         }
     }
 
-    /**
-     * Fetches the lyrics for the current song from the remote service.
-     */
     /**
      * Fetches the lyrics for the current song from the remote service.
      */
