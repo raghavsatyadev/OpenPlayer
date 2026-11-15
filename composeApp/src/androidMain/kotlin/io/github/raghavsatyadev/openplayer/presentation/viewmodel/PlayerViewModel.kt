@@ -4,7 +4,6 @@ import android.net.Uri
 import android.os.Trace
 import kotlinx.coroutines.withContext
 import androidx.compose.animation.core.Animatable
-import androidx.core.content.ContextCompat
 import io.github.raghavsatyadev.openplayer.data.model.LibraryTabId
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
@@ -15,21 +14,12 @@ import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.session.MediaController
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.media3.common.Timeline
-import androidx.media3.session.SessionCommand
-import androidx.media3.session.SessionError
-import androidx.media3.session.SessionResult
-import androidx.media3.session.SessionToken
-import com.google.common.util.concurrent.Futures
-import com.google.common.util.concurrent.ListenableFuture
 import io.github.raghavsatyadev.openplayer.resources.*
 import org.jetbrains.compose.resources.StringResource
 import io.github.raghavsatyadev.openplayer.data.database.AlbumArtThemeDao
@@ -54,10 +44,10 @@ import io.github.raghavsatyadev.openplayer.data.preferences.AlbumArtQuality
 import io.github.raghavsatyadev.openplayer.data.preferences.ThemePreference
 import io.github.raghavsatyadev.openplayer.data.repository.LyricsSearchResult
 import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
-import io.github.raghavsatyadev.openplayer.data.service.MusicNotificationProvider
 import io.github.raghavsatyadev.openplayer.data.service.MusicService
 import io.github.raghavsatyadev.openplayer.data.service.player.DualPlayerEngine
 import io.github.raghavsatyadev.openplayer.data.worker.SyncManager
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.MediaControllerConnector
 import io.github.raghavsatyadev.openplayer.di.DispatcherProvider
 import io.github.raghavsatyadev.openplayer.utils.AppShortcutManager
 import io.github.raghavsatyadev.openplayer.utils.ValidatedLyricsImport
@@ -68,7 +58,6 @@ import io.github.raghavsatyadev.openplayer.utils.StorageType
 import io.github.raghavsatyadev.openplayer.utils.StorageUtils
 import io.github.raghavsatyadev.openplayer.utils.traceSection
 import io.github.raghavsatyadev.openplayer.presentation.navigation.PlayerSheetBackCoordinator
-import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.MediaControllerPlaybackController
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackAudioMetadataTracker
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackController
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackEngineState
@@ -195,8 +184,7 @@ class PlayerViewModel(
     val themeStateHolder: ThemeStateHolder,
     val multiSelectionStateHolder: MultiSelectionStateHolder,
     val playlistSelectionStateHolder: PlaylistSelectionStateHolder,
-    private val sessionToken: SessionToken,
-    private val mediaControllerFactory: io.github.raghavsatyadev.openplayer.data.media.MediaControllerFactory,
+    private val mediaControllerConnector: MediaControllerConnector,
     private val dispatchers: DispatcherProvider
 ) : ViewModel(), KoinComponent {
 
@@ -1086,37 +1074,20 @@ class PlayerViewModel(
         searchQuery = query
     }
 
-    private var mediaController: MediaController? = null
-    private val playback: PlaybackController = MediaControllerPlaybackController(
-        controller = { mediaController },
-        resolvedMediaItem = { song, playlistId -> buildResolvedPlaybackMediaItem(song, playlistId) },
-    )
-    private var mediaControllerPlaybackListener: Player.Listener? = null
+    private val playback: PlaybackController = mediaControllerConnector.createPlaybackController { song, playlistId ->
+        buildResolvedPlaybackMediaItem(song, playlistId)
+    }
     private val _isMediaControllerReady = MutableStateFlow(false)
     val isMediaControllerReady: StateFlow<Boolean> = _isMediaControllerReady.asStateFlow()
-    private val mediaControllerListener = object : MediaController.Listener {
-        override fun onCustomCommand(
-            controller: MediaController,
-            command: SessionCommand,
-            args: Bundle
-        ): ListenableFuture<SessionResult> {
-            if (command.customAction == MusicNotificationProvider.CUSTOM_COMMAND_SET_SHUFFLE_STATE) {
-                val enabled = args.getBoolean(
-                    MusicNotificationProvider.EXTRA_SHUFFLE_ENABLED,
-                    false
-                )
-                viewModelScope.launch {
-                    if (enabled != playbackStateHolder.stablePlayerState.value.isShuffleEnabled) {
-                        toggleShuffle()
-                    }
+    init {
+        mediaControllerConnector.connect(onShuffleStateCommand = { enabled ->
+            viewModelScope.launch {
+                if (enabled != playbackStateHolder.stablePlayerState.value.isShuffleEnabled) {
+                    toggleShuffle()
                 }
-                return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
             }
-            return Futures.immediateFuture(SessionResult(SessionError.ERROR_NOT_SUPPORTED))
-        }
+        })
     }
-    private val mediaControllerFuture: ListenableFuture<MediaController> =
-        mediaControllerFactory.create(context, sessionToken, mediaControllerListener)
     private var pendingRepeatMode: Int? = null
     private val playNextInserter = io.github.raghavsatyadev.openplayer.presentation.viewmodel.queue.PlayNextInserter()
 
@@ -1144,7 +1115,7 @@ class PlayerViewModel(
         callbacks = PlayerShuffleCallbacks(
             playSongsShuffled = { songs, queueName -> playSongsShuffled(songs, queueName, startAtZero = true) },
             currentStorageFilter = { playerUiState.value.currentStorageFilter },
-            isControllerReady = { mediaController != null },
+            isControllerReady = { mediaControllerConnector.isAttached },
             setPendingPlaybackAction = { pendingPlaybackAction = it },
             toast = ::sendToast,
         ),
@@ -1172,7 +1143,7 @@ class PlayerViewModel(
     val queueActions = PlayerQueueActions(
         scope = viewModelScope,
         controller = playback,
-        mediaController = { mediaController },
+        mediaController = { mediaControllerConnector.rawController() },
         playbackStateHolder = playbackStateHolder,
         queueUndoStateHolder = queueUndoStateHolder,
         playNextInserter = playNextInserter,
@@ -1202,7 +1173,7 @@ class PlayerViewModel(
         multiSelectionStateHolder = multiSelectionStateHolder,
         playerUiState = _playerUiState,
         playNextInserter = playNextInserter,
-        mediaController = { mediaController },
+        controller = playback,
         toast = _toastEvents::emit,
         callbacks = PlayerDeleteCallbacks(
             toggleFavoriteSpecificSong = { song, removing -> toggleFavoriteSpecificSong(song, removing) },
@@ -1640,10 +1611,8 @@ class PlayerViewModel(
                 }
             }
 
-            mediaControllerFuture.addListener({
-                try {
-                    mediaController = mediaControllerFuture.get()
-                    playbackStateHolder.setMediaController(mediaController)
+            mediaControllerConnector.whenConnected(
+                onConnected = {
                     _isMediaControllerReady.value = true
 
 
@@ -1652,11 +1621,12 @@ class PlayerViewModel(
                     syncShuffleStateWithSession(playbackStateHolder.stablePlayerState.value.isShuffleEnabled)
                     pendingPlaybackAction?.invoke()
                     pendingPlaybackAction = null
-                } catch (e: Exception) {
+                },
+                onError = { e ->
                     _playerUiState.update { it.copy(isLoadingInitialSongs = false, isLoadingLibraryCategories = false) }
                     Logger.withTag("PlayerViewModel").e(e) { "Error setting up MediaController" }
-                }
-            }, ContextCompat.getMainExecutor(context))
+                },
+            )
 
 
             connectivityStateHolder.initialize(viewModelScope)
@@ -1664,7 +1634,7 @@ class PlayerViewModel(
             sleepTimerStateHolder.initialize(
                 scope = viewModelScope,
                 toastEmitter = { msg -> _toastEvents.emit(msg) },
-                mediaControllerProvider = { mediaController },
+                mediaControllerProvider = { mediaControllerConnector.rawController() },
                 songTitleResolver = { songId -> libraryStateHolder.allSongsById.value[songId]?.title }
             )
 
@@ -1867,12 +1837,12 @@ class PlayerViewModel(
         }
         val playbackContext =
             if (contextSongs.any { it.id == song.id }) contextSongs else listOf(song)
-        val controller = mediaController
+        val controllerAttached = mediaControllerConnector.isAttached
         val currentQueue = _playerUiState.value.currentPlaybackQueue
         val songIndexInQueue = indexInQueue ?: currentQueue.indexOfFirst { it.id == song.id }
         val queueMatchesContext = currentQueue.matchesSongOrder(playbackContext)
         val reusableTargetIndex = if (
-            controller != null &&
+            controllerAttached &&
             playback.isConnected &&
             !dualPlayerEngine.isTransitionRunning() &&
             songIndexInQueue != -1 &&
@@ -1887,7 +1857,7 @@ class PlayerViewModel(
             null
         }
 
-        if (controller != null && reusableTargetIndex != null) {
+        if (controllerAttached && reusableTargetIndex != null) {
             cancelPendingDirectPlaybackBuild()
             playLoadedControllerItem(reusableTargetIndex)
             if (isVoluntaryPlay) {
@@ -1912,7 +1882,7 @@ class PlayerViewModel(
 
     fun playSongAtPosition(song: Song, startPositionMs: Long) {
         viewModelScope.launch {
-            if (mediaController == null) return@launch
+            if (!mediaControllerConnector.isAttached) return@launch
             val bookmarkStartPositionMs = startPositionMs.coerceAtLeast(0L)
             if (playback.currentMediaId == song.id) {
                 playback.seekTo(bookmarkStartPositionMs)
@@ -2185,8 +2155,8 @@ class PlayerViewModel(
     private var lastQueueSignature: QueueTimelineSignature? = null
     private var lastQueueUpdateJob: Job? = null
 
-    private fun updateCurrentPlaybackQueueFromPlayer(playerCtrl: MediaController?) {
-        val currentMediaController = playerCtrl ?: mediaController ?: return
+    private fun updateCurrentPlaybackQueueFromPlayer(playerCtrl: Player?) {
+        val currentMediaController = playerCtrl ?: mediaControllerConnector.rawController() ?: return
         val requestId = ++lastQueueUpdateRequestId
         lastQueueUpdateJob?.cancel()
         lastQueueUpdateJob = viewModelScope.launch {
@@ -2266,7 +2236,7 @@ class PlayerViewModel(
     private fun applyPreferredRepeatMode(@Player.RepeatMode mode: Int) {
         playbackStateHolder.updateStablePlayerState { it.copy(repeatMode = mode) }
 
-        if (mediaController == null) {
+        if (!mediaControllerConnector.isAttached) {
             pendingRepeatMode = mode
             return
         }
@@ -2343,7 +2313,7 @@ class PlayerViewModel(
     }
 
     private fun setupMediaControllerListeners(): Unit = traceSection("PlayerViewModel.setupMediaControllerListeners") {
-        val playerCtrl = mediaController ?: return
+        val playerCtrl = mediaControllerConnector.rawController() ?: return
         playbackStateHolder.updateStablePlayerState {
             it.copy(
                 isShuffleEnabled = it.isShuffleEnabled,
@@ -2399,8 +2369,7 @@ class PlayerViewModel(
             }
         }
 
-        mediaControllerPlaybackListener?.let(playerCtrl::removeListener)
-        mediaControllerPlaybackListener = object : Player.Listener {
+        val playerListener = object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
                 viewModelScope.launch {
                     _toastEvents.emit(getString(Res.string.player_error_skipping))
@@ -2584,12 +2553,12 @@ class PlayerViewModel(
                 
                 if (reason == Player.TIMELINE_CHANGE_REASON_PLAYLIST_CHANGED ||
                     reason == Player.TIMELINE_CHANGE_REASON_SOURCE_UPDATE) {
-                    updateCurrentPlaybackQueueFromPlayer(mediaController)
+                    updateCurrentPlaybackQueueFromPlayer(mediaControllerConnector.rawController())
                     dualPlayerEngine.triggerAdjacentPreResolution()
                 }
             }
         }
-        playerCtrl.addListener(checkNotNull(mediaControllerPlaybackListener))
+        mediaControllerConnector.setPlayerListener(playerListener)
     }
 
 
@@ -2907,7 +2876,7 @@ class PlayerViewModel(
             }
         }
 
-        if (mediaController == null) {
+        if (!mediaControllerConnector.isAttached) {
             Logger.w { "MediaController not available. Queuing playback action." }
             pendingPlaybackAction = playSongsAction
         } else {
@@ -2936,7 +2905,7 @@ class PlayerViewModel(
         }
         _isSheetVisible.value = true
 
-        if (mediaController == null) {
+        if (!mediaControllerConnector.isAttached) {
             pendingPlaybackAction = {
                 loadAndPlaySong(song)
             }
@@ -2957,7 +2926,7 @@ class PlayerViewModel(
         val currentQueue = _playerUiState.value.currentPlaybackQueue.toList()
         val currentSong = currentSongOverride
             ?: playbackStateHolder.stablePlayerState.value.currentSong
-            ?: mediaController?.currentMediaItem?.let { resolveSongFromMediaItem(it) }            ?: currentQueue.firstOrNull()
+            ?: mediaControllerConnector.rawController()?.currentMediaItem?.let { resolveSongFromMediaItem(it) }            ?: currentQueue.firstOrNull()
 
         playbackStateHolder.toggleShuffle(
             currentSongs = currentQueue,
@@ -3000,15 +2969,7 @@ class PlayerViewModel(
         // Captured before super.onCleared() so the owner checks below compare against the
         // exact scope this instance bound the singleton holders to.
         val ownerScope = viewModelScope
-        val controllerToRelease = mediaController
-        mediaControllerPlaybackListener?.let { listener ->
-            controllerToRelease?.removeListener(listener)
-            mediaControllerPlaybackListener = null
-        }
-        playbackStateHolder.clearMediaController(controllerToRelease)
-        controllerToRelease?.release()
-        mediaController = null
-        mediaControllerFuture.cancel(true)
+        mediaControllerConnector.release()
         super.onCleared()
         // The holder moves progress updates to the PlayerViewModel left bound, or stops them when
         // none is; stopping them here would freeze the seek bar of the surviving instance.
@@ -3039,9 +3000,9 @@ class PlayerViewModel(
         sleepTimerStateHolder.cancelCountedPlay()
     }
 
-    fun startRepeatN(times: Int) = repeatNStateHolder.start(mediaController, times)
+    fun startRepeatN(times: Int) = repeatNStateHolder.start(playback, times)
 
-    fun cancelRepeatN() = repeatNStateHolder.cancel(mediaController)
+    fun cancelRepeatN() = repeatNStateHolder.cancel(playback)
 
     fun setEndOfTrackTimer(enable: Boolean) {
         val currentSongId = stablePlayerState.value.currentSong?.id
@@ -3231,7 +3192,7 @@ class PlayerViewModel(
 
     fun playSong(song: Song) {
         viewModelScope.launch {
-            if (mediaController == null) return@launch
+            if (!mediaControllerConnector.isAttached) return@launch
             playback.loadAndPlay(song)
 
             _isSheetVisible.value = true
@@ -3242,7 +3203,7 @@ class PlayerViewModel(
     fun prepareBenchmarkPlayerFromLibrary() {
         viewModelScope.launch {
             repeat(90) { attempt ->
-                val controllerReady = mediaController != null
+                val controllerReady = mediaControllerConnector.isAttached
                 val songs = withContext(dispatchers.io) {
                     musicRepository.getAllSongsOnce()
                 }

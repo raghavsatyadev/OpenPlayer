@@ -2,9 +2,7 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel.player
 
 import android.app.Activity
 import androidx.annotation.OptIn
-import androidx.media3.common.Timeline
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.session.MediaController
 import co.touchlab.kermit.Logger
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.raghavsatyadev.openplayer.data.model.Song
@@ -46,7 +44,7 @@ class PlayerDeleteActions(
     private val multiSelectionStateHolder: MultiSelectionStateHolder,
     private val playerUiState: MutableStateFlow<PlayerUiState>,
     private val playNextInserter: PlayNextInserter,
-    private val mediaController: () -> MediaController?,
+    private val controller: PlaybackController,
     private val toast: suspend (String) -> Unit,
     private val callbacks: PlayerDeleteCallbacks,
 ) {
@@ -309,17 +307,11 @@ class PlayerDeleteActions(
     }
 
     private fun removeFromMediaControllerQueue(songId: String) {
-        val controller = mediaController() ?: return
-
         try {
-            val timeline = controller.currentTimeline
-            val mediaItemCount = timeline.windowCount
-
-            for (i in 0 until mediaItemCount) {
-                val window = timeline.getWindow(i, Timeline.Window())
-                if (window.mediaItem.mediaId == songId) {
+            for (i in 0 until controller.queueSize) {
+                if (controller.mediaIdAt(i) == songId) {
                     playNextInserter.onItemRemoved(i)
-                    controller.removeMediaItem(i)
+                    controller.removeQueueItem(i)
                     break
                 }
             }

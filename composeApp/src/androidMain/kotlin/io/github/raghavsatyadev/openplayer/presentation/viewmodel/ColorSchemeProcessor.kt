@@ -140,18 +140,15 @@ class ColorSchemeProcessor(
                 loadBitmapForColorExtraction(albumArtUri, forceRefresh)
             } ?: return@traceAsyncSection null
 
-            val schemePair = try {
-                withContext(Dispatchers.Default) {
-                    val seed = extractSeedColor(
-                        bitmap = bitmap,
-                        config = io.github.raghavsatyadev.openplayer.ui.theme.ColorExtractionConfig(
-                            accuracyLevel = colorAccuracyLevel
-                        )
+            // Don't recycle: with the memory cache on, Coil returns its cached bitmap, which the UI may be drawing.
+            val schemePair = withContext(Dispatchers.Default) {
+                val seed = extractSeedColor(
+                    bitmap = bitmap,
+                    config = io.github.raghavsatyadev.openplayer.ui.theme.ColorExtractionConfig(
+                        accuracyLevel = colorAccuracyLevel
                     )
-                    generateColorSchemeFromSeed(seedColor = seed, paletteStyle = paletteStyle)
-                }
-            } finally {
-                bitmap.recycle()
+                )
+                generateColorSchemeFromSeed(seedColor = seed, paletteStyle = paletteStyle)
             }
 
             suspend fun cacheScheme(): ColorSchemePair {

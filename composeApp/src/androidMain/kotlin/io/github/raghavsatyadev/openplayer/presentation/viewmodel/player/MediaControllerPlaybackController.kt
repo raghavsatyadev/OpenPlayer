@@ -98,6 +98,20 @@ class MediaControllerPlaybackController(
         )
     }
 
+    override fun startRepeatN(times: Int) {
+        connected?.sendCustomCommand(
+            SessionCommand(MusicNotificationProvider.CUSTOM_COMMAND_REPEAT_N, Bundle.EMPTY),
+            Bundle().apply { putInt(MusicNotificationProvider.EXTRA_REPEAT_N_TIMES, times) },
+        )
+    }
+
+    override fun cancelRepeatN() {
+        connected?.sendCustomCommand(
+            SessionCommand(MusicNotificationProvider.CUSTOM_COMMAND_CANCEL_REPEAT_N, Bundle.EMPTY),
+            Bundle.EMPTY,
+        )
+    }
+
     override fun moveQueueItem(fromIndex: Int, toIndex: Int) {
         connected?.moveMediaItem(fromIndex, toIndex)
     }

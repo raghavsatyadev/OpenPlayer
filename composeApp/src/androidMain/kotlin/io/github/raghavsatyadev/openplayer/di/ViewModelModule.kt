@@ -35,6 +35,7 @@ import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ParametricEqVi
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaybackStateHolder
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerVideoViewModel
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlayerViewModel
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.MediaControllerConnector
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistDismissUndoStateHolder
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistSelectionStateHolder
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaylistViewModel
@@ -88,6 +89,7 @@ val viewModelModule = module {
     singleOf(::ThemeStateHolder)
 
     factoryOf(::ExternalMediaStateHolder)
+    factoryOf(::MediaControllerConnector)
     factoryOf(::FolderNavigationStateHolder)
     factoryOf(::LibraryTabsStateHolder)
     factoryOf(::MetadataEditStateHolder)
@@ -149,8 +151,7 @@ val viewModelModule = module {
             themeStateHolder = get(),
             multiSelectionStateHolder = get(),
             playlistSelectionStateHolder = get(),
-            sessionToken = get(),
-            mediaControllerFactory = get(),
+            mediaControllerConnector = get(),
             dispatchers = get()
         )
     }

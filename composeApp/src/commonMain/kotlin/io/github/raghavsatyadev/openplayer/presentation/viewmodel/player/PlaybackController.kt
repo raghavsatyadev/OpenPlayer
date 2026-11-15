@@ -61,6 +61,12 @@ interface PlaybackController {
     /** Tells the playback session the app-level shuffle flag changed. Dropped when disconnected. */
     fun syncShuffleState(enabled: Boolean)
 
+    /** Asks the playback session to repeat the current song [times] more times (caller clamps the range). Dropped when disconnected. */
+    fun startRepeatN(times: Int)
+
+    /** Cancels a running repeat-N. Dropped when disconnected. */
+    fun cancelRepeatN()
+
     fun moveQueueItem(fromIndex: Int, toIndex: Int)
     fun removeQueueItem(index: Int)
     fun clearQueue()
