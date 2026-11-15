@@ -1087,7 +1087,10 @@ class PlayerViewModel(
     }
 
     private var mediaController: MediaController? = null
-    private val playback: PlaybackController = MediaControllerPlaybackController { mediaController }
+    private val playback: PlaybackController = MediaControllerPlaybackController(
+        controller = { mediaController },
+        resolvedMediaItem = { song, playlistId -> buildResolvedPlaybackMediaItem(song, playlistId) },
+    )
     private var mediaControllerPlaybackListener: Player.Listener? = null
     private val _isMediaControllerReady = MutableStateFlow(false)
     val isMediaControllerReady: StateFlow<Boolean> = _isMediaControllerReady.asStateFlow()
@@ -1909,16 +1912,13 @@ class PlayerViewModel(
 
     fun playSongAtPosition(song: Song, startPositionMs: Long) {
         viewModelScope.launch {
-            val controller = mediaController ?: return@launch
+            if (mediaController == null) return@launch
             val bookmarkStartPositionMs = startPositionMs.coerceAtLeast(0L)
             if (playback.currentMediaId == song.id) {
                 playback.seekTo(bookmarkStartPositionMs)
                 playback.play()
             } else {
-                val mediaItem = buildResolvedPlaybackMediaItem(song)
-                controller.setMediaItem(mediaItem, bookmarkStartPositionMs)
-                controller.prepare()
-                controller.play()
+                playback.loadAndPlay(song, startPositionMs = bookmarkStartPositionMs)
             }
             _isSheetVisible.value = true
             _sheetState.value = PlayerSheetState.EXPANDED
@@ -2936,8 +2936,7 @@ class PlayerViewModel(
         }
         _isSheetVisible.value = true
 
-        val controller = mediaController
-        if (controller == null) {
+        if (mediaController == null) {
             pendingPlaybackAction = {
                 loadAndPlaySong(song)
             }
@@ -2945,26 +2944,12 @@ class PlayerViewModel(
         }
 
         viewModelScope.launch {
-            val mediaItem = buildResolvedPlaybackMediaItem(song)
-            if (playback.currentMediaId == song.id) {
-                if (!playback.isPlaying) playback.play()
-            } else {
-                controller.setMediaItem(mediaItem)
-                controller.prepare()
-                controller.play()
-            }
+            playback.loadAndPlay(song, resumeIfCurrent = true)
         }
     }
 
     private fun syncShuffleStateWithSession(enabled: Boolean) {
-        val controller = mediaController ?: return
-        val args = Bundle().apply {
-            putBoolean(MusicNotificationProvider.EXTRA_SHUFFLE_ENABLED, enabled)
-        }
-        controller.sendCustomCommand(
-            SessionCommand(MusicNotificationProvider.CUSTOM_COMMAND_SET_SHUFFLE_STATE, Bundle()),
-            args
-        )
+        playback.syncShuffleState(enabled)
     }
 
     fun toggleShuffle(currentSongOverride: Song? = null) {
@@ -3246,12 +3231,8 @@ class PlayerViewModel(
 
     fun playSong(song: Song) {
         viewModelScope.launch {
-            val controller = mediaController ?: return@launch
-            val mediaItem = buildResolvedPlaybackMediaItem(song)
-
-            controller.setMediaItem(mediaItem)
-            controller.prepare()
-            controller.play()
+            if (mediaController == null) return@launch
+            playback.loadAndPlay(song)
 
             _isSheetVisible.value = true
             _sheetState.value = PlayerSheetState.EXPANDED

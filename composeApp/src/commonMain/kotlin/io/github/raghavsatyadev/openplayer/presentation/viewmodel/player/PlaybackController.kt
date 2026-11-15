@@ -1,5 +1,7 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel.player
 
+import io.github.raghavsatyadev.openplayer.data.model.Song
+
 /** Engine state of a [PlaybackController], independent of the platform player. */
 enum class PlaybackEngineState { IDLE, BUFFERING, READY, ENDED }
 
@@ -43,6 +45,21 @@ interface PlaybackController {
     fun stop()
     fun seekTo(positionMs: Long)
     fun seekTo(index: Int, positionMs: Long)
+
+    /**
+     * Replaces the queue with [song] (tagged with [playlistId]), prepares and plays it from
+     * [startPositionMs] (the item's default start when null). When [resumeIfCurrent] is true and [song] is already the current item,
+     * nothing is replaced and playback is resumed if paused. Dropped when disconnected.
+     */
+    suspend fun loadAndPlay(
+        song: Song,
+        playlistId: String? = null,
+        startPositionMs: Long? = null,
+        resumeIfCurrent: Boolean = false,
+    )
+
+    /** Tells the playback session the app-level shuffle flag changed. Dropped when disconnected. */
+    fun syncShuffleState(enabled: Boolean)
 
     fun moveQueueItem(fromIndex: Int, toIndex: Int)
     fun removeQueueItem(index: Int)
