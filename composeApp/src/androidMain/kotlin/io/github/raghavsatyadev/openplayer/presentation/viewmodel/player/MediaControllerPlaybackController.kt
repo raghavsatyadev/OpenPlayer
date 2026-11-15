@@ -42,6 +42,20 @@ class MediaControllerPlaybackController(
             ?.takeIf { it != C.TIME_UNSET }
             ?: PlaybackController.UNKNOWN_DURATION
 
+    override var repeatMode: Int
+        get() = connected?.repeatMode ?: PlaybackController.REPEAT_OFF
+        set(value) { connected?.repeatMode = value }
+
+    override var shuffleEnabled: Boolean
+        get() = connected?.shuffleModeEnabled == true
+        set(value) { connected?.shuffleModeEnabled = value }
+
+    override fun mediaIdAt(index: Int): String? {
+        val player = connected ?: return null
+        if (index !in 0 until player.mediaItemCount) return null
+        return runCatching { player.getMediaItemAt(index).mediaId }.getOrNull()
+    }
+
     override fun prepare() { connected?.prepare() }
     override fun play() { connected?.play() }
     override fun pause() { connected?.pause() }

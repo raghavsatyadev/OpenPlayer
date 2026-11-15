@@ -9,7 +9,6 @@ import io.github.raghavsatyadev.openplayer.data.model.LibraryTabId
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.MediaMetadata
@@ -71,6 +70,8 @@ import io.github.raghavsatyadev.openplayer.utils.traceSection
 import io.github.raghavsatyadev.openplayer.presentation.navigation.PlayerSheetBackCoordinator
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.MediaControllerPlaybackController
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackAudioMetadataTracker
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackController
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackEngineState
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerFavoriteActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerQueueActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerShuffleActions
@@ -1086,6 +1087,7 @@ class PlayerViewModel(
     }
 
     private var mediaController: MediaController? = null
+    private val playback: PlaybackController = MediaControllerPlaybackController { mediaController }
     private var mediaControllerPlaybackListener: Player.Listener? = null
     private val _isMediaControllerReady = MutableStateFlow(false)
     val isMediaControllerReady: StateFlow<Boolean> = _isMediaControllerReady.asStateFlow()
@@ -1166,7 +1168,7 @@ class PlayerViewModel(
 
     val queueActions = PlayerQueueActions(
         scope = viewModelScope,
-        controller = MediaControllerPlaybackController { mediaController },
+        controller = playback,
         mediaController = { mediaController },
         playbackStateHolder = playbackStateHolder,
         queueUndoStateHolder = queueUndoStateHolder,
@@ -1176,7 +1178,7 @@ class PlayerViewModel(
 
     val transport = PlayerTransportActions(
         scope = viewModelScope,
-        controller = MediaControllerPlaybackController { mediaController },
+        controller = playback,
         playbackStateHolder = playbackStateHolder,
         musicRepository = musicRepository,
         playerUiState = playerUiState,
@@ -1868,12 +1870,12 @@ class PlayerViewModel(
         val queueMatchesContext = currentQueue.matchesSongOrder(playbackContext)
         val reusableTargetIndex = if (
             controller != null &&
-            controller.isConnected &&
+            playback.isConnected &&
             !dualPlayerEngine.isTransitionRunning() &&
             songIndexInQueue != -1 &&
             queueMatchesContext
         ) {
-            controller.resolveReusablePlaybackTargetIndex(
+            resolveReusablePlaybackTargetIndex(
                 songIndexInQueue = songIndexInQueue,
                 songId = song.id,
                 isExplicitQueueTarget = indexInQueue != null
@@ -1884,7 +1886,7 @@ class PlayerViewModel(
 
         if (controller != null && reusableTargetIndex != null) {
             cancelPendingDirectPlaybackBuild()
-            playLoadedControllerItem(controller, reusableTargetIndex)
+            playLoadedControllerItem(reusableTargetIndex)
             if (isVoluntaryPlay) {
                 incrementSongScore(song)
                 if (playlistId != null && queueName != "None") {
@@ -1909,9 +1911,9 @@ class PlayerViewModel(
         viewModelScope.launch {
             val controller = mediaController ?: return@launch
             val bookmarkStartPositionMs = startPositionMs.coerceAtLeast(0L)
-            if (controller.currentMediaItem?.mediaId == song.id) {
-                controller.seekTo(bookmarkStartPositionMs)
-                controller.play()
+            if (playback.currentMediaId == song.id) {
+                playback.seekTo(bookmarkStartPositionMs)
+                playback.play()
             } else {
                 val mediaItem = buildResolvedPlaybackMediaItem(song)
                 controller.setMediaItem(mediaItem, bookmarkStartPositionMs)
@@ -1928,35 +1930,32 @@ class PlayerViewModel(
         return indices.all { this[it].id == contextSongs[it].id }
     }
 
-    private fun MediaController.resolveReusablePlaybackTargetIndex(
+    private fun resolveReusablePlaybackTargetIndex(
         songIndexInQueue: Int,
         songId: String,
         isExplicitQueueTarget: Boolean = false
     ): Int? {
-        if (!isExplicitQueueTarget) {
-            currentMediaItem?.takeIf { it.mediaId == songId }?.let {
-                return currentMediaItemIndex.takeIf { index -> index != C.INDEX_UNSET } ?: 0
-            }
+        if (!isExplicitQueueTarget && playback.currentMediaId == songId) {
+            return playback.currentIndex.takeIf { index -> index != PlaybackController.NO_INDEX } ?: 0
         }
 
-        if (songIndexInQueue !in 0 until mediaItemCount) return null
+        if (songIndexInQueue !in 0 until playback.queueSize) return null
 
-        val mediaIdAtTarget = runCatching { getMediaItemAt(songIndexInQueue).mediaId }.getOrNull()
-        return songIndexInQueue.takeIf { mediaIdAtTarget == songId }
+        return songIndexInQueue.takeIf { playback.mediaIdAt(songIndexInQueue) == songId }
     }
 
-    private fun playLoadedControllerItem(controller: MediaController, targetIndex: Int) {
+    private fun playLoadedControllerItem(targetIndex: Int) {
         val shouldSeekToStart =
-            controller.currentMediaItemIndex != targetIndex ||
-                controller.playbackState == Player.STATE_ENDED
+            playback.currentIndex != targetIndex ||
+                playback.engineState == PlaybackEngineState.ENDED
 
         if (shouldSeekToStart) {
-            controller.seekTo(targetIndex, 0L)
+            playback.seekTo(targetIndex, 0L)
         }
-        if (controller.playbackState == Player.STATE_IDLE && controller.mediaItemCount > 0) {
-            controller.prepare()
+        if (playback.engineState == PlaybackEngineState.IDLE && playback.queueSize > 0) {
+            playback.prepare()
         }
-        controller.play()
+        playback.play()
     }
 
     private fun Song.requiresHydration(): Boolean {
@@ -2267,14 +2266,13 @@ class PlayerViewModel(
     private fun applyPreferredRepeatMode(@Player.RepeatMode mode: Int) {
         playbackStateHolder.updateStablePlayerState { it.copy(repeatMode = mode) }
 
-        val controller = mediaController
-        if (controller == null) {
+        if (mediaController == null) {
             pendingRepeatMode = mode
             return
         }
 
-        if (controller.repeatMode != mode) {
-            controller.repeatMode = mode
+        if (playback.repeatMode != mode) {
+            playback.repeatMode = mode
         }
         pendingRepeatMode = null
     }
@@ -2349,12 +2347,12 @@ class PlayerViewModel(
         playbackStateHolder.updateStablePlayerState {
             it.copy(
                 isShuffleEnabled = it.isShuffleEnabled,
-                repeatMode = playerCtrl.repeatMode,
-                isPlaying = playerCtrl.isPlaying,
-                playWhenReady = playerCtrl.playWhenReady
+                repeatMode = playback.repeatMode,
+                isPlaying = playback.isPlaying,
+                playWhenReady = playback.playWhenReady
             )
         }
-        audioMetadataTracker.prepareForMedia(playerCtrl.currentMediaItem?.mediaId)
+        audioMetadataTracker.prepareForMedia(playback.currentMediaId)
         audioMetadataTracker.refresh(playerCtrl)
 
         updateCurrentPlaybackQueueFromPlayer(playerCtrl)
@@ -2364,9 +2362,9 @@ class PlayerViewModel(
             val song = resolveSongFromMediaItem(mediaItem)
 
             if (song != null) {
-                val initialPosition = playerCtrl.currentPosition.coerceAtLeast(0L)
+                val initialPosition = playback.positionMs.coerceAtLeast(0L)
                 val resolvedDuration = playbackStateHolder.resolveDurationForPlaybackState(
-                    reportedDurationMs = playerCtrl.duration,
+                    reportedDurationMs = playback.durationMs,
                     songDurationHintMs = song.duration.coerceAtLeast(0L),
                     currentPositionMs = initialPosition
                 )
@@ -2383,7 +2381,7 @@ class PlayerViewModel(
                     themeStateHolder.extractAndGenerateColorScheme(uri, currentUri)
                 }
                 loadLyricsForCurrentSong()
-                if (playerCtrl.isPlaying) {
+                if (playback.isPlaying) {
                     _isSheetVisible.value = true
                     startProgressUpdates()
                 }
@@ -2413,22 +2411,22 @@ class PlayerViewModel(
                 playbackStateHolder.updateStablePlayerState {
                     it.copy(
                         isPlaying = isPlaying,
-                        playWhenReady = playerCtrl.playWhenReady
+                        playWhenReady = playback.playWhenReady
                     )
                 }
-                val shouldKeepSampling = playerCtrl.playWhenReady &&
-                    playerCtrl.playbackState != Player.STATE_IDLE &&
-                    playerCtrl.playbackState != Player.STATE_ENDED
+                val shouldKeepSampling = playback.playWhenReady &&
+                    playback.engineState != PlaybackEngineState.IDLE &&
+                    playback.engineState != PlaybackEngineState.ENDED
                 if (isPlaying || shouldKeepSampling) {
                     _isSheetVisible.value = true
                     if (isPlaying) {
-                        clearPreparingSongIfMatching(playerCtrl.currentMediaItem?.mediaId)
+                        clearPreparingSongIfMatching(playback.currentMediaId)
                     }
                     startProgressUpdates()
                 } else {
                     stopProgressUpdates()
-                    val pausedPosition = playerCtrl.currentPosition.coerceAtLeast(0L)
-                    syncPlaybackPositionFromPlayer(playerCtrl.currentMediaItem?.mediaId, pausedPosition)
+                    val pausedPosition = playback.positionMs.coerceAtLeast(0L)
+                    syncPlaybackPositionFromPlayer(playback.currentMediaId, pausedPosition)
                 }
             }
 
@@ -2436,15 +2434,15 @@ class PlayerViewModel(
                 playbackStateHolder.updateStablePlayerState { it.copy(playWhenReady = playWhenReady) }
                 if (
                     playWhenReady &&
-                    playerCtrl.playbackState != Player.STATE_IDLE &&
-                    playerCtrl.playbackState != Player.STATE_ENDED
+                    playback.engineState != PlaybackEngineState.IDLE &&
+                    playback.engineState != PlaybackEngineState.ENDED
                 ) {
                     startProgressUpdates()
                 }
             }
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                playNextInserter.onCurrentItemChanged(playerCtrl.currentMediaItemIndex, reason)
+                playNextInserter.onCurrentItemChanged(playback.currentIndex, reason)
                 playbackStateHolder.onPlaybackOccurrenceTransition(mediaItem?.mediaId)
                 audioMetadataTracker.prepareForMedia(mediaItem?.mediaId)
                 transitionSchedulerJob?.cancel()
@@ -2455,9 +2453,9 @@ class PlayerViewModel(
                         
                         val resolvedDuration = if (song != null) {
                             playbackStateHolder.resolveDurationForPlaybackState(
-                                reportedDurationMs = playerCtrl.duration,
+                                reportedDurationMs = playback.durationMs,
                                 songDurationHintMs = song.duration.coerceAtLeast(0L),
-                                currentPositionMs = playerCtrl.currentPosition.coerceAtLeast(0L)
+                                currentPositionMs = playback.positionMs.coerceAtLeast(0L)
                             )
                         } else {
                             0L
@@ -2469,17 +2467,17 @@ class PlayerViewModel(
                                 currentMediaItemIndex = if (dualPlayerEngine.isUsingWindowedQueue()) {
                                     dualPlayerEngine.getCurrentAbsoluteIndex()
                                 } else {
-                                    playerCtrl.currentMediaItemIndex
+                                    playback.currentIndex
                                 },
                                 totalDuration = resolvedDuration,
                                 lyrics = null,
                                 isLoadingLyrics = song != null,
-                                playWhenReady = playerCtrl.playWhenReady
+                                playWhenReady = playback.playWhenReady
                             )
                         }
                         val transitionPosition = syncPlaybackPositionFromPlayer(
                             transitionedItem.mediaId,
-                            playerCtrl.currentPosition.coerceAtLeast(0L)
+                            playback.positionMs.coerceAtLeast(0L)
                         )
 
                         song?.let { currentSongValue ->
@@ -2527,19 +2525,19 @@ class PlayerViewModel(
                 }
 
                 if (playbackState == Player.STATE_READY) {
-                    clearPreparingSongIfMatching(playerCtrl.currentMediaItem?.mediaId)
-                    val readyPosition = playerCtrl.currentPosition.coerceAtLeast(0L)
+                    clearPreparingSongIfMatching(playback.currentMediaId)
+                    val readyPosition = playback.positionMs.coerceAtLeast(0L)
                     val songDurationHint = playbackStateHolder.stablePlayerState.value.currentSong?.duration ?: 0L
                     val resolvedDuration = playbackStateHolder.resolveDurationForPlaybackState(
-                        reportedDurationMs = playerCtrl.duration,
+                        reportedDurationMs = playback.durationMs,
                         songDurationHintMs = songDurationHint,
                         currentPositionMs = readyPosition
                     )
-                    syncPlaybackPositionFromPlayer(playerCtrl.currentMediaItem?.mediaId, readyPosition)
+                    syncPlaybackPositionFromPlayer(playback.currentMediaId, readyPosition)
                     playbackStateHolder.updateStablePlayerState { it.copy(totalDuration = resolvedDuration) }
                     startProgressUpdates()
                 }
-                if (playbackState == Player.STATE_IDLE && playerCtrl.mediaItemCount == 0) {
+                if (playbackState == Player.STATE_IDLE && playback.queueSize == 0) {
                     clearPreparingSongIfMatching()
                     lyricsStateHolder.cancelLoading()
                     playbackStateHolder.updateStablePlayerState {
@@ -2565,7 +2563,7 @@ class PlayerViewModel(
             }
             override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
                 if (shuffleModeEnabled) {
-                    playerCtrl.shuffleModeEnabled = false
+                    playback.shuffleEnabled = false
                     if (!playbackStateHolder.stablePlayerState.value.isShuffleEnabled) {
                         toggleShuffle()
                     }
@@ -2948,8 +2946,8 @@ class PlayerViewModel(
 
         viewModelScope.launch {
             val mediaItem = buildResolvedPlaybackMediaItem(song)
-            if (controller.currentMediaItem?.mediaId == song.id) {
-                if (!controller.isPlaying) controller.play()
+            if (playback.currentMediaId == song.id) {
+                if (!playback.isPlaying) playback.play()
             } else {
                 controller.setMediaItem(mediaItem)
                 controller.prepare()
@@ -2974,8 +2972,7 @@ class PlayerViewModel(
         val currentQueue = _playerUiState.value.currentPlaybackQueue.toList()
         val currentSong = currentSongOverride
             ?: playbackStateHolder.stablePlayerState.value.currentSong
-            ?: mediaController?.currentMediaItem?.let { resolveSongFromMediaItem(it) }
-            ?: currentQueue.firstOrNull()
+            ?: mediaController?.currentMediaItem?.let { resolveSongFromMediaItem(it) }            ?: currentQueue.firstOrNull()
 
         playbackStateHolder.toggleShuffle(
             currentSongs = currentQueue,
@@ -3082,8 +3079,8 @@ class PlayerViewModel(
             updateUiState = { mutation -> _playerUiState.update(mutation) },
             disconnectRemoteIfNeeded = {},
             clearPlayback = {
-                mediaController?.stop()
-                mediaController?.clearMediaItems()
+                playback.stop()
+                playback.clearQueue()
             },
             clearStablePlaybackState = {
                 playbackStateHolder.updateStablePlayerState {
@@ -3115,7 +3112,7 @@ class PlayerViewModel(
             playSongs = { songs, startSong, queueName ->
                 playSongs(songs, startSong, queueName)
             },
-            seekTo = { position -> mediaController?.seekTo(position) },
+            seekTo = { position -> playback.seekTo(position) },
             setSheetVisible = { _isSheetVisible.value = it },
             setSheetCollapsed = { _sheetState.value = PlayerSheetState.COLLAPSED },
             emitToast = { message -> _toastEvents.emit(message) }

@@ -28,6 +28,15 @@ interface PlaybackController {
     /** Duration of the current item, or [UNKNOWN_DURATION]. */
     val durationMs: Long
 
+    /** One of [REPEAT_OFF], [REPEAT_ONE], [REPEAT_ALL]; reads [REPEAT_OFF] and drops writes when disconnected. */
+    var repeatMode: Int
+
+    /** Native shuffle flag of the player; false and ignored on write when disconnected. */
+    var shuffleEnabled: Boolean
+
+    /** Id of the queue item at [index], or null when out of range or disconnected. */
+    fun mediaIdAt(index: Int): String?
+
     fun prepare()
     fun play()
     fun pause()
@@ -42,6 +51,11 @@ interface PlaybackController {
     companion object {
         const val NO_INDEX: Int = -1
         const val UNKNOWN_DURATION: Long = -1L
+
+        /** Same numeric values as Media3 `Player.REPEAT_MODE_*`, which are persisted and used across the app. */
+        const val REPEAT_OFF: Int = 0
+        const val REPEAT_ONE: Int = 1
+        const val REPEAT_ALL: Int = 2
     }
 }
 
