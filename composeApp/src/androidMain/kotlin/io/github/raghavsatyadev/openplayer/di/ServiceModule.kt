@@ -28,9 +28,11 @@ import io.github.raghavsatyadev.openplayer.data.update.UpdateCheckScheduler
 import io.github.raghavsatyadev.openplayer.data.worker.CloudSyncCoordinator
 import io.github.raghavsatyadev.openplayer.data.worker.LocalLibraryChangeTracker
 import io.github.raghavsatyadev.openplayer.data.worker.SyncManager
+import io.github.raghavsatyadev.openplayer.data.worker.WorkManagerSyncManager
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ColorSchemeProcessor
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.ListeningStatsTracker
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val serviceModule = module {
@@ -53,7 +55,7 @@ val serviceModule = module {
     singleOf(::AppUpdateManager)
     singleOf(::AppReleaseSource)
     singleOf(::CloudSyncCoordinator)
-    singleOf(::SyncManager)
+    singleOf(::WorkManagerSyncManager) bind SyncManager::class
     singleOf(::LocalLibraryChangeTracker)
     singleOf(::MediaStoreObserver)
     singleOf(::NavidromeStreamProxy)

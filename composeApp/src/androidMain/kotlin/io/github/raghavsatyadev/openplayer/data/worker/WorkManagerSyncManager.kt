@@ -30,40 +30,13 @@ import co.touchlab.kermit.Logger
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 
-/**
- * Data class representing the progress of the sync operation.
- */
-data class SyncProgress(
-    val isRunning: Boolean = false,
-    val currentCount: Int = 0,
-    val totalCount: Int = 0,
-    val isCompleted: Boolean = false,
-    val phase: SyncPhase = SyncPhase.IDLE
-) {
-    enum class SyncPhase {
-        IDLE,
-        FETCHING_MEDIASTORE,
-        PROCESSING_FILES,
-        SAVING_TO_DATABASE,
-        SCANNING_LRC,
-        CLEANING_CACHE,
-        SYNCING_CLOUD,
-        COMPLETING
-    }
-
-    val progress: Float
-        get() = if (totalCount > 0) currentCount.toFloat() / totalCount else 0f
-
-    val hasProgress: Boolean
-        get() = totalCount > 0
-    }
-
-class SyncManager(
+/** Android [SyncManager]: runs [SyncWorker] through WorkManager and auto-syncs on MediaStore changes. */
+class WorkManagerSyncManager(
     private val context: Context,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val mediaStoreObserver: MediaStoreObserver,
     private val localLibraryChangeTracker: LocalLibraryChangeTracker
-) {
+) : SyncManager {
     private val workManager = WorkManager.getInstance(context)
     private val sharingScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private var mediaStoreAutoSyncJob: Job? = null
@@ -80,7 +53,7 @@ class SyncManager(
     @Volatile
     private var currentSyncWorkId: UUID? = null
 
-    val isSyncing: Flow<Boolean> =
+    override val isSyncing: Flow<Boolean> =
         workManager.getWorkInfosForUniqueWorkFlow(SyncWorker.WORK_NAME)
             .map { workInfos ->
                 val isRunning = workInfos.any { it.state == WorkInfo.State.RUNNING }
@@ -101,7 +74,7 @@ class SyncManager(
      * run still active. Used to surface a one-shot "sync failed" message to the user,
      * which the [syncProgress] flow alone cannot do (it silently reverts to idle).
      */
-    val syncFailed: Flow<Unit> =
+    override val syncFailed: Flow<Unit> =
         workManager.getWorkInfosForUniqueWorkFlow(SyncWorker.WORK_NAME)
             .map { workInfos ->
                 latestForegroundSyncWork(workInfos)?.state == WorkInfo.State.FAILED
@@ -123,7 +96,7 @@ class SyncManager(
      * so the launch site is explicit and greppable instead of hidden in DI construction.
      * Idempotent — extra calls are no-ops.
      */
-    fun start() {
+    override fun start() {
         if (!started.compareAndSet(false, true)) return
         observeStorageChanges()
         observeSyncCompletion()
@@ -147,7 +120,7 @@ class SyncManager(
     /**
      * Flow that exposes the detailed sync progress including song count.
      */
-    val syncProgress: Flow<SyncProgress> =
+    override val syncProgress: Flow<SyncProgress> =
         workManager.getWorkInfosForUniqueWorkFlow(SyncWorker.WORK_NAME)
             .map { workInfos ->
                 val runningWork = workInfos.firstOrNull { it.state == WorkInfo.State.RUNNING }
@@ -205,7 +178,7 @@ class SyncManager(
      * unified DB. This is what powers the pull-to-refresh indicator: the UI only
      * needs to confirm that local additions/deletions have landed.
      */
-    val isFetchingChanges: Flow<Boolean> = syncProgress
+    override val isFetchingChanges: Flow<Boolean> = syncProgress
         .map { progress ->
             progress.isRunning && progress.phase in CHANGE_PHASES
         }
@@ -233,7 +206,7 @@ class SyncManager(
             replay = 1
         )
 
-    fun sync() {
+    override fun sync() {
         sharingScope.launch {
             val now = System.currentTimeMillis()
             val lastSyncTimestamp = userPreferencesRepository.getLastSyncTimestamp()
@@ -260,7 +233,7 @@ class SyncManager(
      * since the last sync. Much faster for large libraries with few changes.
      * This is the recommended sync method for pull-to-refresh actions.
      */
-    fun incrementalSync() {
+    override fun incrementalSync() {
         Logger.withTag(TAG).i { "Incremental sync requested - Scheduling incremental worker" }
         enqueueSyncWork(
             // Explicit user request (pull-to-refresh): run now even during playback.
@@ -276,7 +249,7 @@ class SyncManager(
      * Performs a full library rescan, ignoring the last sync timestamp.
      * Use this when the user explicitly wants to force a complete rescan.
      */
-    fun fullSync(deepScan: Boolean = true) {
+    override fun fullSync(deepScan: Boolean) {
         Logger.withTag(TAG).i { "Full sync requested - Scheduling full sync worker" }
         enqueueSyncWork(
             request = SyncWorker.fullSyncWork(deepScan = deepScan),
@@ -289,7 +262,7 @@ class SyncManager(
      * Local imported lyrics, favorites, and user metadata edits are removed for the rebuilt songs.
      * Use when local library data is corrupted or songs are missing.
      */
-    fun rebuildDatabase() {
+    override fun rebuildDatabase() {
         Logger.withTag(TAG).i { "Rebuild database requested - Scheduling rebuild worker" }
         enqueueSyncWork(
             request = SyncWorker.rebuildDatabaseWork(),
@@ -302,7 +275,7 @@ class SyncManager(
      * The worker detects directory-rule version changes, so this still becomes a full local pass
      * when the caller just changed the selected folders.
      */
-    fun forceRefresh() {
+    override fun forceRefresh() {
         Logger.withTag(TAG).i { "Manual local refresh requested - Scheduling incremental worker" }
         enqueueSyncWork(
             // Explicit user request (refresh button, folder changes, end of setup): run now
