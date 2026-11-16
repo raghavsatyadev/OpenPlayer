@@ -3,6 +3,7 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel.queue
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.ItemTransitionReason
 
 /**
  * "Play next" placement. With [enabled] (the "insert after latest" setting) each song goes after
@@ -38,9 +39,8 @@ class PlayNextInserter(private val tracker: InsertAfterTracker = InsertAfterTrac
     /** Songs to feed to [insert] one by one so that they end up in their given order. */
     fun <T> inInsertOrder(songs: List<T>): List<T> = if (enabled) songs else songs.asReversed()
 
-    fun onCurrentItemChanged(newIndex: Int, reason: Int) {
-        val natural = reason == Player.MEDIA_ITEM_TRANSITION_REASON_AUTO ||
-            reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT
+    fun onCurrentItemChanged(newIndex: Int, reason: ItemTransitionReason) {
+        val natural = reason == ItemTransitionReason.AUTO || reason == ItemTransitionReason.REPEAT
         tracker.onCurrentItemChanged(newIndex, userInitiated = !natural)
     }
 

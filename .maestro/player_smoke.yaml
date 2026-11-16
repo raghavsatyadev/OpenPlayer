@@ -1,0 +1,68 @@
+# Player smoke test: play, pause/resume, skip (title must change), repeat toggle,
+# queue reorder. (The notification's Shuffle button isn't covered:
+# swiping the shade can hit other apps' notifications.) Needs at least 3 songs on the device.
+# Run: maestro --device <serial> test .maestro/player_smoke.yaml
+appId: io.github.raghavsatyadev.openplayer.debug
+---
+- runFlow: setup_bypass.yaml
+
+# Library > Songs, play the first song.
+- tapOn:
+    text: "Library"
+    index: 0
+- tapOn: "SONGS"
+- tapOn:
+    leftOf:
+      text: "More options for .*"
+      index: 0
+- extendedWaitUntil:
+    visible: "OpenPlayer player sheet collapsed, .*"
+    timeout: 10000
+
+# Pause and resume from the mini player.
+- tapOn: "Pause"
+- assertVisible: "Play"
+- tapOn: "Play"
+- assertVisible: "Pause"
+
+# Skip forward twice; the mini player title must change each time.
+- copyTextFrom: "OpenPlayer player sheet collapsed, .*"
+- evalScript: ${output.title0 = maestro.copiedText}
+- tapOn: "Next track"
+- waitForAnimationToEnd:
+    timeout: 3000
+- copyTextFrom: "OpenPlayer player sheet collapsed, .*"
+- assertTrue: ${maestro.copiedText != output.title0}
+- evalScript: ${output.title1 = maestro.copiedText}
+- tapOn: "Next track"
+- waitForAnimationToEnd:
+    timeout: 3000
+- copyTextFrom: "OpenPlayer player sheet collapsed, .*"
+- assertTrue: ${maestro.copiedText != output.title1}
+
+# Full player: repeat and shuffle toggles, then the queue: move the second item down.
+- swipe:
+    start: 42%, 82%
+    end: 42%, 29%
+    duration: 600
+- extendedWaitUntil:
+    visible: "Now Playing"
+    timeout: 5000
+- tapOn: "Repeat"
+- tapOn: "Shuffle"
+- tapOn: "Shuffle"
+- assertVisible: "Pause"
+- tapOn: "Queue"
+- extendedWaitUntil:
+    visible: "Next up"
+    timeout: 5000
+- swipe:
+    from:
+      text: "Reorder song"
+      index: 1
+    direction: DOWN
+    duration: 1500
+- back
+- tapOn: "Collapse player"
+
+- assertVisible: "OpenPlayer player sheet collapsed, .*"

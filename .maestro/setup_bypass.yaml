@@ -1,0 +1,25 @@
+# Gets a fresh install of the debug app past the first-run setup wizard.
+# Permissions are granted at launch, before the wizard composes, so its permission
+# check sees them (granting with `adb pm grant` while the app runs leaves Finish stuck).
+# Run: maestro --device <serial> test .maestro/setup_bypass.yaml
+appId: io.github.raghavsatyadev.openplayer.debug
+---
+- launchApp:
+    permissions:
+      all: allow
+- runFlow:
+    when:
+      notVisible: "Library"
+    commands:
+      - repeat:
+          while:
+            notVisible: "All Set!"
+          times: 15
+          commands:
+            - tapOn: "Next"
+            - waitForAnimationToEnd:
+                timeout: 2000
+      - tapOn: "Finish"
+- extendedWaitUntil:
+    visible: "Library"
+    timeout: 15000

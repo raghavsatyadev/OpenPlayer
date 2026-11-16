@@ -1,20 +1,14 @@
 package io.github.raghavsatyadev.openplayer.presentation.viewmodel.player
 
 import android.content.Context
-import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
-import androidx.media3.session.SessionCommand
-import androidx.media3.session.SessionError
-import androidx.media3.session.SessionResult
 import androidx.media3.session.SessionToken
-import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import io.github.raghavsatyadev.openplayer.data.media.MediaControllerFactory
 import io.github.raghavsatyadev.openplayer.data.model.Song
-import io.github.raghavsatyadev.openplayer.data.service.MusicNotificationProvider
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.PlaybackStateHolder
 
 /**
@@ -29,6 +23,7 @@ class MediaControllerConnector(
     private val playbackStateHolder: PlaybackStateHolder,
 ) {
     private var mediaController: MediaController? = null
+    private var adapter: Media3PlaybackEventAdapter? = null
     private var playerListener: Player.Listener? = null
     private var future: ListenableFuture<MediaController>? = null
 
@@ -43,23 +38,14 @@ class MediaControllerConnector(
         resolvedMediaItem = resolvedMediaItem,
     )
 
-    /** Starts the async connection. [onShuffleStateCommand] receives the session's "set shuffle" custom command. */
-    fun connect(onShuffleStateCommand: (enabled: Boolean) -> Unit) {
-        val listener = object : MediaController.Listener {
-            override fun onCustomCommand(
-                controller: MediaController,
-                command: SessionCommand,
-                args: Bundle,
-            ): ListenableFuture<SessionResult> {
-                if (command.customAction == MusicNotificationProvider.CUSTOM_COMMAND_SET_SHUFFLE_STATE) {
-                    val enabled = args.getBoolean(MusicNotificationProvider.EXTRA_SHUFFLE_ENABLED, false)
-                    onShuffleStateCommand(enabled)
-                    return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
-                }
-                return Futures.immediateFuture(SessionResult(SessionError.ERROR_NOT_SUPPORTED))
-            }
-        }
-        future = factory.create(context, sessionToken, listener)
+    /**
+     * Starts the async connection. The session's custom commands reach [listener] from now on
+     * ([PlaybackEventListener.onSessionShuffleCommand]); player events only after [attachPlayerEvents].
+     */
+    fun connect(listener: PlaybackEventListener) {
+        val newAdapter = Media3PlaybackEventAdapter(listener)
+        adapter = newAdapter
+        future = factory.create(context, sessionToken, newAdapter.controllerListener)
     }
 
     /**
@@ -81,9 +67,13 @@ class MediaControllerConnector(
         }, ContextCompat.getMainExecutor(context))
     }
 
-    /** Replaces the registered Player listener (removing the previous one) on the connected controller. */
-    fun setPlayerListener(listener: Player.Listener) {
+    /**
+     * Starts delivering player events to the listener given to [connect] (replacing a previous
+     * attachment). Call after the initial state sync so it is not interleaved with events.
+     */
+    fun attachPlayerEvents() {
         val controller = mediaController ?: return
+        val listener = adapter?.playerListener ?: return
         playerListener?.let(controller::removeListener)
         playerListener = listener
         controller.addListener(listener)

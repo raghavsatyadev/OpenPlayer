@@ -3,7 +3,6 @@ package io.github.raghavsatyadev.openplayer.presentation.viewmodel.player
 import android.os.Bundle
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionCommand
 import io.github.raghavsatyadev.openplayer.data.model.Song
@@ -27,12 +26,7 @@ class MediaControllerPlaybackController(
     override val playWhenReady: Boolean get() = connected?.playWhenReady == true
 
     override val engineState: PlaybackEngineState
-        get() = when (connected?.playbackState) {
-            Player.STATE_BUFFERING -> PlaybackEngineState.BUFFERING
-            Player.STATE_READY -> PlaybackEngineState.READY
-            Player.STATE_ENDED -> PlaybackEngineState.ENDED
-            else -> PlaybackEngineState.IDLE
-        }
+        get() = connected?.playbackState.toPlaybackEngineState()
 
     override val currentMediaId: String? get() = connected?.currentMediaItem?.mediaId
 

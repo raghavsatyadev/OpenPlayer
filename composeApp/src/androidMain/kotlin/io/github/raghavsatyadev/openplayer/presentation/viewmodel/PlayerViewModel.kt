@@ -9,10 +9,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
-import androidx.media3.common.PlaybackException
-import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
-import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
@@ -60,6 +57,8 @@ import io.github.raghavsatyadev.openplayer.utils.traceSection
 import io.github.raghavsatyadev.openplayer.presentation.navigation.PlayerSheetBackCoordinator
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackAudioMetadataTracker
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackController
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackEventListener
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.ItemTransitionReason
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackEngineState
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerFavoriteActions
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlayerQueueActions
@@ -1079,14 +1078,9 @@ class PlayerViewModel(
     }
     private val _isMediaControllerReady = MutableStateFlow(false)
     val isMediaControllerReady: StateFlow<Boolean> = _isMediaControllerReady.asStateFlow()
+    private val playbackEvents = PlayerEvents()
     init {
-        mediaControllerConnector.connect(onShuffleStateCommand = { enabled ->
-            viewModelScope.launch {
-                if (enabled != playbackStateHolder.stablePlayerState.value.isShuffleEnabled) {
-                    toggleShuffle()
-                }
-            }
-        })
+        mediaControllerConnector.connect(playbackEvents)
     }
     private var pendingRepeatMode: Int? = null
     private val playNextInserter = io.github.raghavsatyadev.openplayer.presentation.viewmodel.queue.PlayNextInserter()
@@ -2369,145 +2363,104 @@ class PlayerViewModel(
             }
         }
 
-        val playerListener = object : Player.Listener {
-            override fun onPlayerError(error: PlaybackException) {
-                viewModelScope.launch {
-                    _toastEvents.emit(getString(Res.string.player_error_skipping))
-                }
+        mediaControllerConnector.attachPlayerEvents()
+    }
+
+    /** Player events from [MediaControllerConnector]; the main-thread bodies of the former Media3 listener. */
+    private inner class PlayerEvents : PlaybackEventListener {
+        override fun onPlayerError() {
+            viewModelScope.launch {
+                _toastEvents.emit(getString(Res.string.player_error_skipping))
             }
+        }
 
-            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                playbackStateHolder.updateStablePlayerState {
-                    it.copy(
-                        isPlaying = isPlaying,
-                        playWhenReady = playback.playWhenReady
-                    )
-                }
-                val shouldKeepSampling = playback.playWhenReady &&
-                    playback.engineState != PlaybackEngineState.IDLE &&
-                    playback.engineState != PlaybackEngineState.ENDED
-                if (isPlaying || shouldKeepSampling) {
-                    _isSheetVisible.value = true
-                    if (isPlaying) {
-                        clearPreparingSongIfMatching(playback.currentMediaId)
-                    }
-                    startProgressUpdates()
-                } else {
-                    stopProgressUpdates()
-                    val pausedPosition = playback.positionMs.coerceAtLeast(0L)
-                    syncPlaybackPositionFromPlayer(playback.currentMediaId, pausedPosition)
-                }
+        override fun onIsPlayingChanged(isPlaying: Boolean) {
+            playbackStateHolder.updateStablePlayerState {
+                it.copy(
+                    isPlaying = isPlaying,
+                    playWhenReady = playback.playWhenReady
+                )
             }
-
-            override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
-                playbackStateHolder.updateStablePlayerState { it.copy(playWhenReady = playWhenReady) }
-                if (
-                    playWhenReady &&
-                    playback.engineState != PlaybackEngineState.IDLE &&
-                    playback.engineState != PlaybackEngineState.ENDED
-                ) {
-                    startProgressUpdates()
-                }
-            }
-
-            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                playNextInserter.onCurrentItemChanged(playback.currentIndex, reason)
-                playbackStateHolder.onPlaybackOccurrenceTransition(mediaItem?.mediaId)
-                audioMetadataTracker.prepareForMedia(mediaItem?.mediaId)
-                transitionSchedulerJob?.cancel()
-                lyricsStateHolder.cancelLoading()
-                transitionSchedulerJob = viewModelScope.launch {
-                    mediaItem?.let { transitionedItem ->
-                        val song = resolveSongFromMediaItem(transitionedItem)
-                        
-                        val resolvedDuration = if (song != null) {
-                            playbackStateHolder.resolveDurationForPlaybackState(
-                                reportedDurationMs = playback.durationMs,
-                                songDurationHintMs = song.duration.coerceAtLeast(0L),
-                                currentPositionMs = playback.positionMs.coerceAtLeast(0L)
-                            )
-                        } else {
-                            0L
-                        }
-                        resetLyricsSearchState()
-                        playbackStateHolder.updateStablePlayerState {
-                            it.copy(
-                                currentSong = song,
-                                currentMediaItemIndex = if (dualPlayerEngine.isUsingWindowedQueue()) {
-                                    dualPlayerEngine.getCurrentAbsoluteIndex()
-                                } else {
-                                    playback.currentIndex
-                                },
-                                totalDuration = resolvedDuration,
-                                lyrics = null,
-                                isLoadingLyrics = song != null,
-                                playWhenReady = playback.playWhenReady
-                            )
-                        }
-                        val transitionPosition = syncPlaybackPositionFromPlayer(
-                            transitionedItem.mediaId,
-                            playback.positionMs.coerceAtLeast(0L)
-                        )
-
-                        song?.let { currentSongValue ->
-                            launch {
-                                val uri = currentSongValue.albumArtUriString?.toUri()
-                                val currentUri = playbackStateHolder.stablePlayerState.value.currentSong?.albumArtUriString
-                                themeStateHolder.extractAndGenerateColorScheme(uri, currentUri)
-                            }
-                            loadLyricsForCurrentSong()
-                        }
-                    } ?: run {
-                        lyricsStateHolder.cancelLoading()
-                        playbackStateHolder.updateStablePlayerState {
-                            it.copy(
-                                currentSong = null,
-                                isPlaying = false,
-                                playWhenReady = false,
-                                lyrics = null,
-                                isLoadingLyrics = false,
-                                totalDuration = 0L
-                            )
-                        }
-                        playbackStateHolder.clearCurrentPositionHints()
-                        audioMetadataTracker.reset()
-                    }
-                }
-            }
-
-            override fun onPlaybackStateChanged(playbackState: Int) {
-                audioMetadataTracker.refresh(playerCtrl)
-                syncDisplayedMediaItemIfChanged(playerCtrl)
-
-                bufferingDebounceJob?.cancel()
-                if (playbackState == Player.STATE_BUFFERING) {
-                    bufferingDebounceJob = viewModelScope.launch {
-                        delay(500)
-                        playbackStateHolder.updateStablePlayerState { state ->
-                            state.copy(isBuffering = true)
-                        }
-                    }
-                } else {
-                    playbackStateHolder.updateStablePlayerState { state ->
-                        state.copy(isBuffering = false)
-                    }
-                }
-
-                if (playbackState == Player.STATE_READY) {
+            val shouldKeepSampling = playback.playWhenReady &&
+                playback.engineState != PlaybackEngineState.IDLE &&
+                playback.engineState != PlaybackEngineState.ENDED
+            if (isPlaying || shouldKeepSampling) {
+                _isSheetVisible.value = true
+                if (isPlaying) {
                     clearPreparingSongIfMatching(playback.currentMediaId)
-                    val readyPosition = playback.positionMs.coerceAtLeast(0L)
-                    val songDurationHint = playbackStateHolder.stablePlayerState.value.currentSong?.duration ?: 0L
-                    val resolvedDuration = playbackStateHolder.resolveDurationForPlaybackState(
-                        reportedDurationMs = playback.durationMs,
-                        songDurationHintMs = songDurationHint,
-                        currentPositionMs = readyPosition
-                    )
-                    syncPlaybackPositionFromPlayer(playback.currentMediaId, readyPosition)
-                    playbackStateHolder.updateStablePlayerState { it.copy(totalDuration = resolvedDuration) }
-                    startProgressUpdates()
                 }
-                if (playbackState == Player.STATE_IDLE && playback.queueSize == 0) {
-                    clearPreparingSongIfMatching()
+                startProgressUpdates()
+            } else {
+                stopProgressUpdates()
+                val pausedPosition = playback.positionMs.coerceAtLeast(0L)
+                syncPlaybackPositionFromPlayer(playback.currentMediaId, pausedPosition)
+            }
+        }
+
+        override fun onPlayWhenReadyChanged(playWhenReady: Boolean) {
+            playbackStateHolder.updateStablePlayerState { it.copy(playWhenReady = playWhenReady) }
+            if (
+                playWhenReady &&
+                playback.engineState != PlaybackEngineState.IDLE &&
+                playback.engineState != PlaybackEngineState.ENDED
+            ) {
+                startProgressUpdates()
+            }
+        }
+
+        override fun onCurrentItemChanged(mediaId: String?, reason: ItemTransitionReason) {
+            // Captured synchronously: resolveSongFromMediaItem needs the item's metadata extras, not just its id.
+            val mediaItem: MediaItem? = mediaId?.let { id ->
+                val current = mediaControllerConnector.rawController()?.currentMediaItem
+                current?.takeIf { it.mediaId == id } ?: current
+            }
+            playNextInserter.onCurrentItemChanged(playback.currentIndex, reason)
+            playbackStateHolder.onPlaybackOccurrenceTransition(mediaId)
+            audioMetadataTracker.prepareForMedia(mediaId)
+            transitionSchedulerJob?.cancel()
+            lyricsStateHolder.cancelLoading()
+            transitionSchedulerJob = viewModelScope.launch {
+                mediaItem?.let { transitionedItem ->
+                    val song = resolveSongFromMediaItem(transitionedItem)
+
+                    val resolvedDuration = if (song != null) {
+                        playbackStateHolder.resolveDurationForPlaybackState(
+                            reportedDurationMs = playback.durationMs,
+                            songDurationHintMs = song.duration.coerceAtLeast(0L),
+                            currentPositionMs = playback.positionMs.coerceAtLeast(0L)
+                        )
+                    } else {
+                        0L
+                    }
+                    resetLyricsSearchState()
+                    playbackStateHolder.updateStablePlayerState {
+                        it.copy(
+                            currentSong = song,
+                            currentMediaItemIndex = if (dualPlayerEngine.isUsingWindowedQueue()) {
+                                dualPlayerEngine.getCurrentAbsoluteIndex()
+                            } else {
+                                playback.currentIndex
+                            },
+                            totalDuration = resolvedDuration,
+                            lyrics = null,
+                            isLoadingLyrics = song != null,
+                            playWhenReady = playback.playWhenReady
+                        )
+                    }
+                    val transitionPosition = syncPlaybackPositionFromPlayer(
+                        transitionedItem.mediaId,
+                        playback.positionMs.coerceAtLeast(0L)
+                    )
+
+                    song?.let { currentSongValue ->
+                        launch {
+                            val uri = currentSongValue.albumArtUriString?.toUri()
+                            val currentUri = playbackStateHolder.stablePlayerState.value.currentSong?.albumArtUriString
+                            themeStateHolder.extractAndGenerateColorScheme(uri, currentUri)
+                        }
+                        loadLyricsForCurrentSong()
+                    }
+                } ?: run {
                     lyricsStateHolder.cancelLoading()
                     playbackStateHolder.updateStablePlayerState {
                         it.copy(
@@ -2520,45 +2473,108 @@ class PlayerViewModel(
                         )
                     }
                     playbackStateHolder.clearCurrentPositionHints()
-                    playbackStateHolder.setCurrentPosition(0L)
                     audioMetadataTracker.reset()
                 }
             }
-            override fun onTracksChanged(tracks: Tracks) {
-                audioMetadataTracker.refresh(playerCtrl, tracks)
+        }
+
+        override fun onEngineStateChanged(state: PlaybackEngineState) {
+            mediaControllerConnector.rawController()?.let { player ->
+                audioMetadataTracker.refresh(player)
+                syncDisplayedMediaItemIfChanged(player)
             }
-            override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                syncDisplayedMediaItemIfChanged(playerCtrl)
-            }
-            override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
-                if (shuffleModeEnabled) {
-                    playback.shuffleEnabled = false
-                    if (!playbackStateHolder.stablePlayerState.value.isShuffleEnabled) {
-                        toggleShuffle()
+
+            bufferingDebounceJob?.cancel()
+            if (state == PlaybackEngineState.BUFFERING) {
+                bufferingDebounceJob = viewModelScope.launch {
+                    delay(500)
+                    playbackStateHolder.updateStablePlayerState { current ->
+                        current.copy(isBuffering = true)
                     }
                 }
-            }
-            override fun onRepeatModeChanged(repeatMode: Int) {
-                playbackStateHolder.updateStablePlayerState { it.copy(repeatMode = repeatMode) }
-                // Repeat-N's temporary repeat-one must not become the saved mode.
-                if (!repeatNStateHolder.isActive) {
-                    viewModelScope.launch { userPreferencesRepository.setRepeatMode(repeatMode) }
+            } else {
+                playbackStateHolder.updateStablePlayerState { current ->
+                    current.copy(isBuffering = false)
                 }
             }
-            override fun onTimelineChanged(timeline: Timeline, reason: Int) {
-                syncDisplayedMediaItemIfChanged(playerCtrl)
-                if (dualPlayerEngine.isTransitionRunning()) return
 
-                transitionSchedulerJob?.cancel()
-                
-                if (reason == Player.TIMELINE_CHANGE_REASON_PLAYLIST_CHANGED ||
-                    reason == Player.TIMELINE_CHANGE_REASON_SOURCE_UPDATE) {
-                    updateCurrentPlaybackQueueFromPlayer(mediaControllerConnector.rawController())
-                    dualPlayerEngine.triggerAdjacentPreResolution()
+            if (state == PlaybackEngineState.READY) {
+                clearPreparingSongIfMatching(playback.currentMediaId)
+                val readyPosition = playback.positionMs.coerceAtLeast(0L)
+                val songDurationHint = playbackStateHolder.stablePlayerState.value.currentSong?.duration ?: 0L
+                val resolvedDuration = playbackStateHolder.resolveDurationForPlaybackState(
+                    reportedDurationMs = playback.durationMs,
+                    songDurationHintMs = songDurationHint,
+                    currentPositionMs = readyPosition
+                )
+                syncPlaybackPositionFromPlayer(playback.currentMediaId, readyPosition)
+                playbackStateHolder.updateStablePlayerState { it.copy(totalDuration = resolvedDuration) }
+                startProgressUpdates()
+            }
+            if (state == PlaybackEngineState.IDLE && playback.queueSize == 0) {
+                clearPreparingSongIfMatching()
+                lyricsStateHolder.cancelLoading()
+                playbackStateHolder.updateStablePlayerState {
+                    it.copy(
+                        currentSong = null,
+                        isPlaying = false,
+                        playWhenReady = false,
+                        lyrics = null,
+                        isLoadingLyrics = false,
+                        totalDuration = 0L
+                    )
+                }
+                playbackStateHolder.clearCurrentPositionHints()
+                playbackStateHolder.setCurrentPosition(0L)
+                audioMetadataTracker.reset()
+            }
+        }
+
+        override fun onTracksChanged() {
+            val player = mediaControllerConnector.rawController() ?: return
+            audioMetadataTracker.refresh(player, player.currentTracks)
+        }
+
+        override fun onMetadataChanged() {
+            mediaControllerConnector.rawController()?.let { syncDisplayedMediaItemIfChanged(it) }
+        }
+
+        override fun onNativeShuffleChanged(enabled: Boolean) {
+            if (enabled) {
+                playback.shuffleEnabled = false
+                if (!playbackStateHolder.stablePlayerState.value.isShuffleEnabled) {
+                    toggleShuffle()
                 }
             }
         }
-        mediaControllerConnector.setPlayerListener(playerListener)
+
+        override fun onRepeatModeChanged(repeatMode: Int) {
+            playbackStateHolder.updateStablePlayerState { it.copy(repeatMode = repeatMode) }
+            // Repeat-N's temporary repeat-one must not become the saved mode.
+            if (!repeatNStateHolder.isActive) {
+                viewModelScope.launch { userPreferencesRepository.setRepeatMode(repeatMode) }
+            }
+        }
+
+        override fun onQueueChanged(structural: Boolean) {
+            mediaControllerConnector.rawController()?.let { syncDisplayedMediaItemIfChanged(it) }
+            if (dualPlayerEngine.isTransitionRunning()) return
+
+            transitionSchedulerJob?.cancel()
+
+            if (structural) {
+                updateCurrentPlaybackQueueFromPlayer(mediaControllerConnector.rawController())
+                dualPlayerEngine.triggerAdjacentPreResolution()
+            }
+        }
+
+        override fun onSessionShuffleCommand(enabled: Boolean) {
+            viewModelScope.launch {
+                if (enabled != playbackStateHolder.stablePlayerState.value.isShuffleEnabled) {
+                    toggleShuffle()
+                }
+            }
+        }
     }
 
 
