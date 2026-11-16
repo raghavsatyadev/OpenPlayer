@@ -44,7 +44,9 @@ import io.github.raghavsatyadev.openplayer.data.repository.MusicRepository
 import io.github.raghavsatyadev.openplayer.data.service.MusicService
 import io.github.raghavsatyadev.openplayer.data.service.player.DualPlayerEngine
 import io.github.raghavsatyadev.openplayer.data.worker.SyncManager
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.DualPlayerEngineQueueLoader
 import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.MediaControllerConnector
+import io.github.raghavsatyadev.openplayer.presentation.viewmodel.player.PlaybackQueueLoader
 import io.github.raghavsatyadev.openplayer.di.DispatcherProvider
 import io.github.raghavsatyadev.openplayer.utils.AppShortcutManager
 import io.github.raghavsatyadev.openplayer.utils.ValidatedLyricsImport
@@ -86,7 +88,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -143,12 +144,6 @@ private data class SortOptionsSnapshot(
     val artistSort: SortOption,
     val folderSort: SortOption,
     val favoriteSort: SortOption,
-)
-
-private data class PreparedPlaybackQueueSegments(
-    val beforeCurrent: List<MediaItem>,
-    val afterCurrent: List<MediaItem>,
-    val currentIndex: Int
 )
 
 @androidx.annotation.OptIn(UnstableApi::class)
@@ -465,6 +460,7 @@ class PlayerViewModel(
     private var directPlaybackJob: Job? = null
     private var directPlaybackToken: Long = 0L
     private var pendingQueueSegmentsJob: Job? = null
+    private val queueLoader: PlaybackQueueLoader = DualPlayerEngineQueueLoader(dualPlayerEngine, dispatchers)
 
     /**
      * Finds the current song in [tab]'s list and emits its index on [scrollToIndexEvent].
@@ -2766,71 +2762,6 @@ class PlayerViewModel(
         }
     }
 
-    private suspend fun preparePlaybackQueueSegments(
-        songsToPlay: List<Song>,
-        startSongId: String,
-        playlistId: String?
-    ): PreparedPlaybackQueueSegments = withContext(dispatchers.default) {
-        val currentIndex = songsToPlay
-            .indexOfFirst { it.id == startSongId }
-            .takeIf { it >= 0 }
-            ?: 0
-
-        val beforeCurrent = List(currentIndex) { index ->
-            buildPlaybackMediaItem(songsToPlay[index], playlistId)
-        }
-        val afterStartIndex = currentIndex + 1
-        val afterCurrent = List((songsToPlay.size - afterStartIndex).coerceAtLeast(0)) { offset ->
-            buildPlaybackMediaItem(songsToPlay[afterStartIndex + offset], playlistId)
-        }
-
-        PreparedPlaybackQueueSegments(
-            beforeCurrent = beforeCurrent,
-            afterCurrent = afterCurrent,
-            currentIndex = currentIndex
-        )
-    }
-
-    private suspend fun attachPreparedQueueSegmentsIfCurrent(
-        player: Player,
-        startSongId: String,
-        preparedSegments: PreparedPlaybackQueueSegments
-    ) {
-        if (player.currentMediaItem?.mediaId != startSongId) return
-        if (player.mediaItemCount != 1) return
-        if (player.getMediaItemAt(0).mediaId != startSongId) return
-
-        val batchSize = 200
-
-        if (preparedSegments.beforeCurrent.isNotEmpty()) {
-            var insertedCount = 0
-            while (insertedCount < preparedSegments.beforeCurrent.size) {
-                val end = (insertedCount + batchSize).coerceAtMost(preparedSegments.beforeCurrent.size)
-                val batch = preparedSegments.beforeCurrent.subList(insertedCount, end)
-                player.addMediaItems(insertedCount, batch)
-                insertedCount = end
-                yield()
-            }
-        }
-
-        if (preparedSegments.afterCurrent.isNotEmpty()) {
-            var insertedCount = 0
-            while (insertedCount < preparedSegments.afterCurrent.size) {
-                val end = (insertedCount + batchSize).coerceAtMost(preparedSegments.afterCurrent.size)
-                val batch = preparedSegments.afterCurrent.subList(insertedCount, end)
-                player.addMediaItems(preparedSegments.beforeCurrent.size + 1 + insertedCount, batch)
-                insertedCount = end
-                yield()
-            }
-        }
-
-        playbackStateHolder.updateStablePlayerState {
-            it.copy(currentMediaItemIndex = preparedSegments.currentIndex)
-        }
-    }
-
-
-
     private suspend fun internalPlaySongs(songsToPlay: List<Song>, startSong: Song, queueName: String = "None", playlistId: String? = null) {
         if (songsToPlay.isEmpty()) {
             clearPreparingSongIfMatching()
@@ -2862,31 +2793,19 @@ class PlayerViewModel(
         }
         _isSheetVisible.value = true
 
-        val startMediaItem = buildResolvedPlaybackMediaItem(effectiveStartSong, playlistId)
+        val startAction = queueLoader.prepareStart(effectiveStartSong, playlistId, startPositionMs)
 
-        val playSongsAction = {
-            dualPlayerEngine.cancelNext()
-            val enginePlayer = dualPlayerEngine.masterPlayer
-
-            enginePlayer.setMediaItem(startMediaItem, startPositionMs)
-            enginePlayer.prepare()
-            enginePlayer.play()
+        val playSongsAction: () -> Unit = {
+            startAction()
             _playerUiState.update { it.copy(isLoadingInitialSongs = false) }
 
             if (songsToPlay.size > 1) {
                 pendingQueueSegmentsJob?.cancel()
                 pendingQueueSegmentsJob = viewModelScope.launch {
-                    val preparedSegments = preparePlaybackQueueSegments(
-                        songsToPlay = songsToPlay,
-                        startSongId = effectiveStartSong.id,
-                        playlistId = playlistId
-                    )
-                    withContext(Dispatchers.Main.immediate) {
-                        attachPreparedQueueSegmentsIfCurrent(
-                            player = dualPlayerEngine.masterPlayer,
-                            startSongId = effectiveStartSong.id,
-                            preparedSegments = preparedSegments
-                        )
+                    queueLoader.attachRest(songsToPlay, effectiveStartSong.id, playlistId)?.let { index ->
+                        playbackStateHolder.updateStablePlayerState {
+                            it.copy(currentMediaItemIndex = index)
+                        }
                     }
                 }
             }

@@ -1,0 +1,29 @@
+# Queue build: start from the third song so the queue gets items before and after it.
+# Previous track (within 3 s, before Media3 restarts the song instead) must change the
+# title, which only works if the items before the start song were inserted.
+# Run: maestro --device <serial> test .maestro/queue_build.yaml
+appId: io.github.raghavsatyadev.openplayer.debug
+---
+- runFlow: setup_bypass.yaml
+
+- tapOn:
+    text: "Library"
+    index: 0
+- tapOn: "SONGS"
+# Remember the third song's title, so the wait below can't match a mini player left from an earlier run.
+- copyTextFrom:
+    text: "More options for .*"
+    index: 2
+- evalScript: ${output.start = maestro.copiedText.replace('More options for ', '')}
+- tapOn: ${output.start}
+- extendedWaitUntil:
+    visible: ${'OpenPlayer player sheet collapsed, ' + output.start + '.*'}
+    timeout: 10000
+
+- copyTextFrom: "OpenPlayer player sheet collapsed, .*"
+- evalScript: ${output.title0 = maestro.copiedText}
+- tapOn: "Previous track"
+- waitForAnimationToEnd:
+    timeout: 2000
+- copyTextFrom: "OpenPlayer player sheet collapsed, .*"
+- assertTrue: ${maestro.copiedText != output.title0}
