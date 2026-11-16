@@ -7,6 +7,9 @@ appId: io.github.raghavsatyadev.openplayer.debug
 - launchApp:
     permissions:
       all: allow
+- extendedWaitUntil:
+    visible: "Library|Next"
+    timeout: 30000
 - runFlow:
     when:
       notVisible: "Library"
@@ -22,4 +25,4 @@ appId: io.github.raghavsatyadev.openplayer.debug
       - tapOn: "Finish"
 - extendedWaitUntil:
     visible: "Library"
-    timeout: 15000
+    timeout: 30000
